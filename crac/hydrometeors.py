@@ -6,5 +6,6 @@ class Hydrometeor(parts.scattering.ScatteringSpecies):
                  scattering_data,
                  scattering_meta_data):
         super().__init__(name, psd, scattering_data, scattering_meta_data)
+        self.a_priori = a_priori,
         self.transformations = [Log10(), Log10()]
         self.limits_low      = [1e-12, 2]
