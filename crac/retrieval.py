@@ -34,7 +34,7 @@ class CloudRetrieval:
         self.simulation.retrieval.add(h2o)
         h2o.retrieval.unit      = RelativeHumidity()
         h2o.transformation      = Atanh()
-        h2o.transformation.z_max = 1.1
+        h2o.transformation.z_max = 1.0
         self.h2o = h2o
 
         settings = self.simulation.retrieval.settings
