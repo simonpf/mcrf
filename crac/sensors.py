@@ -18,6 +18,9 @@ Attributes:
 
 """
 import numpy as np
+import scipy as sp
+import os
+from netCDF4 import Dataset
 from parts.sensor import PassiveSensor, ActiveSensor
 
 ################################################################################
@@ -231,9 +234,10 @@ class LCPR(ActiveSensor):
 class HampRadar(ActiveSensor):
 
     def __init__(self, stokes_dimension = 1):
+        import crac.joint_flight
+        path = crac.joint_flight.path
 
-        path = os.path.dirname(__file__)
-        ds = Dataset(os.path.join(path, "..", "data", "input.nc"))
+        ds = Dataset(os.path.join(path, "data", "input.nc"))
         z  = ds.variables["altitude"][0, :]
 
         range_bins = np.zeros(z.size + 1)
@@ -298,9 +302,21 @@ mwi_full.sensor_line_of_sight = np.array([[135.0]])
 mwi_full.sensor_position = np.array([[600e3]])
 
 #
+# HAMP Passive
+#
+
+hamp_passive = HampPassive()
+
+#
 # LCPR
 #
 
 lcpr = LCPR(stokes_dimension = 1)
 lcpr.sensor_line_of_sight = np.array([[135.0]])
 lcpr.sensor_position = np.array([[600e3]])
+
+#
+# HAMP RADAR
+#
+
+hamp_radar   = HampRadar()
