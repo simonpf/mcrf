@@ -253,6 +253,9 @@ class HampRadar(ActiveSensor):
 
         self.sensor_line_of_sight = np.array([180.0])
         self.sensor_position      = np.array([12500.0])
+        self.instrument_pol       = [1]
+        self.instrument_pol_array = [[1]]
+        self.extinction_scaling   = 1.0
         self.y_min = -30.0
 
     @property

@@ -71,15 +71,17 @@ class CloudRetrieval:
             rr.retrieval_quantities += [self.h2o]
 
         def all_quantities(rr):
-            rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors \
-                                       if h.retrieve_second_moment]
-            rr.retrieval_quantities = [h.moments[1] for h in self.hydrometeors \
+            rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
+            rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors \
                                        if h.retrieve_second_moment]
             rr.retrieval_quantities += [self.h2o]
 
         self.simulation.retrieval.callbacks = [("Radar only", radar_only),
-                                               ("First moments", only_first_moments),
-                                               ("All quantities", all_quantities)]
+                                               ("First moments", only_first_moments)]
+                                               #("All quantities", all_quantities)]
+        #self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
+        #                                       ("All quantities", all_quantities)]
+
 
     def plot_results(self, axs = None):
         import matplotlib.pyplot as plt

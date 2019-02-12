@@ -23,7 +23,7 @@ z_grid = np.linspace(0, 12e3, 13)
 ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance,
                                mask = ice_mask, mask_value = 15)
 ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori, z_grid, "altitude",
-                                      Diagonal(4 * np.ones(11)))
+                                      Diagonal(4 * np.ones(13)))
 
 ice = Hydrometeor("ice",
                   D14Ice(),
@@ -47,7 +47,7 @@ z_grid = np.linspace(0, 12e3, 13)
 snow_n0_a_priori = FixedAPriori("snow_n0", 6, snow_covariance,
                                mask = snow_mask, mask_value = 15)
 snow_n0_a_priori = ReducedVerticalGrid(snow_n0_a_priori, z_grid, "altitude",
-                                      Diagonal(4 * np.ones(11)))
+                                      Diagonal(4 * np.ones(13)))
 
 snow = Hydrometeor("snow",
                    D14Ice(),

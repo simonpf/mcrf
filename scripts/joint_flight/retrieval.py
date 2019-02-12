@@ -1,6 +1,4 @@
 from parts.utils.data_providers import NetCDFDataProvider
-
-os.environ["JOINT_FLIGHT_PATH"] = "/home/simonpf/data/joint_flight"
 import crac.joint_flight.setup
 
 import crac.liras
@@ -16,6 +14,21 @@ ip = get_ipython()
 if not ip is None:
     ip.magic("%load_ext autoreload")
     ip.magic("%autoreload 2")
+
+#
+# Parse arguments
+#
+
+import argparse
+import os
+
+parser = argparse.ArgumentParser(description = "Run joint flight retrieval.")
+parser.add_argument('suffix',
+                    type = str,
+                    nargs = 1,
+                    help = "Suffix to append to output filename.")
+args = parser.parse_args()
+filesuffix = args.suffix[0]
 
 #
 # Load observations.
@@ -52,4 +65,13 @@ data_provider.add(SensorNoiseAPriori(sensors))
 
 retrieval = CloudRetrieval(hydrometeors, sensors, data_provider)
 retrieval.setup()
-retrieval.run(800)
+
+output_dir = os.path.dirname(filename)
+name       = os.path.basename(filename)
+output_file = os.path.join(output_dir, name.replace("input", "output_" + filesuffix))
+
+retrieval.simulation.initialize_output_file(output_file)
+retrieval.simulation.run_mpi(range(0, 520))
+retrieval.simulation.run_mpi(range(780, 940))
+retrieval.simulation.run_mpi(range(1080, 1160))
+retrieval.simulation.run_mpi(range(1220, 1350))
