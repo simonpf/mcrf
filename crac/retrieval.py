@@ -1,20 +1,18 @@
+import numpy as np
+
 from parts.atmosphere            import Atmosphere1D
 from parts.sensor                import ActiveSensor
 from parts.atmosphere.surface    import Tessem
 from parts.retrieval.a_priori    import DataProviderAPriori
 from parts.atmosphere.absorption import O2, N2, H2O, RelativeHumidity
 from parts.utils.data_providers  import NetCDFDataProvider
-from joint_flight.hydrometeors   import ice, rain, cloud_water
 from parts.scattering.solvers    import Disort
 from parts.simulation            import ArtsSimulation
-from joint_flight.apriori        import *
 from parts.jacobian              import Log10, Atanh
 
 class CloudRetrieval:
 
     def _setup_retrieval(self):
-
-        ice, rain, cw = self.simulation.atmosphere.scatterers
 
         for q in self.hydrometeors:
 
@@ -27,8 +25,8 @@ class CloudRetrieval:
 
             n0 = q.moments[1]
             self.simulation.retrieval.add(n0)
-            n0.transformation = q.transformation[1]
-            n0.limit_low      = q.linmits_low[1]
+            n0.transformation = q.transformations[1]
+            n0.limit_low      = q.limits_low[1]
 
         h2o = self.simulation.atmosphere.absorbers[-1]
         self.simulation.retrieval.add(h2o)
@@ -62,7 +60,6 @@ class CloudRetrieval:
         self.simulation.data_provider = self.data_provider
 
         self._setup_retrieval()
-        self._setup_a_priori()
 
         def radar_only(rr):
             rr.sensors = [s for s in rr.sensors if isinstance(s, ActiveSensor)]
@@ -76,15 +73,133 @@ class CloudRetrieval:
         def all_quantities(rr):
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors \
                                        if h.retrieve_second_moment]
+            rr.retrieval_quantities = [h.moments[1] for h in self.hydrometeors \
+                                       if h.retrieve_second_moment]
             rr.retrieval_quantities += [self.h2o]
 
         self.simulation.retrieval.callbacks = [("Radar only", radar_only),
                                                ("First moments", only_first_moments),
                                                ("All quantities", all_quantities)]
 
+    def plot_results(self, axs = None):
+        import matplotlib.pyplot as plt
+
+        if axs == None:
+            f, axs = plt.subplots(1, 3, figsize = (8, 8))
+
+        try:
+            results = self.simulation.retrieval.results
+        except:
+            raise Exception("Retrieval must be run before the results can be plotted.")
+
+        z = self.data_provider.get_altitude(self.index) / 1e3
+
+        names = [q.name for q in self.simulation.retrieval.retrieval_quantities]
+
+        colors = {"ice_md" : "royalblue",
+                  "ice_n0" : "royalblue",
+                  "snow_md" : "darkcyan",
+                  "snow_n0" : "darkcyan",
+                  "liquid_md" : "darkorchid",
+                  "liquid_n0" : "darkorchid",
+                  "rain_md" : "firebrick",
+                  "rain_n0" : "firebrick",
+                  "H2O" : "lightsalmon"}
+
+
+        #
+        # First moments
+        #
+
+        ax = axs[0]
+
+        for h in self.hydrometeors:
+            rq = h.moments[0]
+
+            try:
+                f_get = "get_" + rq.name
+                f = getattr(self.data_provider, f_get)
+                args   = self.simulation.args
+                kwargs = self.simulation.kwargs
+                truth = f(*args, **kwargs)
+                ax.plot(truth, z, c = colors[rq.name], alpha = 0.5)
+            except:
+                pass
+
+            x = results[-1].get_result(rq, interpolate = True)
+            if x is None:
+                x = results[-1].get_xa(rq, interpolate = True)
+            x = rq.transformation.invert(x)
+            ax.plot(x, z, c = colors[rq.name])
+
+        ax.set_xscale("log")
+        ax.set_xlim([1e-6, 1e-3])
+        ax.set_ylim([0, 20])
+        ax.set_xlabel("Mass density [$kg / m^{3}$]")
+        ax.set_ylabel("Altitude [km]")
+
+        #
+        # Second moments
+        #
+
+        ax = axs[1]
+
+        for h in self.hydrometeors:
+            rq = h.moments[1]
+
+            try:
+                f_get = "get_" + rq.name
+                f = getattr(self.data_provider, f_get)
+                args   = self.simulation.args
+                kwargs = self.simulation.kwargs
+                truth = f(*args, **kwargs)
+                ax.plot(truth, z, c = colors[rq.name], alpha = 0.5)
+            except:
+                pass
+
+            x = results[-1].get_result(rq, interpolate = True)
+            if x is None:
+                x = results[-1].get_xa(rq, interpolate = True)
+            x = rq.transformation.invert(x)
+            ax.plot(x, z, c = colors[rq.name])
+
+        ax.set_xscale("log")
+        ax.set_xlim([1e4, 1e13])
+        ax.set_ylim([0, 20])
+        ax.set_xlabel("$N_0^*$ [$m^{-4}$]")
+
+        #
+        # Second moments
+        #
+
+        ax = axs[2]
+
+        rq = self.h2o
+
+        try:
+            f_get = "get_relative_humidity"
+            f = getattr(self.data_provider, f_get)
+            args   = self.simulation.args
+            kwargs = self.simulation.kwargs
+            truth = f(*args, **kwargs)
+            ax.plot(100 * truth, z, c = colors[rq.name], alpha = 0.5)
+        except:
+            pass
+
+        x = results[-1].get_result(rq, interpolate = True)
+        if x is None:
+            x = results[-1].get_xa(rq, interpolate = True)
+        x = rq.transformation.invert(x)
+        ax.plot(100 * x, z, c = colors[rq.name])
+
+        ax.set_xlim([0, 100])
+        ax.set_ylim([0, 20])
+        ax.set_xlabel("RH [%]")
+
 
     def setup(self):
         self.simulation.setup()
 
     def run(self, i):
+        self.index = i
         return self.simulation.run(i)

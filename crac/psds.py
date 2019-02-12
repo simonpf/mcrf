@@ -1,3 +1,5 @@
+from parts.scattering.psd.d14 import D14MN
+
 class D14Ice(D14MN):
     def __init__(self):
         super().__init__(2.654, 0.750, 917.0)
