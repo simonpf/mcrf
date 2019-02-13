@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export JOINT_FLIGHT_PATH=/home/simonpf/data/joint_flight
 export LIRAS_PATH=/old/projects/LIRAS/Development/liras/
 
 export ARTS_BUILD_PATH=/home/simonpf/build/arts

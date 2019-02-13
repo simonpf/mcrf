@@ -77,8 +77,8 @@ class CloudRetrieval:
             rr.retrieval_quantities += [self.h2o]
 
         self.simulation.retrieval.callbacks = [("Radar only", radar_only),
-                                               ("First moments", only_first_moments)]
-                                               #("All quantities", all_quantities)]
+                                               ("First moments", only_first_moments),
+                                               ("All quantities", all_quantities)]
         #self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
         #                                       ("All quantities", all_quantities)]
 

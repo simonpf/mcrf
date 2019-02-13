@@ -170,17 +170,69 @@ class MWI(PassiveSensor):
 # Hamp Passive
 ################################################################################
 
+def sensor_properties(center_frequencies, offsets, order = "negative"):
+
+    i = 0 # output index, increased only for <order> offsets.
+    j = 0 # f_grid index, increased for each offset
+
+    f_grid = []
+    sr_data = []
+    sr_i    = []
+    sr_j    = []
+    ci = 0
+
+    for f, ofs in zip(center_frequencies, offsets):
+        ofs.sort()
+
+        nfs = len(ofs)
+
+        for i, o in enumerate(ofs[::-1]):
+            if o > 0.0:
+                f_grid  += [f - o]
+                sr_data += [0.5]
+                sr_j    += [j]
+                if order == "negative":
+                    sr_i    += [ci + i]
+                else:
+                    sr_i += [ci + nfs - 1 - i]
+                j += 1
+
+        if ofs[0] == 0.0:
+            f_grid  += [f]
+            sr_data += [1.0]
+            sr_j    += [j]
+            if order == "negative":
+                sr_i += [ci + i]
+            else:
+                sr_i += [ci]
+            j += 1
+
+        for i, o in enumerate(ofs):
+            if o > 0.0:
+                f_grid  += [f + o]
+                sr_data += [0.5]
+                sr_j    += [j]
+                if order == "negative":
+                    sr_i    += [ci + nfs - 1 - i]
+                else:
+                    sr_i += [ci + i]
+                j += 1
+
+        ci += nfs
+    print(sr_i, sr_j, nfs)
+    sensor_response = sp.sparse.coo_matrix((sr_data, (sr_i, sr_j)))
+
+    return np.array(f_grid), sensor_response
+
 class HampPassive(PassiveSensor):
 
-    channels = np.array([22.24, 23.04, 23.84, 25.44, 26.24, 27.84, 31.40,
-                         50.3, 51.76, 52.8, 53.75, 54.94, 56.66, 58.00,
-                         90,
-                         118.75 - 8.5, 118.75 - 4.2, 118.75 - 2.3, 118.75 - 1.4,
-                         118.75 + 1.4, 118.75 + 2.3, 118.75 + 4.2, 118.75 + 8.5,
-                         183.31 - 12.5, 183.31 - 7.5, 183.31 - 5.0, 183.31 - 3.5,
-                         183.31 - 2.5, 183.31 - 1.5, 183.31 - 0.6,
-                         183.31 + 0.6, 183.31 + 1.5, 183.31 + 2.5, 183.31 + 3.5,
-                         183.31 + 5.0, 183.31 + 7.5, 183.31 + 12.5]) * 1e9
+    center_frequencies = np.array([22.24, 23.04, 23.84, 25.44, 26.24, 27.84, 31.40,
+                                   50.3, 51.76, 52.8, 53.75, 54.94, 56.66, 58.00,
+                                   90, 118.75, 183.31]) * 1e9
+    sidebands = [np.array([0.0]) * 1e9] * 15 \
+                + [np.array([1.4, 2.3, 4.2, 8.5]) * 1e9] \
+                + [np.array([0.6,  1.5,  2.5, 3.5,  5.0,  7.5, 12.5]) * 1e9]
+    channels, sr = sensor_properties(center_frequencies, sidebands, order = "positive")
 
     _nedt = np.array([0.1] * 7 + [0.2] * 7 + [0.25] + [0.6] * 4 + [0.6] * 7)
 
@@ -194,17 +246,49 @@ class HampPassive(PassiveSensor):
         self.sensor_response_f    = self.f_grid[:-11]
         self.sensor_response_pol  = self.f_grid[:-11]
         self.sensor_response_dlos = self.f_grid[:-11, np.newaxis]
-
-        data = 15 * [1.0] + [0.5] * 22
-        i    = list(range(15)) + 2 * list(range(15, 19)) + 2 * list(range(19, 26))
-        j    = list(range(37))
-        self.sensor_response = sp.sparse.coo_matrix((data, (i, j)))
+        self.sensor_response = HampPassive.sr
         self.sensor_f_grid   = self.f_grid[:-11]
-
 
     @property
     def nedt(self):
         return HampPassive._nedt
+
+################################################################################
+# ISMAR
+################################################################################
+
+
+
+class Ismar(PassiveSensor):
+
+    center_frequencies = np.array([118.75, 243.2, 325.15, 664.0]) * 1e9
+    offsets = [np.array([1.1, 1.5, 2.1, 3.0, 5.0]) * 1e9,
+               np.array([2.5]) * 1e9,
+               np.array([1.5, 3.5, 9.5]) * 1e9,
+               np.array([4.2]) * 1e9]
+
+    channels, sr = sensor_properties(center_frequencies, offsets, order = "negative")
+
+    _nedt = np.array(10 * [2.0])
+
+    def __init__(self, stokes_dimension = 1):
+        super().__init__(name = "ismar",
+                         f_grid = Ismar.channels,
+                         stokes_dimension = stokes_dimension)
+        self.sensor_line_of_sight = np.array([180.0])
+        self.sensor_position     = np.array([12500.0])
+
+        self.sensor_response_f    = self.f_grid[:10]
+        self.sensor_response_pol  = self.f_grid[:10]
+        self.sensor_response_dlos = self.f_grid[:10, np.newaxis]
+
+        self.sensor_response = Ismar.sr
+        self.sensor_f_grid   = self.f_grid[:10]
+
+
+    @property
+    def nedt(self):
+        return Ismar._nedt
 
 ################################################################################
 # Liras cloud profiling radar (LCPR).
@@ -323,3 +407,5 @@ lcpr.sensor_position = np.array([[600e3]])
 #
 
 hamp_radar   = HampRadar()
+
+ismar = Ismar()

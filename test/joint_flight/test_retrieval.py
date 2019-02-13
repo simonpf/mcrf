@@ -1,12 +1,13 @@
 from parts.utils.data_providers import NetCDFDataProvider
+import os
 
 os.environ["JOINT_FLIGHT_PATH"] = "/home/simonpf/data/joint_flight"
 import crac.joint_flight.setup
 
 import crac.liras
 from   crac.retrieval        import CloudRetrieval
-from   crac.sensors          import hamp_radar, hamp_passive
-from   crac.joint_flight     import ice, liquid, snow, rain, rh_a_priori
+from   crac.sensors          import hamp_radar, hamp_passive, ismar
+from   crac.joint_flight     import ice, liquid, snow, rain, rh_a_priori, ObservationError
 
 from parts.retrieval.a_priori import SensorNoiseAPriori
 
@@ -29,7 +30,7 @@ data_provider = NetCDFDataProvider(filename)
 #
 
 hydrometeors = [ice, snow, liquid, rain]
-sensors      = [hamp_radar, hamp_passive]
+sensors      = [hamp_radar, hamp_passive, ismar]
 
 #
 # Add a priori providers.
@@ -44,7 +45,7 @@ data_provider.add(liquid.a_priori[1])
 data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(rh_a_priori)
-data_provider.add(SensorNoiseAPriori(sensors))
+data_provider.add(ObservationError(sensors))
 
 #
 # Run the retrieval.

@@ -42,7 +42,7 @@ ice.radar_only = False
 snow_shape      = os.path.join(scattering_data, "EvansSnowAggregate.xml")
 snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
 
-snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 275.0))
+snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 276.0))
 snow_covariance = Thikhonov(scaling = 1.0, mask = snow_mask)
 snow_md_a_priori = FixedAPriori("snow_md", -6, snow_covariance,
                                mask = snow_mask, mask_value = -12)
@@ -70,7 +70,7 @@ liquid_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
 liquid_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
 liquid_mask  = TemperatureMask(240, 340.0)
-liquid_covariance = Thikhonov(scaling = 1.0, mask = liquid_mask)
+liquid_covariance = Thikhonov(scaling = 3.0, mask = liquid_mask)
 liquid_md_a_priori = FixedAPriori("liquid_md", -6, liquid_covariance,
                                   mask = liquid_mask, mask_value = -12)
 
@@ -94,7 +94,7 @@ liquid.retrieve_second_moment = False
 rain_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
-rain_mask  = TemperatureMask(273, 340.0)
+rain_mask  = TemperatureMask(270, 340.0)
 rain_covariance = Thikhonov(scaling = 1.0, mask = rain_mask)
 rain_md_a_priori = FixedAPriori("rain_md", -6, rain_covariance,
                                   mask = rain_mask, mask_value = -12)
@@ -122,8 +122,7 @@ def a_priori_shape(t):
     return transformation(x)
 
 
-rh_mask = TropopauseMask()
-rh_covariance = Thikhonov(scaling = 1.0, mask = rh_mask)
+rh_covariance = Thikhonov(scaling = 1.0)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
 

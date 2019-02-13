@@ -38,7 +38,7 @@ ice.radar_only = False
 snow_shape      = os.path.join(scattering_data, "EvansSnowAggregate.xml")
 snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
 
-snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 275.0))
+snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 280.0))
 snow_covariance = Thikhonov(scaling = 1.0, mask = snow_mask)
 snow_md_a_priori = FixedAPriori("snow_md", -6, snow_covariance,
                                mask = snow_mask, mask_value = -12)
@@ -90,7 +90,7 @@ liquid.retrieve_second_moment = False
 rain_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
-rain_mask  = TemperatureMask(273, 340.0)
+rain_mask  = TemperatureMask(270, 340.0)
 rain_covariance = Thikhonov(scaling = 1.0, mask = rain_mask)
 rain_md_a_priori = FixedAPriori("rain_md", -6, rain_covariance,
                                   mask = rain_mask, mask_value = -12)
@@ -122,3 +122,58 @@ rh_mask = TropopauseMask()
 rh_covariance = Thikhonov(scaling = 1.0, mask = rh_mask)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
+
+################################################################################
+# Humidity
+################################################################################
+
+class ObservationError(DataProviderBase):
+    """
+    """
+    def __init__(self, sensors, footprint_error = False, forward_model_error = False):
+        """
+        Arguments:
+            sensors(:code:`list`): List of :code:`parts.sensor.Sensor` objects
+                containing the sensors that are used in the retrieval.
+
+            footprint_error(:code:`Bool`): Include footprint error for :code:`lcpr`
+                sensor.
+
+            forward_model_error(:code:`Bool`): Include estimated model error for
+                all sensors.
+
+        """
+        self.sensors = sensors
+        self.noise_scaling = dict([(s.name, 1.0) for s in sensors])
+
+    def _get_nedt(self, sensor, i_p):
+        try:
+            f_name = "get_y_" + sensors.name + "_nedt"
+            f = getattr(self.owner, f_name)
+            nedt_dp = f(i_p)
+        except:
+            nedt_dp = 0.0
+        return nedt_dp
+
+    def get_observation_error_covariance(self, i_p):
+        m = 0
+
+        diag = []
+
+        for s in self.sensors:
+
+            nedt_dp = self._get_nedt(s, i_p)
+            c = self.noise_scaling[s.name]
+            if isinstance(s, ActiveSensor):
+                diag += [(c * s.nedt + nedt_dp) ** 2]
+
+        for s in self.sensors:
+            nedt_dp = self._get_nedt(s, i_p)
+            c = self.noise_scaling[s.name]
+            if isinstance(s, PassiveSensor):
+                diag += [(c * s.nedt + nedt_dp) ** 2]
+
+        diag = np.concatenate(diag).ravel()
+        covmat = sp.sparse.diags(diag, format = "coo")
+
+        return covmat
