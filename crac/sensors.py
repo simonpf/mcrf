@@ -251,12 +251,11 @@ class HampPassive(PassiveSensor):
 
     @property
     def nedt(self):
-        return HampPassive._nedt
+        return np.ones(self.f_grid.size)
 
 ################################################################################
 # ISMAR
 ################################################################################
-
 
 
 class Ismar(PassiveSensor):
@@ -276,7 +275,7 @@ class Ismar(PassiveSensor):
                          f_grid = Ismar.channels,
                          stokes_dimension = stokes_dimension)
         self.sensor_line_of_sight = np.array([180.0])
-        self.sensor_position     = np.array([12500.0])
+        self.sensor_position     = np.array([9300.0])
 
         self.sensor_response_f    = self.f_grid[:10]
         self.sensor_response_pol  = self.f_grid[:10]
@@ -288,7 +287,7 @@ class Ismar(PassiveSensor):
 
     @property
     def nedt(self):
-        return Ismar._nedt
+        return np.ones(self.f_grid.size)
 
 ################################################################################
 # Liras cloud profiling radar (LCPR).
@@ -344,7 +343,7 @@ class HampRadar(ActiveSensor):
 
     @property
     def nedt(self):
-        return 0.5 * np.ones(self.range_bins.size - 1)
+        return 1.0 * np.ones(self.range_bins.size - 1)
 
 ################################################################################
 # RASTA

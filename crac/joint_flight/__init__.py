@@ -20,8 +20,7 @@ ice_md_a_priori = FixedAPriori("ice_md", -6, ice_covariance,
                                mask = ice_mask, mask_value = -12)
 
 z_grid = np.linspace(0, 12e3, 13)
-ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance,
-                               mask = ice_mask, mask_value = 15)
+ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance)
 ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori, z_grid, "altitude",
                                       Diagonal(4 * np.ones(13)))
 
@@ -31,6 +30,8 @@ ice = Hydrometeor("ice",
                   ice_shape,
                   ice_shape_meta)
 ice.radar_only = False
+ice.retrieve_second_moment = True
+
 ################################################################################
 # Snow particles
 ################################################################################
@@ -44,10 +45,9 @@ snow_md_a_priori = FixedAPriori("snow_md", -6, snow_covariance,
                                mask = snow_mask, mask_value = -12)
 
 z_grid = np.linspace(0, 12e3, 13)
-snow_n0_a_priori = FixedAPriori("snow_n0", 6, snow_covariance,
-                               mask = snow_mask, mask_value = 15)
+snow_n0_a_priori = FixedAPriori("snow_n0", 6, snow_covariance)
 snow_n0_a_priori = ReducedVerticalGrid(snow_n0_a_priori, z_grid, "altitude",
-                                      Diagonal(4 * np.ones(13)))
+                                      Diagonal(4 * np.ones(12)))
 
 snow = Hydrometeor("snow",
                    D14Ice(),
@@ -55,7 +55,7 @@ snow = Hydrometeor("snow",
                    snow_shape,
                    snow_shape_meta)
 snow.radar_only = True
-snow.retrieve_second_moment = False
+snow.retrieve_second_moment = True
 
 
 ################################################################################
@@ -66,13 +66,12 @@ liquid_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
 liquid_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
 liquid_mask  = TemperatureMask(240, 340.0)
-liquid_covariance = Thikhonov(scaling = 1.0, mask = liquid_mask)
-liquid_md_a_priori = FixedAPriori("liquid_md", -6, liquid_covariance,
+liquid_covariance = Thikhonov(scaling = 1.0, diagonal = 1.0, mask = liquid_mask)
+liquid_md_a_priori = FixedAPriori("cloud_water", -6, liquid_covariance,
                                   mask = liquid_mask, mask_value = -12)
 
 z_grid = np.linspace(0, 12e3, 7)
-liquid_n0_a_priori = FixedAPriori("liquid_n0", 12, liquid_covariance,
-                                  mask = liquid_mask, mask_value = 15)
+liquid_n0_a_priori = FixedAPriori("liquid_n0", 12, liquid_covariance)
 liquid_n0_a_priori = ReducedVerticalGrid(liquid_n0_a_priori, z_grid, "altitude",
                                          Diagonal(4 * np.ones(7)))
 
@@ -96,8 +95,7 @@ rain_md_a_priori = FixedAPriori("rain_md", -6, rain_covariance,
                                   mask = rain_mask, mask_value = -12)
 
 z_grid = np.linspace(0, 12e3, 7)
-rain_n0_a_priori = FixedAPriori("rain_n0", 5, rain_covariance,
-                                  mask = rain_mask, mask_value = 15)
+rain_n0_a_priori = FixedAPriori("rain_n0", 5, rain_covariance)
 rain_n0_a_priori = ReducedVerticalGrid(rain_n0_a_priori, z_grid, "altitude",
                                          Diagonal(4 * np.ones(7)))
 
@@ -106,7 +104,7 @@ rain = Hydrometeor("rain",
                      [rain_md_a_priori, rain_n0_a_priori],
                      rain_shape,
                      rain_shape_meta)
-rain.retrieve_second_moment = False
+rain.retrieve_second_moment = True
 
 ################################################################################
 # Humidity
@@ -114,14 +112,14 @@ rain.retrieve_second_moment = False
 
 def a_priori_shape(t):
     transformation = Atanh()
-    x = np.maximum(np.minimum(0.5 - (270 - t) / 100.0, 0.5), 0.001)
+    transformation.z_max = 1.1
+    transformation.z_min = 0.0
+    x = np.maximum(np.minimum(0.5 - (270 - t) / 100.0, 0.5), 0.1)
     return transformation(x)
 
 
-rh_mask = TropopauseMask()
-rh_covariance = Thikhonov(scaling = 1.0, mask = rh_mask)
-rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
-                                rh_covariance)
+rh_covariance = Thikhonov(scaling = 1.0)
+rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
 
 ################################################################################
 # Humidity

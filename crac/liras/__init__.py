@@ -19,15 +19,14 @@ ice_shape      = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 
 ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 273.0))
-ice_covariance = Thikhonov(scaling = 1.0, mask = ice_mask)
+ice_covariance = Thikhonov(scaling = 2.0, mask = ice_mask)
 ice_md_a_priori = FixedAPriori("ice_md", -6, ice_covariance,
                                mask = ice_mask, mask_value = -12)
 
-z_grid = np.linspace(0, 20e3, 11)
-ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance,
-                               mask = ice_mask, mask_value = 15)
+z_grid = np.linspace(0, 20e3, 5)
+ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance)
 ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori, z_grid, "altitude",
-                                      Diagonal(4 * np.ones(11)))
+                                      Diagonal(4 * np.ones(5)))
 
 ice = Hydrometeor("ice",
                   D14Ice(),
@@ -42,14 +41,13 @@ ice.radar_only = False
 snow_shape      = os.path.join(scattering_data, "EvansSnowAggregate.xml")
 snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
 
-snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 276.0))
+snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 278.0))
 snow_covariance = Thikhonov(scaling = 1.0, mask = snow_mask)
 snow_md_a_priori = FixedAPriori("snow_md", -6, snow_covariance,
                                mask = snow_mask, mask_value = -12)
 
 z_grid = np.linspace(0, 20e3, 11)
-snow_n0_a_priori = FixedAPriori("snow_n0", 6, snow_covariance,
-                               mask = snow_mask, mask_value = 15)
+snow_n0_a_priori = FixedAPriori("snow_n0", 6, snow_covariance)
 snow_n0_a_priori = ReducedVerticalGrid(snow_n0_a_priori, z_grid, "altitude",
                                       Diagonal(4 * np.ones(11)))
 
@@ -69,8 +67,8 @@ snow.retrieve_second_moment = False
 liquid_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
 liquid_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
-liquid_mask  = TemperatureMask(240, 340.0)
-liquid_covariance = Thikhonov(scaling = 3.0, mask = liquid_mask)
+liquid_mask  = TemperatureMask(250, 340.0)
+liquid_covariance = Thikhonov(scaling = 3.0, diagonal = 1, mask = liquid_mask)
 liquid_md_a_priori = FixedAPriori("liquid_md", -6, liquid_covariance,
                                   mask = liquid_mask, mask_value = -12)
 
@@ -86,6 +84,9 @@ liquid = Hydrometeor("liquid",
                      liquid_shape,
                      liquid_shape_meta)
 liquid.retrieve_second_moment = False
+
+cloud_water_a_priori = FixedAPriori("cloud_water", -6, liquid_covariance,
+                                    mask = liquid_mask, mask_value = -12)
 
 ################################################################################
 # Rain particles
@@ -118,7 +119,9 @@ rain.retrieve_second_moment = False
 
 def a_priori_shape(t):
     transformation = Atanh()
-    x = np.maximum(np.minimum(0.5 - (270 - t) / 100.0, 0.5), 0.001)
+    transformation.z_max = 1.1
+    transformation.z_min = 0.0
+    x = np.maximum(np.minimum(0.5 - (270 - t) / 100.0, 0.5), 0.1)
     return transformation(x)
 
 

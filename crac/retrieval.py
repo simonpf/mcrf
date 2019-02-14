@@ -4,7 +4,7 @@ from parts.atmosphere            import Atmosphere1D
 from parts.sensor                import ActiveSensor
 from parts.atmosphere.surface    import Tessem
 from parts.retrieval.a_priori    import DataProviderAPriori
-from parts.atmosphere.absorption import O2, N2, H2O, RelativeHumidity
+from parts.atmosphere.absorption import O2, N2, H2O, CloudWater, RelativeHumidity
 from parts.utils.data_providers  import NetCDFDataProvider
 from parts.scattering.solvers    import Disort
 from parts.simulation            import ArtsSimulation
@@ -32,8 +32,15 @@ class CloudRetrieval:
         self.simulation.retrieval.add(h2o)
         h2o.retrieval.unit      = RelativeHumidity()
         h2o.transformation      = Atanh()
-        h2o.transformation.z_max = 1.0
+        h2o.transformation.z_max = 1.1
         self.h2o = h2o
+
+        if self.include_cloud_water:
+            cw = self.simulation.atmosphere.absorbers[-2]
+            self.simulation.retrieval.add(cw)
+            cw.transformation = Log10()
+            self.cw = cw
+
 
         settings = self.simulation.retrieval.settings
         settings["max_iter"] = 10
@@ -44,10 +51,15 @@ class CloudRetrieval:
     def __init__(self,
                  hydrometeors,
                  sensors,
-                 data_provider):
+                 data_provider,
+                 include_cloud_water = True):
+
+        self.include_cloud_water = include_cloud_water
 
         self.hydrometeors = hydrometeors
         absorbers  = [O2(), N2(), H2O()]
+        if self.include_cloud_water:
+            absorbers.insert(2, CloudWater())
         scatterers = hydrometeors
         surface    = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
@@ -68,19 +80,21 @@ class CloudRetrieval:
 
         def only_first_moments(rr):
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
+            rr.retrieval_quantities += [self.cw]
             rr.retrieval_quantities += [self.h2o]
 
         def all_quantities(rr):
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors \
                                        if h.retrieve_second_moment]
+            rr.retrieval_quantities += [self.cw]
             rr.retrieval_quantities += [self.h2o]
 
         self.simulation.retrieval.callbacks = [("Radar only", radar_only),
                                                ("First moments", only_first_moments),
                                                ("All quantities", all_quantities)]
-        #self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
-        #                                       ("All quantities", all_quantities)]
+        self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
+                                               ("All quantities", all_quantities)]
 
 
     def plot_results(self, axs = None):
@@ -133,6 +147,24 @@ class CloudRetrieval:
                 x = results[-1].get_xa(rq, interpolate = True)
             x = rq.transformation.invert(x)
             ax.plot(x, z, c = colors[rq.name])
+
+
+        rq = self.cw
+        try:
+            f_get = "get_cloud_water"
+            f = getattr(self.data_provider, f_get)
+            args   = self.simulation.args
+            kwargs = self.simulation.kwargs
+            truth = f(*args, **kwargs)
+            ax.plot(truth, z, c = colors[rq.name], alpha = 0.5)
+        except:
+            pass
+
+        x = results[-1].get_result(rq, interpolate = True)
+        if x is None:
+            x = results[-1].get_xa(rq, interpolate = True)
+        x = rq.transformation.invert(x)
+        ax.plot(x, z, c = colors["liquid_md"])
 
         ax.set_xscale("log")
         ax.set_xlim([1e-6, 1e-3])
