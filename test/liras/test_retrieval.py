@@ -56,6 +56,9 @@ sensors      = [lcpr, mwi, ici]
 #
 # Add a priori providers.
 #
+observation_errors = crac.liras.ObservationError(sensors)
+observation_errors.noise_scaling["ici"] = 2.0
+observation_errors.noise_scaling["mwi"] = 2.0
 
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])

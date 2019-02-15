@@ -32,7 +32,8 @@ class CloudRetrieval:
         self.simulation.retrieval.add(h2o)
         h2o.retrieval.unit      = RelativeHumidity()
         h2o.transformation      = Atanh()
-        h2o.transformation.z_max = 1.1
+        h2o.transformation.z_min = 0.0
+        h2o.transformation.z_max = 1.05
         self.h2o = h2o
 
         if self.include_cloud_water:
@@ -93,8 +94,8 @@ class CloudRetrieval:
         self.simulation.retrieval.callbacks = [("Radar only", radar_only),
                                                ("First moments", only_first_moments),
                                                ("All quantities", all_quantities)]
-        self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
-                                               ("All quantities", all_quantities)]
+        #self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
+        #                                       ("All quantities", all_quantities)]
 
 
     def plot_results(self, axs = None):

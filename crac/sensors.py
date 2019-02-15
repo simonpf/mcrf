@@ -276,6 +276,7 @@ class Ismar(PassiveSensor):
                          stokes_dimension = stokes_dimension)
         self.sensor_line_of_sight = np.array([180.0])
         self.sensor_position     = np.array([9300.0])
+        self.iy_unit             = "RJBT"
 
         self.sensor_response_f    = self.f_grid[:10]
         self.sensor_response_pol  = self.f_grid[:10]
@@ -317,18 +318,7 @@ class LCPR(ActiveSensor):
 class HampRadar(ActiveSensor):
 
     def __init__(self, stokes_dimension = 1):
-        import crac.joint_flight
-        path = crac.joint_flight.path
-
-        ds = Dataset(os.path.join(path, "data", "input.nc"))
-        z  = ds.variables["altitude"][0, :]
-
-        range_bins = np.zeros(z.size + 1)
-        range_bins[1:-1] = 0.5 * (z[1:] + z[:-1])
-        range_bins[0]  = 2 * range_bins[1] - range_bins[2]
-        range_bins[-1] = 2 * z[-1] - z[-2]
-        ds.close()
-
+        range_bins = np.linspace(0.0, 10e3, 51) + 100.0
         super().__init__(name = "hamp_radar",
                          f_grid = [35.564e9],
                          range_bins = range_bins,
@@ -343,7 +333,7 @@ class HampRadar(ActiveSensor):
 
     @property
     def nedt(self):
-        return 1.0 * np.ones(self.range_bins.size - 1)
+        return 0.5 * np.ones(self.range_bins.size - 1)
 
 ################################################################################
 # RASTA
@@ -353,6 +343,7 @@ class RastaRadar(ActiveSensor):
 
     def __init__(self, stokes_dimension = 1):
 
+        range_bins = np.linspace(0.0, 10e3, 51) + 100.0
         super().__init__(name = "rasta",
                          f_grid = [95e9],
                          stokes_dimension = stokes_dimension)
