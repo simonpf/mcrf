@@ -14,7 +14,7 @@ scattering_data = os.path.join(path, "data", "scattering_data")
 ice_shape      = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 
-ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 273.0))
+ice_mask       = And(AltitudeMask(0.0, 10e3), TemperatureMask(0.0, 273.0))
 ice_covariance = Thikhonov(scaling = 1.0, mask = ice_mask)
 ice_md_a_priori = FixedAPriori("ice_md", np.log10(5 * 1e-6), ice_covariance,
                                mask = ice_mask, mask_value = -12)
@@ -39,7 +39,7 @@ ice.retrieve_second_moment = True
 snow_shape      = os.path.join(scattering_data, "EvansSnowAggregate.xml")
 snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
 
-snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 280.0))
+snow_mask       = And(AltitudeMask(0.0, 10e3), TemperatureMask(0.0, 280.0))
 snow_covariance = Thikhonov(scaling = 1.0, mask = snow_mask)
 snow_md_a_priori = FixedAPriori("snow_md", np.log10(5 * 1e-6), snow_covariance,
                                mask = snow_mask, mask_value = -12)
@@ -146,7 +146,7 @@ class ObservationError(DataProviderBase):
 
     def _get_nedt(self, sensor, i_p):
         try:
-            f_name = "get_y_" + sensors.name + "_nedt"
+            f_name = "get_y_" + sensor.name + "_nedt"
             f = getattr(self.owner, f_name)
             nedt_dp = f(i_p)
         except:

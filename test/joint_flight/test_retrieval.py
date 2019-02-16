@@ -53,4 +53,4 @@ data_provider.add(ObservationError(sensors))
 
 retrieval = CloudRetrieval(hydrometeors, sensors, data_provider)
 retrieval.setup()
-retrieval.run(800)
+retrieval.run(700)
