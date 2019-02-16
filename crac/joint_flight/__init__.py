@@ -16,7 +16,7 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 
 ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 273.0))
 ice_covariance = Thikhonov(scaling = 1.0, mask = ice_mask)
-ice_md_a_priori = FixedAPriori("ice_md", -6, ice_covariance,
+ice_md_a_priori = FixedAPriori("ice_md", np.log10(5 * 1e-6), ice_covariance,
                                mask = ice_mask, mask_value = -12)
 
 z_grid = np.linspace(0, 12e3, 13)
@@ -41,7 +41,7 @@ snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
 
 snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 280.0))
 snow_covariance = Thikhonov(scaling = 1.0, mask = snow_mask)
-snow_md_a_priori = FixedAPriori("snow_md", -6, snow_covariance,
+snow_md_a_priori = FixedAPriori("snow_md", np.log10(5 * 1e-6), snow_covariance,
                                mask = snow_mask, mask_value = -12)
 
 z_grid = np.linspace(0, 12e3, 13)
