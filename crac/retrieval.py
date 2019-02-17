@@ -232,8 +232,8 @@ class CloudRetrieval:
         ax.set_xlabel("RH [%]")
 
 
-    def setup(self):
-        self.simulation.setup()
+    def setup(self, verbosity = 1):
+        self.simulation.setup(verbosity = verbosity)
 
     def run(self, i):
         self.index = i
