@@ -20,7 +20,7 @@ if not ip is None:
 # Load observations.
 #
 
-filename     = os.path.join(crac.liras.liras_path, "data", "reduced_new/retrieval_input_full_ts2.nc")
+filename     = os.path.join(crac.liras.liras_path, "data", "reduced_new/retrieval_input_full_ts3.nc")
 
 offsets = {"ts1" : 15,
            "ts2" : 2815,
@@ -34,7 +34,7 @@ observations.add_offset("ao", -offset)
 # Create the data provider.
 #
 
-ip = offset + 460
+ip = offset + 100
 
 if "ts3" in filename:
     scene = "B"

@@ -18,10 +18,13 @@ test_scenes = {"ts1" : (0, 500, "A"),
 ice_shape      = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 
+md_z_grid = np.linspace(0, 20e3, 21)
 ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 273.0))
 ice_covariance = Thikhonov(scaling = 2.0, mask = ice_mask)
 ice_md_a_priori = FixedAPriori("ice_md", -6, ice_covariance,
                                mask = ice_mask, mask_value = -12)
+ice_md_a_priori = ReducedVerticalGrid(ice_md_a_priori, md_z_grid, "altitude",
+                                      Diagonal(4 * np.ones(md_z_grid.size)))
 
 z_grid = np.array([5e3, 15e3])
 ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance)
@@ -45,6 +48,8 @@ snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 278.0))
 snow_covariance = Thikhonov(scaling = 3.0, mask = snow_mask)
 snow_md_a_priori = FixedAPriori("snow_md", -6, snow_covariance,
                                mask = snow_mask, mask_value = -12)
+snow_md_a_priori = ReducedVerticalGrid(snow_md_a_priori, md_z_grid, "altitude",
+                                      Diagonal(4 * np.ones(md_z_grid.size)))
 
 z_grid = np.array([5e3, 15e3])
 snow_n0_a_priori = FixedAPriori("snow_n0", 6, snow_covariance)
@@ -68,9 +73,11 @@ liquid_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
 liquid_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
 liquid_mask  = TemperatureMask(250, 340.0)
-liquid_covariance = Thikhonov(scaling = 3.0, mask = liquid_mask)
+liquid_covariance = Thikhonov(scaling = 3.0, diagonal = 1.0, mask = liquid_mask)
 liquid_md_a_priori = FixedAPriori("liquid_md", -6, liquid_covariance,
                                   mask = liquid_mask, mask_value = -12)
+liquid_md_a_priori = ReducedVerticalGrid(liquid_md_a_priori, md_z_grid, "altitude",
+                                        Diagonal(4 * np.ones(md_z_grid.size)))
 
 z_grid = np.array([0e3, 10e3])
 liquid_n0_a_priori = FixedAPriori("liquid_n0", 12, liquid_covariance,
@@ -99,6 +106,8 @@ rain_mask  = TemperatureMask(270, 340.0)
 rain_covariance = Thikhonov(scaling = 1.0, mask = rain_mask)
 rain_md_a_priori = FixedAPriori("rain_md", -6, rain_covariance,
                                   mask = rain_mask, mask_value = -12)
+rain_md_a_priori = ReducedVerticalGrid(rain_md_a_priori, md_z_grid, "altitude",
+                                        Diagonal(4 * np.ones(md_z_grid.size)))
 
 z_grid = np.linspace(0, 12e3, 7)
 rain_n0_a_priori = FixedAPriori("rain_n0", 5, rain_covariance)
@@ -124,9 +133,12 @@ def a_priori_shape(t):
     return transformation(x)
 
 
+z_grid = np.linspace(0, 20e3, 11)
 rh_covariance = Thikhonov(scaling = 1.0, z_scaling = False)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
+rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude",
+                                  Diagonal(4 * np.ones(z_grid.size)))
 
 ################################################################################
 # Observation error
