@@ -333,7 +333,7 @@ class HampRadar(ActiveSensor):
 
     @property
     def nedt(self):
-        return 0.5 * np.ones(self.range_bins.size - 1)
+        return 1.0 * np.ones(self.range_bins.size - 1)
 
 ################################################################################
 # RASTA
