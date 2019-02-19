@@ -77,7 +77,7 @@ liquid_covariance = Thikhonov(scaling = 3.0, diagonal = 1.0, mask = liquid_mask)
 liquid_md_a_priori = FixedAPriori("liquid_md", -6, liquid_covariance,
                                   mask = liquid_mask, mask_value = -12)
 liquid_md_a_priori = ReducedVerticalGrid(liquid_md_a_priori, md_z_grid, "altitude",
-                                        Diagonal(4 * np.ones(md_z_grid.size)))
+                                        Diagonal(2 * np.ones(md_z_grid.size)))
 
 z_grid = np.array([0e3, 10e3])
 liquid_n0_a_priori = FixedAPriori("liquid_n0", 12, liquid_covariance,
