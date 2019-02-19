@@ -21,7 +21,7 @@ import numpy as np
 import scipy as sp
 import os
 from netCDF4 import Dataset
-from parts.sensor import PassiveSensor, ActiveSensor
+from parts.sensor import PassiveSensor, ActiveSensor, PassiveSensor
 
 ################################################################################
 # Ice cloud imager (ICI).
@@ -266,7 +266,7 @@ class Ismar(PassiveSensor):
                np.array([1.5, 3.5, 9.5]) * 1e9,
                np.array([4.2]) * 1e9]
 
-    channels, sr = sensor_properties(center_frequencies, offsets, order = "negative")
+    channels, sr = sensor_properties(center_frequencies, offsets, order = "positive")
 
     _nedt = np.array(10 * [2.0])
 
@@ -333,7 +333,7 @@ class HampRadar(ActiveSensor):
 
     @property
     def nedt(self):
-        return 1.0 * np.ones(self.range_bins.size - 1)
+        return 0.5 * np.ones(self.range_bins.size - 1)
 
 ################################################################################
 # RASTA
