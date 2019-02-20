@@ -20,7 +20,7 @@ ice_md_a_priori = FixedAPriori("ice_md", np.log10(5 * 1e-6), ice_covariance,
                                mask = ice_mask, mask_value = -12)
 
 z_grid = np.linspace(0, 12e3, 13)
-ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance)
+ice_n0_a_priori = FixedAPriori("ice_n0", 8, ice_covariance)
 ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori, z_grid, "altitude",
                                       Diagonal(4 * np.ones(13)))
 
@@ -29,7 +29,7 @@ ice = Hydrometeor("ice",
                   [ice_md_a_priori, ice_n0_a_priori],
                   ice_shape,
                   ice_shape_meta)
-ice.radar_only = False
+ice.radar_only = True
 ice.retrieve_second_moment = True
 
 ################################################################################
@@ -122,8 +122,11 @@ rh_covariance = Thikhonov(scaling = 1.0)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
 
 ################################################################################
-# Humidity
+# Temperature
 ################################################################################
+
+temperature_covariance = Diagonal(np.ones(66))
+temperature_a_priori = DataProviderAPriori("temperature", temperature_covariance)
 
 class ObservationError(DataProviderBase):
     """
@@ -163,13 +166,13 @@ class ObservationError(DataProviderBase):
             nedt_dp = self._get_nedt(s, i_p)
             c = self.noise_scaling[s.name]
             if isinstance(s, ActiveSensor):
-                diag += [(c * s.nedt + nedt_dp) ** 2]
+                diag += [(c * s.nedt) ** 2 + (nedt_dp ** 2)]
 
         for s in self.sensors:
             nedt_dp = self._get_nedt(s, i_p)
             c = self.noise_scaling[s.name]
             if isinstance(s, PassiveSensor):
-                diag += [(c * s.nedt + nedt_dp) ** 2]
+                diag += [(c * s.nedt) ** 2 + (nedt_dp ** 2)]
 
         diag = np.concatenate(diag).ravel()
         covmat = sp.sparse.diags(diag, format = "coo")
