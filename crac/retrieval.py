@@ -1,7 +1,7 @@
 import numpy as np
 
 from parts.atmosphere            import Atmosphere1D
-from parts.sensor                import ActiveSensor
+from parts.sensor                import ActiveSensor, PassiveSensor
 from parts.atmosphere.surface    import Tessem
 from parts.retrieval.a_priori    import DataProviderAPriori
 from parts.atmosphere.absorption import O2, N2, H2O, CloudWater, RelativeHumidity
@@ -41,7 +41,6 @@ class CloudRetrieval:
             self.simulation.retrieval.add(cw)
             cw.transformation = Log10()
             self.cw = cw
-
 
         settings = self.simulation.retrieval.settings
         settings["max_iter"] = 10
@@ -97,6 +96,15 @@ class CloudRetrieval:
         #self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
         #                                       ("All quantities", all_quantities)]
 
+
+
+
+    def setup(self, verbosity = 1):
+        self.simulation.setup(verbosity = verbosity)
+
+    def run(self, i):
+        self.index = i
+        return self.simulation.run(i)
 
     def plot_results(self, axs = None):
         import matplotlib.pyplot as plt
@@ -231,10 +239,82 @@ class CloudRetrieval:
         ax.set_ylim([0, 20])
         ax.set_xlabel("RH [%]")
 
+    def plot_fit(self, axs = None):
+        import matplotlib.pyplot as plt
 
-    def setup(self, verbosity = 1):
-        self.simulation.setup(verbosity = verbosity)
+        try:
+            results = self.simulation.retrieval.results
+        except:
+            raise Exception("Retrieval must be run before the results can be plotted.")
 
-    def run(self, i):
-        self.index = i
-        return self.simulation.run(i)
+        r = results[-1]
+        n_sensors = len(r.sensors)
+        if axs == None:
+            f, axs = plt.subplots(1, n_sensors, figsize = (n_sensors * 4, 8))
+
+        ai = 0
+
+        for s in r.sensors:
+            ax = axs[ai]
+            if isinstance(s, ActiveSensor):
+                z = s.range_bins
+                z = 0.5 * (z[1:] + z[:-1])
+
+                i, j = r.sensor_indices[s.name]
+                y = np.copy(r.y[i : j])
+                yf = np.copy(r.yf[i : j])
+
+                ax.plot(yf, z, label = "fit")
+                ax.plot(y, z, label = "observation")
+                ai += 1
+
+        for s in r.sensors:
+            ax = axs[ai]
+            if isinstance(s, PassiveSensor):
+                i, j = r.sensor_indices[s.name]
+                y = np.copy(r.y[i : j])
+                yf = np.copy(r.yf[i : j])
+
+                ax.plot(yf, label = "fit")
+                ax.plot(y, label = "observation")
+                ai += 1
+
+def plot_fit(self, axs = None):
+    import matplotlib.pyplot as plt
+
+    try:
+        results = self.simulation.retrieval.results
+    except:
+        raise Exception("Retrieval must be run before the results can be plotted.")
+
+    r = results[-1]
+    n_sensors = len(r.sensors)
+    if axs == None:
+        f, axs = plt.subplots(1, n_sensors, figsize = (n_sensors * 4, 8))
+
+    ai = 0
+
+    for s in r.sensors:
+        ax = axs[ai]
+        if isinstance(s, ActiveSensor):
+            z = s.range_bins
+            z = 0.5 * (z[1:] + z[:-1])
+
+            i, j = r.sensor_indices[s.name]
+            y = np.copy(r.y[i : j])
+            yf = np.copy(r.yf[i : j])
+
+            ax.plot(yf, z, label = "fit")
+            ax.plot(y, z, label = "observation")
+            ai += 1
+
+    for s in r.sensors:
+        ax = axs[ai]
+        if isinstance(s, PassiveSensor):
+            i, j = r.sensor_indices[s.name]
+            y = np.copy(r.y[i : j])
+            yf = np.copy(r.yf[i : j])
+
+            ax.plot(yf, label = "fit")
+            ax.plot(y, label = "observation")
+            ai += 1
