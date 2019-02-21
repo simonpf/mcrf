@@ -119,13 +119,37 @@ def a_priori_shape(t):
 
 
 rh_covariance = Thikhonov(scaling = 1.0)
-rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
+
+class RelativeHumidityAPriori(APrioriProviderBase):
+    def __init__(self,
+                 covariance,
+                 mask = None,
+                 mask_value = 1e-12):
+        super().__init__("H2O", covariance)
+        self.mask = mask
+        self.mask_value = mask_value
+        self.transformation = Atanh()
+        self.transformation.z_max = 1.1
+        self.transformation.z_min = 0.0
+
+    def get_xa(self, *args, **kwargs):
+
+        xa = self.owner.get_relative_humidity(*args, *kwargs) / 100.0
+
+        if not self.mask is None:
+            mask = np.logical_not(self.mask(self.owner, *args, **kwargs))
+            xa[mask] = self.mask_value
+
+        xa = self.transformation(xa)
+        return xa
+
+rh_a_priori = RelativeHumidityAPriori(rh_covariance)
 
 ################################################################################
 # Temperature
 ################################################################################
 
-temperature_covariance = Diagonal(np.ones(66))
+temperature_covariance = Diagonal(2 * np.ones(66))
 temperature_a_priori = DataProviderAPriori("temperature", temperature_covariance)
 
 class ObservationError(DataProviderBase):
