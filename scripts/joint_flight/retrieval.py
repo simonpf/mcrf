@@ -17,11 +17,21 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser(description = "Run joint flight retrieval.")
+parser.add_argument('i_start',
+                    type = int,
+                    nargs = 1,
+                    help = "Start of range of profiles to retrieve.")
+parser.add_argument('i_end',
+                    type = int,
+                    nargs = 1,
+                    help = "End of range of profiles to retrieve.")
 parser.add_argument('suffix',
                     type = str,
                     nargs = 1,
                     help = "Suffix to append to output filename.")
 args = parser.parse_args()
+i_start = args.i_start[0]
+i_end   = args.i_end[0]
 filesuffix = args.suffix[0]
 
 #
@@ -35,7 +45,7 @@ data_provider = NetCDFDataProvider(filename)
 # Define hydrometeors and sensors.
 #
 
-hydrometeors = [ice, snow, rain]
+hydrometeors = [ice, rain]
 sensors      = [hamp_radar, hamp_passive, ismar]
 
 #
@@ -61,10 +71,10 @@ retrieval.setup(verbosity = 0)
 
 output_dir = os.path.dirname(filename)
 name       = os.path.basename(filename)
-output_file = os.path.join(output_dir, name.replace("input", "output_" + filesuffix))
+output_file = os.path.join(output_dir, name.replace("input", "output" + filesuffix))
 
-retrieval.simulation.initialize_output_file(output_file)
-retrieval.simulation.run_mpi(range(1441))
+retrieval.simulation.initialize_output_file(output_file, [("profile", i_end - i_start, i_start)])
 #retrieval.simulation.run_mpi(range(1441))
+retrieval.simulation.run_mpi(range(i_start, min(i_end, 1441)))
 #retrieval.simulation.run_mpi(range(1080, 1160))
 #retrieval.simulation.run_mpi(range(1220, 1350))
