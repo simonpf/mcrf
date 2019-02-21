@@ -40,6 +40,7 @@ class CloudRetrieval:
             cw = self.simulation.atmosphere.absorbers[-2]
             self.simulation.retrieval.add(cw)
             cw.transformation = Log10()
+            cw.retrieval.limig_high = -3
             self.cw = cw
 
         settings = self.simulation.retrieval.settings

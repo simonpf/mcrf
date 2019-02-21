@@ -251,7 +251,7 @@ class HampPassive(PassiveSensor):
 
     @property
     def nedt(self):
-        return np.ones(self.sensor_response_f.size)
+        return 0.5 * np.ones(self.sensor_response_f.size)
 
 ################################################################################
 # ISMAR
@@ -288,7 +288,7 @@ class Ismar(PassiveSensor):
 
     @property
     def nedt(self):
-        return np.ones(self.sensor_response_f.size)
+        return 0.5 * np.ones(self.sensor_response_f.size)
 
 ################################################################################
 # Liras cloud profiling radar (LCPR).
