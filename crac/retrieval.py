@@ -40,8 +40,12 @@ class CloudRetrieval:
             cw = self.simulation.atmosphere.absorbers[-2]
             self.simulation.retrieval.add(cw)
             cw.transformation = Log10()
-            cw.retrieval.limig_high = -3
+            cw.retrieval.limit_high = -2
             self.cw = cw
+
+        #t = self.simulation.atmosphere.temperature
+        #self.t = t
+        #self.simulation.retrieval.add(t)
 
         settings = self.simulation.retrieval.settings
         settings["max_iter"] = 10
@@ -83,6 +87,7 @@ class CloudRetrieval:
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [self.cw]
             rr.retrieval_quantities += [self.h2o]
+            #rr.retrieval_quantities += [self.t]
 
         def all_quantities(rr):
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
@@ -91,12 +96,12 @@ class CloudRetrieval:
             rr.retrieval_quantities += [self.cw]
             rr.retrieval_quantities += [self.h2o]
 
-        self.simulation.retrieval.callbacks = [("Radar only", radar_only),
-                                               ("First moments", only_first_moments),
-                                               ("All quantities", all_quantities)]
-        #self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
+        #self.simulation.retrieval.callbacks = [("Radar only", radar_only),
+        #                                       ("First moments", only_first_moments),
         #                                       ("All quantities", all_quantities)]
-
+        self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
+                                               ("All quantities", all_quantities)]
+        self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
 
 
 
