@@ -4,7 +4,8 @@ import crac.liras.setup
 import crac.liras
 from   crac.retrieval        import CloudRetrieval
 from   crac.sensors          import mwi, ici, lcpr
-from   crac.liras            import ice, liquid, snow, rh_a_priori
+from   crac.liras            import ice, liquid, snow, rain, rh_a_priori, \
+ cloud_water_a_priori
 from   crac.liras.model_data import ModelDataProvider
 
 #
@@ -39,7 +40,7 @@ me = "full" in filename
 
 observations = NetCDFDataProvider(filename)
 offset = (n - observations.file_handle.dimensions["ao"].size) // 2
-observations.add_offset("ao", -offset)
+observations.add_offset("ao", -(i_start + offset))
 
 #
 # Create the data provider.
@@ -54,8 +55,8 @@ data_provider = ModelDataProvider(99,
 # Define hydrometeors and sensors.
 #
 
-hydrometeors = [ice, snow, liquid]
-sensors      = [lcpr] #, mwi, ici]
+hydrometeors = [ice, snow, rain]
+sensors      = [lcpr, mwi, ici]
 
 #
 # Add a priori providers.
@@ -65,8 +66,9 @@ data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])
 data_provider.add(snow.a_priori[0])
 data_provider.add(snow.a_priori[1])
-data_provider.add(liquid.a_priori[0])
-data_provider.add(liquid.a_priori[1])
+data_provider.add(rain.a_priori[0])
+data_provider.add(rain.a_priori[1])
+data_provider.add(cloud_water_a_priori)
 data_provider.add(rh_a_priori)
 data_provider.add(crac.liras.ObservationError(sensors))
 data_provider.add(observations)
@@ -82,5 +84,5 @@ output_dir = os.path.dirname(filename)
 name       = os.path.basename(filename)
 output_file = os.path.join(output_dir, name.replace("input", "output"))
 
-retrieval.simulation.initialize_output_file(output_file)
-retrieval.simulation.run_mpi(range(20, 32))
+retrieval.simulation.initialize_output_file(output_file, [("profile", n - 2 * offset, i_start + offset)])
+retrieval.simulation.run_mpi(range(i_start + offset, i_end - offset))

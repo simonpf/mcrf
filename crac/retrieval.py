@@ -40,7 +40,7 @@ class CloudRetrieval:
             cw = self.simulation.atmosphere.absorbers[-2]
             self.simulation.retrieval.add(cw)
             cw.transformation = Log10()
-            cw.retrieval.limit_high = -2
+            cw.retrieval.limit_high = -3
             self.cw = cw
 
         #t = self.simulation.atmosphere.temperature
@@ -100,8 +100,7 @@ class CloudRetrieval:
         #                                       ("First moments", only_first_moments),
         #                                       ("All quantities", all_quantities)]
         self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
-                                               ("All quantities", all_quantities)]
-        self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
+					       ("All quantities", all_quantities)]
 
 
 

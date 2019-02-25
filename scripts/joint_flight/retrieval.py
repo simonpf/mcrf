@@ -38,7 +38,7 @@ filesuffix = args.suffix[0]
 # Load observations.
 #
 
-filename     = os.path.join(crac.joint_flight.path, "data", "input.nc")
+filename     = os.path.join(crac.joint_flight.path, "data", "8_column_aggregate/input.nc")
 data_provider = NetCDFDataProvider(filename)
 
 #
