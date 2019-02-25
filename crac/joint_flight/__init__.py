@@ -45,7 +45,7 @@ snow_md_a_priori = FixedAPriori("snow_md", np.log10(5 * 1e-6), snow_covariance,
                                mask = snow_mask, mask_value = -12)
 
 z_grid = np.linspace(0, 12e3, 13)
-snow_n0_a_priori = FixedAPriori("snow_n0", 6, snow_covariance)
+snow_n0_a_priori = FixedAPriori("snow_n0", 8, snow_covariance)
 snow_n0_a_priori = ReducedVerticalGrid(snow_n0_a_priori, z_grid, "altitude",
                                       Diagonal(4 * np.ones(13)))
 
@@ -118,7 +118,7 @@ def a_priori_shape(t):
     return transformation(x)
 
 
-rh_covariance = Thikhonov(scaling = 1.0)
+rh_covariance = Thikhonov(scaling = 0.2)
 
 class RelativeHumidityAPriori(APrioriProviderBase):
     def __init__(self,
@@ -134,7 +134,9 @@ class RelativeHumidityAPriori(APrioriProviderBase):
 
     def get_xa(self, *args, **kwargs):
 
-        xa = self.owner.get_relative_humidity(*args, *kwargs) / 100.0
+        xa = np.minimum(self.owner.get_relative_humidity(*args, *kwargs) / 100.0,
+                        0.95)
+        xa = np.maximum(xa, 0.1)
 
         if not self.mask is None:
             mask = np.logical_not(self.mask(self.owner, *args, **kwargs))
@@ -144,6 +146,7 @@ class RelativeHumidityAPriori(APrioriProviderBase):
         return xa
 
 rh_a_priori = RelativeHumidityAPriori(rh_covariance)
+#rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
 
 ################################################################################
 # Temperature
