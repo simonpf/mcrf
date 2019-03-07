@@ -1,5 +1,5 @@
 import os
-from crac.psds                import D14Ice, D14Liquid
+from crac.psds                import D14Ice, D14Snow, D14Liquid
 from crac.hydrometeors        import Hydrometeor
 from parts.retrieval.a_priori import *
 from parts.jacobian           import Atanh
@@ -50,7 +50,7 @@ snow_n0_a_priori = ReducedVerticalGrid(snow_n0_a_priori, z_grid, "altitude",
                                       Diagonal(4 * np.ones(13)))
 
 snow = Hydrometeor("snow",
-                   D14Ice(),
+                   D14Snow(),
                    [snow_md_a_priori, snow_n0_a_priori],
                    snow_shape,
                    snow_shape_meta)
