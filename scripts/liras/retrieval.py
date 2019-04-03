@@ -3,7 +3,7 @@ from parts.utils.data_providers import NetCDFDataProvider
 import crac.liras.setup
 import crac.liras
 from   crac.retrieval        import CloudRetrieval
-from   crac.sensors          import mwi, ici, lcpr
+from   crac.sensors          import mwi, mwi_full, ici, lcpr
 from   crac.liras            import ice, liquid, snow, rain, rh_a_priori, \
  cloud_water_a_priori
 from   crac.liras.model_data import ModelDataProvider
@@ -56,7 +56,8 @@ data_provider = ModelDataProvider(99,
 #
 
 hydrometeors = [ice, snow, rain]
-sensors      = [lcpr, mwi, ici]
+mwi_full.name = "mwi_full"
+sensors      = [lcpr, mwi_full, ici]
 
 #
 # Add a priori providers.

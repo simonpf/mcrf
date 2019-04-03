@@ -49,8 +49,8 @@ class CloudRetrieval:
 
         settings = self.simulation.retrieval.settings
         settings["max_iter"] = 10
-        settings["stop_dx"]  = 0.5
-        settings["lm_ga_settings"] = np.array([100.0, 3.0, 2.0, 1e5, 1.0, 1.0])
+        settings["stop_dx"]  = 0.1
+        settings["lm_ga_settings"] = np.array([100.0, 3.0, 2.0, 1e5, 1.0, 0.0])
 
 
     def __init__(self,

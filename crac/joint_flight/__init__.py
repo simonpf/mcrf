@@ -26,7 +26,7 @@ ice_dm_a_priori = FixedAPriori("ice_dm", -4, ice_covariance,
 z_grid = np.linspace(0, 12e3, 13)
 ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance)
 ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori, z_grid, "altitude",
-                                      Diagonal(4 * np.ones(13)))
+                                      Diagonal(4 * np.ones(21)))
 
 ice = Hydrometeor("ice",
                   D14Ice(),
@@ -53,7 +53,7 @@ snow_dm_a_priori = FixedAPriori("snow_dm", -3, snow_covariance,
 z_grid = np.linspace(0, 12e3, 13)
 snow_n0_a_priori = FixedAPriori("snow_n0", 6, snow_covariance)
 snow_n0_a_priori = ReducedVerticalGrid(snow_n0_a_priori, z_grid, "altitude",
-                                      Diagonal(4 * np.ones(13)))
+                                      Diagonal(4 * np.ones(21)))
 
 snow = Hydrometeor("snow",
                    D14Snow(),
@@ -76,10 +76,10 @@ liquid_covariance = Thikhonov(scaling = 1.0, diagonal = 1.0, mask = liquid_mask)
 liquid_md_a_priori = FixedAPriori("cloud_water", -6, liquid_covariance,
                                   mask = liquid_mask, mask_value = -12)
 
-z_grid = np.linspace(0, 12e3, 7)
+z_grid = np.linspace(0, 12e3, 14)
 liquid_n0_a_priori = FixedAPriori("liquid_n0", 12, liquid_covariance)
 liquid_n0_a_priori = ReducedVerticalGrid(liquid_n0_a_priori, z_grid, "altitude",
-                                         Diagonal(4 * np.ones(7)))
+                                         Diagonal(4 * np.ones(14)))
 
 liquid = Hydrometeor("liquid",
                      D14Liquid(),
@@ -126,7 +126,8 @@ def a_priori_shape(t):
     return transformation(x)
 
 
-rh_covariance = Thikhonov(scaling = 0.2)
+#rh_covariance = Thikhonov(scaling = 0.2)
+rh_covariance = Diagonal(5 * np.ones(66))
 
 class RelativeHumidityAPriori(APrioriProviderBase):
     def __init__(self,
