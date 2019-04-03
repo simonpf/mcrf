@@ -219,7 +219,6 @@ def sensor_properties(center_frequencies, offsets, order = "negative"):
                 j += 1
 
         ci += nfs
-    print(sr_i, sr_j, nfs)
     sensor_response = sp.sparse.coo_matrix((sr_data, (sr_i, sr_j)))
 
     return np.array(f_grid), sensor_response
@@ -251,7 +250,7 @@ class HampPassive(PassiveSensor):
 
     @property
     def nedt(self):
-        return 0.5 * np.ones(self.sensor_response_f.size)
+        return 0.1 * np.ones(self.sensor_response_f.size)
 
 ################################################################################
 # ISMAR
@@ -288,7 +287,7 @@ class Ismar(PassiveSensor):
 
     @property
     def nedt(self):
-        return 0.5 * np.ones(self.sensor_response_f.size)
+        return 0.1 * np.ones(self.sensor_response_f.size)
 
 ################################################################################
 # Liras cloud profiling radar (LCPR).

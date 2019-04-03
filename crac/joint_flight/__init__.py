@@ -20,7 +20,11 @@ ice_md_a_priori = FixedAPriori("ice_md", np.log10(5 * 1e-6), ice_covariance,
                                mask = ice_mask, mask_value = -12)
 
 z_grid = np.linspace(0, 12e3, 13)
-ice_n0_a_priori = FixedAPriori("ice_n0", 8, ice_covariance)
+ice_dm_a_priori = FixedAPriori("ice_dm", -4, ice_covariance,
+                                mask = ice_mask, mask_value = -12)
+
+z_grid = np.linspace(0, 12e3, 13)
+ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance)
 ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori, z_grid, "altitude",
                                       Diagonal(4 * np.ones(13)))
 
@@ -29,7 +33,7 @@ ice = Hydrometeor("ice",
                   [ice_md_a_priori, ice_n0_a_priori],
                   ice_shape,
                   ice_shape_meta)
-ice.radar_only = True
+ice.radar_only = False
 ice.retrieve_second_moment = True
 
 ################################################################################
@@ -43,9 +47,11 @@ snow_mask       = And(AltitudeMask(0.0, 10e3), TemperatureMask(0.0, 280.0))
 snow_covariance = Thikhonov(scaling = 1.0, mask = snow_mask)
 snow_md_a_priori = FixedAPriori("snow_md", np.log10(5 * 1e-6), snow_covariance,
                                mask = snow_mask, mask_value = -12)
+snow_dm_a_priori = FixedAPriori("snow_dm", -3, snow_covariance,
+                                mask = snow_mask, mask_value = -12)
 
 z_grid = np.linspace(0, 12e3, 13)
-snow_n0_a_priori = FixedAPriori("snow_n0", 8, snow_covariance)
+snow_n0_a_priori = FixedAPriori("snow_n0", 6, snow_covariance)
 snow_n0_a_priori = ReducedVerticalGrid(snow_n0_a_priori, z_grid, "altitude",
                                       Diagonal(4 * np.ones(13)))
 
@@ -92,6 +98,8 @@ rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 rain_mask  = TemperatureMask(270, 340.0)
 rain_covariance = Thikhonov(scaling = 1.0, mask = rain_mask)
 rain_md_a_priori = FixedAPriori("rain_md", -6, rain_covariance,
+                                  mask = rain_mask, mask_value = -12)
+rain_dm_a_priori = FixedAPriori("rain_dm", -4, rain_covariance,
                                   mask = rain_mask, mask_value = -12)
 
 z_grid = np.linspace(0, 12e3, 7)

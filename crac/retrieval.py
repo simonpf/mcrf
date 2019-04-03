@@ -83,24 +83,52 @@ class CloudRetrieval:
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors \
                                        if h.radar_only]
 
+        def only_second_moments(rr):
+            #rr.sensors = [s for s in rr.sensors if isinstance(s, PassiveSensor)]
+            rr.retrieval_quantities = [h.moments[1] for h in self.hydrometeors \
+                                       if h.retrieve_second_moment]
+            rr.retrieval_quantities += [self.cw]
+            rr.retrieval_quantities += [self.h2o]
+
+        def passive_only(rr):
+            rr.sensors = [s for s in rr.sensors if isinstance(s, PassiveSensor)]
+            rr.retrieval_quantities = [h.moments[1] for h in self.hydrometeors \
+                                       if h.retrieve_second_moment]
+            rr.retrieval_quantities += [self.cw]
+            rr.retrieval_quantities += [self.h2o]
+
         def only_first_moments(rr):
+            rr.settings["lm_ga_settings"] = np.array([0.0, 3.0, 2.0, 1e5, 1.0, 1.0])
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [self.cw]
             rr.retrieval_quantities += [self.h2o]
+
             #rr.retrieval_quantities += [self.t]
 
         def all_quantities(rr):
+            rr.settings["lm_ga_settings"] = np.array([0.0, 3.0, 2.0, 1e5, 1.0, 1.0])
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors \
                                        if h.retrieve_second_moment]
             rr.retrieval_quantities += [self.cw]
             rr.retrieval_quantities += [self.h2o]
 
-        #self.simulation.retrieval.callbacks = [("Radar only", radar_only),
-        #                                       ("First moments", only_first_moments),
-        #                                       ("All quantities", all_quantities)]
+        self.simulation.retrieval.callbacks = [("Radar only", radar_only),
+                                               ("First moments", only_first_moments),
+                                               ("All quantities", all_quantities)]
+        self.simulation.retrieval.callbacks = [("Second moments", only_second_moments),
+                                               ("First moments", only_first_moments),
+                                               ("All quantities", all_quantities)]
         self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
-					       ("All quantities", all_quantities)]
+                                               ("Passive only ", passive_only),
+                                               ("All quantities", all_quantities)]
+        #self.simulation.retrieval.callbacks = [("Second moments", only_second_moments),
+        #                                       ("First moments", only_first_moments)]
+        #                                       #("All quantities", all_quantities)]
+        #self.simulation.retrieval.callbacks = [("First moments", only_first_moments)]
+        #self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
+        #                                       ("All quantities", all_quantities)]
+        #self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
 
 
 
@@ -127,12 +155,15 @@ class CloudRetrieval:
         names = [q.name for q in self.simulation.retrieval.retrieval_quantities]
 
         colors = {"ice_md" : "royalblue",
+                  "ice_dm" : "royalblue",
                   "ice_n0" : "royalblue",
                   "snow_md" : "darkcyan",
+                  "snow_dm" : "darkcyan",
                   "snow_n0" : "darkcyan",
                   "liquid_md" : "darkorchid",
                   "liquid_n0" : "darkorchid",
                   "rain_md" : "firebrick",
+                  "rain_dm" : "firebrick",
                   "rain_n0" : "firebrick",
                   "H2O" : "lightsalmon"}
 
@@ -323,3 +354,34 @@ def plot_fit(self, axs = None):
             ax.plot(yf, label = "fit")
             ax.plot(y, label = "observation")
             ai += 1
+
+class CloudSimulation:
+
+    def __init__(self,
+                 hydrometeors,
+                 sensors,
+                 data_provider,
+                 include_cloud_water = True):
+
+        self.include_cloud_water = include_cloud_water
+
+        self.hydrometeors = hydrometeors
+        absorbers  = [O2(), N2(), H2O()]
+        if self.include_cloud_water:
+            absorbers.insert(2, CloudWater())
+        scatterers = hydrometeors
+        surface    = Tessem()
+        atmosphere = Atmosphere1D(absorbers, scatterers, surface)
+        self.simulation = ArtsSimulation(atmosphere,
+                                         sensors = sensors,
+                                         scattering_solver = Disort())
+        self.sensors = sensors
+
+        self.data_provider            = data_provider
+        self.simulation.data_provider = self.data_provider
+
+    def setup(self, verbosity = 1):
+        self.simulation.setup(verbosity = verbosity)
+
+    def run(self, *args, **kwargs):
+        return self.simulation.run(*args, **kwargs)

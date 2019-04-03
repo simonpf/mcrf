@@ -20,7 +20,7 @@ if not ip is None:
 # Load observations.
 #
 
-filename     = os.path.join(crac.liras.liras_path, "data", "reduced_new/retrieval_input_full_ts3.nc")
+filename     = os.path.join(crac.liras.liras_path, "data", "reduced_new/retrieval_input_full_ts2.nc")
 
 offsets = {"ts1" : 15,
            "ts2" : 2815,
@@ -34,7 +34,7 @@ observations.add_offset("ao", -offset)
 # Create the data provider.
 #
 
-ip = offset + 100
+ip = offset + 300
 
 if "ts3" in filename:
     scene = "B"
@@ -46,6 +46,7 @@ data_provider = ModelDataProvider(99,
                                   snow_psd   = snow.psd,
                                   liquid_psd = liquid.psd,
                                   scene = scene)
+
 #
 # Define hydrometeors and sensors.
 #
@@ -56,9 +57,12 @@ sensors      = [lcpr, mwi, ici]
 #
 # Add a priori providers.
 #
-observation_errors = crac.liras.ObservationError(sensors)
-observation_errors.noise_scaling["ici"] = 2.0
-observation_errors.noise_scaling["mwi"] = 2.0
+
+me = "full" in os.path.basename(filename)
+fe = "avg" in os.path.basename(filename)
+observation_errors = crac.liras.ObservationError(sensors,
+                                                 footprint_error = fe,
+                                                 forward_model_error = me)
 
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])

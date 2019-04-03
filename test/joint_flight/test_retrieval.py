@@ -8,7 +8,7 @@ import crac.liras
 from   crac.retrieval        import CloudRetrieval
 from   crac.sensors          import hamp_radar, hamp_passive, ismar
 from   crac.joint_flight     import ice, liquid, snow, rain, liquid_md_a_priori, \
-    rh_a_priori, ObservationError
+    rh_a_priori, ObservationError, temperature_a_priori
 
 from parts.retrieval.a_priori import SensorNoiseAPriori
 
@@ -45,6 +45,7 @@ data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(liquid_md_a_priori)
 data_provider.add(rh_a_priori)
+data_provider.add(temperature_a_priori)
 data_provider.add(ObservationError(sensors))
 
 #
@@ -53,4 +54,4 @@ data_provider.add(ObservationError(sensors))
 
 retrieval = CloudRetrieval(hydrometeors, sensors, data_provider)
 retrieval.setup()
-retrieval.run(700)
+retrieval.run(800)

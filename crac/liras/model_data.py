@@ -254,10 +254,12 @@ class ModelDataProvider(DataProviderBase):
                 liquid hydrometeors.
     """
     def __init__(self, i_t,
+                 scene = "B",
                  ice_psd    = None,
                  snow_psd   = None,
                  liquid_psd = None,
-                 scene = "B"):
+                 hail_psd   = None,
+                 graupel_psd = None):
 
         super().__init__()
 
@@ -269,32 +271,52 @@ class ModelDataProvider(DataProviderBase):
         else:
             self.m = ModelData(os.path.join(liras_path, "data", "scene_b.mat"))
 
-        self.ice_psd  = ice_psd
-        self.liquid_psd = liquid_psd
+        #
+        # Hydrometeor species.
+        #
 
-        self.perturbations = {}
+        self.ice_psd     = ice_psd
+        self.snow_psd    = snow_psd
+        self.liquid_psd  = liquid_psd
+        self.hail_psd    = hail_psd
+        self.graupel_psd = graupel_psd
 
-        if snow_psd is None:
-            ice_species = ["IWC", "SWC", "HWC", "GWC"]
-        else:
-            ice_species = ["IWC"]
-
+        ice_species  = ["IWC"]
+        snow_species = ["SWC"]
 
         def make_getter(name, psd, species, i):
-            def getter(self, i_p):
-                return self.get_psd_moment(name, psd, species, i, i_p)
+            def getter(self, i_p, *args):
+                return self.get_psd_moment(name, psd, species, i, i_p, *args)
             return getter
 
-        if not ice_psd is None:
+        if hail_psd is None:
+            snow_species += ["HWC"]
+        else:
+            for i, mn in enumerate(hail_psd.moment_names):
+                name = "get_hail_" + mn
+                f = make_getter(name, self.hail_psd, ["HWC"], i)
+                self.__dict__[name] = f.__get__(self)
 
+        if graupel_psd is None:
+            snow_species += ["GWC"]
+        else:
+            for i, mn in enumerate(graupel_psd.moment_names):
+                name = "get_graupel_" + mn
+                f = make_getter(name, self.graupel_psd, ["GWC"], i)
+                self.__dict__[name] = f.__get__(self)
+
+        if snow_psd is None:
+            ice_species += snow_species
+        else:
+            for i, mn in enumerate(snow_psd.moment_names):
+                name = "get_snow_" + mn
+                f = make_getter(name, self.snow_psd, snow_species, i)
+                self.__dict__[name] = f.__get__(self)
+
+        if ice_psd:
             for i, mn in enumerate(ice_psd.moment_names):
                 name = "get_ice_" + mn
                 f = make_getter(name, self.ice_psd, ice_species, i)
-                self.__dict__[name] = f.__get__(self)
-
-            for i, mn in enumerate(ice_psd.moment_names):
-                name = "get_snow_" + mn
-                f = make_getter(name, self.ice_psd, ["SWC", "HWC", "GWC"], i)
                 self.__dict__[name] = f.__get__(self)
 
         if not liquid_psd is None:
@@ -314,22 +336,34 @@ class ModelDataProvider(DataProviderBase):
                 f = make_getter(name, self.liquid_psd, ["LWC"], i)
                 self.__dict__[name] = f.__get__(self)
 
-    def get_pressure(self, i_p):
+        #
+        # Perturbations
+        #
+
+        self.perturbations = {}
+
+
+    def get_pressure(self, i_p, *args):
         p = self.m.get_pressure_grid(self.i_t, i_p)
         return p
 
-    def get_temperature(self, i_p):
+    def get_temperature(self, i_p, *args):
         t = self.m.get_temperature_profile(self.i_t, i_p)
         return t
 
-    def get_altitude(self, i_p):
+    def get_altitude(self, i_p, *args):
         z = self.m.get_altitude_profile(self.i_t, i_p)
         return z
 
-    def get_psd_moment(self, name, psd, species, n, i_p):
+    def get_psd_moment(self, name, psd, species, n, i_p, *args):
         m  = None
         md = None
         nd = None
+
+        if len(args) > 0:
+            j = args[0]
+        else:
+            j = None
 
         for s in species:
 
@@ -354,22 +388,35 @@ class ModelDataProvider(DataProviderBase):
         x[np.logical_not(np.isfinite(x))] = cutoff
         x = np.maximum(x, cutoff)
 
+        #
+        # Implicit perturbation
+        #
+
+        if not j is None:
+            if j == n:
+                x *= 1.1
+
+        #
+        # Check for explicit perturbations.
+        #
+
         if name in self.perturbations:
             p = self.perturbations[name]
             if p["type"] == "multiplicative":
-                x*= p["dx"]
+                x *= p["dx"]
             else:
                 x += p["dx"]
+
         return x
 
     def add_perturbation(self, name, dx, t = "multiplicative"):
         self.perturbations[name] = {"type" : t,
                                     "dx" : dx}
 
-    def get_H2O(self, i_p):
+    def get_H2O(self, i_p, *args):
         return self.m.get_absorber("H2O", i_p = i_p)
 
-    def get_relative_humidity(self, i_p):
+    def get_relative_humidity(self, i_p, *args):
         from typhon.physics.atmosphere import vmr2relative_humidity
         t   = self.get_temperature(i_p).ravel()
         p   = self.get_pressure(i_p).ravel()
@@ -377,25 +424,25 @@ class ModelDataProvider(DataProviderBase):
         q   = vmr2relative_humidity(vmr, p, t)
         return q
 
-    def get_O2(self, i_p):
+    def get_O2(self, i_p, *args):
         return self.m.get_absorber("O2", i_p)
 
-    def get_O3(self, i_p):
+    def get_O3(self, i_p, *args):
         return self.m.get_absorber("O3", i_p)
 
-    def get_N2(self, i_p):
+    def get_N2(self, i_p, *args):
         return self.m.get_absorber("N2", i_p)
 
-    def get_surface_temperature(self, i_p):
+    def get_surface_temperature(self, i_p, *args):
         return self.m.get_temperature_profile(self.i_t, i_p)[0]
 
-    def get_surface_salinity(self, i_p):
+    def get_surface_salinity(self, i_p, *args):
         return 0.034
 
-    def get_surface_wind_speed(self, i_p):
+    def get_surface_wind_speed(self, i_p, *args):
         return 0.0
 
-    def get_cloud_water(self, i_p):
+    def get_cloud_water(self, i_p, *args):
         t = self.get_temperature(i_p)
         cw = np.copy(self.m.get_scatterer("LWC", "mass_density", self.i_t, i_p))
         cw[t <= 215] = 0.0
@@ -405,38 +452,77 @@ class ModelDataProvider(DataProviderBase):
     # GEM hydrometeors
     #
 
-    def get_gem_ice_mass_density(self, i_p):
+    def get_gem_ice_mass_density(self, i_p, *args):
         return self.m.get_scatterer("IWC", "mass_density", self.i_t, i_p)
 
-    def get_gem_ice_number_density(self, i_p):
+    def get_gem_ice_number_density(self, i_p, *args):
         return self.m.get_scatterer("IWC", "number_density", self.i_t, i_p)
 
-    def get_gem_snow_mass_density(self, i_p):
+    def get_gem_snow_mass_density(self, i_p, *args):
         return self.m.get_scatterer("SWC", "mass_density", self.i_t, i_p)
 
-    def get_gem_snow_number_density(self, i_p):
+    def get_gem_snow_number_density(self, i_p, *args):
         return self.m.get_scatterer("SWC", "number_density", self.i_t, i_p)
 
-    def get_gem_hail_mass_density(self, i_p):
+    def get_gem_hail_mass_density(self, i_p, *args):
         return self.m.get_scatterer("HWC", "mass_density", self.i_t, i_p)
 
-    def get_gem_hail_number_density(self, i_p):
+    def get_gem_hail_number_density(self, i_p, *args):
         return self.m.get_scatterer("HWC", "number_density", self.i_t, i_p)
 
-    def get_gem_graupel_mass_density(self, i_p):
+    def get_gem_graupel_mass_density(self, i_p, *args):
         return self.m.get_scatterer("GWC", "mass_density", self.i_t, i_p)
 
-    def get_gem_graupel_number_density(self, i_p):
+    def get_gem_graupel_number_density(self, i_p, *args):
         return self.m.get_scatterer("GWC", "number_density", self.i_t, i_p)
 
-    def get_gem_rain_mass_density(self, i_p):
+    def get_gem_rain_mass_density(self, i_p, *args):
         return self.m.get_scatterer("RWC", "mass_density", self.i_t, i_p)
 
-    def get_gem_rain_number_density(self, i_p):
+    def get_gem_rain_number_density(self, i_p, *args):
         return self.m.get_scatterer("RWC", "number_density", self.i_t, i_p)
 
-    def get_gem_liquid_mass_density(self, i_p):
+    def get_gem_liquid_mass_density(self, i_p, *args):
         return self.m.get_scatterer("LWC", "mass_density", self.i_t, i_p)
 
-    def get_gem_liquid_number_density(self, i_p):
+    def get_gem_liquid_number_density(self, i_p, *args):
         return self.m.get_scatterer("LWC", "number_density", self.i_t, i_p)
+
+    def get_gem_cloud_water_mass_density(self, i_p, *args):
+        return self.m.get_scatterer("LWC", "mass_density", self.i_t, i_p)
+
+    def get_gem_cloud_water_number_density(self, i_p, *args):
+        return self.m.get_scatterer("LWC", "number_density", self.i_t, i_p)
+
+class MeanModelDataProvider(ModelDataProvider):
+    """
+    Data provider that returns the mean profiles of the field for temperature
+    and atmospheric gases.
+    """
+    def __init__(self, i_t,
+                 scene = "B",
+                 ice_psd    = None,
+                 snow_psd   = None,
+                 liquid_psd = None,
+                 hail_psd   = None,
+                 graupel_psd = None):
+
+        super().__init__(i_t, scene, ice_psd, snow_psd, liquid_psd,
+                         hail_psd, graupel_psd)
+
+    def get_pressure(self, *args):
+        p = self.m.file["pressure_thermodynamic"][:, self.i_t, :][::-1, :]
+        return np.mean(p, axis = -1)
+
+    def get_temperature(self, *args):
+        t = self.m.file["temperature"][:, self.i_t, :][::-1, :]
+        return np.mean(t, axis = -1)
+
+    def get_altitude(self, *args):
+        z = self.m.file["height_thermodynamic"][:, self.i_t, :][::-1, :]
+        return np.mean(z, axis = -1)
+
+    def get_H2O(self, *args):
+        h2o = self.m.file["vmr_h2o"][:, self.i_t, :][::-1, :]
+        return np.mean(h2o, axis = -1)
+

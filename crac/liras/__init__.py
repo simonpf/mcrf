@@ -2,6 +2,7 @@ import os
 from crac.psds                import D14Ice, D14Liquid
 from crac.hydrometeors        import Hydrometeor
 from parts.retrieval.a_priori import *
+from parts.scattering.psd     import Binned
 from parts.jacobian           import Atanh
 
 liras_path = os.environ["LIRAS_PATH"]
@@ -21,13 +22,13 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 md_z_grid = np.linspace(0, 20e3, 21)
 ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 273.0))
 ice_covariance = Thikhonov(scaling = 2.0, mask = ice_mask)
-ice_md_a_priori = FixedAPriori("ice_md", -6, ice_covariance,
+ice_md_a_priori = FixedAPriori("ice_md", -5, ice_covariance,
                                mask = ice_mask, mask_value = -12)
 ice_md_a_priori = ReducedVerticalGrid(ice_md_a_priori, md_z_grid, "altitude",
                                       Diagonal(4 * np.ones(md_z_grid.size)))
 
 z_grid = np.array([5e3, 15e3])
-ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance)
+ice_n0_a_priori = FixedAPriori("ice_n0", 8, ice_covariance)
 ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori, z_grid, "altitude",
                                       Diagonal(2 * np.ones(2)))
 
@@ -37,6 +38,7 @@ ice = Hydrometeor("ice",
                   ice_shape,
                   ice_shape_meta)
 ice.radar_only = False
+
 ################################################################################
 # Snow particles
 ################################################################################
@@ -46,13 +48,13 @@ snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
 
 snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 278.0))
 snow_covariance = Thikhonov(scaling = 3.0, mask = snow_mask)
-snow_md_a_priori = FixedAPriori("snow_md", -6, snow_covariance,
+snow_md_a_priori = FixedAPriori("snow_md", -7, snow_covariance,
                                mask = snow_mask, mask_value = -12)
 snow_md_a_priori = ReducedVerticalGrid(snow_md_a_priori, md_z_grid, "altitude",
                                       Diagonal(4 * np.ones(md_z_grid.size)))
 
 z_grid = np.array([5e3, 15e3])
-snow_n0_a_priori = FixedAPriori("snow_n0", 6, snow_covariance)
+snow_n0_a_priori = FixedAPriori("snow_n0", 8, snow_covariance)
 snow_n0_a_priori = ReducedVerticalGrid(snow_n0_a_priori, z_grid, "altitude",
                                       Diagonal(2 * np.ones(2)))
 
@@ -74,10 +76,10 @@ liquid_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
 liquid_mask  = TemperatureMask(250, 340.0)
 liquid_covariance = Thikhonov(scaling = 3.0, diagonal = 1.0, mask = liquid_mask)
-liquid_md_a_priori = FixedAPriori("liquid_md", -6, liquid_covariance,
+liquid_md_a_priori = FixedAPriori("liquid_md", -7, liquid_covariance,
                                   mask = liquid_mask, mask_value = -12)
 liquid_md_a_priori = ReducedVerticalGrid(liquid_md_a_priori, md_z_grid, "altitude",
-                                        Diagonal(2 * np.ones(md_z_grid.size)))
+                                        Diagonal(4 * np.ones(md_z_grid.size)))
 
 z_grid = np.array([0e3, 10e3])
 liquid_n0_a_priori = FixedAPriori("liquid_n0", 12, liquid_covariance,
