@@ -15,32 +15,39 @@ from   crac.liras.model_data import ModelDataProvider
 import argparse
 import os
 
-parser = argparse.ArgumentParser(description = "Run LIRAS retrieval.")
-parser.add_argument('filename',
-                    type = str,
-                    nargs = 1,
-                    help = "Filename containing observations to retrieve.")
+parser = argparse.ArgumentParser(prog = "LIRAS retrieval",
+                                 description = 'Passive ice cloud retrieval')
+parser.add_argument('scene',       metavar = 'scene',       type = str, nargs = 1)
+parser.add_argument('start_index', metavar = 'start_index', type = int, nargs = 1)
+parser.add_argument('ice_shape',   metavar = 'ice_shape', type = str, nargs = 1)
+parser.add_argument('snow_shape',  metavar = 'snow_shape', type = str, nargs = 1)
+parser.add_argument('input_file',  metavar = 'input_file', type = str, nargs = 1)
+parser.add_argument('output_file', metavar = 'output_file', type = str, nargs = 1)
+
 args = parser.parse_args()
-filename   = args.filename[0]
+
+scene        = args.scene[0]
+i_start      = args.start_index[0]
+ice_shape    = args.ice_shape[0]
+snow_shape   = args.snow_shape[0]
+input_file   = args.input_file[0]
+output_file  = args.output_file[0]
+
 liras_path = crac.liras.liras_path
 
-if not os.path.isabs(filename):
-    filename = os.path.join(liras_path, filename)
+if not os.path.isabs(input_file):
+    input_file = os.path.join(liras_path, input_file)
+
+if not os.path.isabs(output_file):
+    output_file = os.path.join(liras_path, output_file)
 
 #
 # Load observations.
 #
 
-print(filename)
-ts = filename[-6 : -3]
-i_start, i_end, scene = crac.liras.test_scenes[ts]
-n  = i_end - i_start
-fe = "avg"  in filename
-me = "full" in filename
-
-observations = NetCDFDataProvider(filename)
-offset = (n - observations.file_handle.dimensions["ao"].size) // 2
-observations.add_offset("ao", -(i_start + offset))
+observations = NetCDFDataProvider(input_file)
+observations.add_offset("profile", -i_start)
+n = observations.file_handle.dimensions["profile"].size
 
 #
 # Create the data provider.
@@ -50,14 +57,25 @@ data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
                                   snow_psd   = snow.psd,
                                   liquid_psd = liquid.psd,
-                                  scene = scene)
+                                  scene = scene.upper())
 #
 # Define hydrometeors and sensors.
 #
 
-hydrometeors = [ice, snow, rain]
-mwi_full.name = "mwi_full"
-sensors      = [lcpr, mwi_full, ici]
+ice_shape = os.path.join(liras_path, "data", "scattering", ice_shape)
+ice.scattering_data = ice_shape
+
+retrieve_snow = False
+if not snow_shape == "None":
+    retrieve_snow = True
+    snow_shape    = os.path.join(liras_path, "data", "scattering", snow_shape)
+
+if retrieve_snow:
+    hydrometeors = [ice, snow, rain]
+else:
+    hydrometeors = [ice, rain]
+
+sensors = [mwi, ici]
 
 #
 # Add a priori providers.
@@ -81,9 +99,6 @@ data_provider.add(observations)
 retrieval = CloudRetrieval(hydrometeors, sensors, data_provider)
 retrieval.setup()
 
-output_dir = os.path.dirname(filename)
-name       = os.path.basename(filename)
-output_file = os.path.join(output_dir, name.replace("input", "output"))
 
-retrieval.simulation.initialize_output_file(output_file, [("profile", n - 2 * offset, i_start + offset)])
-retrieval.simulation.run_mpi(range(i_start + offset, i_end - offset))
+retrieval.simulation.initialize_output_file(output_file, [("profile", n, i_start)])
+retrieval.simulation.run_ranges(range(i_start, i_start + 1))

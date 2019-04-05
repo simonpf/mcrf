@@ -42,6 +42,8 @@ class CloudRetrieval:
             cw.transformation = Log10()
             cw.retrieval.limit_high = -3
             self.cw = cw
+        else:
+            self.cw = None
 
         #t = self.simulation.atmosphere.temperature
         #self.t = t
@@ -85,33 +87,39 @@ class CloudRetrieval:
 
         def only_second_moments(rr):
             #rr.sensors = [s for s in rr.sensors if isinstance(s, PassiveSensor)]
+            rr.settings["lm_ga_settings"] = np.array([1000.0, 3.0, 2.0, 1e5, 1.0, 1.0])
             rr.retrieval_quantities = [h.moments[1] for h in self.hydrometeors \
                                        if h.retrieve_second_moment]
-            rr.retrieval_quantities += [self.cw]
             rr.retrieval_quantities += [self.h2o]
+            if self.cw:
+                rr.retrieval_quantities += [self.cw]
 
         def passive_only(rr):
             rr.sensors = [s for s in rr.sensors if isinstance(s, PassiveSensor)]
             rr.retrieval_quantities = [h.moments[1] for h in self.hydrometeors \
                                        if h.retrieve_second_moment]
-            rr.retrieval_quantities += [self.cw]
             rr.retrieval_quantities += [self.h2o]
+            if self.cw:
+                rr.retrieval_quantities += [self.cw]
 
         def only_first_moments(rr):
-            rr.settings["lm_ga_settings"] = np.array([0.0, 3.0, 2.0, 1e5, 1.0, 1.0])
+            rr.settings["lm_ga_settings"] = np.array([1000.0, 3.0, 2.0, 1e5, 1.0, 1.0])
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
-            rr.retrieval_quantities += [self.cw]
             rr.retrieval_quantities += [self.h2o]
+            if self.cw:
+                rr.retrieval_quantities += [self.cw]
 
             #rr.retrieval_quantities += [self.t]
 
         def all_quantities(rr):
-            rr.settings["lm_ga_settings"] = np.array([0.0, 3.0, 2.0, 1e5, 1.0, 1.0])
+            rr.settings["lm_ga_settings"] = np.array([1000.0, 3.0, 2.0, 1e5, 1.0, 1.0])
+            rr.settings["max_iter"] = 10
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors \
                                        if h.retrieve_second_moment]
-            rr.retrieval_quantities += [self.cw]
             rr.retrieval_quantities += [self.h2o]
+            if self.cw:
+                rr.retrieval_quantities += [self.cw]
 
         self.simulation.retrieval.callbacks = [("Radar only", radar_only),
                                                ("First moments", only_first_moments),
@@ -120,7 +128,8 @@ class CloudRetrieval:
                                                ("First moments", only_first_moments),
                                                ("All quantities", all_quantities)]
         self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
-                                               ("Passive only ", passive_only),
+                                               ("All quantities", all_quantities)]
+        self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
                                                ("All quantities", all_quantities)]
         #self.simulation.retrieval.callbacks = [("Second moments", only_second_moments),
         #                                       ("First moments", only_first_moments)]
