@@ -21,12 +21,12 @@ class CloudRetrieval:
             md = q.moments[0]
             self.simulation.retrieval.add(md)
             md.transformation = q.transformations[0]
-            md.limit_low      = q.limits_low[0]
+            md.retrieval.limit_low      = q.limits_low[0]
 
             n0 = q.moments[1]
             self.simulation.retrieval.add(n0)
             n0.transformation = q.transformations[1]
-            n0.limit_low      = q.limits_low[1]
+            n0.retrieval.limit_low      = q.limits_low[1]
 
         h2o = self.simulation.atmosphere.absorbers[-1]
         self.simulation.retrieval.add(h2o)
@@ -124,20 +124,13 @@ class CloudRetrieval:
         self.simulation.retrieval.callbacks = [("Radar only", radar_only),
                                                ("First moments", only_first_moments),
                                                ("All quantities", all_quantities)]
+        self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
+                                               ("All quantities", all_quantities)]
         self.simulation.retrieval.callbacks = [("Second moments", only_second_moments),
-                                               ("First moments", only_first_moments),
                                                ("All quantities", all_quantities)]
-        self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
-                                               ("All quantities", all_quantities)]
-        self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
-                                               ("All quantities", all_quantities)]
-        #self.simulation.retrieval.callbacks = [("Second moments", only_second_moments),
-        #                                       ("First moments", only_first_moments)]
-        #                                       #("All quantities", all_quantities)]
-        #self.simulation.retrieval.callbacks = [("First moments", only_first_moments)]
         #self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
         #                                       ("All quantities", all_quantities)]
-        #self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
+        self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
 
 
 
@@ -203,25 +196,25 @@ class CloudRetrieval:
             ax.plot(x, z, c = colors[rq.name])
 
 
-        rq = self.cw
-        try:
-            f_get = "get_cloud_water"
-            f = getattr(self.data_provider, f_get)
-            args   = self.simulation.args
-            kwargs = self.simulation.kwargs
-            truth = f(*args, **kwargs)
-            ax.plot(truth, z, c = colors[rq.name], alpha = 0.5)
-        except:
-            pass
+        #rq = self.cw
+        #try:
+        #    f_get = "get_cloud_water"
+        #    f = getattr(self.data_provider, f_get)
+        #    args   = self.simulation.args
+        #    kwargs = self.simulation.kwargs
+        #    truth = f(*args, **kwargs)
+        #    ax.plot(truth, z, c = colors[rq.name], alpha = 0.5)
+        #except:
+        #    pass
 
-        x = results[-1].get_result(rq, interpolate = True)
-        if x is None:
-            x = results[-1].get_xa(rq, interpolate = True)
-        x = rq.transformation.invert(x)
-        ax.plot(x, z, c = colors["liquid_md"])
+        #x = results[-1].get_result(rq, interpolate = True)
+        #if x is None:
+        #    x = results[-1].get_xa(rq, interpolate = True)
+        #x = rq.transformation.invert(x)
+        #ax.plot(x, z, c = colors["liquid_md"])
 
         ax.set_xscale("log")
-        ax.set_xlim([1e-6, 1e-3])
+        #ax.set_xlim([1e-6, 1e-2])
         ax.set_ylim([0, 20])
         ax.set_xlabel("Mass density [$kg / m^{3}$]")
         ax.set_ylabel("Altitude [km]")
@@ -252,7 +245,7 @@ class CloudRetrieval:
             ax.plot(x, z, c = colors[rq.name])
 
         ax.set_xscale("log")
-        ax.set_xlim([1e4, 1e13])
+        #ax.set_xlim([1e4, 1e13])
         ax.set_ylim([0, 20])
         ax.set_xlabel("$N_0^*$ [$m^{-4}$]")
 

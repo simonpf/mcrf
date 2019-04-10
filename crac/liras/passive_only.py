@@ -1,9 +1,9 @@
 import os
-from crac.psds                import D14Ice, D14Liquid
+from crac.psds                import D14NDmIce, D14NDmLiquid, D14NDmSnow
 from crac.hydrometeors        import Hydrometeor
 from parts.retrieval.a_priori import *
 from parts.scattering.psd     import Binned
-from parts.jacobian           import Atanh
+from parts.jacobian           import Atanh, Log10, Identity
 
 liras_path = os.environ["LIRAS_PATH"]
 scattering_data = os.path.join(liras_path, "data", "scattering")
@@ -18,23 +18,32 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 md_z_grid = np.linspace(0, 20e3, 11)
 ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 280.0))
 ice_covariance = Diagonal(4 * np.ones(md_z_grid.size))
+
+# mass density
 ice_md_a_priori = FixedAPriori("ice_md", -5, ice_covariance,
                                mask = ice_mask, mask_value = -12)
 ice_md_a_priori = ReducedVerticalGrid(ice_md_a_priori, md_z_grid, "altitude",
                                       ice_covariance)
 
-z_grid = np.array([5e3, 15e3])
-ice_covariance  = Diagonal(1 * np.ones(2))
-ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance)
-ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori, z_grid, "altitude",
+# n0
+ice_covariance = Diagonal(2 * np.ones(md_z_grid.size))
+ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance,
+                                mask = ice_mask, mask_value = 0)
+ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori, md_z_grid, "altitude", ice_covariance)
+
+z_grid = np.linspace(0, 20e3, 11)
+ice_covariance  = Diagonal(50e-6 ** 2 * np.ones(z_grid.size))
+ice_dm_a_priori = FixedAPriori("ice_dm", 200e-6, ice_covariance)
+ice_dm_a_priori = ReducedVerticalGrid(ice_dm_a_priori, z_grid, "altitude",
                                       ice_covariance)
 
 ice = Hydrometeor("ice",
-                  D14Ice(),
-                  [ice_md_a_priori, ice_n0_a_priori],
+                  D14NDmIce(),
+                  [ice_n0_a_priori, ice_dm_a_priori],
                   ice_shape,
                   ice_shape_meta)
-ice.limits_low = [1e-12, 1e2]
+ice.transformations = [Log10(), Identity()]
+ice.limits_low = [1e-12, 1e-12]
 ice.radar_only = False
 
 ################################################################################
@@ -46,22 +55,32 @@ snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
 
 snow_mask        = And(TropopauseMask(), TemperatureMask(0.0, 280.0))
 snow_covariance  = Diagonal(4 * np.ones(md_z_grid.size))
+
+# mass density
 snow_md_a_priori = FixedAPriori("snow_md", -5, snow_covariance,
                                mask = snow_mask, mask_value = -12)
 snow_md_a_priori = ReducedVerticalGrid(snow_md_a_priori, md_z_grid, "altitude",
                                       snow_covariance)
 
-z_grid = np.array([5e3, 15e3])
-snow_n0_a_priori = FixedAPriori("snow_n0", 6, snow_covariance)
-snow_n0_a_priori = ReducedVerticalGrid(snow_n0_a_priori, z_grid, "altitude",
-                                      Diagonal(1 * np.ones(2)))
+# n0
+snow_covariance  = Diagonal(2 * np.ones(md_z_grid.size))
+snow_n0_a_priori = FixedAPriori("snow_n0", 9, snow_covariance,
+                                mask = snow_mask, mask_value = 0)
+snow_n0_a_priori = ReducedVerticalGrid(snow_n0_a_priori, md_z_grid, "altitude",
+                                      snow_covariance)
+
+z_grid = np.linspace(0, 20e3, 11)
+snow_dm_a_priori = FixedAPriori("snow_dm", 500e-6, snow_covariance)
+snow_dm_a_priori = ReducedVerticalGrid(snow_dm_a_priori, z_grid, "altitude",
+                                      Diagonal(2e-4 ** 2 * np.ones(z_grid.size)))
 
 snow = Hydrometeor("snow",
-                   D14Ice(),
-                   [snow_md_a_priori, snow_n0_a_priori],
+                   D14NDmSnow(),
+                   [snow_n0_a_priori, snow_dm_a_priori],
                    snow_shape,
                    snow_shape_meta)
-snow.limits_low = [1e-12, 1e2]
+snow.transformations = [Log10(), Identity()]
+snow.limits_low = [1e-12, 1e-12]
 snow.radar_only = True
 snow.retrieve_second_moment = True
 
@@ -80,19 +99,20 @@ liquid_md_a_priori = FixedAPriori("liquid_md", -5, liquid_covariance,
 liquid_md_a_priori = ReducedVerticalGrid(liquid_md_a_priori, md_z_grid, "altitude",
                                          liquid_covariance)
 
-z_grid = np.array([0e3, 10e3])
-liquid_n0_a_priori = FixedAPriori("liquid_n0", 10, liquid_covariance)
-liquid_n0_a_priori = ReducedVerticalGrid(liquid_n0_a_priori, z_grid, "altitude",
-                                         Diagonal(2 * np.ones(2)))
+z_grid = np.linspace(0, 20e3, 5)
+liquid_dm_a_priori = FixedAPriori("liquid_dm", 10, liquid_covariance)
+liquid_dm_a_priori = ReducedVerticalGrid(liquid_dm_a_priori, z_grid, "altitude",
+                                         Diagonal(2 * np.ones(z_grid.size)))
 
 liquid = Hydrometeor("liquid",
-                     D14Liquid(),
-                     [liquid_md_a_priori, liquid_n0_a_priori],
+                     D14NDmLiquid(),
+                     [liquid_md_a_priori, liquid_dm_a_priori],
                      liquid_shape,
                      liquid_shape_meta)
 liquid.retrieve_second_moment = True
 
-liquid.limits_low = [1e-12, 1e2]
+liquid.transformations = [Log10(), Identity()]
+liquid.limits_low = [1e-12, 1e-12]
 cloud_water_a_priori = FixedAPriori("cloud_water", -6, liquid_covariance, mask = liquid_mask, mask_value = -12)
 
 ################################################################################
@@ -102,24 +122,33 @@ cloud_water_a_priori = FixedAPriori("cloud_water", -6, liquid_covariance, mask =
 rain_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
+# mass density
 rain_mask       = TemperatureMask(273, 340.0)
 rain_covariance = Diagonal(4 * np.ones(md_z_grid.size))
-rain_md_a_priori = FixedAPriori("rain_md", -6, rain_covariance,
+rain_md_a_priori = FixedAPriori("rain_md", -5, rain_covariance,
                                   mask = rain_mask, mask_value = -12)
 rain_md_a_priori = ReducedVerticalGrid(rain_md_a_priori, md_z_grid, "altitude",
                                        rain_covariance)
 
-z_grid = np.array([0e3, 10e3])
-rain_n0_a_priori = FixedAPriori("rain_n0", 6, rain_covariance)
-rain_n0_a_priori = ReducedVerticalGrid(rain_n0_a_priori, z_grid, "altitude",
-                                         Diagonal(4 * np.ones(2)))
+# n0
+rain_mask       = TemperatureMask(273, 340.0)
+rain_covariance = Diagonal(2 * np.ones(md_z_grid.size))
+rain_n0_a_priori = FixedAPriori("rain_n0", 6, rain_covariance,
+                                mask = rain_mask, mask_value = 0)
+rain_n0_a_priori = ReducedVerticalGrid(rain_n0_a_priori, md_z_grid, "altitude", rain_covariance)
+
+z_grid = np.linspace(0, 20e3, 11)
+rain_dm_a_priori = FixedAPriori("rain_dm", 500e-6, rain_covariance)
+rain_dm_a_priori = ReducedVerticalGrid(rain_dm_a_priori, z_grid, "altitude",
+                                         Diagonal(1e-4 ** 2 * np.ones(z_grid.size)))
 
 rain = Hydrometeor("rain",
-                   D14Liquid(),
-                   [rain_md_a_priori, rain_n0_a_priori],
+                   D14NDmLiquid(),
+                   [rain_n0_a_priori, rain_dm_a_priori],
                    rain_shape,
                    rain_shape_meta)
-rain.limits_low = [1e-12, 1e2]
+rain.transformations = [Log10(), Identity()]
+rain.limits_low = [1e-12, 1e-12]
 rain.retrieve_second_moment = True
 
 ################################################################################
