@@ -16,53 +16,39 @@ if not ip is None:
     ip.magic("%load_ext autoreload")
     ip.magic("%autoreload 2")
 
-#
-# Load observations.
-#
+filename     = os.path.join(crac.liras.liras_path, "data", "forward_simulations_a.nc")
 
-filename     = os.path.join(crac.liras.liras_path, "data", "reduced_new/retrieval_input_full_ts2.nc")
+offsets = {"a" : 3000,
+           "b" : 2800}
 
-offsets = {"ts1" : 15,
-           "ts2" : 2815,
-           "ts3" : 2515}
-ts = filename[-6:-3]
-offset = offsets[ts]
+scene = filename[-4]
+offset = offsets[scene]
 observations = NetCDFDataProvider(filename)
-observations.add_offset("ao", -offset)
+observations.add_offset("profile", -offset)
 
 #
 # Create the data provider.
 #
 
-ip = offset + 300
-
-if "ts3" in filename:
-    scene = "B"
-else:
-    scene = "A"
+ip = offset + 450
 
 data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
                                   snow_psd   = snow.psd,
                                   liquid_psd = liquid.psd,
-                                  scene = scene)
+                                  scene = scene.upper())
+
 
 #
 # Define hydrometeors and sensors.
 #
 
-hydrometeors = [ice, snow, rain]
+hydrometeors = [ice, rain]
 sensors      = [lcpr, mwi, ici]
 
 #
 # Add a priori providers.
 #
-
-me = "full" in os.path.basename(filename)
-fe = "avg" in os.path.basename(filename)
-observation_errors = crac.liras.ObservationError(sensors,
-                                                 footprint_error = fe,
-                                                 forward_model_error = me)
 
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])
@@ -76,10 +62,18 @@ data_provider.add(crac.liras.ObservationError(sensors))
 data_provider.add(observations)
 
 #
+# Define hydrometeors and sensors.
+#
+
+hydrometeors = [ice, rain]
+sensors      = [lcpr, mwi, ici]
+
+#
 # Run the retrieval.
 #
 
-retrieval = CloudRetrieval(hydrometeors, sensors, data_provider)
+retrieval = CloudRetrieval(hydrometeors, sensors, data_provider,
+                           include_cloud_water = False)
 retrieval.setup()
 retrieval.run(ip)
 

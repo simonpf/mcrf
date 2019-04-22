@@ -13,4 +13,5 @@ class Hydrometeor(parts.scattering.ScatteringSpecies):
         self.transformations = [Log10(), Log10()]
         self.limits_low      = [1e-12, 2]
         self.radar_only             = True
+        self.retrieve_first_moment = True
         self.retrieve_second_moment = True

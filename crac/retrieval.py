@@ -28,13 +28,14 @@ class CloudRetrieval:
             n0.transformation = q.transformations[1]
             n0.retrieval.limit_low      = q.limits_low[1]
 
-        h2o = self.simulation.atmosphere.absorbers[-1]
-        self.simulation.retrieval.add(h2o)
-        h2o.retrieval.unit      = RelativeHumidity()
-        h2o.transformation      = Atanh()
-        h2o.transformation.z_min = 0.0
-        h2o.transformation.z_max = 1.05
-        self.h2o = h2o
+        if not self.radar_only:
+            h2o = self.simulation.atmosphere.absorbers[-1]
+            self.simulation.retrieval.add(h2o)
+            h2o.retrieval.unit      = RelativeHumidity()
+            h2o.transformation      = Atanh()
+            h2o.transformation.z_min = 0.0
+            h2o.transformation.z_max = 1.05
+            self.h2o = h2o
 
         if self.include_cloud_water:
             cw = self.simulation.atmosphere.absorbers[-2]
@@ -80,57 +81,8 @@ class CloudRetrieval:
 
         self._setup_retrieval()
 
-        def radar_only(rr):
-            rr.sensors = [s for s in rr.sensors if isinstance(s, ActiveSensor)]
-            rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors \
-                                       if h.radar_only]
-
-        def only_second_moments(rr):
-            #rr.sensors = [s for s in rr.sensors if isinstance(s, PassiveSensor)]
-            rr.settings["lm_ga_settings"] = np.array([1000.0, 3.0, 2.0, 1e5, 1.0, 1.0])
-            rr.retrieval_quantities = [h.moments[1] for h in self.hydrometeors \
-                                       if h.retrieve_second_moment]
-            rr.retrieval_quantities += [self.h2o]
-            if self.cw:
-                rr.retrieval_quantities += [self.cw]
-
-        def passive_only(rr):
-            rr.sensors = [s for s in rr.sensors if isinstance(s, PassiveSensor)]
-            rr.retrieval_quantities = [h.moments[1] for h in self.hydrometeors \
-                                       if h.retrieve_second_moment]
-            rr.retrieval_quantities += [self.h2o]
-            if self.cw:
-                rr.retrieval_quantities += [self.cw]
-
-        def only_first_moments(rr):
-            rr.settings["lm_ga_settings"] = np.array([1000.0, 3.0, 2.0, 1e5, 1.0, 1.0])
-            rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
-            rr.retrieval_quantities += [self.h2o]
-            if self.cw:
-                rr.retrieval_quantities += [self.cw]
-
-            #rr.retrieval_quantities += [self.t]
-
-        def all_quantities(rr):
-            rr.settings["lm_ga_settings"] = np.array([1000.0, 3.0, 2.0, 1e5, 1.0, 1.0])
-            rr.settings["max_iter"] = 10
-            rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
-            rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors \
-                                       if h.retrieve_second_moment]
-            rr.retrieval_quantities += [self.h2o]
-            if self.cw:
-                rr.retrieval_quantities += [self.cw]
-
-        self.simulation.retrieval.callbacks = [("Radar only", radar_only),
-                                               ("First moments", only_first_moments),
-                                               ("All quantities", all_quantities)]
-        self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
-                                               ("All quantities", all_quantities)]
-        self.simulation.retrieval.callbacks = [("Second moments", only_second_moments),
-                                               ("All quantities", all_quantities)]
-        #self.simulation.retrieval.callbacks = [("First moments", only_first_moments),
-        #                                       ("All quantities", all_quantities)]
         self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
+        self.radar_only = all([isinstance(s, ActiveSensor) for s in self.sensors])
 
 
 
