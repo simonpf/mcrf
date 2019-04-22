@@ -2,9 +2,9 @@ from parts.utils.data_providers import NetCDFDataProvider
 
 import crac.liras.setup
 import crac.liras
-from   crac.retrieval        import CloudRetrieval
-from   crac.sensors          import mwi, mwi_full, ici, lcpr
-from   crac.liras            import ice, liquid, rain, rh_a_priori, \
+from   crac.retrieval          import CloudRetrieval
+from   crac.sensors            import mwi, mwi_full, ici, lcpr
+from   crac.liras.passive_only import ice, liquid, snow, rain, rh_a_priori, \
  cloud_water_a_priori
 from   crac.liras.model_data import ModelDataProvider
 
@@ -43,7 +43,7 @@ if not os.path.isabs(output_file):
 # Load observations.
 #
 
-observations = NetCDFDataProvider(input_file)
+observations = NetCDFDataProvider(input_file, parallel = True)
 observations.add_offset("profile", -i_start)
 n = observations.file_handle.dimensions["profile"].size
 
@@ -62,28 +62,28 @@ data_provider = ModelDataProvider(99,
 ice_shape = os.path.join(liras_path, "data", "scattering", ice_shape)
 ice.scattering_data = ice_shape
 
-
 hydrometeors = [ice, rain]
-sensors = [lcpr, mwi, ici]
+
+sensors = [mwi, ici]
 
 #
 # Add a priori providers.
 #
-
+observation_errors = crac.liras.ObservationError(sensors, footprint_error = False, forward_model_error = False)
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])
 data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(cloud_water_a_priori)
 data_provider.add(rh_a_priori)
-data_provider.add(crac.liras.ObservationError(sensors))
+data_provider.add(observation_errors)
 data_provider.add(observations)
 
 #
 # Run the retrieval.
 #
 
-retrieval = CloudRetrieval(hydrometeors, sensors, data_provider)
+retrieval = CloudRetrieval(hydrometeors, sensors, data_provider, include_cloud_water = False)
 retrieval.setup()
 
 
