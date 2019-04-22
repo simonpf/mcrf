@@ -43,7 +43,7 @@ if not os.path.isabs(output_file):
 # Load observations.
 #
 
-observations = NetCDFDataProvider(input_file, parallel = True)
+observations = NetCDFDataProvider(input_file)
 observations.add_offset("profile", -i_start)
 n = observations.file_handle.dimensions["profile"].size
 
@@ -88,4 +88,4 @@ retrieval.setup()
 
 
 retrieval.simulation.initialize_output_file(output_file, [("profile", n, i_start)])
-retrieval.simulation.run_ranges(range(i_start, i_start + n))
+retrieval.simulation.run_ranges(range(i_start, i_start + 2))
