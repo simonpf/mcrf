@@ -52,7 +52,9 @@ class ModelData():
            + "EWS_data_SceneAandB_FullArcs_1km.39320.Idx1_Inf"
     cache_size = 3
 
-    def __init__(self, i_t = 99, path = "/home/simonpf/Dendrite/UserAreas/Simon/ipa_ICI_ScA_Arc1km.mat"):
+    def __init__(self,
+                 path = "/home/simonpf/Dendrite/UserAreas/Simon/ipa_ICI_ScA_Arc1km.mat",
+                 i_t = 99):
         """
         Create :class:`ModelDataA` instance and lookup available files.
         """
@@ -268,9 +270,9 @@ class ModelDataProvider(DataProviderBase):
 
 
         if scene == "A":
-            self.m = ModelData(os.path.join(liras_path, "data", "scene_a.mat"))
+            self.m = ModelData(path = os.path.join(liras_path, "data", "scene_a.mat"))
         else:
-            self.m = ModelData(os.path.join(liras_path, "data", "scene_b.mat"))
+            self.m = ModelData(path = os.path.join(liras_path, "data", "scene_b.mat"))
 
         #
         # Hydrometeor species.
