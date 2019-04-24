@@ -43,21 +43,22 @@ class ModelData():
 
     Attributes:
 
-        file(:code:): File handle to the :code:`.mat` containing the model
-            data
+        i_t: Index of the default transect from which to take the data.
+
+        file: Path of the :code:`.mat` containing the model data
 
     """
     path = "/home/simonpf/projects/LIRAS/EWS_simulations_LIRAS/atmdata/" \
            + "EWS_data_SceneAandB_FullArcs_1km.39320.Idx1_Inf"
     cache_size = 3
 
-    def __init__(self, path = "/home/simonpf/Dendrite/UserAreas/Simon/ipa_ICI_ScA_Arc1km.mat"):
+    def __init__(self, i_t = 99, path = "/home/simonpf/Dendrite/UserAreas/Simon/ipa_ICI_ScA_Arc1km.mat"):
         """
         Create :class:`ModelDataA` instance and lookup available files.
         """
         self.file = File(path, "r")
 
-        self.i_t = 0
+        self.i_t = i_t
         self.i_p = 0
 
     def get_number_of_profiles(self):
@@ -210,17 +211,17 @@ class ModelData():
                 self.i_p = i_p
                 yield self
 
-    def get_transect_view(self, i_t = None, species = ["IWC"]):
+    def get_transect_view(self, i_t = None, species = ["IWC"], quantity = "water_content"):
 
         if i_t is None:
             i_t = self.i_t
 
-        name_lookup = {"IWC" : "water_content_ice",
-                       "SWC" : "water_content_snow",
-                       "HWC" : "water_content_hail",
-                       "GWC" : "water_content_graupel",
-                       "LWC" : "water_content_cloud",
-                       "RWC" : "water_content_rain",
+        name_lookup = {"IWC" : quantity + "_ice",
+                       "SWC" : quantity + "_snow",
+                       "HWC" : quantity + "_hail",
+                       "GWC" : quantity + "_graupel",
+                       "LWC" : quantity + "_cloud",
+                       "RWC" : quantity + "_rain",
                        "Temperature" : "temperature"}
 
         s = self.file["water_content_ice"].shape

@@ -18,7 +18,7 @@ def n0_a_priori(t):
 
 def dm_a_priori(t):
     n0 = 10 ** n0_a_priori(t)
-    iwc = 1e-6
+    iwc = 1e-4
     dm = (4.0 ** 4 * iwc / (np.pi * 917.0)  / n0) ** 0.25
     return dm
 
@@ -41,12 +41,13 @@ ice_md_a_priori = ReducedVerticalGrid(ice_md_a_priori, md_z_grid, "altitude",
 points_n0 = 4
 ice_covariance = Diagonal(1, mask = ice_mask, mask_value = 1e-12)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance, mask = ice_mask, mask_value = 2)
-ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 2, ice_mask, "altitude")
+ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 4, ice_mask, "altitude")
 
 points_dm = 6
-ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
+ice_covariance  = Diagonal(400e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
+ice_covariance  = SpatialCorrelation(ice_covariance, 4e3)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance, mask = ice_mask, mask_value = 1e-6)
-ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori, 5, ice_mask)
+#ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori, 5, ice_mask)
 
 ice = Hydrometeor("ice",
                   D14NDmIce(),

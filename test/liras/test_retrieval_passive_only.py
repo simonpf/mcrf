@@ -35,7 +35,7 @@ observations.add_offset("profile", -offset)
 # Create the data provider.
 #
 
-ip = offset + 1
+ip = offset + 450
 
 data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
