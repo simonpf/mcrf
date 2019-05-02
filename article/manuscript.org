@@ -31,7 +31,7 @@
    active and passive sensors observing the Earth only few minutes apart, has
    lead to great advances in our ability to observe atmospheric ice at global
    scale. In particular, the CloudSat citep:stephens02 mission carrying the
-   Cloud Profiling radar (CPR, cite:tanelli08) has delivered unprecedented
+   Cloud Profiling Radar (CPR, cite:tanelli08) has delivered unprecedented
    observations of the vertical distribution of ice in the atmosphere
    citep:austin09. Yet still, even the vertically resolved observations from a
    cloud radar possess only limited sensitivity to small ice particles and are
@@ -46,7 +46,7 @@
    Another perspective on ice particles in the atmosphere is provided by the
    Global precipitation measurement (GPM) mission citep:hou14. The backbone of
    the GPM mission is formed by its core observatory satellite, which carries
-   the Doppler precipitation radar (DPR) and the GPM Microwave Imager (GMI).
+   the Dual-frequency Precipitation Radar (DPR) and the GPM Microwave Imager (GMI).
    Combined observations from DPR and GMI are used to retrieve vertically
    resolved concentrations of precipitating, liquid and frozen hydrometeors. The
    precipitation profiles retrieved from the combined active and passive
@@ -54,23 +54,24 @@
    the passive-only precipitation profile retrievals from the other passive
    radiometers in the constellation citep:kummerow15.
 
-   The sensitivity of a remote sensing system to ice particles of a given
-   size is determined mainly by its observing frequencies. The interaction
-   of radiation with ice particles is strongest for sizes roughly equal to the
-   wavelength of the radiation but decreases rapidly for smaller sizes.
-   Particles larger than the wavelength, on the other hand, interact with the radiation strong
-   enough that their presence quickly leads to saturation and thus loss of
-   sensitivity further down to the inside of clouds.
+   The sensitivity of a remote sensing system to ice particles of a given size
+   is determined mainly by its observing frequencies. The interaction of
+   radiation with ice particles is strongest for sizes roughly equal to the
+   wavelength of the radiation but decreases rapidly for smaller sizes. On the
+   other hand, particles that larger are larger than the wavelength of the
+   radiation interact with the radiation strong enough that their presence
+   quickly leads to saturation of the signal and thus loss of sensitivity lower
+   down inside of clouds.
 
    Hence, by virtue of their observing frequencies, the combined A-train
    products mentioned above and GPM essentially measure different types of
-   atmospheric ice. On the one hand, CloudSat CPR observations, when combined
-   with observations from the IR and optical regime ( wavelengths shorter
-   than $\SI{1}{\micro \meter}$) are best suited for the
-   observation of smaller, non-precipitating ice particles. The passive
-   radiometers of the GPM constellation, on the other hand, are limited to
-   large, precipitating particles due to their limitation to microwave
-   frequencies at and below $\SI{187}{\giga \hertz}$ (about $16 mm$).
+   atmospheric ice. CloudSat CPR observations, when combined with observations
+   from the IR and optical regime ( wavelengths shorter than $\SI{1}{\micro
+   \meter}$) are best suited for the observation of small, non-precipitating ice
+   particles, typically referred to as cloud ice. The passive radiometers of the
+   GPM constellation, are limited in their sensitivity to large, precipitating
+   particles due to their limitation to microwave frequencies at and below
+   $\SI{187}{\giga \hertz}$ (about $16 mm$).
 
    With the launch of the Ice Cloud Image (ICI) on board the second
    generation of meteorological, operational, polar-orbiting satellites
@@ -84,15 +85,15 @@
    $\SI{300}{\giga \hertz}$ have the advantage that they provide higher
    sensitivity to small ice particles citep:evans98 as well as their
    distribution and shape. At the same time, sub-millimeter observations are
-   able to sense ice particles lower in n the atmospheric column, where infrared
+   able to sense ice particles lower in the atmospheric column, where infrared
    and optical observations are sensitive only to the upper part of the cloud.
 
    Both, the A-train-based and GPM synergetic retrievals, demonstrate the
    potential of combining observations at different wavelengths as well as
    observations from active and passive sensors to improve the measurements of
    atmospheric ice from space. With the upcoming launch of ICI on board the
-   MetOpSG satellites that will make a whole range of new wavelengths available
-   to observe ice clouds, it natural question to address is thus : What is the
+   MetOpSG satellites a new frequency range will become available to observe ice
+   in the atmosphere. A natural question to address is thus : What is the
    potential of combined ice cloud retrievals based on sub-millimeter
    observations? In particular, building on the success of CloudSat-based
    synergetic retrievals of ice clouds: How and to what extent can
@@ -104,7 +105,7 @@
    early study on sub-millimeter radiometry citep:evans98 considers the
    combination with radar observations.
 
-   The aim of this study is to analyze the potential of combined
+   The aim of this study is thus to analyze the potential of combined
    sub-millimeter and active and passive microwave observations for the retrieval of
    ice clouds. Furthermore, the technical feasibility of such retrievals will be
    demonstrated by presenting a variational retrieval algorithm which is applied to
