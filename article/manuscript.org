@@ -10,30 +10,120 @@
 
    Ice clouds are an important component of the Earth's atmosphere and as such
    affect its weather and climate. Through reflection of incoming short-wave
-   radiation and outgoing long-wave radiation, ice clouds influence the Earth's energy
-   budget. Furthermore, due to their role in the global hydrological cycle and because
-   of their relation to the dynamics of the atmosphere, observations of ice clouds
-   provide important information to constrain the state of the atmosphere in
-   forecasting models citep:geer  or to validate predictions from climate models
-   citep:waliser09.
+   radiation and outgoing long-wave radiation, ice clouds influence the Earth's
+   energy budget. Furthermore, due to their role in the global hydrological
+   cycle and because of their relation to the dynamics of the atmosphere,
+   observations of ice clouds provide important information to constrain the
+   state of the atmosphere in forecasting models citep:geer or to validate
+   predictions from climate models citep:waliser09.
 
    Despite the importance of observations of ice clouds for climate and weather
-   prediction, the insufficiency of previous and current earth observation
-   systems to provide accurate information on ice clouds has been put forward by
-   several studies citep:eliasson11,duncan18a. To address this issue, a new,
+   prediction, the insufficiency of the current, global earth observation system
+   to provide accurate information on concentrations of ice in the atmosphere
+   has been put forward by several studies citep:eliasson11,duncan18a.
+   Ultimately, this insufficiency is rooted in the large variability of
+   concentrations, shapes and sizes in which ice in the atmosphere occurs,
+   making it practically impossible to accurately determine bulk-properties such
+   as mass or number density using remote observations from a single region
+   of the electromagnetic spectrum.
+
+   Unarguably, the A-train satellite constellation, that comprises several
+   active and passive sensors observing the Earth only few minutes apart, has
+   lead to great advances in our ability to observe atmospheric ice at global
+   scale. In particular, the CloudSat citep:stephens02 mission carrying the
+   Cloud Profiling radar (CPR, cite:tanelli08) has delivered unprecedented
+   observations of the vertical distribution of ice in the atmosphere
+   citep:austin09. Yet still, even the vertically resolved observations from a
+   cloud radar possess only limited sensitivity to small ice particles and are
+   unable to discern cloud microphysical properties. The low sensitivity of
+   CloudSat to thin ice clouds has lead to the development of synergetic
+   retrievals that combine CPR observations with other A-train sensors. The
+   DARDAR-CLOUD citep:cazenave18 and CloudSat 2C-Ice citep:deng15 products, for
+   example, both combine CPR observations with observations from the
+   Cloud-Aerosol Lidar with Orthogonal Polarization (CALIOP, cite:winker07) to
+   increase sensitivity to thin Cirrus clouds.
+
+   Another perspective on ice particles in the atmosphere is provided by the
+   Global precipitation measurement (GPM) mission citep:hou14. The backbone of
+   the GPM mission is formed by its core observatory satellite, which carries
+   the Doppler precipitation radar (DPR) and the GPM Microwave Imager (GMI).
+   Combined observations from DPR and GMI are used to retrieve vertically
+   resolved concentrations of precipitating, liquid and frozen hydrometeors. The
+   precipitation profiles retrieved from the combined active and passive
+   observations from the core observatory are then used to constrain
+   the passive-only precipitation profile retrievals from the other passive
+   radiometers in the constellation citep:kummerow15.
+
+   The sensitivity of a remote sensing system to ice particles of a given
+   size is determined mainly by its observing frequencies. The interaction
+   of radiation with ice particles is strongest for sizes roughly equal to the
+   wavelength of the radiation but decreases rapidly for smaller sizes.
+   Particles larger than the wavelength, on the other hand, interact with the radiation strong
+   enough that their presence quickly leads to saturation and thus loss of
+   sensitivity further down to the inside of clouds.
+
+   Hence, by virtue of their observing frequencies, the combined A-train
+   products mentioned above and GPM essentially measure different types of
+   atmospheric ice. On the one hand, CloudSat CPR observations, when combined
+   with observations from the IR and optical regime ( wavelengths shorter
+   than $\SI{1}{\micro \meter}$) are best suited for the
+   observation of smaller, non-precipitating ice particles. The passive
+   radiometers of the GPM constellation, on the other hand, are limited to
+   large, precipitating particles due to their limitation to microwave
+   frequencies at and below $\SI{187}{\giga \hertz}$ (about $16 mm$).
+
+   With the launch of the Ice Cloud Image (ICI) on board the second
+   generation of meteorological, operational, polar-orbiting satellites
+   (MetOp SG) planned from 2022, a new frequency range will become available
+   to study of ice in the troposphere. ICI will provide observations at 22
+   channels ranging from $187 to \SI{664}{\giga \hertz} in frequency, and thus
+   close the gap between observations in the traditional microwave region on
+   the one hand and IR and optical observation on the other.
+
+   Observations at sub-millimeter wavelengths, i.e. frequencies greater that
+   $\SI{300}{\giga \hertz}$ have the advantage that they provide higher
+   sensitivity to small ice particles citep:evans98 as well as their
+   distribution and shape. At the same time, sub-millimeter observations are
+   able to sense ice particles lower in n the atmospheric column, where infrared
+   and optical observations are sensitive only to the upper part of the cloud.
+
+   Both, the A-train-based and GPM synergetic retrievals, demonstrate the
+   potential of combining observations at different wavelengths as well as
+   observations from active and passive sensors to improve the measurements of
+   atmospheric ice from space. With the upcoming launch of ICI on board the
+   MetOpSG satellites that will make a whole range of new wavelengths available
+   to observe ice clouds, it natural question to address is thus : What is the
+   potential of combined ice cloud retrievals based on sub-millimeter
+   observations? In particular, building on the success of CloudSat-based
+   synergetic retrievals of ice clouds: How and to what extent can
+   sub-millimeter observations be used in combination with radar observations to
+   constrain the microphysics of ice clouds?
+
+   While several studies so far have addressed the information content
+   of sub-millimeter observations citep:grutzun18,birman17, only one
+   early study on sub-millimeter radiometry citep:evans98 considers the
+   combination with radar observations.
+
+   The aim of this study is to analyze the potential of combined
+   sub-millimeter and active and passive microwave observations for the retrieval of
+   ice clouds. Furthermore, the technical feasibility of such retrievals will be
+   demonstrated by presenting a variational retrieval algorithm which is applied to
+   retrieve cloud properties from simulated observations of cloud scenes from
+   high-resolution climate model data.
+
+
+ Thus, by virtue of their observing
+   frequencies, i.e. microwave frequencies at and below $\SI{183}{\giga
+   \hertz}$, the passive sensors of the GPM constellation possess sensitivity
+   only to ice particles that are so large that they precipitate
+   citep:greenwald02. 
+   To address this issue, a new,
    dedicated sensor, the Ice Cloud Imager (ICI, cite:buehler12), will be flown
    on the next generation of European, polar-orbiting operational weather
    satellites (MetOP-SG, for Meteorological operational sattellite, second
    generation). ICI will be the first imaging radiometer to provide
    sub-millimeter observations of ice clouds in the troposphere.
 
-   Observations at sub-millimeter wavelengths provide certain advantages
-   compared to the microwave and infrared observations that are traditionally
-   used to measure clouds from space. Compared to microwave radiation,
-   sub-millimeter radiation provides higher sensitivity to small ice particles
-   citep:evans98. At the same time, sub-millimeter observations are able to
-   sense ice particles further down the atmospheric column, where infrared and
-   optical observations are sensitive only to the upper part of the cloud.
 
    Nonetheless, even in the sub-millimeter domain, observations from a single
    instrument are not sufficient to fully characterize cloud properties. The
@@ -53,41 +143,7 @@
    assumptions on which a cloud retrieval has to rely and and can thus help to
    decrease retrieval uncertainties.
 
-   Unarguably, the A-train satellite constellation, that comprises several
-   active and passive sensors observing the Earth only few minutes apart, has
-   lead to great advances in our ability to observe atmospheric ice at global
-   scale. In particular, the CloudSat citep:stephens02 mission carrying the
-   Cloud Profiling radar (CPR, cite:tanelli08) has delivered imprecedented
-   observations of the vertical distribution of ice in the atmosphere
-   citep:austin09. Yet still, even the vertically resolved observations from a
-   cloud radar are limited in their sensitivity to small ice particles and their
-   ability to discern other cloud microphysical properties. This has lead to the
-   development of synergetic retrievals that combine CPR observations with other
-   A-train sensors. The DARDAR-CLOUD citep:cazenave18 and CloudSat 2C-Ice
-   citep:deng15 products, for example, both combine CPR observations with
-   observations from the Cloud-Aerosol Lidar with Orthogonal Polarization
-   (CALIOP, cite:winker07) to increase sensitivity to thin Cirrus clouds.
 
-   Another perspective on ice particles in the atmosphere is provided by the
-   Global precipitation measurement (GPM) mission citep:hou14. The backbone of
-   the GPM mission is formed by its core observatory satellite, which carries
-   the Doppler precipitation radar (DPR) and the GPM Microwave Imager (GMI).
-   Combined observations from DPR and GMI are used to retrieve vertically
-   resolved concentrations of precipitating, liquid and frozen hydrometeors. The
-   precipitation profiles retrieved from the combined active and passive
-   observations from the core observatory are then used to constrain
-   the passive-only precipitation profile retrievals from the other passive
-   radiometers in the constellation citep:kummerow15.
-
-   It is important to note that the CloudSat CPR and CALIOP-derived products
-   mentioned above and GPM measure different types of atmospheric ice. By virtue
-   of their observing frequencies, i.e. microwave frequencies at and below
-   $\SI{183}{\giga \hertz}$, the passive sensors of the GPM constellation
-   possess sensitive only to ice particle that are so large that they precipitate
-   citep:greenwald02. While CloudSat CPR observations also provide sensitivity
-   to precipitating ice [citation], the strength of A-train-derived synergetic
-   retrievals lies in the measurement of small, non-precipitating ice
-   particles.
 
    Both, the A-train-based and GPM synergetic retrievals, demonstrate the
    potential of combining observations at different wavelengths as well as
@@ -103,14 +159,6 @@
    A-train-based synergetic products the regions of overlap between radar and
    lidar at the top of clouds.
 
-   The launch of ICI on board the MetOpSG satellites will make a new wavelength
-   domain available to observe tropospheric ice at global scale and fill the
-   observational gap between the microwave and IR domains. Hence, a natural question
-   to ask is: What is the potential of combined ice cloud retrievals based on
-   sub-millimeter observations? In particular, building the success of
-   CloudSat-based synergetic retrievals of ice clouds: How and to what extent
-   can sub-millimeter observations be used in combination with radar observations
-   to constrain the microphysics of ice clouds?
 
    While several studies so far have addressed the information content
    of sub-millimeter observations citep:grutzun18,birman17, only one
