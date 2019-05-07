@@ -39,7 +39,7 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_co
 
 z_grid = np.array([5e3, 15e3])
 ice_covariance  = Diagonal(1, mask = ice_mask, mask_value = 1e-12)
-ice_covariance  = SpatialCorrelation(ice_covariance, 1e3)
+ice_covariance  = SpatialCorrelation(ice_covariance, 2e3)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 2)
 #ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 5, ice_mask)

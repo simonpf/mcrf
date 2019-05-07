@@ -88,4 +88,4 @@ retrieval.setup()
 
 
 retrieval.simulation.initialize_output_file(output_file, [("profile", n, i_start)])
-retrieval.simulation.run_ranges(range(i_start, i_start + 2))
+retrieval.simulation.run_ranges(range(i_start, i_start + n))
