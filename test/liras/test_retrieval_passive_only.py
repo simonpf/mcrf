@@ -62,12 +62,9 @@ observation_errors = crac.liras.ObservationError(sensors,
 
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])
-data_provider.add(snow.a_priori[0])
-data_provider.add(snow.a_priori[1])
-data_provider.add(liquid.a_priori[0])
-data_provider.add(liquid.a_priori[1])
 data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
+data_provider.add(cloud_water_a_priori)
 data_provider.add(rh_a_priori)
 data_provider.add(crac.liras.ObservationError(sensors))
 data_provider.add(observations)

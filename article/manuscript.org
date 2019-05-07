@@ -23,7 +23,7 @@
    has been put forward by several studies citep:eliasson11,duncan18a.
    Ultimately, this insufficiency is rooted in the large variability of
    concentrations, shapes and sizes in which ice in the atmosphere occurs,
-   making it practically impossible to accurately determine bulk-properties such
+   making it very difficult to accurately determine bulk-properties such
    as mass or number density using remote observations from a single region
    of the electromagnetic spectrum.
 
@@ -54,127 +54,67 @@
    the passive-only precipitation profile retrievals from the other passive
    radiometers in the constellation citep:kummerow15.
 
-   The sensitivity of a remote sensing system to ice particles of a given size
-   is determined mainly by its observing frequencies. The interaction of
-   radiation with ice particles is strongest for sizes roughly equal to the
-   wavelength of the radiation but decreases rapidly for smaller sizes. On the
-   other hand, particles that larger are larger than the wavelength of the
-   radiation interact with the radiation strong enough that their presence
-   quickly leads to saturation of the signal and thus loss of sensitivity lower
-   down inside of clouds.
+   The sensitivity of a remote sensing system to ice particles is determined
+   mainly by its observing frequencies. The interaction of radiation with ice
+   particles is strongest for sizes roughly equal to the wavelength $\lambda$ of
+   the radiation but decreases rapidly for smaller sizes. On the other hand,
+   particles that larger are larger than the wavelength of the radiation
+   interact with the radiation strong enough that their presence quickly leads
+   to saturation of the signal and thus loss of sensitivity inside and at the
+   bottom of clouds.
 
    Hence, by virtue of their observing frequencies, the combined A-train
    products mentioned above and GPM essentially measure different types of
    atmospheric ice. CloudSat CPR observations, when combined with observations
-   from the IR and optical regime ( wavelengths shorter than $\SI{1}{\micro
-   \meter}$) are best suited for the observation of small, non-precipitating ice
+   from the IR and optical regime ($\lambda < \SI{10}{\micro \meter}$) are best
+   suited for the observation of comparably small, non-precipitating ice
    particles, typically referred to as cloud ice. The passive radiometers of the
    GPM constellation, are limited in their sensitivity to large, precipitating
    particles due to their limitation to microwave frequencies at and below
-   $\SI{187}{\giga \hertz}$ (about $16 mm$).
+   $\SI{187}{\giga \hertz}$ ($\lambda < \SI{16}{\milli \meter}$).
 
-   With the launch of the Ice Cloud Image (ICI) on board the second
-   generation of meteorological, operational, polar-orbiting satellites
-   (MetOp SG) planned from 2022, a new frequency range will become available
-   to study of ice in the troposphere. ICI will provide observations at 22
-   channels ranging from $187 to \SI{664}{\giga \hertz} in frequency, and thus
-   close the gap between observations in the traditional microwave region on
-   the one hand and IR and optical observation on the other.
+   With the launch of the Ice Cloud Image (ICI) on board the second generation
+   of meteorological, operational, polar-orbiting satellites (MetOp SG) planned
+   from 2022, a new frequency range will become available to study ice in the
+   troposphere. ICI will provide observations at 22 channels ranging from $187$
+   to $\SI{664}{\giga \hertz}$ in frequency, and thus close the gap between
+   observations in the traditional microwave region on the one hand and IR and
+   optical observation on the other.
 
    Observations at sub-millimeter wavelengths, i.e. frequencies greater that
-   $\SI{300}{\giga \hertz}$ have the advantage that they provide higher
-   sensitivity to small ice particles citep:evans98 as well as their
-   distribution and shape. At the same time, sub-millimeter observations are
-   able to sense ice particles lower in the atmospheric column, where infrared
-   and optical observations are sensitive only to the upper part of the cloud.
+   $\SI{300}{\giga \hertz}$, have the advantage that they provide higher
+   sensitivity to small ice particles as well as their distribution and shape
+   citep:evans98 . At the same time, sub-millimeter observations are able to
+   sense ice particles lower in the atmospheric column, where infrared and
+   optical observations are sensitive only to the upper part of the cloud.
 
    Both, the A-train-based and GPM synergetic retrievals, demonstrate the
    potential of combining observations at different wavelengths as well as
    observations from active and passive sensors to improve the measurements of
    atmospheric ice from space. With the upcoming launch of ICI on board the
    MetOpSG satellites a new frequency range will become available to observe ice
-   in the atmosphere. A natural question to address is thus : What is the
-   potential of combined ice cloud retrievals based on sub-millimeter
-   observations? In particular, building on the success of CloudSat-based
-   synergetic retrievals of ice clouds: How and to what extent can
-   sub-millimeter observations be used in combination with radar observations to
-   constrain the microphysics of ice clouds?
+   in the atmosphere and consequently new opportunities for synergistic
+   retrievals combining sub-millimeter observations with observations from other
+   domains of the electromagnetic spectrum.
 
    While several studies so far have addressed the information content
    of sub-millimeter observations citep:grutzun18,birman17, only one
    early study on sub-millimeter radiometry citep:evans98 considers the
    combination with radar observations.
 
-   The aim of this study is thus to analyze the potential of combined
-   sub-millimeter and active and passive microwave observations for the retrieval of
-   ice clouds. Furthermore, the technical feasibility of such retrievals will be
-   demonstrated by presenting a variational retrieval algorithm which is applied to
-   retrieve cloud properties from simulated observations of cloud scenes from
-   high-resolution climate model data.
+   In this study, we set out to investigate the potential of synergistic
+   retrievals that combine ICI observations with that of a CloudSat-type cloud
+   radar and additional passive microwave channels from the Microwave Imager
+   (MWI), that will be flown together with ICI. In particular, we aim to address
+   the question to which extent complementary information content of the combined
+   observations can help to constrain cloud microphysics. Furthermore, the
+   technical feasibility of such retrievals is demonstrated by presenting a
+   variational retrieval algorithm which is applied to retrieve cloud properties
+   from simulated observations of cloud scenes from high-resolution climate
+   model data.
 
 
- Thus, by virtue of their observing
-   frequencies, i.e. microwave frequencies at and below $\SI{183}{\giga
-   \hertz}$, the passive sensors of the GPM constellation possess sensitivity
-   only to ice particles that are so large that they precipitate
-   citep:greenwald02. 
-   To address this issue, a new,
-   dedicated sensor, the Ice Cloud Imager (ICI, cite:buehler12), will be flown
-   on the next generation of European, polar-orbiting operational weather
-   satellites (MetOP-SG, for Meteorological operational sattellite, second
-   generation). ICI will be the first imaging radiometer to provide
-   sub-millimeter observations of ice clouds in the troposphere.
-
-
-   Nonetheless, even in the sub-millimeter domain, observations from a single
-   instrument are not sufficient to fully characterize cloud properties. The
-   ice particles that make up a cloud vary in size, shape, and distribution,
-   making the problem of inferring bulk properties such as mass density or
-   average particle size a highly underconstrained one. Retrieving cloud
-   properties from remotely-sensed observations hence requires several
-   simplifying  assumptions on the cloud microphysics in order
-   to render the retrieval problem tractable. These simplifying assumptions
-   manifest themselves as uncertainties in the retrieved cloud properties.
-
-   Due to the sensitivity of radiation from different wavelength regimes to
-   different sizes and properties of ice particles, observations of clouds
-   across the electromagnetic spectrum should be regarded as complementary
-   rather than exclusive. Combining observations from different sensors that
-   observe clouds at different wavelengths allows relaxing the a priori
-   assumptions on which a cloud retrieval has to rely and and can thus help to
-   decrease retrieval uncertainties.
-
-
-
-   Both, the A-train-based and GPM synergetic retrievals, demonstrate the
-   potential of combining observations at different wavelengths as well as
-   observations from active and passive sensors to improve the measurements of
-   atmospheric ice from space. At the same time, they are also illustrative of a
-   gap in the global observational record of atmospheric ice: Active and passive
-   microwave observations are sensitive only to comparably thick clouds
-   containing large particles, whereas retrievals based on observations in the
-   IR or optical regime can sense only upper parts of moderately thick clouds.
-   Consequently, also the capability of a synergetic retrieval to constrain
-   cloud microphysics is limited to the region of joint sensitivity of the
-   combined observations: For GPM, large, precipitating hydrometeors and for the
-   A-train-based synergetic products the regions of overlap between radar and
-   lidar at the top of clouds.
-
-
-   While several studies so far have addressed the information content
-   of sub-millimeter observations citep:grutzun18,birman17, only one
-   early study on sub-millimeter radiometry citep:evans98 considers the
-   combination with radar observations.
-
-   The aim of this study is to analyze the potential of combined
-   sub-millimeter and active and passive microwave observations for the retrieval of
-   ice clouds. Furthermore, the technical feasibility of such retrievals will be
-   demonstrated by presenting a variational retrieval algorithm which is applied to
-   retrieve cloud properties from simulated observations of cloud scenes from
-   high-resolution climate model data.
-
-
-* Methods
+* Methods and data
 
    As stated above, the aim of this study is two-fold: Firstly, to investigate
    potential synergies between sub-millimeter and active and passive microwave
@@ -212,6 +152,8 @@
    the TESSEM sea-surface emissivity model. Polarization is neglected in all
    simulations performed in this study.
    
+** Simulated sensors
+
 ** Reference cloud scenes
 
     As test scenes for the cloud retrieval, high-resolution climate model data

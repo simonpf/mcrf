@@ -121,7 +121,10 @@ liquid.retrieve_second_moment = True
 
 liquid.transformations = [Log10(), Identity()]
 liquid.limits_low = [1e-12, 1e-12]
-cloud_water_a_priori = MaskedRegularGrid(liquid_md_a_priori, points_liquid, liquid_mask, "altitude")
+cloud_water_a_priori = FixedAPriori("cloud_water", -5, liquid_covariance, mask = liquid_mask,
+                                    mask_value = -12)
+cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, points_liquid,
+                                         liquid_mask, "altitude")
 
 ################################################################################
 # Rain particles
