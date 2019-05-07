@@ -30,7 +30,7 @@ observations.add_offset("profile", -offset)
 # Create the data provider.
 #
 
-ip = offset + 300
+ip = offset + 450
 
 data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
@@ -43,7 +43,7 @@ data_provider = ModelDataProvider(99,
 # Define hydrometeors and sensors.
 #
 
-hydrometeors = [ice, rain]
+hydrometeors = [snow, ice, rain]
 sensors      = [lcpr, mwi, ici]
 
 #
