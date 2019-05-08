@@ -22,6 +22,7 @@ import scipy as sp
 import os
 from netCDF4 import Dataset
 from parts.sensor import PassiveSensor, ActiveSensor, PassiveSensor
+from parts.sensor.utils import sensor_properties
 
 ################################################################################
 # Ice cloud imager (ICI).
@@ -39,18 +40,15 @@ class ICI(PassiveSensor):
         nedt(:code:`list`): Noise equivalent temperature differences for the
             channels in :code:`channels`.
     """
-    channels = np.array([1.749100000000000e+11,
-                         1.799100000000000e+11,
-                         1.813100000000000e+11,
-                         2.407000000000000e+11,
-                         3.156500000000000e+11,
-                         3.216500000000000e+11,
-                         3.236500000000000e+11,
-                         4.408000000000000e+11,
-                         4.450000000000000e+11,
-                         4.466000000000000e+11,
-                         6.598000000000000e+11])
-
+    center_frequencies = np.array([183.31, 243, 325.15, 448.0, 664.0]) * 1e9
+    sidebands = [np.array([2.0, 3.4, 7.0]) * 1e9,
+                 np.array([2.5]) * 1e9,
+                 np.array([9.5, 3.5, 1.5]) * 1e9,
+                 np.array([7.2, 3.0, 1.4]) * 1e9,
+                 np.array([4.2]) * 1e9]
+    channels, sensor_response = sensor_properties(center_frequencies,
+                                                  sidebands,
+                                                  order = "positive")
     nedt = np.array([0.8, 0.8, 0.8,       # 183 GHz
                      0.7 * np.sqrt(0.5),  # 243 GHz
                      1.2, 1.3, 1.5,       # 325 GHz
@@ -79,9 +77,11 @@ class ICI(PassiveSensor):
         if channel_indices is None:
             channels  = ICI.channels
             self.nedt = ICI.nedt
+            self.sensor_response = ICI.sensor_response
         else:
             channels  = ICI.channels[channel_indices]
             self.nedt = self.nedt[channel_indices]
+            self.sensor_response = ICI.sensor_response[channel_indices, channel_indices]
         super().__init__(name, channels, stokes_dimension = stokes_dimension)
 
 ################################################################################
@@ -170,59 +170,6 @@ class MWI(PassiveSensor):
 # Hamp Passive
 ################################################################################
 
-def sensor_properties(center_frequencies, offsets, order = "negative"):
-
-    i = 0 # output index, increased only for <order> offsets.
-    j = 0 # f_grid index, increased for each offset
-
-    f_grid = []
-    sr_data = []
-    sr_i    = []
-    sr_j    = []
-    ci = 0
-
-    for f, ofs in zip(center_frequencies, offsets):
-        ofs.sort()
-
-        nfs = len(ofs)
-
-        for i, o in enumerate(ofs[::-1]):
-            if o > 0.0:
-                f_grid  += [f - o]
-                sr_data += [0.5]
-                sr_j    += [j]
-                if order == "negative":
-                    sr_i    += [ci + i]
-                else:
-                    sr_i += [ci + nfs - 1 - i]
-                j += 1
-
-        if ofs[0] == 0.0:
-            f_grid  += [f]
-            sr_data += [1.0]
-            sr_j    += [j]
-            if order == "negative":
-                sr_i += [ci + i]
-            else:
-                sr_i += [ci]
-            j += 1
-
-        for i, o in enumerate(ofs):
-            if o > 0.0:
-                f_grid  += [f + o]
-                sr_data += [0.5]
-                sr_j    += [j]
-                if order == "negative":
-                    sr_i    += [ci + nfs - 1 - i]
-                else:
-                    sr_i += [ci + i]
-                j += 1
-
-        ci += nfs
-    sensor_response = sp.sparse.coo_matrix((sr_data, (sr_i, sr_j)))
-
-    return np.array(f_grid), sensor_response
-
 class HampPassive(PassiveSensor):
 
     center_frequencies = np.array([22.24, 23.04, 23.84, 25.44, 26.24, 27.84, 31.40,
@@ -231,7 +178,9 @@ class HampPassive(PassiveSensor):
     sidebands = [np.array([0.0]) * 1e9] * 15 \
                 + [np.array([1.4, 2.3, 4.2, 8.5]) * 1e9] \
                 + [np.array([0.6,  1.5,  2.5, 3.5,  5.0,  7.5, 12.5]) * 1e9]
-    channels, sr = sensor_properties(center_frequencies, sidebands, order = "positive")
+    channels, sensor_reponse = sensor_properties(center_frequencies,
+                                                 sidebands,
+                                                 order = "positive")
 
     _nedt = np.array([0.1] * 7 + [0.2] * 7 + [0.25] + [0.6] * 4 + [0.6] * 7)
 
@@ -245,7 +194,7 @@ class HampPassive(PassiveSensor):
         self.sensor_response_f    = self.f_grid[:-11]
         self.sensor_response_pol  = self.f_grid[:-11]
         self.sensor_response_dlos = self.f_grid[:-11, np.newaxis]
-        self.sensor_response = HampPassive.sr
+        self.sensor_response = HampPassive.sensor_response
         self.sensor_f_grid   = self.f_grid[:-11]
 
     @property
@@ -265,7 +214,9 @@ class Ismar(PassiveSensor):
                np.array([1.5, 3.5, 9.5]) * 1e9,
                np.array([4.2]) * 1e9]
 
-    channels, sr = sensor_properties(center_frequencies, offsets, order = "positive")
+    channels, sensor_response = sensor_properties(center_frequencies,
+                                                  offsets,
+                                                  order = "positive")
 
     _nedt = np.array(10 * [2.0])
 
@@ -281,7 +232,7 @@ class Ismar(PassiveSensor):
         self.sensor_response_pol  = self.f_grid[:10]
         self.sensor_response_dlos = self.f_grid[:10, np.newaxis]
 
-        self.sensor_response = Ismar.sr
+        self.sensor_response = Ismar.sensor_response
         self.sensor_f_grid   = self.f_grid[:10]
 
 
@@ -361,7 +312,7 @@ class RastaRadar(ActiveSensor):
 #
 
 ici = ICI(stokes_dimension = 1)
-ici.sensor_line_of_sight = np.array([[135.0]])
+ici.sensor_line_of_sight = np.array([[132.0]])
 ici.sensor_position = np.array([[600e3]])
 ici.nedt = ICI.nedt
 
@@ -370,11 +321,11 @@ ici.nedt = ICI.nedt
 #
 
 mwi = MWI(channel_indices = list(range(7, 18)), stokes_dimension = 1)
-mwi.sensor_line_of_sight = np.array([[135.0]])
+mwi.sensor_line_of_sight = np.array([[132.0]])
 mwi.sensor_position = np.array([[600e3]])
 
 mwi_full = MWI(stokes_dimension = 1)
-mwi_full.sensor_line_of_sight = np.array([[135.0]])
+mwi_full.sensor_line_of_sight = np.array([[132.0]])
 mwi_full.sensor_position = np.array([[600e3]])
 
 #
