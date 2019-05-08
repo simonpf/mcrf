@@ -43,11 +43,11 @@ ice_covariance = Diagonal(1, mask = ice_mask, mask_value = 1e-12)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance, mask = ice_mask, mask_value = 2)
 ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 2, ice_mask, "altitude")
 
-points_dm = 6
-ice_covariance  = Diagonal(400e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
+points_dm = 5
+ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
 ice_covariance  = SpatialCorrelation(ice_covariance, 4e3)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance, mask = ice_mask, mask_value = 1e-6)
-ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori, 7, ice_mask)
+ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori, points_dm, ice_mask)
 
 ice = Hydrometeor("ice",
                   D14NDmIce(),
@@ -122,7 +122,7 @@ liquid.retrieve_second_moment = True
 liquid.transformations = [Log10(), Identity()]
 liquid.limits_low = [1e-12, 1e-12]
 cloud_water_a_priori = FixedAPriori("cloud_water", -5, liquid_covariance, mask = liquid_mask,
-                                    mask_value = -12)
+                                    mask_value = -18)
 cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, points_liquid,
                                          liquid_mask, "altitude")
 

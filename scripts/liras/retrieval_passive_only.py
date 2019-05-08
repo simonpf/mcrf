@@ -83,7 +83,7 @@ data_provider.add(observations)
 # Run the retrieval.
 #
 
-retrieval = CloudRetrieval(hydrometeors, sensors, data_provider, include_cloud_water = False)
+retrieval = CloudRetrieval(hydrometeors, sensors, data_provider, include_cloud_water = True)
 retrieval.setup()
 
 
