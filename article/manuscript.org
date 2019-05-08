@@ -4,6 +4,7 @@
 #+OPTIONS: toc:nil
 #+LaTeX_HEADER: \usepackage{natbib}
 #+LaTeX_HEADER: \usepackage{siunitx}
+#+LaTeX_HEADER: \usepackage{subcaption}
 
   
 * Introduction
@@ -24,14 +25,31 @@
    Ultimately, this insufficiency is rooted in the large variability of
    concentrations, shapes and sizes in which ice in the atmosphere occurs,
    making it very difficult to accurately determine bulk-properties such
-   as mass or number density using remote observations from a single region
-   of the electromagnetic spectrum.
+   as mass or number density using remote sensing techniques.
 
-   Unarguably, the A-train satellite constellation, that comprises several
-   active and passive sensors observing the Earth only few minutes apart, has
-   lead to great advances in our ability to observe atmospheric ice at global
-   scale. In particular, the CloudSat citep:stephens02 mission carrying the
-   Cloud Profiling Radar (CPR, cite:tanelli08) has delivered unprecedented
+   The sensitivity of a remote sensing system to ice particles of given size is
+   determined mainly by its observing frequencies. The interaction of radiation
+   with ice particles is strongest for sizes roughly equal to the wavelength
+   $\lambda$ of the radiation but decreases rapidly for smaller sizes. On the
+   other hand, particles larger than one wavelength interact with the radiation
+   strong enough that their presence quickly leads to saturation of the signal
+   and thus loss of sensitivity inside and at the bottom of clouds.
+
+   Since radiation at different frequencies is sensitive to ice crystals of
+   different sizes, combining observations from across the electromagnetic
+   spectrum can improve retrievals, allowing a larger part of the ice to be
+   actively sensed as opposed to inferred based on a priori assumptions on the
+   distribution of particle sizes. Even the combination of different types of
+   observations at similar wavelengths, for example active and passive, can
+   potentially improve a retrieval by providing additional information on the
+   background state of the atmosphere.
+
+   Of recent satellite missions that observe clouds, the A-train satellite
+   constellation is certainly the most prominent. The constellation comprises
+   several active and passive sensors observing the Earth only few minutes apart
+   and has led to great advances in our ability to observe atmospheric ice at
+   global scale. In particular, the CloudSat citep:stephens02 mission carrying
+   the Cloud Profiling Radar (CPR, cite:tanelli08) has delivered unprecedented
    observations of the vertical distribution of ice in the atmosphere
    citep:austin09. Yet still, even the vertically resolved observations from a
    cloud radar possess only limited sensitivity to small ice particles and are
@@ -54,22 +72,13 @@
    the passive-only precipitation profile retrievals from the other passive
    radiometers in the constellation citep:kummerow15.
 
-   The sensitivity of a remote sensing system to ice particles is determined
-   mainly by its observing frequencies. The interaction of radiation with ice
-   particles is strongest for sizes roughly equal to the wavelength $\lambda$ of
-   the radiation but decreases rapidly for smaller sizes. On the other hand,
-   particles that larger are larger than the wavelength of the radiation
-   interact with the radiation strong enough that their presence quickly leads
-   to saturation of the signal and thus loss of sensitivity inside and at the
-   bottom of clouds.
-
-   Hence, by virtue of their observing frequencies, the combined A-train
-   products mentioned above and GPM essentially measure different types of
-   atmospheric ice. CloudSat CPR observations, when combined with observations
-   from the IR and optical regime ($\lambda < \SI{10}{\micro \meter}$) are best
-   suited for the observation of comparably small, non-precipitating ice
-   particles, typically referred to as cloud ice. The passive radiometers of the
-   GPM constellation, are limited in their sensitivity to large, precipitating
+   By virtue of their observing frequencies, the combined A-train products
+   mentioned above and GPM essentially measure different types of atmospheric
+   ice. CloudSat CPR observations, when combined with observations from the IR
+   and optical regime ($\lambda < \SI{10}{\micro \meter}$) are best suited for
+   the observation of comparably small, non-precipitating ice particles,
+   typically referred to as cloud ice. The passive radiometers of the GPM
+   constellation, are limited in their sensitivity to large, precipitating
    particles due to their limitation to microwave frequencies at and below
    $\SI{187}{\giga \hertz}$ ($\lambda < \SI{16}{\milli \meter}$).
 
@@ -77,23 +86,17 @@
    of meteorological, operational, polar-orbiting satellites (MetOp SG) planned
    from 2022, a new frequency range will become available to study ice in the
    troposphere. ICI will provide observations at 22 channels ranging from $187$
-   to $\SI{664}{\giga \hertz}$ in frequency, and thus close the gap between
+   to $\SI{664}{\giga \hertz}$ in frequency ($\SI{16}{\milli \meter} \leq
+   \lambda \leq \SI{0.45}{\milli \meter}), and thus close the gap between
    observations in the traditional microwave region on the one hand and IR and
    optical observation on the other.
-
-   Observations at sub-millimeter wavelengths, i.e. frequencies greater that
-   $\SI{300}{\giga \hertz}$, have the advantage that they provide higher
-   sensitivity to small ice particles as well as their distribution and shape
-   citep:evans98 . At the same time, sub-millimeter observations are able to
-   sense ice particles lower in the atmospheric column, where infrared and
-   optical observations are sensitive only to the upper part of the cloud.
 
    Both, the A-train-based and GPM synergetic retrievals, demonstrate the
    potential of combining observations at different wavelengths as well as
    observations from active and passive sensors to improve the measurements of
    atmospheric ice from space. With the upcoming launch of ICI on board the
    MetOpSG satellites a new frequency range will become available to observe ice
-   in the atmosphere and consequently new opportunities for synergistic
+   in the atmosphere and with that new opportunities for synergistic
    retrievals combining sub-millimeter observations with observations from other
    domains of the electromagnetic spectrum.
 
@@ -103,9 +106,9 @@
    combination with radar observations.
 
    In this study, we set out to investigate the potential of synergistic
-   retrievals that combine ICI observations with that of a CloudSat-type cloud
+   retrievals that combine ICI observations with that of a CPR-type cloud
    radar and additional passive microwave channels from the Microwave Imager
-   (MWI), that will be flown together with ICI. In particular, we aim to address
+   (MWI), that will be flown together with ICI. In particular, we address
    the question to which extent complementary information content of the combined
    observations can help to constrain cloud microphysics. Furthermore, the
    technical feasibility of such retrievals is demonstrated by presenting a
@@ -116,20 +119,66 @@
 
 * Methods and data
 
-   As stated above, the aim of this study is two-fold: Firstly, to investigate
-   potential synergies between sub-millimeter and active and passive microwave
-   observations and, secondly, to develop a synergetic retrieval algorithm based
-   on the findings from the first part. The principal tool used for this are
-   radiative transfer (RT) simulations. As there are currently no comparable
-   space- or air-borne campaigns providing combined radar and passive and
-   microwave and sub-millimeter observations, RT simulations provide the only
-   means to study the potential of such combined observations. In addition to
-   that, radiative transfer simulations have the advantage of providing full
-   control over the simulated atmospheric state and thus allow a more
-   fine-grained analysis of the observations' information content and retrieval
-   performance.
+  This study aims to investigate the potential of synergistic retrievals of ice
+  hydrometeors using observations from the ICI and MWI passive radiometers
+  combined with a hypothesized W-band cloud radar. For this, cloud scenes from a
+  high-resolution climate model are used to produce synthetic observations using
+  radiative transfer simulations. The combined cloud retrieval algorithm is then
+  applied to the synthetic observations and results compared to the reference
+  cloud scenes.
 
-** Software
+  This section introduces the reference cloud scenes and the radiative transfer
+ code used to generate the synthetic observations. This is followed by a
+ description of the assumed sensor setup and the cloud retrieval algorithm.
+
+** Reference cloud scenes
+
+    As test scenes for the cloud retrieval, high-resolution climate model data
+    from the Global Environmental Multiscale Model (GEM, cite:cote98) are used.
+    The scenes have been produced for a validation campaign for the upcoming
+    EarthCare satellite mission and can thus be expected to represent clouds
+    with a degree of realism that is sufficient for the development and
+    evaluation of a cloud retrieval algorithm. The use of model scenes as test
+    data has the advantage of providing full knowledge and control of the true
+    atmospheric state and thus allow for accurate characterization of retrieval
+    performance. An overview over the two test scenes that will be used to test
+    the retrieval is given in Figure \ref{fig:overview}.
+
+    \begin{figure}
+    \centering
+    \includegraphics[width = \textwidth]{../plots/scene_overview.png}
+    \caption{The distribution of total hydrometeor mass content in the two
+    cloud scenes used to test the retrieval. Colored lines show the
+     $m = 10^{-5} \SI{}{\kg \per \meter \cubed}$ contour for different
+     hydrometeor species.}
+    \label{fig:overview}
+    \end{figure}
+
+    The GEM model uses the Milbrandt-Yau two-moment scheme citep:milbrandtyau05
+    to predict distributions of liquid and frozen particles in the atmosphere.
+    Clouds and precipitation are represented using 6 different hydrometeor
+    classes: two liquid (rain and liquid cloud particles) and four
+    frozen types (cloud ice, snow, hail and graupel). The bulk-microphysics
+    scheme used in the model predicts number and mass density for each of the
+    hydrometeor species. From the number and mass concentrations the full
+    particle size distribution (PSD) can be prognosed using a species-dependent
+    parametrization and mass-size relationship. To visualize the microphysical
+    assumptions for the frozen hydrometeors, radomly-drawn realizations of
+    particle size distributions from the test scenes together with
+    the particle shapes are shown in Figure \ref{fig:gem_psds}.
+
+    \begin{figure}
+    \centering
+    \includegraphics[width = \textwidth]{../plots/gem_hydrometeors.png}
+    \caption{Realizations of particle size distributions from the cloud scenes used in
+    this study. Grey curves show 100 particle size distributions drawn randomly from
+    grid points with a mass concentration higher than $10^{-6}$. Colored curves show the
+    PSD for the prognosed for the mean of the 100 randomly drawn number and mass
+    concentrations.}
+    \label{fig:gem_psds}
+    \end{figure}
+
+** Radiative transfer simulations
 
    Version 2.3.1243 of the Atmospheric Radiative Transfer Simulator (ARTS,
    cite:arts18) is used for all simulations presented in this study. ARTS has
@@ -152,96 +201,171 @@
    the TESSEM sea-surface emissivity model. Polarization is neglected in all
    simulations performed in this study.
    
-** Simulated sensors
 
-** Reference cloud scenes
+** Sensor configuration
+\label{sec:sensors}
+   
+  For the simulated observations, we assume perfectly co-located observations of
+  a W-band cloud radar combined with observations from the ICI and MWI
+  radiometers. The beams from all three instruments channels are assumed to be
+  perfectly coincident pencil beams.
 
-    As test scenes for the cloud retrieval, high-resolution climate model data
-    from the Global Environmental Multiscale Model (GEM, cite:cote98) are used.
-    The scenes have been produced for the EarthCare validation campaign and can
-    thus be expected to represent clouds with a degree of realism that is
-    sufficient for the development and evaluation of a cloud retrieval
-    algorithm. The use of model scenes as test data has the advantage of
-    providing full knowledge and control of the true atmospheric state and thus
-    allow for accurate characterization of retrieval performance. An overview
-    over the two test scenes that will be used to test the retrieval is given
-    in Figure \ref{fig:overview}.
+  ICI observations are simulated by performing a single, non-polarized radiative
+  transfer simulation located at the center of each side band and averaging the
+  resulting brightness temperatures. Only a single simulation is performed for
+  channels with multiple polarizations but to compensate the noise of the
+  corresponding channel is reduced by a factor of $\sqrt{2}$.
+
+  MWI observations are simulated in a similar manner, but using only channels
+  with frequencies larger than or equal to $\SI{89}{\giga \hertz}$, due the very
+  large footprint of the lower-frequency channels.
+
+  For both, MWI and ICI, an off-nadir angle of $\SI{48}{\degree}$ is assumed. 
+  The frequencies of the channels simulated for ICI and MWI are presented in
+  table \ref{tab:channels}.
+
+      \begin{table}[h!]
+      \caption{Simulated channels of the MWI and ICI radiometers.}
+      \label{tab:channels}
+      \begin{subtable}[t]{0.45\textwidth}
+      \caption{MWI}
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{c|r|r}
+          Channel & Freq. [GHz] & Noise [K]\\
+          \hline
+          MWI-8  & $89$              & $1.1$ \\
+          MWI-9  & $118.75 \pm 3.2$  & $1.3$ \\
+          MWI-10 & $\pm 2.1$         & $1.3$ \\
+          MWI-11 & $\pm 1.4$         & $1.3$ \\
+          MWI-12 & $\pm 1.2$         & $1.3$ \\
+          MWI-13 & $165.5 \pm 0.75$  & $1.3$ \\
+          MWI-14 & $183.31 \pm 7.0$  & $1.2$ \\
+          MWI-15 & $ \pm 6.1$        & $1.2$ \\
+          MWI-16 & $ \pm 4.9$        & $1.2$ \\
+          MWI-17 & $ \pm 3.4$        & $1.2$ \\
+          MWI-18 & $ \pm 2.0$        & $1.3$ \\
+          \end{tabular}%
+          }%
+      \end{subtable}\hfill
+      \begin{subtable}[t]{0.45\textwidth}
+      \caption{ICI}
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{c|r|r}
+          Channel & Freq. [GHz] & Noise [K] \\
+          \hline
+          ICI-1  & $183.31 \pm 7.0$ & $0.8$\\
+          ICI-2  & $       \pm 3.4$ & $0.8$\\
+          ICI-3  & $       \pm 2.0$ & $0.8$\\
+          ICI-4  & $243    \pm 2.5$ & $\frac{0.7}{\sqrt{2}}$\\
+          ICI-5  & $325.15 \pm 9.5$ & $1.2$\\
+          ICI-6  & $       \pm 3.5$ & $1.3$\\
+          ICI-7  & $       \pm 1.5$ & $1.5$\\
+          ICI-8  & $448    \pm 7.2$ & $1.4$\\
+          ICI-9  & $       \pm 3.0$ & $1.6$\\
+          ICI-10 & $       \pm 1.4$ & $2.0$\\
+          ICI-11 & $664    \pm 4.2$ & $\frac{1.6}{\sqrt{2}}$\\
+          \end{tabular}}
+      \end{subtable}
+      \end{table}
+
+     The frequency for the cloud radar is chosen to be $\SI{94}{\giga\hertz}$
+     similar to CloudSat CPR. The vertical resolution is assumed to be
+     $\SI{500}{\meter}$ ranging from $0$ to $\SI{20}{\kilo \meter} in altitude.
+     The minimum sensitivity is assumed to be $-\SI{30}{\deci \bel}\text{Z}$ and
+     the noise at each range gate is assumed independent with standard deviation
+     $0.5$. For simplicity, the same incidence angle as for the passive
+     radiometers is used, assuming the radar observations at nadir can be
+     remapped to the lines of sights of the passive beams.
+
+** Retrieval algorithm
+
+   The proposed 1-dimensional, variational cloud retrieval algorithm uses the
+   optimal estimation formalism developed by cite:rodgers00. This means that the
+   retrieved state $\mathbf{x} \in \mathrm{R}^n$ is determined by fitting a
+   forward model $F : \mathbf{R}^n \rightarrow \mathbf{R}^m$ to a set of
+   observations $\mathbf{y} \in \mathrm{R}^m$. The best fist is determined by
+   minimizing a cost function of the form
+
+    \begin{align}
+    l(\mathbf{x}, \mathbf{y}) \propto
+     \left(\mathbf{F}(\mathbf{x} - \mathbf{y} \right )
+      \mathbf{S}_e^{-1} 
+      \left ( \mathbf{F}(\mathbf{x}) - \mathbf{y} \right)
+    + \left ( \mathbf{x} - \mathbf{x}_a \right )
+     \mathbf{S}^{-1}_a 
+     \left ( \mathbf{x} - \mathbf{x}_a \right ),
+    \end{align}
+
+    which corresponds to the negative log-likelihood of the Bayesian a
+    posteriori distribution of the state $\mathbf{x}$ assuming zero-mean
+    Gaussian measurement error with covariance matrix $\mathbf{S}_e$ and
+    Gaussian a priori distribution with mean $\mathbf{x}_a$ and covariance
+    matrix $\mathbf{S}_a$.
+
+    The joint observation vector $\mathbf{y}$ simply consists of the
+    concatenated observation vectors from each of the instruments:
+
+     \begin{align}
+     \mathbf{y} &= \left [ \begin{array}{c} \mathbf{y}_\text{MWI} \\ 
+     \mathbf{y}_\text{ICI} \\ \mathbf{y}_\text{CPR} \end{array} \right ] 
+     \end{align}
+
+     Measurement errors are assumed to be independently Gaussian-distributed
+     with standard deviations according to the noise characteristics given
+     in Section \ref{sec:sensors}.
+
+    The retrieved atmospheric state $\mathbf{x}$ consists of the distribution
+    of a liquid and a frozen hydrometeor species and atmospheric humidity along
+    a 1-dimensional atmospheric column coincident with antenna beams.
+
+    To represent the distributions of hydrometeors in the atmospheric column the
+    normalized modified gamma distribution approach proposed by cite:delanoe05
+    is used. This means that at each point in the atmospheric column the
+    distribution of a given hydrometeor species is defined by its concentration
+    coefficient $N_0^*$ and corresponding mass-weighted mean size diamter $D_m$.
+    For the shape parameters $\alpha$ and $\beta$ for frozen hydrometeors the
+    same values as in version 2 of the DARDAR-CLOUD product citep:cazenave18 are
+    used. For liquid hydrometeors, the shape parameters are chosen so that they
+    are equivalent to the shape used by the GEM model for rain drops. Figure
+    \ref{psds_retrieval} displays the resulting PSD shapes and corresponding
+    parameter
+    values.
 
     \begin{figure}
     \centering
-    \includegraphics[width = \textwidth]{../plots/scene_overview.png}
-    \caption{The distribution of total hydrometeor mass content in the two
-    cloud scenes used to test the retrieval. Colored lines show the
-     $m = 10^{-5} \SI{}{\kg \per \meter \cubed}$ contour for different
-     hydrometeor species.}
-    \label{fig:overview}
+    \includegraphics[width = 0.5\textwidth]{../plots/psds_retrieval}
+    \caption{PSD parametrizations for frozen and liquid hydrometeors
+     used in the cloud retrieval.}
+    \label{fig:psds_retrieval}
     \end{figure}
 
-    The GEM model uses the Milbrandt-Yau two-moment scheme citep:milbrandtyau05
-    to predict distributions of liquid and frozen particles in the atmosphere.
-    Clouds and precipitation are represented using 6 different hydrometeor
-    classes: two liquid hydrometeor types for rain and liquid cloud particles
-    and four frozen types, representing cloud ice, snow, hail and graupel. The
-    models' bulk-microphysics scheme predicts number and mass density for each
-    the hydrometeor species. From the number and mass concentrations the full
-    particle size distribution can be prognosed using species-specific
-    parametrization and mass-size relationship. To illustrate the models'
-    microphysics scheme radomly-drawn realizations of particle size distributions
-    for the different ice particle species are shown in Figure \ref{fig:gem_psds}.
-
-    \begin{figure}
-    \centering
-    \includegraphics[width = \textwidth]{../plots/gem_hydrometeors.png}
-    \caption{Realizations of particle size distributions from the cloud scenes used in
-    this study. Grey curves show 100 particle size distributions drawn randomly from
-    grid points with a mass concentration higher than $10^{-6}$. Colored curves show the
-    PSD for the prognosed for the mean of the 100 randomly drawn number and mass
-    concentrations.}
-    \label{fig:gem_psds}
-    \end{figure}
-
-
-** Idealized simulations
-
-    This study seeks to determine to what degree cloud microphysics can be
-    constrained using microwave and sub-millimeter observations. As a
-    preliminary study to inform the development of the combined retrieval
-    algorithm, we perform a number of simulations of an idealized, homogeneous
-    cloud layer. The purpose of these simulations is to identify potential
-    synergies as well as limitations of the combined observations. Furthermore,
-    these simulations may help to provide insight into the physical mechanisms
-    enabling the characterization of ice clouds using remote sensing.
+    For frozen hydrometeors, the temperature-dependent a priori mean state
+    is determined using the relation from cite:delanoe14:
     
-    For the analysis of information content, particle mass density and mean size
-    of the homogeneous cloud layer are varied on a regular grid and radar and
-    radiometer observations are simulated. The simulated observations obtained
-    in this way represent the information available to the retrieval algorithm
-    to infer the microphysical properties of the cloud layer. In the reduced,
-    two-dimensional state space of the observed cloud, complementary information
-    content in active and passive observations can be analyzed by comparing
-    isolines of the observed radiative quantities.
+    \begin{align}
+    N_0^* &= \exp (-0.076586 \cdot t + 17.948)
+    \end{align}
+    
+    The a priori state for $D_m$ for frozen hydrometeors is chosen so that the a
+    priori mass density is $10^{-5} \SI{}{\kilo \gram \per \cubic \meter} $
+    For liquid hydrometeors, a fixed value for $N_0^*$ of $10^6\SI[mode =
+    text]{m^{-4}}$ is assumed and the a priori profile for $D_m$ is determined
+    similarly as for frozen hydrometeors
+    
+    As an additional modeling constraint, the retrieval of liquid and frozen
+    hydrometeors are restricted to below and above the melting layer,
+    respectively.
+    
+    
 
-    In a second experiment, the idealized simulations are extended to account
-    for variations in ice particle shape. Several studies have shown that ice
-    particle shape affects observations at sub-millimeter frequencies. Hence, a
-    natural question to ask is to what extent shape information can be inferred
-    from observations. To answer this question, we compare observations of the
-    idealized cloud projected into the plane spanned by the two principal
-    components of the set of simulated observations. Comparison of the
-    sub-spaces traced out by the projected observations for different particle
-    shapes can provide a criterion to compare radiative properties of different
-    particle shapes.
 
-** Cloud retrieval
 
-    A variational retrieval method has been chosen for the combined retrieval
-    algorithm, primarily due to the flexibility of the approach to handle
-    combined observations from multiple sensors. In particular for retrievals
-    based on observation databases, high-dimensional measurement spaces pose a
-    challenge making them unsuitable forthe combined retrieval. Additionally,
-    the optimal estimation framework that is used here also has the advantage of
-    providing tools to diagnose the information content of a retrieval.
+    
 
+
+    point in the atmospheric column hydrometeor distributions are represented
+    
+    
     Several other retrieval algorithms have been developed to retrieve cloud
     properties from sub-millimeter observations
     citep:jimenez03,evans05,buehler12,brath18a. To date, all cloud retrievals
@@ -258,15 +382,6 @@
     most likely atmospheric state $\mathbf{x} \in \mathrm{R}^n$ given an
     observation vector $\mathbf{y} \in \mathrm{R}^m$. The retrieved state
     $\mathbf{x}$ is found by minimizing the negative log-likelihood
-    \begin{align}
-    -l(\mathbf{x}, \mathbf{y}) \propto
-     \left(\mathbf{F}(\mathbf{x} - \mathbf{y} \right )
-      \mathbf{S}_e^{-1} 
-      \left ( \mathbf{F}(\mathbf{x}) - \mathbf{y} \right)
-    + \left ( \mathbf{x} - \mathbf{x}_a \right )
-     \mathbf{S}^{-1}_a 
-     \left ( \mathbf{x} - \mathbf{x}_a \right )
-    \end{align}
     of the observed $\mathbf{y}$ with respect to $\mathbf{x}$. The function $l$
     is the log-likelihood of the Bayesian a posteriori probability of the state
     $\mathbf{x}$ given the observations $\mathbf{y}$ under the assumption of a
@@ -316,35 +431,6 @@
      For the radar, the measurement error at each range gate is assumed
      to be Gaussian with standard deviation of $\SI{1}{\decibel}\text{Z}$.
 
-     \begin{table}[h!]
-     \caption{Simulated channels of the MWI and ICI radiometers used
-      in this study.}\label{tab:channels}.
-     \centering
-     \begin{tabular}{|p{5cm}|r|r|}
-     \hline
-     Channel & Frequency $[\SI{}{\giga\hertz}]$ & Offset $[\SI{}{\giga\hertz}]$ \\
-     \hline
-     \hline
-     MWI-8  & $89$ & --- \\
-     \hline
-     MWI-9, MWI-10, MWI-11, MWI-12  & $118.75$ & $\pm 3.2, \pm 2.1, \pm 1.4, \pm 1.2$ \\
-     \hline
-     MWI-13 & $165.5$ &  $\pm 0.75$ \\
-     \hline
-     MWI-14, MWI-15, MWI-16, MWI-17, MWI-18 & $183.31$ & $\pm 7.0, \pm 6.1, \pm 4.9, \pm 3.4, \pm 2.0$  \\
-     \hline
-     ICI-1, ICI-2, ICI-3 & $183.31$ & $\pm 7.0, \pm 3.4, \pm 2.0$ \\
-     \hline
-     ICI-4 & $243$ & $\pm 2.5$ \\
-     \hline
-     ICI-5, ICI-6, ICI-7 & $325.15$ & $\pm 9.5, \pm 3.5, \pm 1.5$ \\
-     \hline
-     ICI-8, ICI-9, ICI-10 & $448$ & $\pm 7.2, \pm 3.0, \pm 1.4$ \\
-     \hline
-     ICI-11 & $664$ & $\pm 4.2$\\
-     \hline
-     \end{tabular}
-     \end{table}
      
 ** State space
 
