@@ -121,8 +121,8 @@ liquid.retrieve_second_moment = True
 
 liquid.transformations = [Identity(), Identity()]
 liquid.limits_low = [1e-12, 1e-12]
-cloud_water_a_priori = FixedAPriori("cloud_water", 1e-5, liquid_covariance, mask = liquid_mask,
-                                    mask_value = 1e-18)
+cloud_water_a_priori = FixedAPriori("cloud_water", -5, liquid_covariance, mask = liquid_mask,
+                                    mask_value = -18)
 cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, points_liquid,
                                          liquid_mask, "altitude")
 

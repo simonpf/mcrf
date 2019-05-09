@@ -46,9 +46,6 @@ class ICI(PassiveSensor):
                  np.array([9.5, 3.5, 1.5]) * 1e9,
                  np.array([7.2, 3.0, 1.4]) * 1e9,
                  np.array([4.2]) * 1e9]
-    channels, sensor_response = sensor_properties(center_frequencies,
-                                                  sidebands,
-                                                  order = "positive")
     nedt = np.array([0.8, 0.8, 0.8,       # 183 GHz
                      0.7 * np.sqrt(0.5),  # 243 GHz
                      1.2, 1.3, 1.5,       # 325 GHz
@@ -57,7 +54,7 @@ class ICI(PassiveSensor):
 
     def __init__(self,
                  name = "ici",
-                 channel_indices = None,
+                 band_indices = None,
                  stokes_dimension = 1):
         """
         This creates an instance of the ICI sensor to be used within a
@@ -68,21 +65,42 @@ class ICI(PassiveSensor):
             name(:code:`str`): The name of the sensor used within the parts
                 simulation.
 
-            channel_indices(:code:`list`): List of channel indices to be used
-                in the simulation/retrieval.
+            band_indicees(:code:`list`): Indices of the frequency bands to be used.
 
             stokes_dimension(:code:`int`): The stokes dimension to use for
                 the retrievals.
         """
-        if channel_indices is None:
-            channels  = ICI.channels
-            self.nedt = ICI.nedt
-            self.sensor_response = ICI.sensor_response
+        if not band_indices is None:
+            channel_indices = []
+            i = 0
+            for bi in band_indices:
+                for o in ICI.sidebands[bi]:
+                    channel_indices += [i]
+                    i += 1
+
+            center_frequencies = [ICI.center_frequencies[i] for i in band_indices]
+            offsets = [ICI.sidebands[i] for i in band_indices]
+            self.nedt = [ICI.nedt[i] for i in band_indices]
         else:
-            channels  = ICI.channels[channel_indices]
-            self.nedt = self.nedt[channel_indices]
-            self.sensor_response = ICI.sensor_response[channel_indices, channel_indices]
+            center_frequencies = ICI.center_frequencies
+            offsets = ICI.sidebands
+            self.nedt = ICI.nedt
+
+        channels, sensor_response = sensor_properties(center_frequencies, offsets,
+                                                      order = "negative")
         super().__init__(name, channels, stokes_dimension = stokes_dimension)
+        self.sensor_line_of_sight = np.array([[132.0]])
+        self.sensor_position = np.array([[600e3]])
+
+        m = sensor_response.shape[0]
+
+        self.sensor_response_f    = self.f_grid[:m]
+        self.sensor_response_pol  = self.f_grid[:m]
+        self.sensor_response_dlos = self.f_grid[:m, np.newaxis]
+        self.sensor_response = sensor_response
+        self.sensor_f_grid   = self.f_grid[:m]
+
+
 
 ################################################################################
 # Microwave imager (MWI).
@@ -100,24 +118,12 @@ class MWI(PassiveSensor):
         nedt(:code:`list`): The noise equivalent temperature differences for
             the channels in :code:`channels`.
     """
-    channels = np.array([18.7e9,
-                         23.8e9,
-                         31.4e9,
-                         50.3e9,
-                         52.6e9,
-                         53.24e9,
-                         53.75e9,
-                         89.0e9,
-                         115.5503e9,
-                         116.6503e9,
-                         117.3503e9,
-                         117.5503e9,
-                         164.75e9,
-                         176.31e9,
-                         177.21e9,
-                         178.41e9,
-                         179.91e9,
-                         182.01e9])
+    center_frequencies = np.array([18.7, 23.8, 31.4, 50.3, 52.61, 53.24, 53.75, 89.0,
+                                   118.75, 165.5, 183.31]) * 1e9
+    sidebands = [np.array([0.0])] * 8 + \
+                [np.array([1.2, 1.4, 2.1, 3.2]) * 1e9,
+                 np.array([0.75]) * 1e9,
+                 np.array([2.0, 3.4, 4.9, 6.1, 7.0]) * 1e9]
 
     nedt = np.array([0.8 * np.sqrt(0.5), #18 GHz
                      0.7 * np.sqrt(0.5), #24 GHz
@@ -140,31 +146,51 @@ class MWI(PassiveSensor):
 
     def __init__(self,
                  name = "mwi",
-                 channel_indices = None,
+                 band_indices = None,
                  stokes_dimension = 1):
         """
-        Create an MWI instance to be used within a :code:`parts` simulation.
+        This creates an instance of the MWI sensor to be used within a
+        :code:`parts` simulation.
 
         Arguments:
 
-            name(:code:`str`): The name of the sensor to be used within the
-                parts simulation.
+            name(:code:`str`): The name of the sensor used within the parts
+                simulation.
 
-            channel_indices(:code:`list`): List of channel indices to be used
-                for the simulation.
+            band_indicees(:code:`list`): Indices of the frequency bands to be used.
 
-            stokes_dimension(:code:`int`): The Stokes dimension to be used for
-                the simulation.
+            stokes_dimension(:code:`int`): The stokes dimension to use for
+                the retrievals.
         """
-        if channel_indices is None:
-            channels  = MWI.channels
-            self.nedt = MWI.nedt
-        else:
-            channels  = MWI.channels[channel_indices]
-            self.nedt = MWI.nedt[channel_indices]
+        if not band_indices is None:
+            channel_indices = []
+            i = 0
+            for bi in band_indices:
+                for o in MWI.sidebands[bi]:
+                    channel_indices += [i]
+                    i += 1
 
-        self.channels = channels
+            center_frequencies = [MWI.center_frequencies[i] for i in band_indices]
+            offsets = [MWI.sidebands[i] for i in band_indices]
+            self.nedt = [MWI.nedt[i] for i in band_indices]
+        else:
+            center_frequencies = MWI.center_frequencies
+            offsets = MWI.sidebands
+            self.nedt = MWI.nedt
+
+        channels, sensor_response = sensor_properties(center_frequencies, offsets,
+                                                      order = "positive")
         super().__init__(name, channels, stokes_dimension = stokes_dimension)
+        self.sensor_line_of_sight = np.array([[132.0]])
+        self.sensor_position = np.array([[600e3]])
+
+        m = sensor_response.shape[0]
+
+        self.sensor_response_f    = self.f_grid[:m]
+        self.sensor_response_pol  = self.f_grid[:m]
+        self.sensor_response_dlos = self.f_grid[:m, np.newaxis]
+        self.sensor_response = sensor_response
+        self.sensor_f_grid   = self.f_grid[:m]
 
 ################################################################################
 # Hamp Passive
@@ -312,15 +338,12 @@ class RastaRadar(ActiveSensor):
 #
 
 ici = ICI(stokes_dimension = 1)
-ici.sensor_line_of_sight = np.array([[132.0]])
-ici.sensor_position = np.array([[600e3]])
-ici.nedt = ICI.nedt
 
 #
 # MWI
 #
 
-mwi = MWI(channel_indices = list(range(7, 18)), stokes_dimension = 1)
+mwi = MWI(band_indices = [7, 8, 9, 10], stokes_dimension = 1)
 mwi.sensor_line_of_sight = np.array([[132.0]])
 mwi.sensor_position = np.array([[600e3]])
 
