@@ -5,6 +5,7 @@
 #+LaTeX_HEADER: \usepackage{natbib}
 #+LaTeX_HEADER: \usepackage{siunitx}
 #+LaTeX_HEADER: \usepackage{subcaption}
+#+LaTeX_HEADER: \DeclareMathOperator\arctanh{arctanh}
 
   
 * Introduction
@@ -194,7 +195,7 @@
    demonstrating ARTS' capability produce realistic simulations of clouds
    observed at microwave frequencies.
    
-   For the simulation of passive radiances a hybrid solver is used that combines
+   For the simulation of passive radiances, a hybrid solver is used that combines
    the DISORT scattering solver to simulate scattering interaction of radiation
    with cloud particles and ARTS built-in line-by-line solver. Simulations
    are performed assuming an ocean surface with emissivities calculated using
@@ -205,26 +206,26 @@
 ** Sensor configuration
 \label{sec:sensors}
    
-  For the simulated observations, we assume perfectly co-located observations of
-  a W-band cloud radar combined with observations from the ICI and MWI
-  radiometers. The beams from all three instruments channels are assumed to be
-  perfectly coincident pencil beams.
+  The sensor configuration for the combined retrieval consists of a W-band cloud
+  radar and the ICI and MWI radiometers. To simplify the modeling of the
+  radiative transfer, the beams from all three instruments channels are assumed
+  to be perfectly coincident pencil beams.
 
   ICI observations are simulated by performing a single, non-polarized radiative
   transfer simulation located at the center of each side band and averaging the
   resulting brightness temperatures. Only a single simulation is performed for
-  channels with multiple polarizations but to compensate the noise of the
+  channels with multiple polarizations, but to compensate the noise of the
   corresponding channel is reduced by a factor of $\sqrt{2}$.
 
   MWI observations are simulated in a similar manner, but using only channels
   with frequencies larger than or equal to $\SI{89}{\giga \hertz}$, due the very
   large footprint of the lower-frequency channels.
 
-  For both, MWI and ICI, an off-nadir angle of $\SI{48}{\degree}$ is assumed. 
-  The frequencies of the channels simulated for ICI and MWI are presented in
-  table \ref{tab:channels}.
+  For both, MWI and ICI, an off-nadir viewing angle of $\SI{48}{\degree}$ is
+  assumed. The frequencies of the channels simulated for ICI and MWI are
+  presented in table \ref{tab:channels}.
 
-      \begin{table}[h!]
+      \begin{table}[hbpt]
       \caption{Simulated channels of the MWI and ICI radiometers.}
       \label{tab:channels}
       \begin{subtable}[t]{0.45\textwidth}
@@ -269,13 +270,13 @@
       \end{table}
 
      The frequency for the cloud radar is chosen to be $\SI{94}{\giga\hertz}$
-     similar to CloudSat CPR. The vertical resolution is assumed to be
-     $\SI{500}{\meter}$ ranging from $0$ to $\SI{20}{\kilo \meter} in altitude.
-     The minimum sensitivity is assumed to be $-\SI{30}{\deci \bel}\text{Z}$ and
-     the noise at each range gate is assumed independent with standard deviation
-     $0.5$. For simplicity, the same incidence angle as for the passive
-     radiometers is used, assuming the radar observations at nadir can be
-     remapped to the lines of sights of the passive beams.
+     similar to CloudSat CPR with a vertical resolution of $\SI{500}{\meter}$
+     ranging from $0$ to $\SI{20}{\kilo \meter}$ in altitude. The minimum
+     sensitivity is assumed to be $-\SI{30}{\deci \bel}\text{Z}$ and the noise
+     at each range gate is assumed independent with standard deviation $0.5$.
+     For simplicity, the same incidence angle as for the passive radiometers is
+     used, assuming the radar observations at nadir can be remapped to the lines
+     of sights of the passive beams.
 
 ** Retrieval algorithm
 
@@ -283,7 +284,7 @@
    optimal estimation formalism developed by cite:rodgers00. This means that the
    retrieved state $\mathbf{x} \in \mathrm{R}^n$ is determined by fitting a
    forward model $F : \mathbf{R}^n \rightarrow \mathbf{R}^m$ to a set of
-   observations $\mathbf{y} \in \mathrm{R}^m$. The best fist is determined by
+   observations $\mathbf{y} \in \mathrm{R}^m$. The best fit is determined by
    minimizing a cost function of the form
 
     \begin{align}
@@ -302,7 +303,7 @@
     Gaussian a priori distribution with mean $\mathbf{x}_a$ and covariance
     matrix $\mathbf{S}_a$.
 
-    The joint observation vector $\mathbf{y}$ simply consists of the
+    The retrieved joint observation vector $\mathbf{y}$ consists of the
     concatenated observation vectors from each of the instruments:
 
      \begin{align}
@@ -316,20 +317,19 @@
 
     The retrieved atmospheric state $\mathbf{x}$ consists of the distribution
     of a liquid and a frozen hydrometeor species and atmospheric humidity along
-    a 1-dimensional atmospheric column coincident with antenna beams.
+    a 1-dimensional atmospheric column coincident with the antenna beams.
 
     To represent the distributions of hydrometeors in the atmospheric column the
     normalized modified gamma distribution approach proposed by cite:delanoe05
-    is used. This means that at each point in the atmospheric column the
-    distribution of a given hydrometeor species is defined by its concentration
-    coefficient $N_0^*$ and corresponding mass-weighted mean size diamter $D_m$.
-    For the shape parameters $\alpha$ and $\beta$ for frozen hydrometeors the
-    same values as in version 2 of the DARDAR-CLOUD product citep:cazenave18 are
-    used. For liquid hydrometeors, the shape parameters are chosen so that they
-    are equivalent to the shape used by the GEM model for rain drops. Figure
-    \ref{psds_retrieval} displays the resulting PSD shapes and corresponding
-    parameter
-    values.
+    is used. This means that at each grid point the distribution of a given
+    hydrometeor species is defined by its concentration coefficient $N_0^*$ and
+    corresponding mass-weighted mean size diamter $D_m$. For the shape
+    parameters $\alpha$ and $\beta$ for frozen hydrometeors the same values as
+    in version 2 of the DARDAR-CLOUD product citep:cazenave18 are used. For
+    liquid hydrometeors, the shape parameters are chosen so that they are
+    equivalent to the shape used by the GEM model for rain drops. Figure
+    \ref{fig:psds_retrieval} displays the resulting PSD shapes and corresponding
+    parameter values.
 
     \begin{figure}
     \centering
@@ -347,157 +347,102 @@
     \end{align}
     
     The a priori state for $D_m$ for frozen hydrometeors is chosen so that the a
-    priori mass density is $10^{-5} \SI{}{\kilo \gram \per \cubic \meter} $
-    For liquid hydrometeors, a fixed value for $N_0^*$ of $10^6\SI[mode =
-    text]{m^{-4}}$ is assumed and the a priori profile for $D_m$ is determined
-    similarly as for frozen hydrometeors
+    priori mass density is equal to 
+    $10^{-5} \SI{}{\kilo \gram \per \cubic \meter}$
+    For liquid hydrometeors, a fixed value for $N_0^*$ of
+    $10^6\si{\raiseto{4} \meter}$ is assumed and the a priori profile for $D_m$
+    is determined similarly as for frozen hydrometeors
     
-    As an additional modeling constraint, the retrieval of liquid and frozen
-    hydrometeors are restricted to below and above the melting layer,
-    respectively.
+    As additional constraints, the retrieval of frozen hydrometeors is
+    restricted to the region between the $\SI{0}{\celsius}$ -isotherm and
+    tropopause and retrieval of liquid hydrometeors to below the
+    $\SI{0}{\celsius}$ isotherm.
     
+    Relative humidity in the atmospheric column is retrieved applying an
+    inverse hyperbolic tangens transformation of the form:
     
+    \begin{align}
+    x = \arctanh(\frac{2 \phi}{1.1} - 1.0)
+    \end{align}
 
-
-
+    The transformation restricts the retrieved relative humidity values to
+    the physical range of $[0.0, 1.1]$. 
     
-
-
-    point in the atmospheric column hydrometeor distributions are represented
+    The a priori distributions of the 5 retrieval quantities ($N_0^*$ and $D_m$
+    for frozen and liquid hydrometeors and relative humidity $\phi$) are assumed
+    to be independent so that the overall a priori covariance matrix
+    $\mathbf{S}_a$ has block-diagonal structure. Within each block, spatial
+    correlations between grid points are assumed to be exponentially decaying.
+    Hence, the correlation between grid points $i$ and $j$ of the values of the
+    retrieval quantity $q$ are computed as
     
+    \begin{align}
+    \left ( \mathbf{S}_{a,q} \right )_{i, j} &= \sigma_{q,i} \sigma_{q,j}
+     \cdot \exp ( \frac{d(i, j)}{l_q}),
+    \end{align}
+    where $\sigma_{q, i}$ is the a priori uncertainty assumed for retrieval
+    quantity $q$ at grid point $i$, $d(i, j)$ the distance between the grid
+    points and $l_q$ the quantity-specific correlation length. The assumed
+    a priori uncertainties and correlation lengths for the retrieval quantities
+    are summarized in Table \ref{tab:a_priori}.
+
+
+      \begin{table}[h!]
+      \caption{A priori uncertainties and correlation
+       lengths used in the retrieval.}
+       \centering
+      \label{tab:a_priori}
+          \begin{tabular}{c|r|r}
+           Quantity $q$ & $\sigma_q$ & $l_q$ [km]\\
+          \hline
+          $\log(N_{0, \text{frozen}}^*)$    & $1$                       & $2$ \\
+          $D_{m, \text{ice}}$               & $\SI{200}{\micro \meter}$ & $2$ \\
+          $\log(N_{0, \text{liquid}}^*)$    & $1                      $ & $2$ \\
+          $D_{m, \text{liquid}}$            & $\SI{500}{\micro \meter}$ & $2$ \\
+          $\arctanh(\frac{2 \cdot \phi}{1.1} - 1.0)$ & $2$                       & $2$ \\
+          \end{tabular}
+      \end{table}
+
+  As reference for the combined retrieval, also a passive-only retrieval is
+  performed. This retrieval uses the combined retrieval with the exception that
+  instead of regularizing the retrieval using spatial correlations, the vertical
+  resolution of the retrieval grids is reduced. For ice, $N_0^*$ and *$D_m$ are
+  retrieved on two and five equally spaced points between
+  $\SI{0}{\celsius}$ -isotherm and troposphere, respectively. For liquid
+  hydormeteors, the retrieval grids for $N_0$ and $D_m$ are reduced to three
+  equally spaced points between surface and $\SI{0}{\celsius}$ -isotherm.
+  Relative humidity is retrieved on 10 grid points between surface and
+  tropopause.
     
-    Several other retrieval algorithms have been developed to retrieve cloud
-    properties from sub-millimeter observations
-    citep:jimenez03,evans05,buehler12,brath18a. To date, all cloud retrievals
-    developed for the sub-millimeter domain rely on databases of simulated
-    observations. One reason for this are the high computational costs of
-    performing radiative transfer simulations of clouds in the sub-millimeter
-    domain. Only with recent developments of the ARTS RT code, it has become
-    possible to compute approximate Jacobians of the observation operator with
-    sufficiently low computational effort to make variational retrievals
-    tractable.
-
-    The variational retrieval algorithm developed for this study uses the
-    optimal estimation method (OEM) developed by cite:rodgers00 to determine a
-    most likely atmospheric state $\mathbf{x} \in \mathrm{R}^n$ given an
-    observation vector $\mathbf{y} \in \mathrm{R}^m$. The retrieved state
-    $\mathbf{x}$ is found by minimizing the negative log-likelihood
-    of the observed $\mathbf{y}$ with respect to $\mathbf{x}$. The function $l$
-    is the log-likelihood of the Bayesian a posteriori probability of the state
-    $\mathbf{x}$ given the observations $\mathbf{y}$ under the assumption of a
-    Gaussian a priori distribution $\mathcal{N}(\mathbf{x}_a, \mathbf{S}_x)$ and
-    Gaussian measurement errors $\mathcal{N}(\mathbf{0}, \mathbf{S}_e)$.
-
-* Retrieval formulation
-
-    To arrive at the full formulation of the retrieval algorithm it necessary to
-    specify the form of the measurement vector $\mathbf{y}$ and associated
-    uncertainties $\mathbf{S}_e$, the form of the state vector $\mathbf{x}$ and
-    associated uncertainties $\mathbf{S}_a$ as well as the forward model $F$
-    that is used to simulate observations corresponding to a given atmospheric
-    state.
-    
-** Observations
-     
-     The observations used in the retrieval are simulated observations from two
-     passive radiometers similar to the ICI and MWI radiometers combined with
-     those from a W-band cloud radar similar to CloudSat CPR.
-
-     The combined observation vector $\mathbf{y}$ is obtained by simple
-     concatenation of the single-instrument observations $\mathbf{y}_\text{MWI},
-     \mathbf{y}_\text{ICI}, \mathbf{y}_{CPR}$:
-
-     \begin{align}
-     \mathbf{y} &= \left [ \begin{array}{c} \mathbf{y}_\text{MWI} \\ 
-     \mathbf{y}_\text{ICI} \\ \mathbf{y}_\text{CPR} \end{array} \right ] 
-     \end{align}
-
-     We will also perform retrievals using only radar observations and
-     using only the passive radiometer observations, respectively. Those
-     will be referred to as radar-only (RO) and passive-only (PO) retrievals,
-     respectively.
-
-     \begin{align}
-     \mathbf{y}_\text{RO} &= \left [\begin{array}{c} \mathbf{y}_\text{CPR}
-      \end{array} \right ]  \\
-     \mathbf{y}_\text{PO} &= \left [ \begin{array}{c} \mathbf{y}_\text{MWI} \\ 
-     \mathbf{y}_\text{ICI} \end{array} \right] 
-     \end{align}
-
-     Regarding measurement errors, only random sensor noise is considered 
-     in this study. For the passive radiometers, the measurement error is
-     assumed to be independent and Gaussian with standard deviations
-     equal to the noise specifications of each sensor channel.
-     For the radar, the measurement error at each range gate is assumed
-     to be Gaussian with standard deviation of $\SI{1}{\decibel}\text{Z}$.
-
-     
-** State space
-
-     The state space for the retrieval consists of the humidity profile
-     of the atmosphere, together with the distributions of two hydrometeor
-     classes, one for frozen and one for liquid hydrometeors.
-
-     For both, liquid and frozen hydrometeors, the two-moment parametrization
-     proposed by cite:delanoe05,delanoe14 is used. That is, for each volume
-     in the atmospheric column the distribution of hydrometeors is determined
-     by the values of the concentration parameter $N_0^*$ and the mass-weighted
-     mean diameter $D_m$. The shape parameters $\alpha$ and $\beta$ used
-     for liquid and frozen hydrometeors are given in
-     Table \ref{tab:shape_parameters}.
-
-       \begin{table}[h!]
-     \caption{Shape parameters of the normalized Modified Gamma Distribution
-      used to represent hydrometeors.}\label{tab:shape_parameters}
-      \centering
-     \begin{tabular}{|c|cc|}
-     \hline
-     Hydrometeor type & $\alpha$ & $\beta$ \\
-     \hline
-     \hline
-     Frozen & -1 & 3 \\
-     Liquid & 2 & 1 \\
-     \hline
-     \end{tabular}
-     \end{table}
-     
    
 * Results
 
-** Homogeneous cloud layer
 
-    As a preliminary study of the information content in combined radar
-    and passive microwave and sub-millimeter measurement, observations
-    of a homogeneous cloud layer with given mass density $m$  and mass weighted
-    mean diameter $D_m$ are considered. For given $D_m$, the mass density of
-    ice particles contained in an atmospheric volume is proportional to the
-    concentration parameter $N_0^*$:
+In this section, results of a information content study are presented, that was
+conducted in order to gain a better understanding of the synergies between
+active and passive microwave observations. In addition to that, the results of
+the cloud retrieval algorithm applied to the model cloud scenes are presented.
 
-    \begin{align}
-    N_0^* &= \frac{4 ^4}{\pi \rho} \frac{m}{D_m^4}
-    \end{align}
+** Combined information content
 
-    where $rho$ is the density of ice. Simulated observations of the homogeneous
-    cloud layer for varying mass density and $D_m$ thus represent the effect of
-    the two moments of the D14 PSD on the observations.
+   In order to explore the complementary information content in
+   the radar and radiometer observations, we consider an idealized,
+   homogeneous cloud layer of thickness of $\SI{4}{\kilo meters}$ located
+   at an altitude of $\SI{10}{\kilo\meter} in a tropical atmosphere. The
+   cloud is assumed to consist of a single frozen hydrometeor species
+   using the same PSD parametrization as the frozen hydrometeors used
+   in the cloud retrieval (c.f. Figure \ref{fig:psds_retrieval}).
+   
+   As a first step, we want to address the question to what extent the active
+   and passive observations can constrain the two moments of the PSD of the
+   frozen hydrometeors. To this end, a range of simulated observations of the
+   idealized cloud layer has been performed while the $N_0^*$ and $D_m$
+   parameters of the PSD were varied. Figure \ref{fig:isolines} displays the
+   contours of the simulated cloud signal, i.e. the brightness temperature
+   difference between clear sky and cloudy sky simulation, n mass-$D_m$ space
+   for a selection of channels of the MWI and ICI sensors. These are overlaid
+   with isolines of the simulated radar reflectivity at the center of the cloud.
 
-    We first address the question to what extent the observations from radar and
-    passive radiometers constrain the two moments of the PSD. Figure
-    \ref{fig:isolines} displays the simulated cloud signal $\Delta T_B =
-    y_\text{clearsky} - y_\text{cloudy}$, i.e. the difference of clear-sky and
-    cloudy-sky radiances, for selected radiometer channels together with
-    isolines of the radar reflectivity at the center of the cloud layer. A
-    necessary condition for a combined retrieval to retrieve the two moments of
-    the PSD is that isolines of the combined observations cross each other. The
-    first row of panels, that displays simulated radar reflectivities with the
-    cloud signal seen by the MWI radiometer, thus indicates low complementary
-    information content in the MWI observations with respect to the radar
-    observations since radar and radiometer isolines run essentially parallel.
-    In contrast to that, the isolines of the ICI observations, displayed in the
-    second row of panels, show a higher degree of independence of the radiometer
-    observations from the radar observations, thus indicating higher
-    complementary information content.
-    
     \begin{figure}
     \centering
     \includegraphics[width = \textwidth]{../plots/contours}
@@ -509,27 +454,17 @@
     \label{fig:isolines}
     \end{figure}
 
-    Secondly, we investigate the impact of the assumed ice particle shape on the
-    observations. For this, simulations of the same homogeneous cloud layer
-    described above are performed for a range of particle shapes from the ARTS
-    SSDB. To compare the effect of the particle shape on the simulated
-    observations, principal component analysis (PCA) is used to determine the
-    two axes of highest variance for all simulated observations. Scatter plots
-    of the simulated observation projectet into the space spanned by the two
-    axes of maximum variance are displayed in Figure \ref{fig:pca}.
-
-    \begin{figure}
-    \centering
-    \includegraphics[width = \textwidth]{../plots/pca.pdf}
-    \caption{Simulated observations for varying mass density and
-    mass-weighted mean diameter of a homogeneous cloud layer projected
-    onto the two axes of maximum variance for a range of particle shapes
-    taken from the ARTS SSDB.}
-    \label{fig:pca}
-    \end{figure}
-    
-
-
+    A necessary requirement for a passive channel to provide complementary
+    information to the radar observation to resolve $N_0^*-D_m$ ambiguities is
+    that the cloud signal contours and the radar isolines cross each other. The
+    panels in Figure~\ref{fig:isolines} thus give an indication to what extent
+    the information in the radar measurement and the corresponding passive
+    channel provide complementary information on the $N_0^*$ and $D_m$
+    parameters of the PSD. Considering the panels of the MWI sensor, these
+    results thus indicate complementary information only for regions of very
+    strong cloud signal in radar and radiometer obervations. Compared to that,
+    the ICI observations display a lower degree of parallelism, indicating
+    higher complementary information content.
 
 ** Retrieval results
 
