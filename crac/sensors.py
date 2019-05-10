@@ -80,7 +80,7 @@ class ICI(PassiveSensor):
 
             center_frequencies = [ICI.center_frequencies[i] for i in band_indices]
             offsets = [ICI.sidebands[i] for i in band_indices]
-            self.nedt = [ICI.nedt[i] for i in band_indices]
+            self.nedt = [ICI.nedt[i] for i in channel_indices]
         else:
             center_frequencies = ICI.center_frequencies
             offsets = ICI.sidebands
@@ -172,7 +172,7 @@ class MWI(PassiveSensor):
 
             center_frequencies = [MWI.center_frequencies[i] for i in band_indices]
             offsets = [MWI.sidebands[i] for i in band_indices]
-            self.nedt = [MWI.nedt[i] for i in band_indices]
+            self.nedt = [MWI.nedt[i] for i in channel_indices]
         else:
             center_frequencies = MWI.center_frequencies
             offsets = MWI.sidebands
