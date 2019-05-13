@@ -61,12 +61,6 @@ data_provider.add(rh_a_priori)
 data_provider.add(crac.liras.ObservationError(sensors))
 data_provider.add(observations)
 
-#
-# Define hydrometeors and sensors.
-#
-
-hydrometeors = [ice, rain]
-sensors      = [lcpr, mwi, ici]
 
 #
 # Run the retrieval.

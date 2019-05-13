@@ -32,17 +32,17 @@ ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 273.0))
 
 z_grid = np.linspace(0, 21e3, 21)
 ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-12)
-ice_covariance  = SpatialCorrelation(ice_covariance, 1e3)
+#ice_covariance  = SpatialCorrelation(ice_covariance, 1e3)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 1e-8)
-#ice_dm_a_priori = ReducedVerticalGrid(ice_dm_a_priori, z_grid, "altitude")
+ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori, 10, ice_mask)
 
 z_grid = np.array([5e3, 15e3])
 ice_covariance  = Diagonal(1, mask = ice_mask, mask_value = 1e-12)
-ice_covariance  = SpatialCorrelation(ice_covariance, 2e3)
+#ice_covariance  = SpatialCorrelation(ice_covariance, 2e3)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 2)
-#ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 5, ice_mask)
+ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 10, ice_mask)
 
 ice = Hydrometeor("ice", D14NDmIce(), [ice_dm_a_priori, ice_n0_a_priori], ice_shape, ice_shape_meta)
 ice.transformations = [Log10(), Identity()]
@@ -57,20 +57,19 @@ snow_shape      = os.path.join(scattering_data, "EvansSnowAggregate.xml")
 snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
 
 snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 278.0))
-snow_covariance = Thikhonov(scaling = 3.0, mask = snow_mask)
 
-z_grid = np.linspace(0, 21e3, 21)
-snow_covariance = Diagonal(400e-6 ** 2, mask = snow_mask, mask_value = 1e-12)
-snow_covariance  = SpatialCorrelation(snow_covariance, 1e3)
-snow_dm_a_priori = FixedAPriori("snow_dm", 800e-6, snow_covariance,
+snow_covariance = Diagonal(500e-6 ** 2, mask = snow_mask, mask_value = 1e-12)
+#snow_covariance  = SpatialCorrelation(snow_covariance, 1e3)
+snow_dm_a_priori = FixedAPriori("snow_dm", 1e-3, snow_covariance,
                                 mask = snow_mask, mask_value = 1e-8)
+snow_dm_a_priori = MaskedRegularGrid(snow_dm_a_priori, 10, snow_mask)
 
 z_grid = np.array([5e3, 15e3])
 snow_covariance  = Diagonal(1, mask = snow_mask, mask_value = 1e-12)
-snow_covariance  = SpatialCorrelation(snow_covariance, 1e3)
+#snow_covariance  = SpatialCorrelation(snow_covariance, 2e3)
 snow_n0_a_priori = FixedAPriori("snow_n0", 7, snow_covariance,
                                 mask = snow_mask, mask_value = 2)
-#snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 5, snow_mask)
+snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 10, snow_mask)
 
 snow = Hydrometeor("snow", D14NDmIce(), [snow_dm_a_priori, snow_n0_a_priori], snow_shape, snow_shape_meta)
 snow.transformations = [Log10(), Identity()]
@@ -135,7 +134,7 @@ rain.radar_only = True
 
 def a_priori_shape(t):
     transformation = Atanh()
-    transformation.z_max = 1.05
+    transformation.z_max = 1.2
     transformation.z_min = 0.0
     x = np.maximum(np.minimum(0.5 - (270 - t) / 100.0, 0.5), 0.1)
     return transformation(x)

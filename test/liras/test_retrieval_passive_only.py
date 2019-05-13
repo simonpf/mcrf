@@ -35,7 +35,7 @@ observations.add_offset("profile", -offset)
 # Create the data provider.
 #
 
-ip = offset + 450
+ip = offset + 300
 
 data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
@@ -49,7 +49,7 @@ data_provider = ModelDataProvider(99,
 
 #hydrometeors = [ice, snow, liquid, rain]
 #hydrometeors = [ice, snow, rain]
-hydrometeors = [ice, rain]
+hydrometeors = [ice, snow, rain]
 sensors      = [mwi, ici]
 
 #
@@ -62,6 +62,8 @@ observation_errors = crac.liras.ObservationError(sensors,
 
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])
+data_provider.add(snow.a_priori[0])
+data_provider.add(snow.a_priori[1])
 data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(cloud_water_a_priori)

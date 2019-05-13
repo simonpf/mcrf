@@ -78,7 +78,7 @@ snow_covariance  = Diagonal(1.0, mask = ice_mask, mask_value = 1e-12)
 snow_n0_a_priori = FixedAPriori("snow_n0", 8, snow_covariance, mask = ice_mask, mask_value = 0)
 snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 2, ice_mask, "altitude")
 
-snow_covariance  = Diagonal(300e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
+snow_covariance  = Diagonal(500e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
 snow_dm_a_priori = FixedAPriori("snow_dm", 500e-6, snow_covariance, mask = ice_mask, mask_value = 1e-5)
 snow_dm_a_priori = MaskedRegularGrid(snow_dm_a_priori, 6, ice_mask, "altitude")
 
