@@ -121,7 +121,7 @@ rain_dm_a_priori = FixedAPriori("rain_dm", 500e-6, rain_covariance, mask = rain_
 
 z_grid = np.linspace(0, 12e3, 7)
 rain_covariance = Diagonal(1, mask = rain_mask, mask_value = 1e-12)
-rain_n0_a_priori = FixedAPriori("rain_n0", 5, rain_covariance, mask = rain_mask, mask_value = 2)
+rain_n0_a_priori = FixedAPriori("rain_n0", 7, rain_covariance, mask = rain_mask, mask_value = 2)
 #rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori, 2, rain_mask)
 
 rain = Hydrometeor("rain", D14NDmLiquid(), [rain_n0_a_priori, rain_dm_a_priori], rain_shape, rain_shape_meta)

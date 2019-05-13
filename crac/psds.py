@@ -26,7 +26,7 @@ class D14Snow(D14MN):
 
 class D14Liquid(D14MN):
     def __init__(self):
-        super().__init__(2.0, 0.0, 1000.0)
+        super().__init__(0.0, 1.0, 1000.0)
         self.name  = "d14n"
         self.t_min = 240.0
 
@@ -60,7 +60,7 @@ class D14DmSnow(D14):
 
 class D14DmLiquid(D14):
     def __init__(self):
-        super().__init__(2.0, 1.0, 1000.0)
+        super().__init__(0.0, 1.0, 1000.0)
         self.name  = "d1n"
         self.t_min = 240.0
 
@@ -94,7 +94,7 @@ class D14NDmSnow(D14N):
 
 class D14NDmLiquid(D14N):
     def __init__(self):
-        super().__init__(2.0, 1.0, 1000.0)
+        super().__init__(0.0, 1.0, 1000.0)
         self.name  = "d1n"
         self.t_min = 240.0
 

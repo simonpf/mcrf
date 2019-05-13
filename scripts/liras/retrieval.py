@@ -63,7 +63,7 @@ ice_shape = os.path.join(liras_path, "data", "scattering", ice_shape)
 ice.scattering_data = ice_shape
 
 
-hydrometeors = [ice, rain]
+hydrometeors = [ice]
 sensors = [lcpr, mwi, ici]
 
 #
