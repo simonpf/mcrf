@@ -420,11 +420,27 @@ class ModelDataProvider(DataProviderBase):
         return self.m.get_absorber("H2O", i_p = i_p)
 
     def get_relative_humidity(self, i_p, *args):
+
+        def p_eq(t):
+            print("p_eq")
+            p = np.zeros(t.shape)
+
+            inds = t >= 273.15
+            tt = np.exp( 54.842763 - 6763.22 / t - 4.21 * np.log(t) + 0.000367 * t + \
+                         np.tanh(0.0415 * (t - 218.8)) * ( 53.878 - 1331.22/t - \
+                                                           9.44523 * np.log(t) + 0.014025 * t) );
+            p[inds] = tt[inds]
+
+            inds = t < 273.15
+            tt = np.exp(9.550426 - 5723.265 / t + 3.53068 * np.log(t) - 0.00728332 * t);
+            p[inds] = tt[inds]
+            return p
+
         from typhon.physics.atmosphere import vmr2relative_humidity
         t   = self.get_temperature(i_p).ravel()
         p   = self.get_pressure(i_p).ravel()
         vmr = self.get_H2O(i_p).ravel()
-        q   = vmr2relative_humidity(vmr, p, t)
+        q   = vmr2relative_humidity(vmr, p, t, e_eq = p_eq)
         return q
 
     def get_O2(self, i_p, *args):

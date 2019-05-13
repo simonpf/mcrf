@@ -33,7 +33,7 @@ class CloudRetrieval:
         h2o.retrieval.unit      = RelativeHumidity()
         h2o.transformation      = Atanh()
         h2o.transformation.z_min = 0.0
-        h2o.transformation.z_max = 1.05
+        h2o.transformation.z_max = 1.2
         self.h2o = h2o
 
         if self.include_cloud_water:
