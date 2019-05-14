@@ -565,7 +565,7 @@ the cloud retrieval algorithm applied to the model cloud scenes are presented.
    retrieval was designed for moderate ice mass density concentrations, where
    multiple scattering can be neglected. The bad quality of the retrieval
    in these regions is also reflected in the high values of the OEM cost
-   function show in the top panel of Figure~\ref{fig:results_md_1}.
+   function shown in the top panel of Figure~\ref{fig:results_md_1}.
 
     \begin{figure}
     \centering
@@ -574,7 +574,12 @@ the cloud retrieval algorithm applied to the model cloud scenes are presented.
     \label{fig:pca}
     \end{figure}
 
+    
+    
+
 * Discussion
+
+
 
 
 * Conclusion

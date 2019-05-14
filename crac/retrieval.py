@@ -92,7 +92,7 @@ class CloudRetrieval:
         def all_quantities(rr):
             rr.settings["lm_ga_settings"] = np.array([1000.0, 3.0, 2.0, 1e5, 1.0, 10.0])
             rr.settings["max_iter"] = 20
-            rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors if not h.name == "snow"]
+            rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
 
             if not self.radar_only:
