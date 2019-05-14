@@ -426,7 +426,7 @@ the cloud retrieval algorithm applied to the model cloud scenes are presented.
 ** Combined information content
 
    In order to explore the complementary information content in
-   the radar and radiometer observations, we consider an idealized,
+   radar and radiometer observations, we consider an idealized,
    homogeneous cloud layer of thickness of $\SI{4}{\kilo meters}$ located
    at an altitude of $\SI{10}{\kilo\meter} in a tropical atmosphere. The
    cloud is assumed to consist of a single frozen hydrometeor species
@@ -460,13 +460,112 @@ the cloud retrieval algorithm applied to the model cloud scenes are presented.
     panels in Figure~\ref{fig:isolines} thus give an indication to what extent
     the information in the radar measurement and the corresponding passive
     channel provide complementary information on the $N_0^*$ and $D_m$
-    parameters of the PSD. Considering the panels of the MWI sensor, these
-    results thus indicate complementary information only for regions of very
+    parameters of the PSD. Considering the panels corresponding to the MWI channels,
+    the results indicate complementary information only for regions of very
     strong cloud signal in radar and radiometer obervations. Compared to that,
     the ICI observations display a lower degree of parallelism, indicating
     higher complementary information content.
 
-** Retrieval results
+    The second question we address is the effect of ice particle shape on the
+    observations. To do this, the simulations of the homogeneous cloud layer
+    were repeated for the 15 \textit{standard habits} of the ARTS SSDB and a
+    principal component analysis performed on the simulated observations. The
+    first two eigenvectors of the covariance matrix are displayed in Figure
+    \ref{fig:pca_ev}. The two displayed eigenvectors show the two principal axes
+    of variability in the combined measurement space due to variation of the
+    cloud parameters. The first eigenvector represents an increase of of the
+    radar backscatter but a decrease over all radiometer channels and can thus
+    be associated with the scattering of upwelling thermal radiation by the ice
+    hydrometeors. The second eigenvector represents a decrease in radar
+    reflectivity and a decrease in the radiometer channels except for ICI
+    channels above $\SI{200}{\giga \hertz}$. The negative effect on the radar
+    signal can be associated with the attenuation of the signal. For the
+    radiometer channels below $\SI{200}{\giga \hertz}$ a likely explanation is
+    the absorption of upwelling radiation. For the high frequency channels the
+    positive effect on the measurement must be associated with emission in front
+    of a radiometrically cold background.
+
+    \begin{figure}
+    \centering
+    \includegraphics[width = \textwidth]{../plots/pca_evs}
+    \caption{Components of the first two eigenvectors of the covariance
+     matrix of the simulated observations of a homogeneous cloud layer with
+     varying particle concentrations, sizes and shape.}
+    \label{fig:pca_ev}
+    \end{figure}
+
+    By projecting the simulation results on the two PCA eigenvectors, a
+    2-dimensional representation of each simulated observation is obtained.
+    This allows all simulation results for a given particle shape to be
+    visualized using a scatter plot. Figure \ref{fig:pca_e} displays three
+    of such scatter plots for three particle habits. In addition to the results
+    for obtained from a PCA performed on the full combined measurement vector
+    (first row), the Figure also displays the results obtained when only
+    the MWI channels and radar observations are used.
+
+    Considering the first row of panels, the color coding of the markers
+    clearly shows that the combined observations allow a separation of
+    the effects of increases in the mass weighted mean size ($D_m$) and the
+    particle concentration, which is proportional to the mass. This also
+    confirms the interpretation of the first two PCA eigenvectors as related
+    to scattering and emission/absorption effects, respectively.
+    
+    Comparing the first and second row of panels, the results also show that
+    there is little complementary information on mean particle size and
+    number concentration between the MWI channels and the radar.
+    
+    By comparing the distribution of the measurement results in the reduced
+    measurement space, a clear effect of the particle shape on the measurement
+    results can be distinguished. Unfortunately, since the distributions still
+    have considerable overlap, it is not possible, at least based on this
+    simple analysis, to separate the effects of particle shape and bulk particle
+    size and concentration. Scatter plots for all SSDB standard habits are
+    provided as a digital supplement to this article.
+
+    \begin{figure}
+    \centering
+    \includegraphics[width = \textwidth]{../plots/pca_e}
+    \caption{Scatter plots of the measurement results in the reduced
+     measurement spaced spanned by the two first PCA eigenvectors for
+     different ice particle habits. The first row displays the results obtained
+     from a PCA using observations from the clouds radar and both radiometers
+      (MWI and ICI), whereas the second row shows the results obtained from a
+      PCA based solely on MWI and radar observations.}
+    \label{fig:pca_ev}
+    \end{figure}
+
+** Retrieval performance
+
+   To assess the performance of the combined cloud retrieval, the algorithm has
+   been applied to retrieve ice hydrometeor distributions from the two model
+   test scenes. For comparison, similar retrievals have been performed with a
+   radar-only and a passive-only version of the algorithm. The retrieved ice
+   mass density distribution for the three retrieval algorithms together with
+   the sum of the reference mass densities of all frozen hydrometeors in the
+   test scene are presented in Figure \ref{fig:results_md_1}.
+
+   Since the passive-only retrieval is performed at reduced vertical resolution,
+   these results clearly stand out, as they succeed to capture only the very
+   coarse structure of the cloud. Comparing this to the radar-only results,
+   the strength of the cloud radar to reproduce the vertical structure of the
+   cloud is evident. Nonetheless, in particular in the upper parts of the
+   cloud, the radar-only retrieval tends to underestimate the ice mass density
+   concentrations.
+
+   From the vertical resolution of the combined retrieval
+   results, it is obvious that the combined retrieval benefits immensely from
+   the vertically-resolved observations provided by the radar. Even though
+   the results of the combined retrieval look very similar to those of the
+   radar-only retrieval, in particular in the upper part of the cloud 
+   regions where the mass density retrieval is improved are clearly visible.
+
+   While the combined retrieval seems to work well in the outer parts of the
+   cloud, it performs poorly in the region of very high ice mass concentrations
+   at the center of the cloud. This is, however, not very surprising since the
+   retrieval was designed for moderate ice mass density concentrations, where
+   multiple scattering can be neglected. The bad quality of the retrieval
+   in these regions is also reflected in the high values of the OEM cost
+   function show in the top panel of Figure~\ref{fig:results_md_1}.
 
     \begin{figure}
     \centering

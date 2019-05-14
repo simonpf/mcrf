@@ -82,17 +82,17 @@ class CloudRetrieval:
 
         self.radar_only = all([isinstance(s, ActiveSensor) for s in self.sensors])
 
-        def all_quantities(rr):
+        def radar_only(rr):
             rr.sensors = [s for s in rr.sensors if isinstance(s, ActiveSensor)]
-            rr.settings["lm_ga_settings"] = np.array([1000.0, 3.0, 2.0, 1e5, 1.0, 1.0])
+            rr.settings["lm_ga_settings"] = np.array([100.0, 3.0, 2.0, 1e5, 1.0, 1.0])
             rr.settings["max_iter"] = 10
-            rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
-            rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
+            rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors if h.radar_only]
+            rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors if h.radar_only]
 
         def all_quantities(rr):
-            rr.settings["lm_ga_settings"] = np.array([1000.0, 3.0, 2.0, 1e5, 1.0, 1.0])
+            rr.settings["lm_ga_settings"] = np.array([1000.0, 3.0, 2.0, 1e5, 1.0, 10.0])
             rr.settings["max_iter"] = 20
-            rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
+            rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors if not h.name == "snow"]
             rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
 
             if not self.radar_only:
@@ -100,7 +100,8 @@ class CloudRetrieval:
             if self.cw:
                 rr.retrieval_quantities += [self.cw]
 
-        self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
+        self.simulation.retrieval.callbacks = [("Radar only", radar_only),
+                                               ("All quantities", all_quantities)]
 
 
     def setup(self, verbosity = 1):
