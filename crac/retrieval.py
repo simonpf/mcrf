@@ -100,8 +100,9 @@ class CloudRetrieval:
             if self.cw:
                 rr.retrieval_quantities += [self.cw]
 
-        self.simulation.retrieval.callbacks = [("Radar only", radar_only),
-                                               ("All quantities", all_quantities)]
+        #self.simulation.retrieval.callbacks = [("Radar only", radar_only),
+        #                                       ("All quantities", all_quantities)]
+        self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
 
 
     def setup(self, verbosity = 1):

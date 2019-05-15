@@ -422,7 +422,6 @@ class ModelDataProvider(DataProviderBase):
     def get_relative_humidity(self, i_p, *args):
 
         def p_eq(t):
-            print("p_eq")
             p = np.zeros(t.shape)
 
             inds = t >= 273.15

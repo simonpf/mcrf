@@ -40,7 +40,7 @@ class D14Liquid(D14MN):
 
 class D14DmIce(D14):
     def __init__(self):
-        super().__init__(-1.0, 3.0, 917.0)
+        super().__init__(-0.262, 4.0, 917.0)
         self.name = "d14"
         self.t_max = 280.0
 
@@ -74,7 +74,7 @@ class D14DmLiquid(D14):
 
 class D14NDmIce(D14N):
     def __init__(self):
-        super().__init__(-1.0, 3.0, 917.0)
+        super().__init__(-0.262, 4.0, 917.0)
         self.name = "d14"
         self.t_max = 280.0
 
