@@ -460,6 +460,14 @@ class ModelDataProvider(DataProviderBase):
     def get_surface_wind_speed(self, i_p, *args):
         return 0.0
 
+    def get_latitude(self, i_p):
+        lat = self.m.file["latitude"][self.i_t, i_p]
+        return lat
+
+    def get_longitude(self, i_p):
+        lat = self.m.file["longitude"][self.i_t, i_p]
+        return lat
+
     def get_cloud_water(self, i_p, *args):
         t = self.get_temperature(i_p)
         cw = np.copy(self.m.get_scatterer("LWC", "mass_density", self.i_t, i_p))

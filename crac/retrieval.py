@@ -3,12 +3,12 @@ import numpy as np
 from parts.atmosphere            import Atmosphere1D
 from parts.sensor                import ActiveSensor, PassiveSensor
 from parts.atmosphere.surface    import Tessem
-from parts.retrieval.a_priori    import DataProviderAPriori
+from parts.retrieval.a_priori    import DataProviderAPriori, PiecewiseLinear
 from parts.atmosphere.absorption import O2, N2, H2O, CloudWater, RelativeHumidity
 from parts.utils.data_providers  import NetCDFDataProvider
 from parts.scattering.solvers    import Disort
 from parts.simulation            import ArtsSimulation
-from parts.jacobian              import Log10, Atanh
+from parts.jacobian              import Log10, Atanh, Composition
 
 class CloudRetrieval:
 
@@ -30,10 +30,13 @@ class CloudRetrieval:
 
         h2o = self.simulation.atmosphere.absorbers[-1]
         self.simulation.retrieval.add(h2o)
+
+        h2o_a = [p for p in self.data_provider.subproviders \
+                 if getattr(p, "name", "") == "H2O"][0]
+        atanh = Atanh(0.0, 1.2)
+        pl    = PiecewiseLinear(h2o_a)
+        h2o.transformation      = Composition(atanh, pl)
         h2o.retrieval.unit      = RelativeHumidity()
-        h2o.transformation      = Atanh()
-        h2o.transformation.z_min = 0.0
-        h2o.transformation.z_max = 1.2
         self.h2o = h2o
 
         if self.include_cloud_water:

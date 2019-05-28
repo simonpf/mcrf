@@ -35,7 +35,7 @@ observations.add_offset("profile", -offset)
 # Create the data provider.
 #
 
-ip = offset + 300
+ip = offset + 380
 
 data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
@@ -74,7 +74,7 @@ data_provider.add(observations)
 #
 # Run the retrieval.
 #
-retrieval = CloudRetrieval(hydrometeors, sensors, data_provider, include_cloud_water = True)
+retrieval = CloudRetrieval(hydrometeors, sensors, data_provider, include_cloud_water = False)
 retrieval.setup()
 retrieval.simulation.retrieval.debug_mode = True
 retrieval.run(ip)

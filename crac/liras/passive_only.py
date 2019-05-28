@@ -3,7 +3,7 @@ from crac.psds                import D14NDmIce, D14NDmLiquid, D14NDmSnow
 from crac.hydrometeors        import Hydrometeor
 from parts.retrieval.a_priori import *
 from parts.scattering.psd     import Binned
-from parts.jacobian           import Atanh, Log10, Identity
+from parts.jacobian           import Atanh, Log10, Identity, Composition
 
 liras_path = os.environ["LIRAS_PATH"]
 scattering_data = os.path.join(liras_path, "data", "scattering")
@@ -14,7 +14,8 @@ scattering_data = os.path.join(liras_path, "data", "scattering")
 
 def n0_a_priori(t):
     t = t - 272.15
-    return np.log10(np.exp(-0.076586 * t + 17.948))
+    return np.ones(t.shape) * 10.0
+    #return np.log10(np.exp(-0.076586 * t + 17.948))
 
 def dm_a_priori(t):
     n0 = 10 ** n0_a_priori(t)
@@ -40,21 +41,23 @@ ice_md_a_priori = ReducedVerticalGrid(ice_md_a_priori, md_z_grid, "altitude",
 # n0
 points_n0 = 2
 ice_covariance = Diagonal(1, mask = ice_mask, mask_value = 1e-12)
-ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance, mask = ice_mask, mask_value = 2)
-ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 2, ice_mask, "altitude")
+#ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance, mask = ice_mask, mask_value = 2)
+ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance, mask = ice_mask, mask_value = 0)
+ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 2, ice_mask, "altitude", provide_retrieval_grid = False)
 
-points_dm = 5
+points_dm = 8
 ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
 ice_covariance  = SpatialCorrelation(ice_covariance, 4e3)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance, mask = ice_mask, mask_value = 1e-6)
-ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori, points_dm, ice_mask)
+ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori, points_dm, ice_mask, "altitude", provide_retrieval_grid = False)
 
 ice = Hydrometeor("ice",
                   D14NDmIce(),
                   [ice_n0_a_priori, ice_dm_a_priori],
                   ice_shape,
                   ice_shape_meta)
-ice.transformations = [Log10(), Identity()]
+ice.transformations = [Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
+                       Composition(Identity(), PiecewiseLinear(ice_dm_a_priori))]
 ice.limits_low = [0, 1e-8]
 ice.radar_only = False
 
@@ -75,20 +78,22 @@ snow_md_a_priori = FixedAPriori("snow_md", -5, snow_covariance,
 
 # n0
 snow_covariance  = Diagonal(1.0, mask = ice_mask, mask_value = 1e-12)
-snow_n0_a_priori = FixedAPriori("snow_n0", 8, snow_covariance, mask = ice_mask, mask_value = 0)
-snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 2, ice_mask, "altitude")
+snow_n0_a_priori = FixedAPriori("snow_n0", 7, snow_covariance, mask = ice_mask, mask_value = 0)
+snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 2, ice_mask, "altitude", provide_retrieval_grid = False)
 
 snow_covariance  = Diagonal(500e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
-snow_dm_a_priori = FixedAPriori("snow_dm", 500e-6, snow_covariance, mask = ice_mask, mask_value = 1e-5)
-snow_dm_a_priori = MaskedRegularGrid(snow_dm_a_priori, 6, ice_mask, "altitude")
+snow_dm_a_priori = FixedAPriori("snow_dm", 1000e-6, snow_covariance, mask = ice_mask, mask_value = 1e-5)
+snow_dm_a_priori = MaskedRegularGrid(snow_dm_a_priori, points_dm, ice_mask, "altitude",
+                                     provide_retrieval_grid = False)
 
 snow = Hydrometeor("snow",
                    D14NDmIce(),
                    [snow_n0_a_priori, snow_dm_a_priori],
                    snow_shape,
                    snow_shape_meta)
-snow.transformations = [Log10(), Identity()]
-snow.limits_low = [1e-12, 1e-8]
+snow.transformations = [Composition(Log10(), PiecewiseLinear(snow_n0_a_priori)),
+                        Composition(Identity(), PiecewiseLinear(snow_dm_a_priori))]
+snow.limits_low = [0, 1e-8]
 snow.radar_only = True
 snow.retrieve_first_moment = False
 
@@ -144,20 +149,21 @@ rain_md_a_priori = ReducedVerticalGrid(rain_md_a_priori, md_z_grid, "altitude")
 rain_mask       = TemperatureMask(273, 340.0)
 rain_covariance = Diagonal(1)
 rain_n0_a_priori = FixedAPriori("rain_n0", 7, rain_covariance, mask = rain_mask, mask_value = 0)
-rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori, 2, rain_mask, "altitude")
+rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori, 2, rain_mask, "altitude", provide_retrieval_grid = False)
 
 z_grid = np.linspace(0, 20e3, 6)
 rain_covariance = Diagonal(300e-6 ** 2)
-rain_dm_a_priori = FixedAPriori("rain_dm", 500e-6, rain_covariance)
-rain_dm_a_priori = MaskedRegularGrid(rain_dm_a_priori, 2, rain_mask, "altitude")
+rain_dm_a_priori = FixedAPriori("rain_dm", 500e-6, rain_covariance, mask_value = 1e-12)
+rain_dm_a_priori = MaskedRegularGrid(rain_dm_a_priori, 2, rain_mask, "altitude", provide_retrieval_grid = False)
 
 rain = Hydrometeor("rain",
                    D14NDmLiquid(),
                    [rain_n0_a_priori, rain_dm_a_priori],
                    rain_shape,
                    rain_shape_meta)
-rain.transformations = [Log10(), Identity()]
-rain.limits_low = [1e-12, 1e-12]
+rain.transformations = [Composition(Log10(), PiecewiseLinear(rain_n0_a_priori)),
+                        Composition(Identity(), PiecewiseLinear(rain_dm_a_priori))]
+rain.limits_low = [0, 1e-8]
 rain.retrieve_second_moment = True
 
 ################################################################################
@@ -166,18 +172,20 @@ rain.retrieve_second_moment = True
 
 def a_priori_shape(t):
     transformation = Atanh()
-    transformation.z_max = 1.05
+    transformation.z_max = 1.2
     transformation.z_min = 0.0
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.1)
     return transformation(x)
 
 
-z_grid = np.linspace(0, 20e3, 6)
-rh_covariance = Thikhonov(scaling = 1.0, z_scaling = False)
+z_grid = np.linspace(0, 20e3, 11)
+rh_covariance = Diagonal(1.0)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
 rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude",
-                                  Diagonal(2 * np.ones(z_grid.size)))
+                                  provide_retrieval_grid = False)
+
+#rh_a_priori.transformation = Composition(transformation, PiecewiseLinear(rh_a_priori))
 
 ################################################################################
 # Observation error
