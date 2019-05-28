@@ -31,7 +31,7 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 273.0))
 
 z_grid = np.linspace(0, 21e3, 21)
-ice_covariance  = Diagonal(100e-6 ** 2, mask = ice_mask, mask_value = 1e-12)
+ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-12)
 ice_covariance  = SpatialCorrelation(ice_covariance, 1e3)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 1e-8)
@@ -40,9 +40,9 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_co
 z_grid = np.array([5e3, 15e3])
 ice_covariance  = Diagonal(4, mask = ice_mask, mask_value = 1e-12)
 #ice_covariance  = SpatialCorrelation(ice_covariance, 2e3)
-ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance,
+ice_n0_a_priori = FixedAPriori("ice_n0", 11, ice_covariance,
                                     mask = ice_mask, mask_value = 2)
-ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 5, ice_mask, "altitude", provide_retrieval_grid = False)
+ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 7, ice_mask, "altitude", provide_retrieval_grid = False)
 
 ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori], ice_shape, ice_shape_meta)
 ice.transformations = [Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
@@ -63,18 +63,20 @@ snow_covariance = Diagonal(500e-6 ** 2, mask = snow_mask, mask_value = 1e-12)
 snow_covariance  = SpatialCorrelation(snow_covariance, 1e3)
 snow_dm_a_priori = FixedAPriori("snow_dm", 1e-3, snow_covariance,
                                 mask = snow_mask, mask_value = 1e-8)
-#snow_dm_a_priori = MaskedRegularGrid(snow_dm_a_priori, 5, snow_mask)
+#snow_dm_a_priori = MaskedRegularGrid(snow_dm_a_priori, 5, snow_mask, "altitude", provide_retrieval_grid = False)
 
 z_grid = np.array([5e3, 15e3])
-snow_covariance  = Diagonal(1, mask = snow_mask, mask_value = 1e-12)
-#snow_covariance  = SpatialCorrelation(snow_covariance, 2e3)
+snow_covariance  = Diagonal(4, mask = snow_mask, mask_value = 1e-12)
+#snow_covariance  = SpatialCorrelation(snow_covariance, 1e3)
 snow_n0_a_priori = FixedAPriori("snow_n0", 7, snow_covariance,
                                 mask = snow_mask, mask_value = 2)
-snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 5, snow_mask, "altitude", provide_retrieval_grid = False)
+snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 7, snow_mask, "altitude", provide_retrieval_grid = False)
 
 snow = Hydrometeor("snow", D14NDmIce(), [snow_n0_a_priori, snow_dm_a_priori], snow_shape, snow_shape_meta)
 snow.transformations = [Composition(Log10(), PiecewiseLinear(snow_n0_a_priori)),
                         Identity()]
+#snow.transformations = [Log10(),
+#                        Composition(Identity(), PiecewiseLinear(snow_dm_a_priori))]
 snow.limits_low = [0, 1e-8]
 snow.radar_only = True
 snow.retrieve_first_moment = False
@@ -119,12 +121,12 @@ rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 rain_mask  = TemperatureMask(273, 340.0)
 rain_covariance = Diagonal(500e-6 ** 2, mask = rain_mask, mask_value = 1e-12)
 rain_dm_a_priori = FixedAPriori("rain_dm", 500e-6, rain_covariance, mask = rain_mask, mask_value = 1e-8)
-rain_dm_a_priori = MaskedRegularGrid(rain_dm_a_priori, 5, rain_mask, provide_retrieval_grid = False)
+rain_dm_a_priori = MaskedRegularGrid(rain_dm_a_priori, 10, rain_mask, "altitude", provide_retrieval_grid = False)
 
 z_grid = np.linspace(0, 12e3, 7)
 rain_covariance = Diagonal(1, mask = rain_mask, mask_value = 1e-12)
 rain_n0_a_priori = FixedAPriori("rain_n0", 7, rain_covariance, mask = rain_mask, mask_value = 2)
-rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori, 2, rain_mask, "altitude", provide_retrieval_grid = False)
+rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori, 4, rain_mask, "altitude", provide_retrieval_grid = False)
 
 rain = Hydrometeor("rain", D14NDmLiquid(), [rain_n0_a_priori, rain_dm_a_priori], rain_shape, rain_shape_meta)
 rain.transformations = [Composition(Log10(), PiecewiseLinear(rain_n0_a_priori)),
@@ -144,8 +146,9 @@ def a_priori_shape(t):
     return transformation(x)
 
 
-z_grid = np.linspace(0, 20e3, 11)
+z_grid = np.linspace(0, 20e3, 21)
 rh_covariance = Diagonal(1.0)
+rh_covariance = SpatialCorrelation(rh_covariance, 1e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
 rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude", provide_retrieval_grid = False)
 
