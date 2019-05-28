@@ -47,7 +47,7 @@ ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 2, ice_mask, "altitude", pr
 
 points_dm = 8
 ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
-ice_covariance  = SpatialCorrelation(ice_covariance, 4e3)
+#ice_covariance  = SpatialCorrelation(ice_covariance, 4e3)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance, mask = ice_mask, mask_value = 1e-6)
 ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori, points_dm, ice_mask, "altitude", provide_retrieval_grid = False)
 
@@ -178,7 +178,7 @@ def a_priori_shape(t):
     return transformation(x)
 
 
-z_grid = np.linspace(0, 20e3, 11)
+z_grid = np.linspace(0, 20e3, 6)
 rh_covariance = Diagonal(1.0)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
