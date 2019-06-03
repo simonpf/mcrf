@@ -7,6 +7,7 @@ from   crac.sensors          import mwi, mwi_full, ici, lcpr
 from   crac.liras            import ice, liquid, rain, snow, rh_a_priori, \
  cloud_water_a_priori
 from   crac.liras.model_data import ModelDataProvider
+from   crac.liras.gem import gem_ice, gem_snow
 
 #
 # Parse arguments
@@ -19,7 +20,6 @@ parser = argparse.ArgumentParser(prog = "LIRAS retrieval",
                                  description = 'Passive ice cloud retrieval')
 parser.add_argument('scene',       metavar = 'scene',       type = str, nargs = 1)
 parser.add_argument('start_index', metavar = 'start_index', type = int, nargs = 1)
-parser.add_argument('ice_shape',   metavar = 'ice_shape', type = str, nargs = 1)
 parser.add_argument('input_file',  metavar = 'input_file', type = str, nargs = 1)
 parser.add_argument('output_file', metavar = 'output_file', type = str, nargs = 1)
 
@@ -27,7 +27,6 @@ args = parser.parse_args()
 
 scene        = args.scene[0]
 i_start      = args.start_index[0]
-ice_shape    = args.ice_shape[0]
 input_file   = args.input_file[0]
 output_file  = args.output_file[0]
 
@@ -59,9 +58,8 @@ data_provider = ModelDataProvider(99,
 # Define hydrometeors and sensors.
 #
 
-ice_shape = os.path.join(liras_path, "data", "scattering", ice_shape)
-ice.scattering_data = ice_shape
-
+ice.scattering_data = (gem_ice.scattering_data, gem_ice.scattering_meta_data)
+snow.scattering_data = (gem_snow.scattering_data, gem_snow.scattering_meta_data)
 
 hydrometeors = [ice, snow, rain]
 sensors = [lcpr, mwi, ici]
