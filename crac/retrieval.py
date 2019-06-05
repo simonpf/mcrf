@@ -32,14 +32,19 @@ class CloudRetrieval:
         self.simulation.retrieval.add(h2o)
 
         h2o_a = [p for p in self.data_provider.subproviders \
-                 if getattr(p, "name", "") == "H2O"][0]
-        atanh = Atanh(-0.2, 1.4)
-        pl    = PiecewiseLinear(h2o_a)
-        h2o.transformation      = Composition(Identity(), pl)
-        h2o.retrieval.unit      = RelativeHumidity()
+                 if getattr(p, "name", "") == "H2O"]
+        if len(h2o_a) > 0:
+            h2o_a = h2o_a[0]
+            atanh = Atanh(-0.2, 1.4)
+            pl    = PiecewiseLinear(h2o_a)
+            h2o.transformation      = Composition(Identity(), pl)
+            h2o.retrieval.unit      = RelativeHumidity()
+            h2o.limit_low = 0.0
+            h2o.limit_high = 1.2
+        else:
+            h2o = None
+
         self.h2o = h2o
-        h2o.limit_low = 0.0
-        h2o.limit_high = 1.2
 
         if self.include_cloud_water:
             cw = self.simulation.atmosphere.absorbers[-2]
@@ -100,7 +105,7 @@ class CloudRetrieval:
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
 
-            if not self.radar_only:
+            if self.h2o:
                 rr.retrieval_quantities += [self.h2o]
             if self.cw:
                 rr.retrieval_quantities += [self.cw]
