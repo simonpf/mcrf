@@ -171,15 +171,18 @@ rain.retrieve_second_moment = True
 ################################################################################
 
 def a_priori_shape(t):
-    transformation = Atanh()
-    transformation.z_max = 1.2
-    transformation.z_min = 0.0
+    #transformation = Atanh()
+    #transformation.z_max = 1.2
+    #transformation.z_min = 0.0
+    transformation = Identity()
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.1)
+    x = np.zeros(t.shape)
+    x[:] = 0.5
     return transformation(x)
 
 
-z_grid = np.linspace(0, 20e3, 6)
-rh_covariance = Diagonal(1.0)
+z_grid = np.linspace(0, 20e3, 11)
+rh_covariance = Diagonal(1.0 ** 2)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
 rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude",
