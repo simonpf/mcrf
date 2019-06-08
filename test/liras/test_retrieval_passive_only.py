@@ -49,7 +49,7 @@ data_provider = ModelDataProvider(99,
 
 #hydrometeors = [ice, snow, liquid, rain]
 #hydrometeors = [ice, snow, rain]
-hydrometeors = [ice, snow, rain]
+hydrometeors = [ice, rain]
 sensors      = [mwi, ici]
 
 #
@@ -74,7 +74,8 @@ data_provider.add(observations)
 #
 # Run the retrieval.
 #
+crac.liras.passive_only.settings["single_species"] = False
 retrieval = CloudRetrieval(hydrometeors, sensors, data_provider, include_cloud_water = False)
 retrieval.setup()
 retrieval.simulation.retrieval.debug_mode = True
-retrieval.run(ip)
+#retrieval.run(ip)

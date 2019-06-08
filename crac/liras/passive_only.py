@@ -8,14 +8,18 @@ from parts.jacobian           import Atanh, Log10, Identity, Composition
 liras_path = os.environ["LIRAS_PATH"]
 scattering_data = os.path.join(liras_path, "data", "scattering")
 
+settings = {"single_species" : True}
+
 ################################################################################
 # Ice particles
 ################################################################################
 
 def n0_a_priori(t):
     t = t - 272.15
-    return np.ones(t.shape) * 10.0
-    #return np.log10(np.exp(-0.076586 * t + 17.948))
+    if settings["single_species"]:
+        return np.log10(np.exp(-0.076586 * t + 17.948))
+    else:
+        return np.ones(t.shape) * 10.0
 
 def dm_a_priori(t):
     n0 = 10 ** n0_a_priori(t)
@@ -33,24 +37,19 @@ ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 280.0))
 snow_mask      = And(AltitudeMask(0.0, 18e3), TemperatureMask(0.0, 280.0))
 ice_covariance = Diagonal(1 * np.ones(md_z_grid.size))
 
-# mass density
-ice_md_a_priori = FixedAPriori("ice_md", -5, ice_covariance,
-                               mask = ice_mask, mask_value = -12)
-ice_md_a_priori = ReducedVerticalGrid(ice_md_a_priori, md_z_grid, "altitude",
-                                      ice_covariance)
-
 # n0
-points_n0 = 1
+points_n0 = 2
 ice_covariance = Diagonal(1, mask = ice_mask, mask_value = 1e-12)
-#ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance, mask = ice_mask, mask_value = 2)
-ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance, mask = ice_mask, mask_value = 0)
-ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, point_n0, ice_mask, "altitude", provide_retrieval_grid = False)
-ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, points_n0, ice_mask, "altitude", provide_retrieval_grid = False)
+ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori,
+                                    ice_covariance, mask = ice_mask, mask_value = 2)
+ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, points_n0, ice_mask, "altitude",
+                                    provide_retrieval_grid = False)
+
 
 points_dm = 5
 ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
-#ice_covariance  = SpatialCorrelation(ice_covariance, 4e3)
-ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance, mask = ice_mask, mask_value = 1e-6)
+ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance,
+                                    mask = ice_mask, mask_value = 1e-6)
 ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori, points_dm, ice_mask, "altitude", provide_retrieval_grid = False)
 
 ice = Hydrometeor("ice",
@@ -74,17 +73,13 @@ snow_mask        = And(TropopauseMask(), TemperatureMask(0.0, 280.0))
 snow_mask        = And(AltitudeMask(0.0, 18e3), TemperatureMask(0.0, 280.0))
 snow_covariance  = Diagonal(4 * np.ones(md_z_grid.size))
 
-# mass density
-snow_md_a_priori = FixedAPriori("snow_md", -5, snow_covariance,
-                               mask = snow_mask, mask_value = -12)
-
-# n0
-snow_covariance  = Diagonal(1.0, mask = ice_mask, mask_value = 1e-12)
+snow_covariance  = Diagonal(0.25, mask = ice_mask, mask_value = 1e-12)
 snow_n0_a_priori = FixedAPriori("snow_n0", 7, snow_covariance, mask = ice_mask, mask_value = 0)
-snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, points_n0, ice_mask, "altitude", provide_retrieval_grid = False)
+snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, points_n0, ice_mask,
+                                     "altitude", provide_retrieval_grid = False)
 
 snow_covariance  = Diagonal(500e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
-snow_dm_a_priori = FixedAPriori("snow_dm", 1000e-6, snow_covariance, mask = ice_mask, mask_value = 1e-5)
+snow_dm_a_priori = FixedAPriori("snow_dm", 1000e-6, snow_covariance, mask = ice_mask, mask_value = 1e-6)
 snow_dm_a_priori = MaskedRegularGrid(snow_dm_a_priori, points_dm, ice_mask, "altitude",
                                      provide_retrieval_grid = False)
 

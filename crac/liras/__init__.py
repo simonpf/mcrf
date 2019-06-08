@@ -12,17 +12,21 @@ test_scenes = {"ts1" : (0, 500, "A"),
                "ts2" : (2800, 3300, "A"),
                "ts3" : (2500, 3000, "B")}
 
+settings = {"single_species" : True}
+
 ################################################################################
 # Ice particles
 ################################################################################
 
 def n0_a_priori(t):
     t = t - 272.15
-    return np.log10(np.exp(-0.076586 * t + 17.948))
+    if settings["single_species"]:
+        return np.log10(np.exp(-0.076586 * t + 17.948))
+    else:
+        return np.ones(t.shape) * 10.0
 
 def dm_a_priori(t):
     n0 = 10 ** n0_a_priori(t)
-    n0[:] = 10.0 ** 10
     iwc = 1e-6
     dm = (4.0 ** 4 * iwc / (np.pi * 917.0)  / n0) ** 0.25
     return dm
@@ -31,17 +35,13 @@ ice_shape      = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 273.0))
 
-z_grid = np.linspace(0, 21e3, 21)
 ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-12)
-ice_covariance  = SpatialCorrelation(ice_covariance, 1e3)
+ice_covariance  = SpatialCorrelation(ice_covariance, 1e3, mask = ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 1e-8)
-#ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori, 5, ice_mask, provide_retrieval_grid = False)
 
-z_grid = np.array([5e3, 15e3])
-ice_covariance  = Diagonal(4, mask = ice_mask, mask_value = 1e-12)
-#ice_covariance  = SpatialCorrelation(ice_covariance, 2e3)
-ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance,
+ice_covariance  = Diagonal(0.25, mask = ice_mask, mask_value = 1e-12)
+ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 2)
 ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 5, ice_mask, "altitude", provide_retrieval_grid = False)
 
@@ -49,7 +49,6 @@ ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori], ice_sh
 ice.transformations = [Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
                        Identity()]
 ice.limits_low = [2, 1e-8]
-ice.radar_only = True
 
 ################################################################################
 # Snow particles
@@ -57,30 +56,20 @@ ice.radar_only = True
 
 snow_shape      = os.path.join(scattering_data, "EvansSnowAggregate.xml")
 snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
-
 snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 278.0))
 
 snow_covariance = Diagonal(500e-6 ** 2, mask = snow_mask, mask_value = 1e-12)
-snow_covariance  = SpatialCorrelation(snow_covariance, 1e3)
 snow_dm_a_priori = FixedAPriori("snow_dm", 1e-3, snow_covariance,
                                 mask = snow_mask, mask_value = 1e-8)
-#snow_dm_a_priori = MaskedRegularGrid(snow_dm_a_priori, 5, snow_mask, "altitude", provide_retrieval_grid = False)
 
-z_grid = np.array([5e3, 15e3])
-snow_covariance  = Diagonal(4, mask = snow_mask, mask_value = 1e-12)
-#snow_covariance  = SpatialCorrelation(snow_covariance, 1e3)
-snow_n0_a_priori = FixedAPriori("snow_n0", 7, snow_covariance,
-                                mask = snow_mask, mask_value = 2)
-snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 5, snow_mask, "altitude", provide_retrieval_grid = False)
+snow_covariance  = Diagonal(1, mask = snow_mask, mask_value = 1e-12)
+snow_n0_a_priori = FixedAPriori("snow_n0", 7, snow_covariance, mask = snow_mask, mask_value = 2)
+snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 5, ice_mask, "altitude", provide_retrieval_grid = False)
 
 snow = Hydrometeor("snow", D14NDmIce(), [snow_n0_a_priori, snow_dm_a_priori], snow_shape, snow_shape_meta)
 snow.transformations = [Composition(Log10(), PiecewiseLinear(snow_n0_a_priori)),
-                        Identity()]
-#snow.transformations = [Log10(),
-#                        Composition(Identity(), PiecewiseLinear(snow_dm_a_priori))]
+                       Identity()]
 snow.limits_low = [0, 1e-8]
-snow.radar_only = True
-snow.retrieve_first_moment = False
 
 ################################################################################
 # Liquid particles
@@ -89,6 +78,7 @@ snow.retrieve_first_moment = False
 liquid_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
 liquid_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
+z_grid = np.array([0e3, 10e3])
 liquid_mask  = TemperatureMask(250, 340.0)
 liquid_covariance = Thikhonov(scaling = 3.0, diagonal = 1.0, mask = liquid_mask)
 liquid_md_a_priori = FixedAPriori("liquid_md", -7, liquid_covariance,
@@ -96,7 +86,6 @@ liquid_md_a_priori = FixedAPriori("liquid_md", -7, liquid_covariance,
 liquid_md_a_priori = ReducedVerticalGrid(liquid_md_a_priori, z_grid, "altitude",
                                         Diagonal(4 * np.ones(z_grid.size)))
 
-z_grid = np.array([0e3, 10e3])
 liquid_n0_a_priori = FixedAPriori("liquid_n0", 12, liquid_covariance,
                                   mask = liquid_mask, mask_value = 15)
 liquid_n0_a_priori = ReducedVerticalGrid(liquid_n0_a_priori, z_grid, "altitude",

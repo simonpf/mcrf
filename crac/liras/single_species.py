@@ -19,6 +19,7 @@ def n0_a_priori(t):
 
 def dm_a_priori(t):
     n0 = 10 ** n0_a_priori(t)
+    n0[:] = 10 ** 10
     iwc = 1e-6
     dm = (4.0 ** 4 * iwc / (np.pi * 917.0)  / n0) ** 0.25
     return dm
@@ -33,7 +34,8 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_co
                                     mask = ice_mask, mask_value = 1e-8)
 
 ice_covariance  = Diagonal(0.25, mask = ice_mask, mask_value = 1e-12)
-ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance, mask = ice_mask, mask_value = 2)
+ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance,
+                                    mask = ice_mask, mask_value = 2)
 ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 5, ice_mask, "altitude", provide_retrieval_grid = False)
 
 ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori], ice_shape, ice_shape_meta)

@@ -5,7 +5,7 @@ import crac.liras.setup
 import crac.liras
 from   crac.retrieval        import CloudRetrieval
 from   crac.sensors          import mwi, ici, lcpr
-from   crac.liras.single_species import ice, snow, rain, rh_a_priori
+from   crac.liras            import ice, snow, rain, rh_a_priori
 from   crac.liras.model_data import ModelDataProvider
 
 import matplotlib.pyplot as plt
@@ -35,7 +35,6 @@ ip = offset + 380
 data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
                                   snow_psd   = snow.psd,
-                                  liquid_psd = liquid.psd,
                                   scene = scene.upper())
 
 
@@ -68,5 +67,5 @@ data_provider.add(observations)
 retrieval = CloudRetrieval(hydrometeors, sensors, data_provider,
                            include_cloud_water = False)
 retrieval.setup()
-retrieval.run(ip)
+#retrieval.run(ip)
 
