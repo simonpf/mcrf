@@ -19,7 +19,7 @@ def n0_a_priori(t):
 
 def dm_a_priori(t):
     n0 = 10 ** n0_a_priori(t)
-    iwc = 1e-4
+    iwc = 1e-5
     dm = (4.0 ** 4 * iwc / (np.pi * 917.0)  / n0) ** 0.25
     return dm
 
@@ -39,11 +39,11 @@ ice_md_a_priori = ReducedVerticalGrid(ice_md_a_priori, md_z_grid, "altitude",
                                       ice_covariance)
 
 # n0
-points_n0 = 2
+points_n0 = 1
 ice_covariance = Diagonal(1, mask = ice_mask, mask_value = 1e-12)
 #ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance, mask = ice_mask, mask_value = 2)
 ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance, mask = ice_mask, mask_value = 0)
-ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 2, ice_mask, "altitude", provide_retrieval_grid = False)
+ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, points_n0, ice_mask, "altitude", provide_retrieval_grid = False)
 
 points_dm = 8
 ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
@@ -79,7 +79,7 @@ snow_md_a_priori = FixedAPriori("snow_md", -5, snow_covariance,
 # n0
 snow_covariance  = Diagonal(1.0, mask = ice_mask, mask_value = 1e-12)
 snow_n0_a_priori = FixedAPriori("snow_n0", 7, snow_covariance, mask = ice_mask, mask_value = 0)
-snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 2, ice_mask, "altitude", provide_retrieval_grid = False)
+snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, points_n0, ice_mask, "altitude", provide_retrieval_grid = False)
 
 snow_covariance  = Diagonal(500e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
 snow_dm_a_priori = FixedAPriori("snow_dm", 1000e-6, snow_covariance, mask = ice_mask, mask_value = 1e-5)
