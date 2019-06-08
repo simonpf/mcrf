@@ -11,7 +11,7 @@ export OMP_NUM_THREADS=1
 
 #mpiexec -n 128 python scripts/liras/forward_simulations.py A 3000 3800 ${HOME}/src/liras/data/forward_simulations_a.nc
 #mpiexec -n 128 python scripts/liras/forward_simulations.py B 2200 3000 ${HOME}/src/liras/data/forward_simulations_b.nc
-mpiexec -n 128 python scripts/liras/forward_simulations_ice.py A 3000 3800 ${SNIC_NOBACKUP}/src/liras/data/forward_simulations_ice_a.nc
-mpiexec -n 128 python scripts/liras/forward_simulations_ice.py B 2200 3000 ${SNIC_NOBACKUP}/src/liras/data/forward_simulations_ice_b.nc
+#mpiexec -n 128 python scripts/liras/forward_simulations_ice.py A 3000 3800 ${SNIC_NOBACKUP}/src/liras/data/forward_simulations_ice_a.nc
+#mpiexec -n 128 python scripts/liras/forward_simulations_ice.py B 2200 3000 ${SNIC_NOBACKUP}/src/liras/data/forward_simulations_ice_b.nc
 mpiexec -n 128 python scripts/liras/forward_simulations_snow.py A 3000 3800 ${SNIC_NOBACKUP}/src/liras/data/forward_simulations_snow_a.nc
 mpiexec -n 128 python scripts/liras/forward_simulations_snow.py B 2200 3000 ${SNIC_NOBACKUP}/src/liras/data/forward_simulations_snow_b.nc

@@ -19,8 +19,9 @@ def n0_a_priori(t):
 
 def dm_a_priori(t):
     n0 = 10 ** n0_a_priori(t)
-    iwc = 1e-4
+    iwc = 1e-5
     dm = (4.0 ** 4 * iwc / (np.pi * 917.0)  / n0) ** 0.25
+    dm = np.maximum(dm, 200e-6)
     return dm
 
 ice_shape      = os.path.join(scattering_data, "8-ColumnAggregate.xml")
@@ -39,13 +40,13 @@ ice_md_a_priori = ReducedVerticalGrid(ice_md_a_priori, md_z_grid, "altitude",
                                       ice_covariance)
 
 # n0
-points_n0 = 2
+points_n0 = 1
 ice_covariance = Diagonal(1, mask = ice_mask, mask_value = 1e-12)
 #ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance, mask = ice_mask, mask_value = 2)
 ice_n0_a_priori = FixedAPriori("ice_n0", 10, ice_covariance, mask = ice_mask, mask_value = 0)
-ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 2, ice_mask, "altitude", provide_retrieval_grid = False)
+ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, point_n0, ice_mask, "altitude", provide_retrieval_grid = False)
 
-points_dm = 8
+points_dm = 5
 ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
 #ice_covariance  = SpatialCorrelation(ice_covariance, 4e3)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance, mask = ice_mask, mask_value = 1e-6)

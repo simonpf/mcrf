@@ -40,7 +40,7 @@ kwargs = {"ice_psd"     : hydrometeors[0].psd,
           "liquid_psd"  : hydrometeors[4].psd}
 data_provider = ModelDataProvider(99, scene = scene, **kwargs)
 sensors       = [lcpr, mwi, ici]
-simulation    = CloudSimulation(hydrometeors[:2], sensors, data_provider)
+simulation    = CloudSimulation(hydrometeors[1:2], sensors, data_provider)
 
 simulation.setup(verbosity = 0)
 dimensions = [("profile", n, i_start)]

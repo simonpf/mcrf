@@ -29,10 +29,9 @@ class CloudRetrieval:
             n0.retrieval.limit_low      = q.limits_low[1]
 
         h2o = self.simulation.atmosphere.absorbers[-1]
-        self.simulation.retrieval.add(h2o)
 
         h2o_a = [p for p in self.data_provider.subproviders \
-                 if getattr(p, "name", "") == "H2O"]
+                 if getattr(p, "name", "") == "H2O_xa"]
         if len(h2o_a) > 0:
             h2o_a = h2o_a[0]
             atanh = Atanh(-0.2, 1.4)
@@ -41,10 +40,10 @@ class CloudRetrieval:
             h2o.retrieval.unit      = RelativeHumidity()
             h2o.limit_low = 0.0
             h2o.limit_high = 1.2
+            self.h2o = h2o
+            self.simulation.retrieval.add(h2o)
         else:
-            h2o = None
-
-        self.h2o = h2o
+            self.h2o = None
 
         if self.include_cloud_water:
             cw = self.simulation.atmosphere.absorbers[-2]
