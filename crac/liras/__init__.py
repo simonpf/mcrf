@@ -20,23 +20,20 @@ settings = {"single_species" : True}
 
 def n0_a_priori(t):
     t = t - 272.15
-    if settings["single_species"]:
-        return np.log10(np.exp(-0.076586 * t + 17.948))
-    else:
-        return np.ones(t.shape) * 10.0
+    return 10.0 * np.ones(t.shape)
 
 def dm_a_priori(t):
     n0 = 10 ** n0_a_priori(t)
-    iwc = 1e-6
+    iwc = 1e-5
     dm = (4.0 ** 4 * iwc / (np.pi * 917.0)  / n0) ** 0.25
     return dm
 
 ice_shape      = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
-ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 273.0))
+ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 276.0))
 
-ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-12)
-ice_covariance  = SpatialCorrelation(ice_covariance, 1e3, mask = ice_mask)
+ice_covariance  = Diagonal(100e-6 ** 2, mask = ice_mask, mask_value = 1e-12)
+ice_covariance  = SpatialCorrelation(ice_covariance, 2e3, mask = ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 1e-8)
 
@@ -59,10 +56,11 @@ snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
 snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 278.0))
 
 snow_covariance = Diagonal(500e-6 ** 2, mask = snow_mask, mask_value = 1e-12)
+snow_covariance  = SpatialCorrelation(snow_covariance, 2e3, mask = ice_mask)
 snow_dm_a_priori = FixedAPriori("snow_dm", 1e-3, snow_covariance,
                                 mask = snow_mask, mask_value = 1e-8)
 
-snow_covariance  = Diagonal(1, mask = snow_mask, mask_value = 1e-12)
+snow_covariance  = Diagonal(0.25, mask = snow_mask, mask_value = 1e-12)
 snow_n0_a_priori = FixedAPriori("snow_n0", 7, snow_covariance, mask = snow_mask, mask_value = 2)
 snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 5, ice_mask, "altitude", provide_retrieval_grid = False)
 
@@ -208,7 +206,7 @@ class ObservationError(DataProviderBase):
                 if s.name == "lcpr":
                     i_lcpr = sum([v.size for v in diag])
                     j_lcpr = i_lcpr + s.nedt.size
-                diag += [(c * s.nedt) ** 2]
+                diag += [(c * s.nedt + 0.5)]
 
                 if self.fme and not self.fpe:
                     diag[-1] += self.nedt_fm[s.name] ** 2

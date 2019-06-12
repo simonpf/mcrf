@@ -16,16 +16,12 @@ settings = {"single_species" : True}
 
 def n0_a_priori(t):
     t = t - 272.15
-    if settings["single_species"]:
-        return np.log10(np.exp(-0.076586 * t + 17.948))
-    else:
-        return np.ones(t.shape) * 10.0
+    return np.log10(np.exp(-0.076586 * t + 17.948))
 
 def dm_a_priori(t):
     n0 = 10 ** n0_a_priori(t)
     iwc = 1e-5
     dm = (4.0 ** 4 * iwc / (np.pi * 917.0)  / n0) ** 0.25
-    dm = np.maximum(dm, 200e-6)
     return dm
 
 ice_shape      = os.path.join(scattering_data, "8-ColumnAggregate.xml")
@@ -46,8 +42,9 @@ ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, points_n0, ice_mask, "altit
                                     provide_retrieval_grid = False)
 
 
-points_dm = 5
+points_dm = 10
 ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
+ice_covariance  = SpatialCorrelation(ice_covariance, 4e3, mask = ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 1e-6)
 ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori, points_dm, ice_mask, "altitude", provide_retrieval_grid = False)
@@ -79,6 +76,7 @@ snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, points_n0, ice_mask,
                                      "altitude", provide_retrieval_grid = False)
 
 snow_covariance  = Diagonal(500e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
+snow_covariance  = SpatialCorrelation(snow_covariance, 4e3, mask = ice_mask)
 snow_dm_a_priori = FixedAPriori("snow_dm", 1000e-6, snow_covariance, mask = ice_mask, mask_value = 1e-6)
 snow_dm_a_priori = MaskedRegularGrid(snow_dm_a_priori, points_dm, ice_mask, "altitude",
                                      provide_retrieval_grid = False)
@@ -168,18 +166,19 @@ rain.retrieve_second_moment = True
 ################################################################################
 
 def a_priori_shape(t):
-    #transformation = Atanh()
-    #transformation.z_max = 1.2
-    #transformation.z_min = 0.0
-    transformation = Identity()
+    transformation = Atanh()
+    transformation.z_max = 1.2
+    transformation.z_min = 0.0
+    #transformation = Identity()
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.1)
     x = np.zeros(t.shape)
     x[:] = 0.5
     return transformation(x)
 
 
-z_grid = np.linspace(0, 20e3, 11)
+z_grid = np.linspace(0, 20e3, 21)
 rh_covariance = Diagonal(1.0 ** 2)
+rh_covariance = SpatialCorrelation(ice_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
 rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude",

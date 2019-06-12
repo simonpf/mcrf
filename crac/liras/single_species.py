@@ -19,21 +19,20 @@ def n0_a_priori(t):
 
 def dm_a_priori(t):
     n0 = 10 ** n0_a_priori(t)
-    n0[:] = 10 ** 10
     iwc = 1e-6
     dm = (4.0 ** 4 * iwc / (np.pi * 917.0)  / n0) ** 0.25
     return dm
 
 ice_shape      = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
-ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 273.0))
+ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 278.0))
 
 ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-12)
-ice_covariance  = SpatialCorrelation(ice_covariance, 1e3, mask = ice_mask)
+ice_covariance  = SpatialCorrelation(ice_covariance, 4e3, mask = ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 1e-8)
 
-ice_covariance  = Diagonal(0.25, mask = ice_mask, mask_value = 1e-12)
+ice_covariance  = Diagonal(1, mask = ice_mask, mask_value = 1e-12)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 2)
 ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 5, ice_mask, "altitude", provide_retrieval_grid = False)
@@ -63,6 +62,7 @@ snow = Hydrometeor("snow", D14NDmIce(), [snow_n0_a_priori, snow_dm_a_priori], sn
 snow.transformations = [Composition(Log10(), PiecewiseLinear(snow_n0_a_priori)),
                        Identity()]
 snow.limits_low = [0, 1e-8]
+
 
 ################################################################################
 # Rain particles
@@ -94,7 +94,7 @@ rain.radar_only = True
 def a_priori_shape(t):
     transformation = Atanh()
     transformation.z_max = 1.2
-    transformation.z_min = -0.1
+    transformation.z_min = 0.0
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.1)
     return transformation(x)
 
