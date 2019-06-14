@@ -348,6 +348,7 @@ mwi.sensor_line_of_sight = np.array([[132.0]])
 mwi.sensor_position = np.array([[600e3]])
 
 mwi_full = MWI(stokes_dimension = 1)
+mwi_full.name = "mwi_full"
 mwi_full.sensor_line_of_sight = np.array([[132.0]])
 mwi_full.sensor_position = np.array([[600e3]])
 
