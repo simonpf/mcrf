@@ -30,7 +30,7 @@ def dm_a_priori(t):
 
 ice_shape      = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
-ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 276.0))
+ice_mask       = And(AltitudeMask(0.0, 19e3), TemperatureMask(0.0, 276.0))
 
 ice_covariance  = Diagonal(100e-6 ** 2, mask = ice_mask, mask_value = 1e-12)
 ice_covariance  = SpatialCorrelation(ice_covariance, 2e3, mask = ice_mask)
@@ -38,9 +38,10 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_co
                                     mask = ice_mask, mask_value = 1e-8)
 
 ice_covariance  = Diagonal(0.25, mask = ice_mask, mask_value = 1e-12)
+ice_covariance  = SpatialCorrelation(ice_covariance, 4e3, mask = ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 2)
-ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 5, ice_mask, "altitude", provide_retrieval_grid = False)
+#ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 10, ice_mask, "altitude", provide_retrieval_grid = False)
 
 ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori], ice_shape, ice_shape_meta)
 ice.transformations = [Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
@@ -53,7 +54,8 @@ ice.limits_low = [2, 1e-8]
 
 snow_shape      = os.path.join(scattering_data, "EvansSnowAggregate.xml")
 snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
-snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 278.0))
+#snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 278.0))
+snow_mask        = And(AltitudeMask(0.0, 19e3), TemperatureMask(0.0, 276.0))
 
 snow_covariance = Diagonal(500e-6 ** 2, mask = snow_mask, mask_value = 1e-12)
 snow_covariance  = SpatialCorrelation(snow_covariance, 2e3, mask = ice_mask)
@@ -61,8 +63,9 @@ snow_dm_a_priori = FixedAPriori("snow_dm", 1e-3, snow_covariance,
                                 mask = snow_mask, mask_value = 1e-8)
 
 snow_covariance  = Diagonal(0.25, mask = snow_mask, mask_value = 1e-12)
+snow_covariance  = SpatialCorrelation(snow_covariance, 4e3, mask = snow_mask)
 snow_n0_a_priori = FixedAPriori("snow_n0", 7, snow_covariance, mask = snow_mask, mask_value = 2)
-snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 5, ice_mask, "altitude", provide_retrieval_grid = False)
+#snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 10, ice_mask, "altitude", provide_retrieval_grid = False)
 
 snow = Hydrometeor("snow", D14NDmIce(), [snow_n0_a_priori, snow_dm_a_priori], snow_shape, snow_shape_meta)
 snow.transformations = [Composition(Log10(), PiecewiseLinear(snow_n0_a_priori)),
@@ -130,15 +133,17 @@ def a_priori_shape(t):
     transformation = Atanh()
     transformation.z_max = 1.2
     transformation.z_min = 0.0
-    x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.1)
+    x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.2)
+    x = 0.5 * np.ones(t.shape)
     return transformation(x)
 
 
 z_grid = np.linspace(0, 20e3, 21)
 rh_covariance = Diagonal(1.0)
-rh_covariance = SpatialCorrelation(rh_covariance, 1e3)
+rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
-rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude", provide_retrieval_grid = False)
+rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude",
+                                  provide_retrieval_grid = False)
 
 ################################################################################
 # Observation error
@@ -214,7 +219,7 @@ class ObservationError(DataProviderBase):
         for s in self.sensors:
             c = self.noise_scaling[s.name]
             if isinstance(s, PassiveSensor):
-                diag += [(c * s.nedt) ** 2]
+                diag += [(c * s.nedt + 0.5) ** 2]
 
                 if self.fme:
                     diag[-1] += self.nedt_fm[s.name] ** 2

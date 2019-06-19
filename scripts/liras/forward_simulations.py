@@ -6,7 +6,7 @@ import argparse
 import crac.liras.setup
 import crac.liras
 from   crac.retrieval        import CloudSimulation
-from   crac.sensors          import mwi, ici, lcpr
+from   crac.sensors          import mwi, ici, lcpr, mwi_full, hamp_radar
 from   crac.liras            import ice, liquid, snow, rain, rh_a_priori, cloud_water_a_priori
 from   crac.liras.gem        import gem_hydrometeors
 from   crac.liras.model_data import ModelDataProvider
@@ -17,6 +17,8 @@ parser.add_argument('scene',       metavar = 'scene',       type = str, nargs = 
 parser.add_argument('start_index', metavar = 'start_index', type = int, nargs = 1)
 parser.add_argument('end_index',   metavar = 'end_index',   type = int, nargs = 1)
 parser.add_argument('output_file', metavar = 'output_file', type = str, nargs = 1)
+parser.add_argument('sensors',     metavar = 'sensors', type = str, nargs = '*',
+                    default = ["lcpr", "ici", "mwi"])
 
 args = parser.parse_args()
 i_start = args.start_index[0]
@@ -39,7 +41,7 @@ kwargs = {"ice_psd"     : hydrometeors[0].psd,
           "graupel_psd" : hydrometeors[3].psd,
           "liquid_psd"  : hydrometeors[4].psd}
 data_provider = ModelDataProvider(99, scene = scene, **kwargs)
-sensors       = [lcpr, mwi, ici]
+sensors = [getattr(crac.sensors, n) for n in args.sensors]
 simulation    = CloudSimulation(hydrometeors, sensors, data_provider)
 
 simulation.setup(verbosity = 0)

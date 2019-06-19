@@ -260,7 +260,7 @@ class ObservationError(DataProviderBase):
         for s in self.sensors:
             c = self.noise_scaling[s.name]
             if isinstance(s, PassiveSensor):
-                diag += [(c * s.nedt) ** 2]
+                diag += [(c * s.nedt + 1.0) ** 2]
 
                 if self.fme:
                     diag[-1] += self.nedt_fm[s.name] ** 2
