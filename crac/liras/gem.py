@@ -32,8 +32,8 @@ gem_path = os.path.join(liras_path, "data", "scattering")
 
 # Ice
 
-scat_data      = glob.glob(os.path.join(gem_path, "*Ice*data_new.xml"))[0]
-scat_meta_data = glob.glob(os.path.join(gem_path, "*Ice*meta_new.xml"))[0]
+scat_data      = glob.glob(os.path.join(gem_path, "GemCloudIce.xml"))[0]
+scat_meta_data = glob.glob(os.path.join(gem_path, "GemCloudIce.meta.xml"))[0]
 psd            = MY05(hydrometeor_type = "cloud_ice")
 psd.t_min      = 0.0
 psd.t_max      = 999.0
@@ -47,8 +47,8 @@ gem_ice_binned = ScatteringSpecies("ice", psd_binned,
                                    scattering_data = scat_data,
                                    scattering_meta_data = scat_meta_data)
 
-scat_data      = glob.glob(os.path.join(gem_path, "*Snow*data_new.xml"))[0]
-scat_meta_data = glob.glob(os.path.join(gem_path, "*Snow*meta_new.xml"))[0]
+scat_data      = glob.glob(os.path.join(gem_path, "GemSnow.xml"))[0]
+scat_meta_data = glob.glob(os.path.join(gem_path, "GemSnow.meta.xml"))[0]
 psd            = MY05(hydrometeor_type = "snow")
 psd_binned     = Binned(x = np.logspace(-6, -1, 21), size_parameter = psd.size_parameter)
 psd.t_min      = 0.0
@@ -62,8 +62,8 @@ gem_snow_binned    = ScatteringSpecies("snow", psd_binned,
                                    scattering_data = scat_data,
                                    scattering_meta_data = scat_meta_data)
 
-scat_data      = glob.glob(os.path.join(gem_path, "*Hail*data_new.xml"))[0]
-scat_meta_data = glob.glob(os.path.join(gem_path, "*Hail*meta_new.xml"))[0]
+scat_data      = glob.glob(os.path.join(gem_path, "GemHail.xml"))[0]
+scat_meta_data = glob.glob(os.path.join(gem_path, "GemHail.meta.xml"))[0]
 psd            = MY05(hydrometeor_type = "hail")
 psd_binned     = Binned(x = np.logspace(-6, -1, 21), size_parameter = psd.size_parameter)
 psd.t_min      = 0.0
@@ -77,8 +77,8 @@ gem_hail_binned    = ScatteringSpecies("hail", psd_binned,
                                    scattering_data = scat_data,
                                    scattering_meta_data = scat_meta_data)
 
-scat_data      = glob.glob(os.path.join(gem_path, "*Graupel*data_new.xml"))[0]
-scat_meta_data = glob.glob(os.path.join(gem_path, "*Graupel*meta_new.xml"))[0]
+scat_data      = glob.glob(os.path.join(gem_path, "*GemGraupel.xml"))[0]
+scat_meta_data = glob.glob(os.path.join(gem_path, "*GemGraupel.meta.xml"))[0]
 psd            = MY05(hydrometeor_type = "graupel")
 psd_binned     = Binned(x = np.logspace(-6, -1, 21), size_parameter = psd.size_parameter)
 psd.t_min      = 0.0
@@ -94,8 +94,8 @@ gem_graupel_binned = ScatteringSpecies("graupel", psd_binned,
 
 # Liquid
 
-scat_data      = glob.glob(os.path.join(gem_path, "*Liquid*data_new.xml"))[0]
-scat_meta_data = glob.glob(os.path.join(gem_path, "*Liquid*meta_new.xml"))[0]
+scat_data      = glob.glob(os.path.join(gem_path, "LiquidSphere.xml"))[0]
+scat_meta_data = glob.glob(os.path.join(gem_path, "LiquidSphere.meta.xml"))[0]
 psd            = MY05(hydrometeor_type = "cloud_water")
 psd_binned     = Binned(x = np.logspace(-6, -1, 21), size_parameter = psd.size_parameter)
 psd.t_min      = 0.0
@@ -110,8 +110,6 @@ gem_liquid_binned  = ScatteringSpecies("cloud_water", psd_binned,
                                    scattering_meta_data = scat_meta_data)
 
 
-scat_data      = glob.glob(os.path.join(gem_path, "*Liquid*data_new.xml"))[0]
-scat_meta_data = glob.glob(os.path.join(gem_path, "*Liquid*meta_new.xml"))[0]
 psd            = MY05(hydrometeor_type = "rain")
 psd_binned     = Binned(x = np.logspace(-6, -1, 21), size_parameter = psd.size_parameter)
 psd.t_min      = 0.0

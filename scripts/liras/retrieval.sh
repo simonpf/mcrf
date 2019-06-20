@@ -13,7 +13,7 @@ s="SCENE"
 s1="SHAPE1"
 s2="SHAPE2"
 
-mpiexec -n 256 python scripts/liras/retrieval.py ${s} 3000 ${s1} ${s2} data/forward_simulations_${s}_noise.nc data/retrieval_${s}_${s1}_${s2}.nc --retrieve_humidity
-#mpiexec -n 256 python scripts/liras/retrieval_ice.py ${s} 3000 ${s1} data/forward_simulations_ice_${s}_noise.nc data/retrieval_ice_${s}_${s1}.nc
-#mpiexec -n 256 python scripts/liras/retrieval_snow.py ${s} 3000 ${s1} data/forward_simulations_snow_${s}_noise.nc data/retrieval_snow_${s}_${s1}.nc
-#mpiexec -n 256 python scripts/liras/retrieval_ice_snow.py ${s} 3000 ${s1} ${s2} data/forward_simulations_ice_snow_${s}_noise.nc data/retrieval_ice_snow_${s}_${s1}_${s2}.nc
+#mpiexec -n 256 python scripts/liras/retrieval.py ${s} 3000 ${s1} ${s2} data/forward_simulations_${s}_noise.nc data/retrieval_${s}_${s1}_${s2}.nc --retrieve_humidity
+
+s="b"
+mpiexec -n 256 python scripts/liras/retrieval.py ${s} 2200 ${s1} ${s2} data/forward_simulations_${s}_noise.nc data/retrieval_${s}_${s1}_${s2}.nc --retrieve_humidity
