@@ -27,8 +27,8 @@ ice_shape      = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 278.0))
 
-ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-12)
-ice_covariance  = SpatialCorrelation(ice_covariance, 2e3, mask = ice_mask)
+ice_covariance  = Diagonal(300e-6 ** 2, mask = ice_mask, mask_value = 1e-12)
+ice_covariance  = SpatialCorrelation(ice_covariance, 3e3, mask = ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 1e-8)
 

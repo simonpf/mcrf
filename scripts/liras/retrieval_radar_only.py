@@ -97,5 +97,6 @@ retrieval = CloudRetrieval(hydrometeors, sensors, data_provider, include_cloud_w
 retrieval.setup()
 
 
-retrieval.simulation.initialize_output_file(output_file, [("profile", n, i_start)])
+retrieval.simulation.initialize_output_file(output_file, [("profile", n, i_start)],
+                                           full_retrieval_output = False)
 retrieval.simulation.run_ranges(range(i_start, i_start + n))

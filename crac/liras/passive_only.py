@@ -34,7 +34,7 @@ snow_mask      = And(AltitudeMask(0.0, 18e3), TemperatureMask(0.0, 280.0))
 ice_covariance = Diagonal(1 * np.ones(md_z_grid.size))
 
 # n0
-points_n0 = 2
+points_n0 = 4
 ice_covariance = Diagonal(1, mask = ice_mask, mask_value = 1e-12)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori,
                                     ice_covariance, mask = ice_mask, mask_value = 2)
@@ -42,7 +42,7 @@ ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, points_n0, ice_mask, "altit
                                     provide_retrieval_grid = False)
 
 
-points_dm = 10
+points_dm = 6
 ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
 ice_covariance  = SpatialCorrelation(ice_covariance, 4e3, mask = ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance,
@@ -97,34 +97,11 @@ snow.retrieve_first_moment = False
 # Liquid particles
 ################################################################################
 
-liquid_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
-liquid_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
-
-points_liquid = 2
-liquid_mask       = TemperatureMask(230, 273.0)
-liquid_covariance = Diagonal(2)
-liquid_md_a_priori = FixedAPriori("liquid_md", -5, liquid_covariance,
-				mask = liquid_mask, mask_value = -12)
-liquid_md_a_priori = MaskedRegularGrid(liquid_md_a_priori, points_liquid, liquid_mask, "altitude")
-
-z_grid = np.linspace(0, 20e3, 4)
-liquid_dm_a_priori = FixedAPriori("liquid_dm", 10, liquid_covariance)
-liquid_dm_a_priori = ReducedVerticalGrid(liquid_dm_a_priori, z_grid, "altitude",
-                                         Diagonal(2 * np.ones(z_grid.size)))
-
-liquid = Hydrometeor("liquid",
-                     D14NDmLiquid(),
-                     [liquid_md_a_priori, liquid_dm_a_priori],
-                     liquid_shape,
-                     liquid_shape_meta)
-liquid.retrieve_second_moment = True
-
-liquid.transformations = [Identity(), Identity()]
-liquid.limits_low = [1e-12, 1e-12]
-cloud_water_a_priori = FixedAPriori("cloud_water", -5, liquid_covariance, mask = liquid_mask,
-                                    mask_value = -18)
-cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, points_liquid,
-                                         liquid_mask, "altitude")
+liquid_mask  = TemperatureMask(230, 273.0)
+liquid_covariance = Diagonal(1 ** 2)
+cloud_water_a_priori = FixedAPriori("cloud_water", -5, liquid_covariance)
+cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, 5, liquid_mask,
+                                         "altitude", provide_retrieval_grid = False)
 
 ################################################################################
 # Rain particles
@@ -169,22 +146,14 @@ def a_priori_shape(t):
     transformation = Atanh()
     transformation.z_max = 1.2
     transformation.z_min = 0.0
-    #transformation = Identity()
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.1)
-    x = np.zeros(t.shape)
-    x[:] = 0.5
     return transformation(x)
-
 
 z_grid = np.linspace(0, 20e3, 21)
 rh_covariance = Diagonal(1.0 ** 2)
 rh_covariance = SpatialCorrelation(ice_covariance, 2e3)
-rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
-                                rh_covariance)
-rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude",
-                                  provide_retrieval_grid = False)
-
-#rh_a_priori.transformation = Composition(transformation, PiecewiseLinear(rh_a_priori))
+rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
+rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude", provide_retrieval_grid = False)
 
 ################################################################################
 # Observation error

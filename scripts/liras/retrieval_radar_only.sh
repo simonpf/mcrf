@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #SBATCH -A C3SE2019-1-15 -p vera
 #SBATCH -n 128
-#SBATCH -c 2
+#SBATCH -c 3
 #SBATCH -J clouds
 #SBATCH -t 0-10:00:00
 
