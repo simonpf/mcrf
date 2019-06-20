@@ -87,8 +87,7 @@ class CloudRetrieval:
     def __init__(self,
                  hydrometeors,
                  sensors,
-                 data_provider,
-                 include_cloud_water = True):
+                 data_provider):
 
         cw_a = [p for p in self.data_provider.subproviders \
                 if getattr(p, "name", "") == "cloud_water"]
