@@ -5,14 +5,25 @@ are:
     - The Ice Cloud Imager (ICI)
     - The Microwave Imager (MWI)
     - The LIRAS Cloud Profiling Radar (LCPR)
+    - The HAMP RADAR and radiometer
+    - the ISMAR radiometer
 
 Attributes:
 
     ici: An instance of the ICI class that includes all of
        the available ICI channels.
 
-    mwi: An instance of the MWI class that includes all of
-        the available MWI channels.
+    ismar: Sensor instance representing the ISMAR demonstrator for ICI.
+
+    hamp_radar: Sensor instance representing the HAMP radar.
+
+    hamp_passive: Sensor representing the passive radiometers of HAMP
+
+    mwi: An instance of the MWI class that includes only the channels
+         with frquencies larger than 89 GHz. This is the sensor that
+         has been used withing the ESA Wide Swath cloud profiling study.
+
+    mwi_full: Instance of MWI class with all channels of the MWI sensor.
 
     lcpr: The LIRAS cloud profiling radar.
 

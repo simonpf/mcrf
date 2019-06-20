@@ -1,7 +1,29 @@
-import parts
+"""
+Provide Hydrometeor class that extends the parts ScatteringSpecies class
+with some additional attributes used by the :class:CloudRetrieval class.
+"""
 from parts.jacobian import Log10
 
 class Hydrometeor(parts.scattering.ScatteringSpecies):
+    """
+    Specialization of the parts.scattering.ScatteringSpecies class that
+    adds serveral attributes that are used to customize the behavior of
+    the CloudRetrieval class.
+
+    Attributes:
+
+        a_priori: A priori data provider for this hydrometeor species.
+
+        transformations: List containing two transformations to apply to the
+            two moments of the hydrometeor.
+
+        scattering_data: Path of the file containing the scattering data to
+            use for this hydrometeor.
+
+        scattering_data_meta: Path of the file containing the meta data for
+            this hydrometeor.
+
+    """
     def __init__(self,
                  name,
                  psd,

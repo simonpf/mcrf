@@ -1,3 +1,23 @@
+"""
+Module defining hydrometeor classes for performing forward simulations
+for the GEM model scenes in the LIRAS study.
+
+Attributes:
+
+    gem_ice: GEM hydrometeors representing cloud ice.
+
+    gem_snow: GEM hydrometeors representing snow.
+
+    gem_hail: GEM hydrometeors representing hail.
+
+    gem_graupel: GEM hydrometeors representing graupel.
+
+    gem_rain: GEM hydrometeors representing rain.
+
+    gem_cloud_water: GEM hydrometeor representing cloud water.
+
+    gem_hydrometeors: List containing all the GEM hydrometeors.
+"""
 import os
 import glob
 import numpy as np

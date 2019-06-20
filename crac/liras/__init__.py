@@ -1,4 +1,24 @@
+"""
+Contains the hydrometeors for the LIRAS retrieval. The hydrometeors implement
+the `crac.liras.hydrometeors.Hydrometeor` and bundle hydrometeor definition
+(type) with a priori assumption. The attributes of this module define the
+hydrometoers and a priori assumptions used for the retrievals for the
+ESA Wide Swath Cloud Profiling study.
+
+Attributes:
+
+    ice:  Hydrometeor species representing frozen hydrometeors.
+
+    snow: Hydrometeor species representing precipitating, frozen hydrometeors.
+
+    rain: Hydrometeor species representing precipitating, liquid hydrometeors.
+
+    rh_a_priori: A priori provider for humidity retrieval.
+
+    cloud_water_a_priori: A priori provider for cloud water retrieval.
+"""
 import os
+import numpy as np
 from crac.psds                import D14NDmIce, D14NDmLiquid
 from crac.hydrometeors        import Hydrometeor
 from parts.retrieval.a_priori import *
@@ -8,21 +28,22 @@ from parts.jacobian           import Atanh, Log10, Identity, Composition
 liras_path = os.environ["LIRAS_PATH"]
 scattering_data = os.path.join(liras_path, "data", "scattering")
 
-test_scenes = {"ts1" : (0, 500, "A"),
-               "ts2" : (2800, 3300, "A"),
-               "ts3" : (2500, 3000, "B")}
-
-settings = {"single_species" : True}
-
 ################################################################################
 # Ice particles
 ################################################################################
 
 def n0_a_priori(t):
-    t = t - 272.15
+    """
+    Defines the a priori mean for the normalized number density (N_0^*) for
+    frozen hydrometeors as a function of the temperature t.
+    """
     return 10.0 * np.ones(t.shape)
 
 def dm_a_priori(t):
+    """
+    Defines the a priori mean for the mass-weighted mean diameter (D_m) for
+    frozen hydrometeors as a function of the temperature t.
+    """
     n0 = 10 ** n0_a_priori(t)
     iwc = 1e-5
     dm = (4.0 ** 4 * iwc / (np.pi * 917.0)  / n0) ** 0.25
