@@ -99,8 +99,9 @@ snow.limits_low = [0, 1e-8]
 
 liquid_mask = TemperatureMask(230, 273.0)
 liquid_covariance = Diagonal(1 ** 2)
-cloud_water_a_priori = FixedAPriori("cloud_water", -5, liquid_covariance)
-cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, 5, liquid_mask,
+cloud_water_a_priori = FixedAPriori("cloud_water", -5, liquid_covariance,
+                                    mask = liquid_mask, mask_value = -20)
+cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, 7, liquid_mask,
                                          "altitude", provide_retrieval_grid = False)
 
 ################################################################################
