@@ -63,6 +63,7 @@ class CloudRetrieval:
         h2o_a = [p for p in self.data_provider.subproviders \
                  if getattr(p, "name", "") == "H2O"]
         if len(h2o_a) > 0:
+            print("retrieving h2o.")
             self.simulation.retrieval.add(h2o)
             h2o_a = h2o_a[0]
             atanh = Atanh(0.0, 1.2)
@@ -76,9 +77,12 @@ class CloudRetrieval:
             self.h2o = None
 
         if self.include_cloud_water:
+            cw_a = [p for p in self.data_provider.subproviders \
+                    if getattr(p, "name", "") == "cloud_water"][0]
             cw = self.simulation.atmosphere.absorbers[-2]
             self.simulation.retrieval.add(cw)
-            cw.transformation = Log10()
+            pl = PiecewiseLinear(cw_a)
+            cw.transformation = Composition(Log10(), pl)
             cw.retrieval.limit_high = -3
             self.cw = cw
         else:
@@ -89,7 +93,7 @@ class CloudRetrieval:
                  sensors,
                  data_provider):
 
-        cw_a = [p for p in self.data_provider.subproviders \
+        cw_a = [p for p in data_provider.subproviders \
                 if getattr(p, "name", "") == "cloud_water"]
         if len(cw_a) > 0:
             self.include_cloud_water = len(cw_a) > 0
@@ -126,13 +130,11 @@ class CloudRetrieval:
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
 
-            if self.h2o:
+            if not self.h2o is None:
                 rr.retrieval_quantities += [self.h2o]
-            if self.cw:
+            if not self.cw is None:
                 rr.retrieval_quantities += [self.cw]
 
-        #self.simulation.retrieval.callbacks = [("Radar only", radar_only),
-        #                                       ("All quantities", all_quantities)]
         self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
 
 
@@ -162,6 +164,7 @@ class CloudRetrieval:
 ################################################################################
 # Cloud simulation
 ################################################################################
+
 class CloudSimulation:
     """
     Class for performing forward simulation on GEM model data.

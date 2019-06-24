@@ -39,15 +39,17 @@ ice_covariance = Diagonal(1, mask = ice_mask, mask_value = 1e-12)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori,
                                     ice_covariance, mask = ice_mask, mask_value = 2)
 ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, points_n0, ice_mask, "altitude",
-                                    provide_retrieval_grid = False)
+                                    provide_retrieval_grid = False, transition = 1e3)
 
 
 points_dm = 6
 ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
-ice_covariance  = SpatialCorrelation(ice_covariance, 4e3, mask = ice_mask)
+ice_covariance  = SpatialCorrelation(ice_covariance, 2e3, mask = ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 1e-6)
-ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori, points_dm, ice_mask, "altitude", provide_retrieval_grid = False)
+ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori, points_dm, ice_mask, "altitude",
+                                    provide_retrieval_grid = False,
+                                    transition = 1e3)
 
 ice = Hydrometeor("ice",
                   D14NDmIce(),
@@ -73,13 +75,15 @@ snow_covariance  = Diagonal(4 * np.ones(md_z_grid.size))
 snow_covariance  = Diagonal(0.25, mask = ice_mask, mask_value = 1e-12)
 snow_n0_a_priori = FixedAPriori("snow_n0", 7, snow_covariance, mask = ice_mask, mask_value = 0)
 snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, points_n0, ice_mask,
-                                     "altitude", provide_retrieval_grid = False)
+                                     "altitude", provide_retrieval_grid = False,
+                                     transition = 1e3)
 
 snow_covariance  = Diagonal(500e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
 snow_covariance  = SpatialCorrelation(snow_covariance, 4e3, mask = ice_mask)
 snow_dm_a_priori = FixedAPriori("snow_dm", 1000e-6, snow_covariance, mask = ice_mask, mask_value = 1e-6)
 snow_dm_a_priori = MaskedRegularGrid(snow_dm_a_priori, points_dm, ice_mask, "altitude",
-                                     provide_retrieval_grid = False)
+                                     provide_retrieval_grid = False,
+                                     transition = 1e3)
 
 snow = Hydrometeor("snow",
                    D14NDmIce(),
@@ -97,12 +101,34 @@ snow.retrieve_first_moment = False
 # Liquid particles
 ################################################################################
 
-liquid_mask  = TemperatureMask(230, 273.0)
-liquid_covariance = Diagonal(1 ** 2)
-cloud_water_a_priori = FixedAPriori("cloud_water", -5, liquid_covariance,
-                                    mask = liquid_mask, mask_value = -20)
-cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, 5, liquid_mask,
-                                         "altitude", provide_retrieval_grid = False)
+liquid_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
+liquid_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
+
+points_liquid = 2
+liquid_mask       = TemperatureMask(230, 273.0)
+liquid_covariance = Diagonal(2)
+liquid_md_a_priori = FixedAPriori("liquid_md", -5, liquid_covariance,
+				mask = liquid_mask, mask_value = -12)
+liquid_md_a_priori = MaskedRegularGrid(liquid_md_a_priori, points_liquid, liquid_mask, "altitude")
+
+z_grid = np.linspace(0, 20e3, 4)
+liquid_dm_a_priori = FixedAPriori("liquid_dm", 10, liquid_covariance)
+liquid_dm_a_priori = ReducedVerticalGrid(liquid_dm_a_priori, z_grid, "altitude",
+                                         Diagonal(2 * np.ones(z_grid.size)))
+
+liquid = Hydrometeor("liquid",
+                     D14NDmLiquid(),
+                     [liquid_md_a_priori, liquid_dm_a_priori],
+                     liquid_shape,
+                     liquid_shape_meta)
+liquid.retrieve_second_moment = True
+
+liquid.transformations = [Identity(), Identity()]
+liquid.limits_low = [1e-12, 1e-12]
+cloud_water_a_priori = FixedAPriori("cloud_water", -5, liquid_covariance, mask = liquid_mask,
+                                    mask_value = -18)
+cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, points_liquid,
+                                         liquid_mask, "altitude")
 
 ################################################################################
 # Rain particles
@@ -144,17 +170,24 @@ rain.retrieve_second_moment = True
 ################################################################################
 
 def a_priori_shape(t):
-    transformation = Atanh()
-    transformation.z_max = 1.2
-    transformation.z_min = 0.0
+    #transformation = Atanh()
+    #transformation.z_max = 1.2
+    #transformation.z_min = 0.0
+    transformation = Identity()
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.1)
+    x = np.zeros(t.shape)
+    x[:] = 0.5
     return transformation(x)
 
-z_grid = np.linspace(0, 20e3, 21)
+
+z_grid = np.linspace(0, 20e3, 11)
 rh_covariance = Diagonal(1.0 ** 2)
-rh_covariance = SpatialCorrelation(ice_covariance, 2e3)
-rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
-rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude", provide_retrieval_grid = False)
+rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
+                                rh_covariance)
+rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude",
+                                  provide_retrieval_grid = False)
+
+#rh_a_priori.transformation = Composition(transformation, PiecewiseLinear(rh_a_priori))
 
 ################################################################################
 # Observation error
@@ -230,7 +263,7 @@ class ObservationError(DataProviderBase):
         for s in self.sensors:
             c = self.noise_scaling[s.name]
             if isinstance(s, PassiveSensor):
-                diag += [(c * s.nedt + 1.0) ** 2]
+                diag += [(c * s.nedt) ** 2]
 
                 if self.fme:
                     diag[-1] += self.nedt_fm[s.name] ** 2

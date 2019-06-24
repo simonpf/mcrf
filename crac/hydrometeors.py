@@ -2,6 +2,7 @@
 Provide Hydrometeor class that extends the parts ScatteringSpecies class
 with some additional attributes used by the :class:CloudRetrieval class.
 """
+import parts
 from parts.jacobian import Log10
 
 class Hydrometeor(parts.scattering.ScatteringSpecies):
