@@ -22,6 +22,8 @@ parser.add_argument('ice_shape',   metavar = 'ice_shape', type = str, nargs = 1)
 parser.add_argument('snow_shape',   metavar = 'snow_shape', type = str, nargs = 1)
 parser.add_argument('input_file',  metavar = 'input_file', type = str, nargs = 1)
 parser.add_argument('output_file', metavar = 'output_file', type = str, nargs = 1)
+parser.add_argument('--sensors',   metavar = 'sensors', type = str, nargs = '*',
+                    default = ["lcpr"])
 
 args = parser.parse_args()
 
@@ -79,7 +81,7 @@ sensors = [lcpr]
 # Add a priori providers.
 #
 
-observation_errors = crac.liras.ObservationError(sensors, footprint_error = False, forward_model_error = False)
+observation_errors = crac.liras.ObservationError(sensors)
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])
 data_provider.add(snow.a_priori[0])
@@ -93,7 +95,7 @@ data_provider.add(observations)
 # Run the retrieval.
 #
 
-retrieval = CloudRetrieval(hydrometeors, sensors, data_provider, include_cloud_water = False)
+retrieval = CloudRetrieval(hydrometeors, sensors, data_provider)
 retrieval.setup()
 
 

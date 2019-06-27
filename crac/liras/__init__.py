@@ -99,7 +99,7 @@ snow.limits_low = [0, 1e-8]
 
 liquid_mask = TemperatureMask(230, 273.0)
 liquid_covariance = Diagonal(1 ** 2)
-cloud_water_a_priori = FixedAPriori("cloud_water", -5, liquid_covariance,
+cloud_water_a_priori = FixedAPriori("cloud_water", -6, liquid_covariance,
                                     mask = liquid_mask, mask_value = -20)
 cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, 7, liquid_mask,
                                          "altitude", provide_retrieval_grid = False)
@@ -192,12 +192,18 @@ class ObservationError(DataProviderBase):
 
         liras_path = os.environ["LIRAS_PATH"]
         filename = os.path.join(liras_path, "data", "covmat.npy")
-        self.lcpr_covmat =  np.load(os.path.join(filename))
+        try:
+            self.lcpr_covmat =  np.load(os.path.join(filename))
+        except:
+            pass
 
         self.nedt_fm = {}
         for n in [s.name for s in sensors]:
             filename = os.path.join(liras_path, "data", "nedt_" + n + "_fm.npy")
-            self.nedt_fm[n] = np.load(filename)
+            try:
+                self.nedt_fm[n] = np.load(filename)
+            except:
+                pass
 
         self.noise_scaling = dict([(s.name, 1.0) for s in sensors])
 
@@ -221,7 +227,7 @@ class ObservationError(DataProviderBase):
         for s in self.sensors:
             c = self.noise_scaling[s.name]
             if isinstance(s, PassiveSensor):
-                diag += [(c * s.nedt + 0.5) ** 2]
+                diag += [(c * s.nedt) ** 2]
 
                 if self.fme:
                     diag[-1] += self.nedt_fm[s.name] ** 2

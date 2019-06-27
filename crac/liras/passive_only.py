@@ -99,7 +99,7 @@ snow.retrieve_first_moment = False
 
 liquid_mask  = TemperatureMask(230, 273.0)
 liquid_covariance = Diagonal(1 ** 2)
-cloud_water_a_priori = FixedAPriori("cloud_water", -5, liquid_covariance,
+cloud_water_a_priori = FixedAPriori("cloud_water", -6, liquid_covariance,
                                     mask = liquid_mask, mask_value = -20)
 cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, 5, liquid_mask,
                                          "altitude", provide_retrieval_grid = False)
@@ -147,12 +147,12 @@ def a_priori_shape(t):
     transformation = Atanh()
     transformation.z_max = 1.2
     transformation.z_min = 0.0
-    x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.1)
+    x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.2)
     return transformation(x)
 
 z_grid = np.linspace(0, 20e3, 21)
 rh_covariance = Diagonal(1.0 ** 2)
-rh_covariance = SpatialCorrelation(ice_covariance, 2e3)
+rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
 rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude", provide_retrieval_grid = False)
 
