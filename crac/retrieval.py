@@ -173,7 +173,7 @@ class CloudSimulation:
                  hydrometeors,
                  sensors,
                  data_provider,
-                 include_cloud_water = True):
+                 include_cloud_water = False):
         """
         Arguments:
 
@@ -209,5 +209,4 @@ class CloudSimulation:
         self.simulation.setup(verbosity = verbosity)
 
     def run(self, *args, **kwargs):
-        
         return self.simulation.run(*args, **kwargs)
