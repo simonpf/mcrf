@@ -1,5 +1,5 @@
 #+TITLE:       Retrieving properties of ice-clouds from combined RADAR and passive microwave and sub-millimeter observations
-#+AUTHOR:      Simon Pfreunschuh, Patrick Eriksson, Stefan Buehler, Manfred Brath, @@latex:\\@@ David Duncan, Robin Eklund
+#+AUTHOR:      Simon Pfreunschuh, Patrick Eriksson, Stefan Buehler, Manfred Brath, Richard Larsson @@latex:\\@@ David Duncan, Robin Eklund
 #+EMAIL:       simon.pfreundschuh@chalmers.se
 #+OPTIONS: toc:nil
 #+LaTeX_HEADER: \usepackage{natbib}
@@ -834,55 +834,87 @@ retrievals applied to the reference cloud scenes.
 
 * Discussion
 
-** Fundamental synergies
+The aim of this study was to investigate the fundamental synergies between
+active radar and passive sub-millimeter observations. The complementary
+information content of the active and passive observations has been demonstrated
+using radiative transfer simulations of a single, homogeneous cloud layer. To
+demonstrate the feasibility of combined retrievals and to further study
+observational synergies, a variational cloud retrieval algorithm has been
+developed and applied to retrieve distributions of frozen hydrometeors from
+simulated cloud observations.
 
-The experiments presented in the first part of this study aimed to establish
-possible synergies of active and passive microwave observations. The first
-experiment compared the cloud signals observed from a homogeneous cloud layer.
-The results show that the combined observations can, at least in the considered
-ranges, constrain both moments of the particle size distribution and thus provide
-independent information on particle size and number density. The complementary
-information content between the active and passive observation depends on both
- the properties of the observed cloud and the frequency of the observations. For
-the lower frequencies considered in this study, i.e. the highest channels of the
-MWI radiometer, the regions where both observations provide complementary
- information on the clouds' particle size distribution are limited to high
-mass densities and particle sizes. As the passive observing frequency increases
-the regions of complementary information content extend down to smaller particle
-size and cloud mass densities.
+** Complementary information content
 
-The results indicate that the combination of active and passive microwave
-provides distinct synergy depending on the frequency of the passive
-observations: While the MWI channels can help to better constrain the
-distribution of precipitating hydrometeors, improvements of the retrieval of
-cloud ice can only be expected from the sub-millimeter observations.
+Comparison of the cloud signal of a homogeneous, single-layer ice cloud observed
+by an $\SI{94}{\giga \hertz}$ cloud radar and passive radiometer channels at
+traditional and sub-millimeter microwave frequencies showed that the two
+measurements provide complementary information that allows constraining the two
+moments of the particle size distribution. These results indicate that the
+combined observations can help to better constrain the microphysical properties
+of the cloud and thus reduce retrieval uncertainties compared to a
+ single-instrument retrieval.
+
+ In addition to that, the results exhibit a dependency of the complementary
+ information content on the properties of the observed cloud as well as the
+ frequency of the observations. For the lower frequencies considered in this
+ study, i.e. the highest channels of the MWI radiometer, the regions where both
+ observations provide complementary information to constrain both moments of the
+ clouds' particle size distribution are limited to high mass densities and
+ particle sizes. As the passive observing frequency increases, the regions of
+ complementary information content extend down to smaller particle sizes and
+ cloud mass densities. This shows that depending on the frequency of the passive
+ observation, different synergies can be expected from the observations: While
+ the traditional microwave channels provide complementary information on
+ precipitating ice, the sub-millimeter channels provide synergistic information
+ in for particle sizes and concentrations more similar to suspended cloud ice.
+
+Nonetheless, due to the conceptual simplicity of the experiment, its
+significance remains somewhat limited. To really harness the synergistic
+information in the observations, a retrieval algorithm and setup are required
+that is able to disentangle the cloud signal from the other atmospheric
+variables that affect the measurement.
+
+ \todo{Do I need to mention that radar considers only single scattering?}
 
 ** Combined retrieval performance
 
-In the second part of the study we have presented performance results of
-the combined retrieval and compared it to the performance of passive- and
-radar-only retrievals. For both test scenes considered here, the combined
- retrieval was able to improve the retrieved ice mass densities compared
-to the single-instrument retrievals.
+In the second part of the study we have presented results of a combined
+radar/sub-millimeter cloud retrieval and compared it to the performance of
+passive- and radar-only retrievals. The results clearly show that the combined
+retrieval can significantly reduce the retrieval error in regions where a priori
+assumed microphysical properties deviate from the truth.
 
- Compared to the passive-only retrieval, the addition of the active observations
-lead, perhaps not very surprisingly, to a significant improvement of the
-vertical resolution of the retrieval. Certainly, the passive only retrieval
-presented here could be improved further. Nonetheless, to ensure a just
-comparison of the retrievals they should be based on the same a priori
-assumptions, which in the presented case provide only very limited information
-of the vertical distribution of ice. Other studies have shown that the passive
-observations provide only very limited information on the vertical distribution
-of ice in the atmospheric column citep:grutzun18. It thus seem unlikely that the
-vertical resolution could be improved drastically without further constraining
-it a priori.
+As baseline for the combined retrieval, also a passive-only retrieval has been
+implemented and applied to the cloud scenes. Not very surprisingly, the
+passive-only retrieval did not resolve the vertical structure of the cloud very
+well. It should be noted, however, that the passive-only retrieval uses similar
+a priori assumptions as the combined retrieval in order to ensure a fair
+comparison of the two retrievals. In the presented case, these provide only
+very limited information on the vertical structure of the cloud. The presented
+results should therefore not be regarded as being representative of the general
+etrieval performance of the MWI or ICI radiometers. Nonetheless, as has been
+shown in other studies, the passive observations provide only limited
+information on the vertical distribution of ice in the atmospheric column
+citep:grutzun18. Considering this, it is unlikely that the vertical resolution
+could be improved drastically without further constraining it a priori.
+Although seemingly trivial, the improved vertical resolution can therefore be
+stated as a first synergy between the active and passive observations.
 
-Even when compared to the radar-only retrieval, the combined retrieval was able
-to reduce errors in the retrieved ice mass density profiles. These improvements
-were limited to regions where the composition of the cloud differed significantly
-from the a priori assumptions. These were loosely based on the assumptions used 
-for the DARDAR cloud retrievals, which target cloud ice rather than precipitating
-ice.
+Although, the radar-only retrieval considerably improved the retrieved vertical
+structure, fairly strong deviations in ice mass density
+b
+Compared to the radar-only retrieval, the combined retrieval was able to
+significantly reduce the errors in the retrieved ice mass density in certain
+parts of the cloud. These improvements were limited to regions where the
+composition of the cloud differed significantly from the a priori assumptions.
+These were based on the assumptions used for the DARDAR cloud retrievals, which
+target cloud ice rather than precipitating ice. This points towards an important
+synergy between the radar and the passive only retrievals: While the radar
+observations alone do not provide sufficient information for an accurate
+retrieval of ice mass densities and have to rely on a priori assumed
+microphysical properties, combining active and passive observations better
+constrains the microphysical properties of the cloud, thus allowing an accurate
+retrieval even when the a priori assumptions are further off the truth.
 
 Furthermore, we have investigated the impact of the assumed particle shape on
 the retrieval performance. While the radar-only retrieval shows significant
@@ -906,40 +938,22 @@ observations it is certainly less so for potential space-borne observations.
  Secondly, it can be expected that the simulated observation underestimate the
 forward model error that affects the retrieval. 
 
+*** Limitations
+    - Model as truth
+    - Results should be interpreted as relative rather than absolute
 
-
-
-
-
-
-
-
-
-
-
-
-
-of the 
-
-information content is 
-
-
-
-
-radiometer observations. With lo
-
-
-the synergies between active and passive microwave observations in 
-establish the synergies
-
-
-
-  
-
-
-
+*** Comments
+    - Plots:
+      - Remove 100 line from plots
+      - Make axes black
+    - Discussion:
+      - Difficult problem to retrieve two moments
 
 * Conclusion
+  - Clearly demonstrated existence of synergies between active and passive
+    only observations
+  - Potential further improvements through retrieval method
+  - Worth further investigation
    
     
 
