@@ -1,4 +1,6 @@
-from parts.utils.data_providers import NetCDFDataProvider
+################################################################################
+# Runs combined retrieval on cluster.
+################################################################################
 
 import crac.liras.setup
 import crac.liras
@@ -6,6 +8,7 @@ from   crac.retrieval        import CloudRetrieval
 from   crac.sensors          import mwi, mwi_full, ici, lcpr
 from   crac.liras            import rh_a_priori, cloud_water_a_priori
 from   crac.liras.model_data import ModelDataProvider
+from parts.utils.data_providers import NetCDFDataProvider
 
 #
 # Parse arguments
@@ -14,16 +17,17 @@ from   crac.liras.model_data import ModelDataProvider
 import argparse
 import os
 
-parser = argparse.ArgumentParser(prog = "LIRAS retrieval",
-                                 description = 'Passive ice cloud retrieval')
+parser = argparse.ArgumentParser(prog = "Run combined LIRAS retrieval.",
+                                 description = "Runs the combined LIRAS"
+                                 " retrieval on a given test scene.")
 parser.add_argument('scene',       metavar = 'scene',       type = str, nargs = 1)
 parser.add_argument('start_index', metavar = 'start_index', type = int, nargs = 1)
 parser.add_argument('ice_shape',   metavar = 'ice_shape',   type = str, nargs = 1)
 parser.add_argument('snow_shape',  metavar = 'snow_shape',  type = str, nargs = 1)
 parser.add_argument('input_file',  metavar = 'input_file',  type = str, nargs = 1)
 parser.add_argument('output_file', metavar = 'output_file', type = str, nargs = 1)
-parser.add_argument('--retrieve_humidity', dest = 'humidity', action = "store_const",
-                    const = True, default = False, help = "Include humidity")
+parser.add_argument('--sensors',   metavar = 'sensors', type = str, nargs = '*',
+                    default = ["lcpr", "ici", "mwi"])
 
 args = parser.parse_args()
 
@@ -75,8 +79,7 @@ data_provider = ModelDataProvider(99,
 # Define hydrometeors and sensors.
 #
 
-
-sensors = [lcpr, mwi, ici]
+sensors = [getattr(crac.sensors, n) for n in args.sensors]
 
 #
 # Add a priori providers.

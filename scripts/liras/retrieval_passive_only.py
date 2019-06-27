@@ -22,8 +22,8 @@ parser.add_argument('ice_shape',   metavar = 'ice_shape', type = str, nargs = 1)
 parser.add_argument('snow_shape',   metavar = 'snow_shape', type = str, nargs = 1)
 parser.add_argument('input_file',  metavar = 'input_file', type = str, nargs = 1)
 parser.add_argument('output_file', metavar = 'output_file', type = str, nargs = 1)
-parser.add_argument('--retrieve_humidity', dest = 'humidity', action = "store_const",
-                    const = True, default = False, help = "Include humidity")
+parser.add_argument('--sensors',   metavar = 'sensors', type = str, nargs = '*',
+                    default = ["ici", "mwi"])
 
 args = parser.parse_args()
 
@@ -76,7 +76,7 @@ data_provider = ModelDataProvider(99,
 # Define hydrometeors and sensors.
 #
 
-sensors = [mwi, ici]
+sensors = [getattr(crac.sensors, n) for n in args.sensors]
 
 #
 # Add a priori providers.

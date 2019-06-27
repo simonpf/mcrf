@@ -13,7 +13,8 @@ s="SCENE"
 s1="SHAPE1"
 s2="SHAPE2"
 
-#mpiexec -n 256 python scripts/liras/retrieval_passive_only.py ${s} 3000 ${s1} ${s2} data/forward_simulations_${s}_noise.nc data/retrieval_${s}_${s1}_${s2}_po.nc
+s="a"
+mpiexec -n 256 python scripts/liras/retrieval_passive_only.py ${s} 3000 ${s1} ${s2} data/forward_simulations_${s}_noise.nc data/retrieval_${s}_${s1}_${s2}_po.nc
 
 s="b"
 mpiexec -n 256 python scripts/liras/retrieval_passive_only.py ${s} 2200 ${s1} ${s2} data/forward_simulations_${s}_noise.nc data/retrieval_${s}_${s1}_${s2}_po.nc

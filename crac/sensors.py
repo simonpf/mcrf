@@ -383,6 +383,6 @@ lcpr.sensor_position = np.array([[600e3]])
 
 hamp_radar   = HampRadar()
 hamp_space = HampRadar()
-hamp_space.range_bins = np.linspace(0.5, 20, 39) * 1e3
+hamp_space.range_bins = np.linspace(0.5, 20, 40) * 1e3
 
 ismar = Ismar()

@@ -95,8 +95,7 @@ class CloudRetrieval:
 
         cw_a = [p for p in data_provider.subproviders \
                 if getattr(p, "name", "") == "cloud_water"]
-        if len(cw_a) > 0:
-            self.include_cloud_water = len(cw_a) > 0
+        self.include_cloud_water = len(cw_a) > 0
 
         self.hydrometeors = hydrometeors
         absorbers  = [O2(), N2(), H2O()]
