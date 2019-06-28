@@ -28,11 +28,12 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 ice_mask       = And(TropopauseMask(), TemperatureMask(0.0, 278.0))
 
 ice_covariance  = Diagonal(300e-6 ** 2, mask = ice_mask, mask_value = 1e-12)
-ice_covariance  = SpatialCorrelation(ice_covariance, 3e3, mask = ice_mask)
+ice_covariance  = SpatialCorrelation(ice_covariance, 5e3, mask = ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 1e-8)
 
 ice_covariance  = Diagonal(4, mask = ice_mask, mask_value = 1e-12)
+ice_covariance  = SpatialCorrelation(ice_covariance, 10e3, mask = ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 2)
 ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 10, ice_mask, "altitude", provide_retrieval_grid = False)
@@ -100,7 +101,7 @@ def a_priori_shape(t):
 
 
 z_grid = np.linspace(0, 20e3, 21)
-rh_covariance = Diagonal(2.0)
+rh_covariance = Diagonal(10.0)
 rh_covariance = SpatialCorrelation(rh_covariance, 1e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
 rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude", provide_retrieval_grid = False)

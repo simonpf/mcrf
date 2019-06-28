@@ -54,12 +54,12 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 ice_mask       = And(AltitudeMask(0.0, 19e3), TemperatureMask(0.0, 276.0))
 
 ice_covariance  = Diagonal(100e-6 ** 2, mask = ice_mask, mask_value = 1e-12)
-ice_covariance  = SpatialCorrelation(ice_covariance, 2e3, mask = ice_mask)
+ice_covariance  = SpatialCorrelation(ice_covariance, 5e3, mask = ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 1e-8)
 
 ice_covariance  = Diagonal(0.25, mask = ice_mask, mask_value = 1e-12)
-ice_covariance  = SpatialCorrelation(ice_covariance, 4e3, mask = ice_mask)
+ice_covariance  = SpatialCorrelation(ice_covariance, 10e3, mask = ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 2)
 #ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 10, ice_mask, "altitude", provide_retrieval_grid = False)
@@ -79,12 +79,12 @@ snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
 snow_mask        = And(AltitudeMask(0.0, 19e3), TemperatureMask(0.0, 276.0))
 
 snow_covariance = Diagonal(500e-6 ** 2, mask = snow_mask, mask_value = 1e-12)
-snow_covariance  = SpatialCorrelation(snow_covariance, 2e3, mask = ice_mask)
+snow_covariance  = SpatialCorrelation(snow_covariance, 5e3, mask = ice_mask)
 snow_dm_a_priori = FixedAPriori("snow_dm", 1e-3, snow_covariance,
                                 mask = snow_mask, mask_value = 1e-8)
 
 snow_covariance  = Diagonal(0.25, mask = snow_mask, mask_value = 1e-12)
-snow_covariance  = SpatialCorrelation(snow_covariance, 4e3, mask = snow_mask)
+snow_covariance  = SpatialCorrelation(snow_covariance, 10e3, mask = snow_mask)
 snow_n0_a_priori = FixedAPriori("snow_n0", 7, snow_covariance, mask = snow_mask, mask_value = 2)
 #snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 10, ice_mask, "altitude", provide_retrieval_grid = False)
 
