@@ -34,7 +34,7 @@ snow_mask      = And(AltitudeMask(0.0, 18e3), TemperatureMask(0.0, 280.0))
 ice_covariance = Diagonal(1 * np.ones(md_z_grid.size))
 
 # n0
-points_n0 = 4
+points_n0 = 2
 ice_covariance = Diagonal(1, mask = ice_mask, mask_value = 1e-12)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori,
                                     ice_covariance, mask = ice_mask, mask_value = 2)
@@ -42,7 +42,7 @@ ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, points_n0, ice_mask, "altit
                                     provide_retrieval_grid = False)
 
 
-points_dm = 6
+points_dm = 5
 ice_covariance  = Diagonal(200e-6 ** 2, mask = ice_mask, mask_value = 1e-16)
 ice_covariance  = SpatialCorrelation(ice_covariance, 4e3, mask = ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_covariance,
@@ -150,7 +150,7 @@ def a_priori_shape(t):
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.2)
     return transformation(x)
 
-z_grid = np.linspace(0, 20e3, 21)
+z_grid = np.linspace(0, 20e3, 11)
 rh_covariance = Diagonal(10.0)
 rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)

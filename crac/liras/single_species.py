@@ -74,13 +74,18 @@ rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
 rain_mask  = TemperatureMask(273, 340.0)
 rain_covariance = Diagonal(500e-6 ** 2, mask = rain_mask, mask_value = 1e-12)
-rain_dm_a_priori = FixedAPriori("rain_dm", 500e-6, rain_covariance, mask = rain_mask, mask_value = 1e-8)
-rain_dm_a_priori = MaskedRegularGrid(rain_dm_a_priori, 10, rain_mask, "altitude", provide_retrieval_grid = False)
+rain_dm_a_priori = FixedAPriori("rain_dm", 500e-6, rain_covariance,
+                                mask = rain_mask, mask_value = 1e-8)
+rain_dm_a_priori = MaskedRegularGrid(rain_dm_a_priori, 10, rain_mask,
+                                     "altitude", provide_retrieval_grid = False)
 
 z_grid = np.linspace(0, 12e3, 7)
 rain_covariance = Diagonal(1, mask = rain_mask, mask_value = 1e-12)
-rain_n0_a_priori = FixedAPriori("rain_n0", 7, rain_covariance, mask = rain_mask, mask_value = 2)
-rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori, 4, rain_mask, "altitude", provide_retrieval_grid = False)
+rain_n0_a_priori = FixedAPriori("rain_n0", 7, rain_covariance,
+                                mask = rain_mask,
+                                mask_value = 2)
+rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori, 4, rain_mask, "altitude",
+                                     provide_retrieval_grid = False)
 
 rain = Hydrometeor("rain", D14NDmLiquid(), [rain_n0_a_priori, rain_dm_a_priori], rain_shape, rain_shape_meta)
 rain.transformations = [Composition(Log10(), PiecewiseLinear(rain_n0_a_priori)),
