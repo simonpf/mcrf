@@ -58,7 +58,7 @@ if not snow_shape == "None":
     ice.scattering_data = ice_shape
     hydrometeors = [ice, snow, rain]
 else:
-    from crac.liras.passive_only_single_species import ice, rain, snow
+    from crac.liras.passive_only_single_species import ice, rain
     crac.liras.passive_only.settings["single_species"] = False
     hydrometeors = [ice, rain]
     ice_shape = os.path.join(liras_path, "data", "scattering", ice_shape)
@@ -85,8 +85,9 @@ observation_errors = crac.liras.ObservationError(sensors, footprint_error = Fals
                                                  forward_model_error = False)
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])
-data_provider.add(snow.a_priori[0])
-data_provider.add(snow.a_priori[1])
+if not snow_shape is None:
+    data_provider.add(snow.a_priori[0])
+    data_provider.add(snow.a_priori[1])
 data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(cloud_water_a_priori)

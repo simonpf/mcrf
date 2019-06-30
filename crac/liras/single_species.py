@@ -33,7 +33,7 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_co
                                     mask = ice_mask, mask_value = 1e-8)
 
 ice_covariance  = Diagonal(4, mask = ice_mask, mask_value = 1e-12)
-ice_covariance  = SpatialCorrelation(ice_covariance, 10e3, mask = ice_mask)
+ice_covariance  = SpatialCorrelation(ice_covariance, 5e3, mask = ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 2)
 ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 10, ice_mask, "altitude", provide_retrieval_grid = False)

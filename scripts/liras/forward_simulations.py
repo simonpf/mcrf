@@ -20,10 +20,6 @@ parser.add_argument('output_file', metavar = 'output_file', type = str, nargs = 
 parser.add_argument('sensors',     metavar = 'sensors', type = str, nargs = '*',
                     default = ["lcpr", "ici", "mwi"])
 
-parser.add_argument("--simple", dest = "mode", action = "store_const",
-                    const = "simple", default = "full",
-                    help = "Use simplified microphysics")
-
 args = parser.parse_args()
 i_start = args.start_index[0]
 i_end   = args.end_index[0]
@@ -38,12 +34,8 @@ n = i_end - i_start
 # Setup the simulation.
 #
 
-if parser.mode == "simple":
-    hydrometeors = [ice, rain]
-    include_cloud_water = True
-else:
-    hydrometeors = gem_hydrometeors
-    include_cloud_water = False
+hydrometeors = gem_hydrometeors
+include_cloud_water = False
 
 arg_names = ["ice_psd", "snow_psd", "hail_psd", "graupel_psd", "liquid_psd"]
 kwargs = dict(zip(arg_names, [h.psd for h in hydrometeors]))

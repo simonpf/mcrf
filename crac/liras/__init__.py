@@ -141,7 +141,7 @@ def a_priori_shape(t):
 
 
 z_grid = np.linspace(0, 20e3, 21)
-rh_covariance = Diagonal(1.0)
+rh_covariance = Diagonal(10.0)
 rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
 rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude",
@@ -219,7 +219,7 @@ class ObservationError(DataProviderBase):
                 if s.name == "lcpr":
                     i_lcpr = sum([v.size for v in diag])
                     j_lcpr = i_lcpr + s.nedt.size
-                diag += [(c * s.nedt + 0.5)]
+                diag += [(c * s.nedt) ** 2 + 0.5 ** 2]
 
                 if self.fme and not self.fpe:
                     diag[-1] += self.nedt_fm[s.name] ** 2

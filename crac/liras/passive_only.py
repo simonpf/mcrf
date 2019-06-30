@@ -151,7 +151,7 @@ def a_priori_shape(t):
     return transformation(x)
 
 z_grid = np.linspace(0, 20e3, 21)
-rh_covariance = Diagonal(1.0 ** 2)
+rh_covariance = Diagonal(10.0)
 rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
 rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude", provide_retrieval_grid = False)

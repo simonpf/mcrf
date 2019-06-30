@@ -63,15 +63,14 @@ class CloudRetrieval:
         h2o_a = [p for p in self.data_provider.subproviders \
                  if getattr(p, "name", "") == "H2O"]
         if len(h2o_a) > 0:
-            print("retrieving h2o.")
             self.simulation.retrieval.add(h2o)
             h2o_a = h2o_a[0]
             atanh = Atanh(0.0, 1.2)
             pl    = PiecewiseLinear(h2o_a)
             h2o.transformation = Composition(atanh, pl)
             h2o.retrieval.unit = RelativeHumidity()
-            h2o.limit_low = 0.0
-            h2o.limit_high = 1.2
+            h2o.limit_low = atanh.invert(0.0)
+            h2o.limit_high = atanh.invert(1.2)
             self.h2o = h2o
         else:
             self.h2o = None
