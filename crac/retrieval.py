@@ -70,7 +70,7 @@ class CloudRetrieval:
             h2o.transformation = Composition(atanh, pl)
             h2o.retrieval.unit = RelativeHumidity()
             h2o.limit_low = atanh.invert(0.0)
-            h2o.limit_high = atanh.invert(1.2)
+            h2o.limit_high = atanh.invert(1.1)
             self.h2o = h2o
         else:
             self.h2o = None
@@ -119,12 +119,6 @@ class CloudRetrieval:
             rr.sensors = [s for s in rr.sensors if isinstance(s, ActiveSensor)]
             rr.settings["lm_ga_settings"] = np.array([100.0, 3.0, 2.0, 1e5, 1.0, 1.0])
             rr.settings["max_iter"] = 10
-            rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors if h.radar_only]
-            rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors if h.radar_only]
-
-        def all_quantities(rr):
-            rr.settings["lm_ga_settings"] = np.array([1000.0, 3.0, 2.0, 1e5, 1.0, 10.0])
-            rr.settings["max_iter"] = 20
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
 
@@ -133,8 +127,22 @@ class CloudRetrieval:
             if not self.cw is None:
                 rr.retrieval_quantities += [self.cw]
 
-        self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
+        def all_quantities(rr):
+            rr.settings["lm_ga_settings"] = np.array([0.0, 3.0, 2.0, 1e5, 1.0, 10.0])
+            rr.settings["max_iter"] = 10
+            rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
+            rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
 
+            if not self.h2o is None:
+                rr.retrieval_quantities += [self.h2o]
+            if not self.cw is None:
+                rr.retrieval_quantities += [self.cw]
+
+        if any([isinstance(s, ActiveSensor) for s in self.sensors]):
+            self.simulation.retrieval.callbacks = [("Radar only", radar_only),
+                                                   ("All quantities", all_quantities)]
+        else:
+            self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
 
     def setup(self, verbosity = 1):
         """
