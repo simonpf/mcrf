@@ -85,7 +85,7 @@ observation_errors = crac.liras.ObservationError(sensors, footprint_error = Fals
                                                  forward_model_error = False)
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])
-if not snow_shape is None:
+if not snow_shape == "None":
     data_provider.add(snow.a_priori[0])
     data_provider.add(snow.a_priori[1])
 data_provider.add(rain.a_priori[0])

@@ -136,7 +136,6 @@ def a_priori_shape(t):
     transformation.z_max = 1.2
     transformation.z_min = 0.0
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.2)
-    x = 0.5 * np.ones(t.shape)
     return transformation(x)
 
 

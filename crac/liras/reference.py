@@ -64,7 +64,7 @@ ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 10, ice_mask, "altitude", p
 ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori], ice_shape, ice_shape_meta)
 ice.transformations = [Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
                        Identity()]
-ice.limits_low = [2, 1e-8]
+ice.limits_low = [4, 1e-8]
 ice.psd.cutoff_low = [1e2, 1e-8]
 
 ################################################################################
@@ -122,7 +122,7 @@ rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori, 4, rain_mask, "altitude",
 rain = Hydrometeor("rain", D14NDmLiquid(), [rain_n0_a_priori, rain_dm_a_priori], rain_shape, rain_shape_meta)
 rain.transformations = [Composition(Log10(), PiecewiseLinear(rain_n0_a_priori)),
                         Composition(Identity(), PiecewiseLinear(rain_dm_a_priori))]
-rain.limits_low = [2, 1e-8]
+rain.limits_low = [4, 1e-8]
 rain.psd.cutoff_low = [1e2, 1e-8]
 
 ################################################################################

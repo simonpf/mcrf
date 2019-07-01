@@ -24,6 +24,9 @@ parser.add_argument('input_file',  metavar = 'input_file', type = str, nargs = 1
 parser.add_argument('output_file', metavar = 'output_file', type = str, nargs = 1)
 parser.add_argument('--sensors',   metavar = 'sensors', type = str, nargs = '*',
                     default = ["lcpr"])
+parser.add_argument("--reference", dest = "reference", action = "store_const",
+                    const = True, default = False,
+                    help = "Use reference a prioris.")
 
 args = parser.parse_args()
 
@@ -51,14 +54,21 @@ observations.add_offset("profile", -i_start)
 n = observations.file_handle.dimensions["profile"].size
 
 if not snow_shape == "None":
-    from crac.liras import ice, snow, rain
+    if args.reference:
+        from crac.liras.reference import ice, snow, rain, rh_a_priori, cloud_water_a_priori
+    else:
+        from crac.liras import ice, snow, rain, rh_a_priori, cloud_water_a_priori
     ice_shape = os.path.join(liras_path, "data", "scattering", ice_shape)
     ice.scattering_data = ice_shape
     snow_shape = os.path.join(liras_path, "data", "scattering", snow_shape)
     snow.scattering_data = snow_shape
     hydrometeors = [ice, snow, rain]
 else:
-    from crac.liras.single_species import ice, snow, rain
+    if args.reference:
+        from crac.liras.reference import ice, snow, rain, rh_a_priori, cloud_water_a_priori
+    else:
+        from crac.liras.single_species import ice, rain
+        from crac.liras import snow, rh_a_priori, cloud_water_a_priori
     ice_shape = os.path.join(liras_path, "data", "scattering", ice_shape)
     ice.scattering_data = ice_shape
     hydrometeors = [ice, rain]
@@ -68,9 +78,15 @@ else:
 # Create the data provider.
 #
 
-data_provider = ModelDataProvider(99,
-                                  ice_psd    = ice.psd,
-                                  scene = scene.upper())
+if not snow_shape == "None":
+    kwargs = {"ice_psd"  : ice.psd,
+              "snow_psd" : snow.psd,
+              "liquid_psd" : rain.psd}
+else:
+    kwargs = {"ice_psd"  : ice.psd,
+              "liquid_psd" : rain.psd}
+
+data_provider = ModelDataProvider(99, scene = scene.upper(), **kwargs)
 #
 # Define hydrometeors and sensors.
 #
