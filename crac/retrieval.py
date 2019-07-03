@@ -122,11 +122,6 @@ class CloudRetrieval:
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
 
-            if not self.h2o is None:
-                rr.retrieval_quantities += [self.h2o]
-            if not self.cw is None:
-                rr.retrieval_quantities += [self.cw]
-
         def all_quantities(rr):
             rr.settings["lm_ga_settings"] = np.array([0.0, 3.0, 2.0, 1e5, 1.0, 10.0])
             rr.settings["max_iter"] = 10
@@ -138,11 +133,11 @@ class CloudRetrieval:
             if not self.cw is None:
                 rr.retrieval_quantities += [self.cw]
 
-        if any([isinstance(s, ActiveSensor) for s in self.sensors]):
+        if all([isinstance(s, ActiveSensor) for s in self.sensors]):
+            self.simulation.retrieval.callbacks = [("Radar only", radar_only)]
+        elif any([isinstance(s, ActiveSensor) for s in self.sensors]):
             self.simulation.retrieval.callbacks = [("Radar only", radar_only),
                                                    ("All quantities", all_quantities)]
-        elif all([isinstance(s, ActiveSensor) for s in self.sensors]):
-            self.simulation.retrieval.callbacks = [("Radar only", radar_only)]
         else:
             self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
 
