@@ -56,7 +56,7 @@ ice = Hydrometeor("ice",
                   ice_shape_meta)
 ice.transformations = [Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
                        Composition(Identity(), PiecewiseLinear(ice_dm_a_priori))]
-ice.limits_low = [0, 1e-8]
+ice.limits_low = [4, 1e-8]
 ice.radar_only = False
 
 ################################################################################
@@ -97,7 +97,7 @@ snow.retrieve_first_moment = False
 # Liquid particles
 ################################################################################
 
-liquid_mask  = TemperatureMask(230, 273.0)
+liquid_mask  = TemperatureMask(230, 300.0)
 liquid_covariance = Diagonal(1 ** 2)
 cloud_water_a_priori = FixedAPriori("cloud_water", -6, liquid_covariance,
                                     mask = liquid_mask, mask_value = -20)
@@ -152,7 +152,7 @@ def a_priori_shape(t):
 
 z_grid = np.linspace(0, 20e3, 11)
 rh_covariance = Diagonal(4.0)
-rh_covariance = SpatialCorrelation(rh_covariance, 4e3)
+rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
 rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude", provide_retrieval_grid = False)
 

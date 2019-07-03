@@ -65,12 +65,10 @@ class CloudRetrieval:
         if len(h2o_a) > 0:
             self.simulation.retrieval.add(h2o)
             h2o_a = h2o_a[0]
-            atanh = Atanh(0.0, 1.2)
+            atanh = Atanh(0.0, 1.1)
             pl    = PiecewiseLinear(h2o_a)
             h2o.transformation = Composition(atanh, pl)
             h2o.retrieval.unit = RelativeHumidity()
-            h2o.limit_low = atanh.invert(0.0)
-            h2o.limit_high = atanh.invert(1.1)
             self.h2o = h2o
         else:
             self.h2o = None
@@ -123,7 +121,7 @@ class CloudRetrieval:
             rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
 
         def all_quantities(rr):
-            rr.settings["lm_ga_settings"] = np.array([0.0, 3.0, 2.0, 1e5, 1.0, 10.0])
+            rr.settings["lm_ga_settings"] = np.array([1000.0, 3.0, 2.0, 1e5, 1.0, 10.0])
             rr.settings["max_iter"] = 10
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]

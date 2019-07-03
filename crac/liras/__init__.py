@@ -61,7 +61,7 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori, ice_co
 ice_covariance  = Diagonal(0.25, mask = ice_mask, mask_value = 1e-12)
 ice_covariance  = SpatialCorrelation(ice_covariance, 10e3, mask = ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance,
-                                    mask = ice_mask, mask_value = 2)
+                                    mask = ice_mask, mask_value = 4)
 #ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 10, ice_mask, "altitude", provide_retrieval_grid = False)
 
 ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori], ice_shape, ice_shape_meta)
@@ -85,19 +85,19 @@ snow_dm_a_priori = FixedAPriori("snow_dm", 1e-3, snow_covariance,
 
 snow_covariance  = Diagonal(0.25, mask = snow_mask, mask_value = 1e-12)
 snow_covariance  = SpatialCorrelation(snow_covariance, 10e3, mask = snow_mask)
-snow_n0_a_priori = FixedAPriori("snow_n0", 7, snow_covariance, mask = snow_mask, mask_value = 2)
+snow_n0_a_priori = FixedAPriori("snow_n0", 7, snow_covariance, mask = snow_mask, mask_value = 4)
 #snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori, 10, ice_mask, "altitude", provide_retrieval_grid = False)
 
 snow = Hydrometeor("snow", D14NDmIce(), [snow_n0_a_priori, snow_dm_a_priori], snow_shape, snow_shape_meta)
 snow.transformations = [Composition(Log10(), PiecewiseLinear(snow_n0_a_priori)),
                        Identity()]
-snow.limits_low = [0, 1e-8]
+snow.limits_low = [4, 1e-8]
 
 ################################################################################
 # Liquid particles
 ################################################################################
 
-liquid_mask = TemperatureMask(230, 273.0)
+liquid_mask = TemperatureMask(230, 300.0)
 liquid_covariance = Diagonal(1 ** 2)
 cloud_water_a_priori = FixedAPriori("cloud_water", -6, liquid_covariance,
                                     mask = liquid_mask, mask_value = -20)
@@ -140,8 +140,8 @@ def a_priori_shape(t):
 
 
 z_grid = np.linspace(0, 20e3, 11)
-rh_covariance = Diagonal(4.0)
-rh_covariance = SpatialCorrelation(rh_covariance, 4e3)
+rh_covariance = Diagonal(2.0)
+rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
 rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude",
                                   provide_retrieval_grid = False)
