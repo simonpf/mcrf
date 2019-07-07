@@ -150,7 +150,7 @@ def a_priori_shape(t):
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.2)
     return transformation(x)
 
-z_grid = np.linspace(0, 20e3, 11)
+z_grid = np.linspace(0, 20e3, 21)
 rh_covariance = Diagonal(4.0)
 rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)

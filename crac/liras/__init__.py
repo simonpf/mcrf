@@ -218,7 +218,7 @@ class ObservationError(DataProviderBase):
                 if s.name == "lcpr":
                     i_lcpr = sum([v.size for v in diag])
                     j_lcpr = i_lcpr + s.nedt.size
-                diag += [(c * s.nedt) ** 2 + 0.5 ** 2]
+                diag += [(c * s.nedt) ** 2]
 
                 if self.fme and not self.fpe:
                     diag[-1] += self.nedt_fm[s.name] ** 2
