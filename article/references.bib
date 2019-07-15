@@ -1,0 +1,683 @@
+/////////////////////////////////////////////////////////////////////////////////////////
+//ABBREVIATIONS//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+
+@string{A       = {Atmosf.}}
+@string{AA      = {A\&A}}
+@string{AASS    = {Astronomy \& Astrophysics Suppl. S.}}
+@string{ACP     = {Atmos. Chem. Phys.}}
+@string{ACPD    = {Atmos. Chem. Phys. Discuss.}}
+@string{ADGEO   = {Adv. Geosci.}}
+@string{AE      = {Atmos. Environ.}}
+@string{AG      = {Ann. Geophys.}}
+@string{AJ      = {Astrophys. J.}}
+@string{AJL     = {Astrophys. J. Lett.}}
+@string{AJSS    = {Astrophys. J. Suppl. S.}}
+@string{AL      = {Astrophys. J.}}
+@string{AJP     = {Am. J. Phys.}}
+@string{AM      = {Ann. Met.}}
+@string{AMM     = {Aus. Met. Mag.}}
+@string{AMT     = {Atmos. Meas. Tech.}}
+@string{AMTD    = {Atmos. Meas. Tech. Discuss.}}
+@string{AO      = {Appl. Opt.}}
+@string{AOP     = {Atmos. Oce. Phy.(engl. transl.)}}
+@string{APL     = {Appl. Phys. Lett.}}
+@string{AR      = {Atmos. Res.}}
+@string{AREE    = {Annu. Rev. Energy Environ.}}
+@string{ARPC    = {Annu. Rev. Phys. Chem.}}
+@string{AS      = {Am. Sci.}}
+@string{ASL     = {Atm. Sci. Lett.}}
+@string{ASP     = {Appl. Sign. Proc.}}
+@string{ASR     = {Adv. Space. Res.}}
+@string{AST     = {Aerosol Sci. Technol.}}
+@string{ATOC    = {Atmos. -- Oce.}}
+
+@string{BAMS    = {Bull. Amer. Met. Soc.}} @string{BLM     = {Boun.-Lay. Met.}} @string{BPA     = {Beitr. Phys. Atm.}}
+
+@string{CC      = {Climate Change}}
+@string{CD      = {Climate Dynamics}}
+@string{CG      = {Comput. Geosci.}}
+@string{CJP     = {Can. J. Phys.}}
+@string{CP      = {Contemp. Phys.}}
+@string{CPH     = {Chem. Phys.}}
+@string{CPL     = {Chem. Phys. Lett.}}     
+@string{CRP     = {Comptes Rendus Phys.}}     
+@string{CSE     = {Comput. Sce. Eng.}}
+
+@string{EL      = {Elec. Lett.}}
+@string{EM      = {Experiment. Math.}}
+@string{EMP     = {Earth, Moon and Planets}}
+@string{EOS     = {Eos}}
+@string{ENN     = {Env. News Net.}}
+@string{EPJC    = {Eur. Phys. J. Conferences}}
+@string{ESSD    = {Earth Syst. Sci. Data}}
+@string{EST     = {Environ. Sci. Technol.}}
+@string{ETA     = {Eos Trans. AGU}}
+
+@string{GI      = {Geosci. Instrum. Method. Data Syst.}}
+@string{GMD     = {Geosci. Model Dev.}}
+@string{GMDD    = {Geosci. Model Dev. Discuss.}}
+@string{GRL     = {Geophys. Res. Lett.}}
+
+@string{HESSD   = {Hydrol. Earth Syst. Sci. Discuss.}} 
+@string{HESS    = {Hydrol. Earth Syst. Sci.}} 
+@string{IAOP    = {Izv. Atmos. Oce. Phys.}}
+@string{ICARUS  = {Icarus}}
+@string{IJC     = {Int. J. Climatol.}}
+@string{IJES    = {Int. J. of Earth Sci.}}
+@string{IJRS    = {Int. J. Remote Sensing}}
+@string{IJRSP   = {Indian J. of Radio \& Space Physics}}
+@string{IJIMW   = {Int. J. Inf. Millim. Waves}}
+@string{IJSC    = {Int. J. Sat. Comm.}}
+@string{IP      = {Infrared Phys.}}
+@string{IPT     = {Infrared Phys. \& Tech.}}
+@string{I3EA    = {IEEE Access}}
+@string{I3EGRS  = {IEEE Geosci. Remote Sens.}}
+@string{I3EGRSL = {IEEE Geosci. Remote Sens. Let.}}
+@string{I3EJOE  = {IEEE J. Oce. Eng.}}
+@string{I3EJSTARS = {IEEE J. Sel. Top. Appl. Rem. Sens.}}
+@string{I3ETAP  = {IEEE Trans. Antennas Propag.}}
+@string{I3ETC   = {IEEE T. Comm.}}
+@string{I3ETGE  = {IEEE T. Geosci. Ele.}}
+@string{I3ETGRS = {IEEE T. Geosci. Remote}}
+@string{I3ETMTT = {IEEE T. Microw. Theory}}
+@string{I3ETNN  = {IEEE T. Ne. Netw.}}
+@string{I3ETIP  = {IEEE T. Image Proc.}}
+
+@string{JAC     = {J. Atmos. Chem.}}
+@string{JAES    = {J. Aerosol Sci.}}
+@string{JAM     = {J. Appl. Meteorol.}}
+@string{JAMC    = {J. Appl. Meteorol. Clim.}}
+@string{JAO     = {J. Appl. Opt.}}
+@string{JAS     = {J. Am. Stat. Assoc.}}
+@string{AOT    = {J. Atmos. Oceanic Technol.}}
+@string{JAP     = {J. Appl. Phys.}}
+@string{JAS     = {J. Atmos. Sci.}}
+@string{JASTP   = {J. Atm. Sol.-Terr. Phys.}}
+@string{JATP    = {J. Atm. Terr. Phys.}}
+@string{JAWMA   = {J. Air \& Waste Manage. Assoc.}}
+@string{JC      = {J. Climate}}
+@string{JH      = {J. Hydrology}}
+@string{JCAM    = {J. Clim. Appl. Mete.}}
+@string{JCG     = {J. Cryst. Growth}}
+@string{JCP     = {J. Chem. Phys.}}
+@string{JCSFT   = {J. Chem. Soc. Far. Trans.}} 
+@string{JG      = {J. Geodesy}}
+@string{JGR     = {J. Geophys. Res.}}
+@string{JGRA    = {J. Geophys. Res.-Atmos.}}
+@string{JIMTW   = {J. Infrared Milli. Terahz Waves}}
+@string{JM      = {J. Meteorol.}}
+@string{JMS     = {J. Molec. Struct.}}
+@string{JMSL    = {J. Molec. Liqu.}}
+@string{JMSp    = {J. Molec. Spectro.}}
+@string{JMSJ    = {J. Meteorol. Soc. Jpn.}}
+@string{JO      = {J. Opt. Theory and Appl.}}
+@string{JOH     = {J. Hydrometeorol.}}
+@string{JOSA    = {J. Optical Soc. o. Am.}}
+@string{JOSAA   = {J. Optical Soc. o. Am. A}}
+@string{JOSAB   = {J. Optical Soc. o. Am. B}}
+@string{JPC     = {J. Phys. Chem.}}
+@string{JPCA    = {J. Phys. Chem. A}}
+@string{JPCM    = {J. Phys.: Condens. Matter}}
+@string{JPAGP   = {J. of Phys. A: Gen. Phys.}}
+@string{JPAMG   = {J. of Phys. A: Math. Gen.}}
+@string{JPESI   = {J. of Phys. E: Sci. Instrum.}}
+@string{JCOP    = {J. of Comp. Phys.}}
+@string{JCTE    = {J. of Comm. Tech. and Elec.}}
+@string{JPIVF   = {J. Phys. IV France}}
+@string{JPPA    = {J. Photochem. Photobiol. A: Chem}}
+@string{JPO     = {J. Phys. Ocea.}}
+@string{JQSRT   = {J. Quant. Spectrosc. Radiat. Transfer}}
+
+@string{MA      = {Met. Appl.}}
+@string{MAP     = {Met. Atm. Phys.}}
+@string{MBT     = {Met. Bul., Tai.}}
+@string{MNRAS   = {Mon. Not. R. Astron. Soc.}}
+@string{MP      = {Mol. Phys.}}
+@string{MR      = {Met. Rund.}}
+@string{MSSP    = {Mech. Sys. and Sig. Proc.}}
+@string{MST     = {Meas. Sci. Technol.}}
+@string{MWR     = {Mon. Weather Rev.}}
+@string{MZ      = {Met. Zeit.}}
+
+@string{N       = {Nature}}
+@string{NHESS   = {Nat. Hazards and Earth Syst. Sci}}
+@string{NW      = {Naturwissenschaften}}
+@string{NWD     = {Nat. Weat. Dig.}} 
+@string{NPG     = {Nonlin. Processes. Geophys.}} 
+
+@string{OE      = {Opt. Express}}
+@string{OLE     = {Opt. Las. Eng.g}}
+@string{OS      = {Opt. Spectro.}}
+
+@string{PD      = {Physica D}}
+@string{PCE     = {Phys. Chem. Earth}}
+@string{PERS    = {Photogr. Eng. and Rem. Sens.}}
+@string{PLA     = {Phys. Let. A}}
+@string{PMG     = {Papers in Meteorol. and Geophys.}}
+@string{PNAS    = {Proc. Nat. Aca. Sci.}}
+@string{PPG     = {Prog. Phys. Geog.}}
+@string{PPSB    = {Proc. Phys. Soc. B}}
+@string{PR      = {Phys. Rev.}}
+@string{PRA     = {Phys. Rev. A}}
+@string{PRD     = {Phys. Rev. D}}
+@string{PRE     = {Phys. Rev. E}}
+@string{PRL     = {Phys. Rev. L}}
+@string{PRSA    = {Proc. R. Soc. A}}
+@string{PRSLA   = {Proc. R. Soc. Lond. A}}
+@string{PSPIE   = {Proc. of SPIE}}
+@string{PSS     = {Planet. Space Sci.}}
+@string{PT      = {Phys. Today}}
+@string{PTRSLA  = {Phil. Trans. R. Soc. Lond. A}}
+@string{PTRSA   = {Phil. Trans. R. Soc. A}}
+@string{PW      = {Phys. World}}
+
+
+@string{QJRMS   = {Q. J. R. Meteorol. Soc.}}
+
+@string{RG      = {Rev. Geophys.}}
+@string{RMP     = {Rev. Mod. Phys.}}
+@string{RPP     = {Rep. Prog. Phys.}}
+@string{RQE     = {Radiophys. Quant. Elec.}}
+@string{RS      = {Radio Sci.}}
+@string{RSE     = {Rem. Sen. Env.}}
+@string{RSI     = {Rev. Sci. Inst.}}
+@string{RSR     = {Rem. Sen. Rev.}}
+@string{RSPR    = {Rem. Sen. Po. Reg.}}
+
+@string{S       = {Science}}
+@string{SA      = {Scient. Amer.}}
+@string{SG      = {Sur. Geophy.}}
+@string{SOLA    = {Sci. Onl. Let. Atm.}}
+@string{SP      = {Sov. Phys. Uspekhi}}
+@string{SOP     = {Sol. Phys.}}
+@string{SW      = {Spek. Wissen.}}
+@string{SAPAMBS = {Spectro. Acta Part A: Molec. and Biomolec. Spectro.}}
+
+@string{T       = {Tellus}}
+@string{TAC     = {Theor. Appl. Climatol.}}
+@string{TOMS    = {ACM Trans. on Math. Softw.}}
+
+@string{WF      = {Weat. Fore.}}
+@string{WIRCC   = {Wiley Interd. Rev.: Climate Change}}
+@string{WRR     = {Wat. Res. Res.}}
+@string{WRM     = {Waves Rand. Med.}}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//ABBREVIATIONS//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+
+@article{geer,
+author = {Geer, A. J. and Baordo, F. and Bormann, N. and Chambon, P. and English, S. J. and Kazumori, M. and Lawrence, H. and Lean, P. and Lonitz, K. and Lupu, C.},
+title = {The growing impact of satellite observations sensitive to humidity, cloud and precipitation},
+journal = QJRMS,
+volume = {143},
+number = {709},
+pages = {3189-3206},
+keywords = {satellite, microwave, cloud and precipitation, NWP, all-sky},
+doi = {10.1002/qj.3172},
+url = {https://rmets.onlinelibrary.wiley.com/doi/abs/10.1002/qj.3172},
+eprint = {https://rmets.onlinelibrary.wiley.com/doi/pdf/10.1002/qj.3172},
+year = {2017}}
+
+@article{duncan18a,
+author={Duncan,David I. and Eriksson,Patrick},
+year={2018},
+title={An update on global atmospheric ice estimates from satellite observations and reanalyses},
+journal=ACP,
+volume={18},
+number={15},
+pages={11205},
+keywords={Meteorology; Weather forecasting; Satellite data; Analysis; Datasets; General circulation; Atmospheric circulation; Work platforms; Satellites; Distribution; Spatial discrimination; Seasonal variations; Variability; Principal components analysis; Seasonal variability; Annual variations; Satellite observation; Ice; Earth; Atmospheric models; Active satellites; Estimates; Data; Data sets},
+isbn={16807316},
+language={English},
+url={https://search.proquest.com/docview/2087361828?accountid=11162}}
+
+@Article{eliasson11,
+AUTHOR = {Eliasson, S. and Buehler, S. A. and Milz, M. and Eriksson, P. and John, V. O.},
+TITLE = {Assessing observed and modelled spatial distributions of ice water path  using satellite data},
+JOURNAL = ACP,
+VOLUME = {11},
+YEAR = {2011},
+NUMBER = {1},
+PAGES = {375--391},
+URL = {https://www.atmos-chem-phys.net/11/375/2011/},
+DOI = {10.5194/acp-11-375-2011}
+}
+
+@article{evans98,
+author = {Evans, K. Franklin and Walter, Steven J. and Heymsfield, Andrew J. and Deeter, Merritt N.},
+title = {Modeling of Submillimeter Passive Remote Sensing of Cirrus Clouds},
+journal = JAM,
+volume = {37},
+number = {2},
+pages = {184-205},
+year = {1998},
+doi = {10.1175/1520-0450(1998)037<0184:MOSPRS>2.0.CO;2},
+URL = {https://doi.org/10.1175/1520-0450(1998)037<0184:MOSPRS>2.0.CO;2},
+eprint = {https://doi.org/10.1175/1520-0450(1998)037<0184:MOSPRS>2.0.CO;2}
+}
+
+
+@article{evans02,
+author = {Evans, K. Franklin and Walter, Steven J. and Heymsfield, Andrew J. and McFarquhar, Greg M.},
+title = {Submillimeter-Wave Cloud Ice Radiometer: Simulations of retrieval algorithm performance},
+journal = JGRA,
+volume = {107},
+number = {D3},
+pages = {AAC 2-1-AAC 2-21},
+keywords = {submillimeter, microwave, cirrus, remote sensing},
+doi = {10.1029/2001JD000709},
+url = {https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2001JD000709},
+eprint = {https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/2001JD000709},
+year = {2002}
+}
+
+@article{stephens02,
+author = {Stephens, Graeme L. and Vane, Deborah G. and Boain, Ronald J. and Mace, Gerald G. and Sassen, Kenneth and Wang, Zhien and Illingworth, Anthony J. and O'connor, Ewan J. and Rossow, William B. and Durden, Stephen L. and Miller, Steven D. and Austin, Richard T. and Benedetti, Angela and Mitrescu, Cristian and },
+title = {THE CLOUDSAT MISSION AND THE A-TRAIN},
+journal = BAMS,
+volume = {83},
+number = {12},
+pages = {1771-1790},
+year = {2002},
+doi = {10.1175/BAMS-83-12-1771},
+URL = {https://doi.org/10.1175/BAMS-83-12-1771},
+eprint = {https://doi.org/10.1175/BAMS-83-12-1771}}
+
+
+@ARTICLE{tanelli08,
+author={S. {Tanelli} and S. L. {Durden} and E. {Im} and K. S. {Pak} and D. G. {Reinke} and P. {Partain} and J. M. {Haynes} and R. T. {Marchand}},
+journal=I3ETGRS,
+title={CloudSat's Cloud Profiling Radar After Two Years in Orbit: Performance, Calibration, and Processing},
+year={2008},
+volume={46},
+number={11},
+pages={3560-3573},
+keywords={atmospheric precipitation;backscatter;calibration;clouds;meteorological radar;radar clutter;remote sensing by radar;spaceborne radar;CloudSat Mission;Cloud Profiling Radar;backscatter measurement;hydrometeors;global time series;surface clutter rejection algorithm;CPR;frequency 94 GHz;Clouds;Calibration;Spaceborne radar;Radar measurements;Instruments;Propulsion;Laboratories;Atmosphere;Radar antennas;Power measurement;A-train;clouds;CloudSat;radar},
+doi={10.1109/TGRS.2008.2002030},
+ISSN={0196-2892},
+month={Nov}}
+
+@article{austin09,
+author = {Austin, Richard T. and Heymsfield, Andrew J. and Stephens, Graeme L.},
+title = {Retrieval of ice cloud microphysical parameters using the CloudSat millimeter-wave radar and temperature},
+journal = JGRA,
+volume = {114},
+number = {D8},
+pages = {},
+keywords = {Remote sensing, ice, cloud},
+doi = {10.1029/2008JD010049},
+url = {https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2008JD010049},
+eprint = {https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/2008JD010049},
+year = {2009}
+}
+
+@article{deng15,
+  title={CloudSat 2C-ICE product update with a new Ze parameterization in lidar-only region},
+  author={Deng, M. and Mace, G. G. and Wang, Z. and Berry, E.},
+  journal = JGRA,
+  volume={120},
+  number={23},
+  pages={12--198},
+  year={2015},
+  publisher={Wiley Online Library}
+}
+
+@Article{cazenave18,
+AUTHOR = {Cazenave, Q. and Ceccaldi, M. and Delano\"e, J. and Pelon, J. and Gro{\ss}, S. and Heymsfield, A.},
+TITLE = {Evolution of DARDAR-CLOUD ice cloud cloud retrieval: new parameters and impacts on the retrieved microphysical properties},
+JOURNAL = AMTD,
+VOLUME = {2018},
+YEAR = {2018},
+PAGES = {1--24},
+URL = {https://www.atmos-meas-tech-discuss.net/amt-2018-397/},
+DOI = {10.5194/amt-2018-397}
+}
+
+
+@article{winker07,
+author = {Winker, David M. and Hunt, William H. and McGill, Matthew J.},
+title = {Initial performance assessment of CALIOP},
+journal = GRL,
+volume = {34},
+number = {19},
+pages = {},
+keywords = {lidar, clouds, aerosols},
+doi = {10.1029/2007GL030135},
+url = {https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2007GL030135},
+eprint = {https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/2007GL030135},
+year = {2007}
+}
+
+@article{hou14,
+author = {Hou, Arthur Y. and Kakar, Ramesh K. and Neeck, Steven and Azarbarzin, Ardeshir A. and Kummerow, Christian D. and Kojima, Masahiro and Oki, Riko and Nakamura, Kenji and Iguchi, Toshio},
+title = {The Global Precipitation Measurement Mission},
+journal = BAMS,
+volume = {95},
+number = {5},
+pages = {701-722},
+year = {2014},
+doi = {10.1175/BAMS-D-13-00164.1},
+URL = {https://doi.org/10.1175/BAMS-D-13-00164.1},
+eprint = {https://doi.org/10.1175/BAMS-D-13-00164.1}
+}
+
+@article{grecu16,
+author = {Grecu, Mircea and Olson, William S. and Munchak, Stephen Joseph and Ringerud, Sarah and Liao, Liang and Haddad, Ziad and Kelley, Bartie L. and McLaughlin, Steven F.},
+title = {The GPM Combined Algorithm},
+journal = AOT,
+volume = {33},
+number = {10},
+pages = {2225-2245},
+year = {2016},
+doi = {10.1175/JTECH-D-16-0019.1},
+URL = { https://doi.org/10.1175/JTECH-D-16-0019.1 },
+eprint = { https://doi.org/10.1175/JTECH-D-16-0019.1 }
+}
+
+@article{kummerow15,
+author = {Kummerow, Christian D. and Randel, David L. and Kulie, Mark and Wang, Nai-Yu and Ferraro, Ralph and Joseph Munchak, S. and Petkovic, Veljko},
+title = {The Evolution of the Goddard Profiling Algorithm to a Fully Parametric Scheme},
+journal = AOT,
+volume = {32},
+number = {12},
+pages = {2265-2280},
+year = {2015},
+doi = {10.1175/JTECH-D-15-0039.1},
+URL = {https://doi.org/10.1175/JTECH-D-15-0039.1},
+eprint = {https://doi.org/10.1175/JTECH-D-15-0039.1}}
+
+@article{milbrandtyau05,
+  title={A multimoment bulk microphysics parameterization. Part II: A proposed three-moment closure and scheme description},
+  author={Milbrandt, JA and Yau, MK},
+  journal=JAS,
+  volume={62},
+  number={9},
+  pages={3065--3081},
+  year={2005}
+}
+
+
+
+
+@article{greenwald02,
+author = {Greenwald, Thomas J. and Christopher, Sundar A.},
+title = {Effect of cold clouds on satellite measurements near 183 GHz},
+journal = JGRA,
+volume = {107},
+number = {D13},
+pages = {AAC 3-1-AAC 3-8},
+keywords = {microwave remote sensing, ice cloud scattering},
+doi = {10.1029/2000JD000258},
+url = {https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2000JD000258},
+eprint = {https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/2000JD000258},
+year = {2002}}
+
+@Article{arts18,
+AUTHOR = {Buehler, S. A. and Mendrok, J. and Eriksson, P. and Perrin, A. and Larsson, R. and Lemke, O.},
+TITLE = {ARTS, the Atmospheric Radiative Transfer Simulator -- version
+2.2, the planetary toolbox edition},
+JOURNAL = GMD,
+VOLUME = {11},
+YEAR = {2018},
+NUMBER = {4},
+PAGES = {1537--1556},
+URL = {https://www.geosci-model-dev.net/11/1537/2018/},
+DOI = {10.5194/gmd-11-1537-2018}
+}
+
+@misc{ssdb,
+  author       = {Robin Ekelund and
+                  Manfred Brath and
+                  Jana Mendrok and
+                  Patrick Eriksson},
+  title        = {{ARTS Microwave Single Scattering Properties 
+                   Database}},
+  month        = feb,
+  year         = 2018,
+  note         = {{An article is currently in writing and will in the 
+                   future used for citation of the database. In the
+                   meantime, we prefer that any usage of the database
+                   is done in collaboration with us the developers.
+                   That way, we can provide assistance in its usage
+                   and  receive feedback on the database.}},
+  doi          = {10.5281/zenodo.1175573},
+  url          = {https://doi.org/10.5281/zenodo.1175573}
+}
+
+@article{eriksson18,
+  title={A general database of hydrometeor single scattering properties at microwave and sub-millimetre wavelengths},
+  author={Eriksson, Patrick and Ekelund, Robin and Mendrok, Jana and Brath, Manfred and Lemke, Oliver and Buehler, Stefan A},
+  journal=ESSD,
+  volume={10},
+  number={3},
+  pages={1301--1326},
+  year={2018},
+  publisher={Copernicus GmbH}
+}
+
+
+@article{cote98,
+  title={The operational CMC--MRB global environmental multiscale (GEM) model. Part I: Design considerations and formulation},
+  author={C{\^o}t{\'e}, Jean and Gravel, Sylvie and M{\'e}thot, Andr{\'e} and Patoine, Alain and Roch, Michel and Staniforth, Andrew},
+  journal=MWR,
+  volume={126},
+  number={6},
+  pages={1373--1395},
+  year={1998}
+}
+
+@article{evans05,
+author = {Evans, K. Franklin and Wang, James R. and Racette, Paul E. and Heymsfield, Gerald and Li, Lihua},
+title = {Ice Cloud Retrievals and Analysis with the Compact Scanning Submillimeter Imaging Radiometer and the Cloud Radar System during CRYSTAL FACE},
+journal = JAM,
+volume = {44},
+number = {6},
+pages = {839-859},
+year = {2005},
+doi = {10.1175/JAM2250.1},
+URL = {https://doi.org/10.1175/JAM2250.1},
+eprint = {https://doi.org/10.1175/JAM2250.1}
+}
+
+
+@article{doi:10.1175/JAM2250.1,
+author = {Evans, K. Franklin and Wang, James R. and Racette, Paul E. and Heymsfield, Gerald and Li, Lihua},
+title = {Ice Cloud Retrievals and Analysis with the Compact Scanning Submillimeter Imaging Radiometer and the Cloud Radar System during CRYSTAL FACE},
+journal = JAM,
+volume = {44},
+number = {6},
+pages = {839-859},
+year = {2005},
+doi = {10.1175/JAM2250.1},
+URL = {https://doi.org/10.1175/JAM2250.1},
+eprint = {https://doi.org/10.1175/JAM2250.1}
+}
+
+@Article{grutzun18,
+    AUTHOR = {Gr\"utzun, V. and Buehler, S. A. and Kluft, L. and Mendrok, J. and Brath, M. and Eriksson, P.},
+    TITLE = {All-sky information content analysis for novel passive microwave instruments in the range from 23.8 to 874.4\,GHz},
+    JOURNAL = AMT,
+    VOLUME = {11},
+    YEAR = {2018},
+    NUMBER = {7},
+    PAGES = {4217--4237},
+    URL = {https://www.atmos-meas-tech.net/11/4217/2018/},
+    DOI = {10.5194/amt-11-4217-2018}
+}
+
+@article{birman17,
+author = {Camille Birman and Jean-François Mahfouf and Mathias Milz and Jana Mendrok and Stefan A. Buehler and Manfred Brath},
+title = {Information content on hydrometeors from millimeter and sub-millimeter wavelengths},
+journal = T,
+volume = {69},
+number = {1},
+pages = {1271562},
+year  = {2017},
+publisher = {Taylor & Francis},
+doi = {10.1080/16000870.2016.1271562},
+URL = {https://doi.org/10.1080/16000870.2016.1271562},
+eprint = {https://doi.org/10.1080/16000870.2016.1271562}
+}
+
+@Article{brath18a,
+AUTHOR = {Brath, M. and Fox, S. and Eriksson, P. and Harlow, R. C. and Burgdorf, M. and Buehler, S. A.},
+TITLE = {Retrieval of an ice water path over the ocean from ISMAR and MARSS millimeter and submillimeter brightness temperatures},
+JOURNAL = AMT,
+VOLUME = {11},
+YEAR = {2018},
+NUMBER = {1},
+PAGES = {611--632},
+URL = {https://www.atmos-meas-tech.net/11/611/2018/},
+DOI = {10.5194/amt-11-611-2018}
+}
+
+@article{jimenez03,
+  title={First inversions of observed submillimeter limb sounding radiances by neural networks},
+  author={Jim{\'e}nez, Carlos and Eriksson, Patrick and Murtagh, Donal},
+  journal=JGRA,
+  volume={108},
+  number={D24},
+  year={2003},
+  publisher={Wiley Online Library}
+}
+
+@article{buehler12,
+  title={Observing ice clouds in the submillimeter spectral range: the CloudIce mission proposal for ESA's Earth Explorer 8},
+  author={Buehler, SA and Defer, E and Evans, F and Eliasson, Salomon and Mendrok, Jana and Eriksson, Patrick and Lee, C and Jim{\'e}nez, C and Prigent, C and Crewell, S and others},
+  journal=AMT,
+  volume={5},
+  number={7},
+  pages={1529--1549},
+  year={2012}
+}
+ 
+
+@book{rodgers00,
+  title={Inverse methods for atmospheric sounding: theory and practice},
+  author={Rodgers, Clive D},
+  volume={2},
+  year={2000},
+  publisher={World scientific}
+}
+
+@article{delanoe05,
+  title={Statistical properties of the normalized ice particle size distribution},
+  author={Delano{\"e}, J. and Protat, A. and Testud, J. and Bouniol, D. and Heymsfield, A. J. and Bansemer, A. and Brown, P. and Forbes, R.},
+  journal=JGRA,
+  volume={110},
+  number={D10},
+  year={2005},
+  publisher={Wiley Online Library}
+}
+
+@article{delanoe14,
+  title={Normalized particle size distribution for remote sensing application},
+  author={Delano{\"e}, J. and Heymsfield, A. Protat, A. and Bansemer, A. and Hogan, R.},
+  journal=JGRA,
+  volume={119},
+  number={7},
+  pages={4204--4227},
+  year={2014},
+  publisher={Wiley Online Library}
+}
+
+@article{waliser09,
+author = {Waliser, Duane E. and Li, Jui-Lin F. and Woods, Christopher P. and Austin, Richard T. and Bacmeister, Julio and Chern, Jiundar and Del Genio, Anthony and Jiang, Jonathan H. and Kuang, Zhiming and Meng, Huan and Minnis, Patrick and Platnick, Steve and Rossow, William B. and Stephens, Graeme L. and Sun-Mack, Szedung and Tao, Wei-Kuo and Tompkins, Adrian M. and Vane, Deborah G. and Walker, Christopher and Wu, Dong},
+title = {Cloud ice: A climate model challenge with signs and expectations of progress},
+journal = JGRA,
+volume = {114},
+number = {D8},
+pages = {},
+keywords = {CloudSat},
+doi = {10.1029/2008JD010015},
+url = {https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2008JD010015},
+eprint = {https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/2008JD010015},
+year = {2009}
+}
+
+@article{radford,
+  title={Unsupervised representation learning with deep convolutional generative adversarial networks},
+  author={Radford, Alec and Metz, Luke and Chintala, Soumith},
+  journal={arXiv preprint arXiv:1511.06434},
+  year={2015}
+}
+
+@article{whitaker,
+  title={Ensemble data assimilation without perturbed observations},
+  author={Whitaker, Jeffrey S and Hamill, Thomas M},
+  journal=MWR,
+  volume={130},
+  number={7},
+  pages={1913--1924},
+  year={2002}
+}
+
+@article{hunt,
+  title={Efficient data assimilation for spatiotemporal chaos: A local ensemble transform Kalman filter},
+  author={Hunt, Brian R and Kostelich, Eric J and Szunyogh, Istvan},
+  journal=PD,
+  volume={230},
+  number={1-2},
+  pages={112--126},
+  year={2007},
+  publisher={Elsevier}
+}
+
+@article{poterjoy,
+author = {Poterjoy, J and Sobash, R A and Anderson, J L},
+title = {Convective-Scale Data Assimilation for the Weather Research and Forecasting Model Using the Local Particle Filter},
+journal = MWR,
+volume = {145},
+number = {5},
+pages = {1897-1918},
+year = {2017},
+doi = {10.1175/MWR-D-16-0298.1}
+}
+
+@article{wang16,
+  title={A statistical retrieval of cloud parameters for the millimeter wave Ice Cloud Imager on board MetOp-SG},
+  author={Wang, D and Prigent, C and Aires, F and Jimenez, C},
+  journal=I3EA,
+  volume={5},
+  pages={4057--4076},
+  year={2016},
+  publisher={IEEE}
+}
+
+@article{prigent16,
+author = {Prigent, C. and Aires, F. and Wang, D. and Fox, S. and Harlow, C.},
+title = {Sea-surface emissivity parametrization from microwaves to millimetre waves},
+journal = QJRMS,
+volume = {143},
+number = {702},
+pages = {596-605},
+keywords = {satellite observations, sea-surface emissivity, microwave and millimetre waves},
+doi = {10.1002/qj.2953},
+url = {https://rmets.onlinelibrary.wiley.com/doi/abs/10.1002/qj.2953},
+eprint = {https://rmets.onlinelibrary.wiley.com/doi/pdf/10.1002/qj.2953},
+year = {2017}
+}
+
+@article{jimenez07,
+  title={Performance simulations for a submillimetre-wave satellite instrument to measure cloud ice},
+  author={Jim{\'e}nez, Carlos and Buehler, SA and Rydberg, Bengt and Eriksson, Patrick and Evans, KF},
+  journal=QJRMS,
+  volume={133},
+  number={S2},
+  pages={129--149},
+  year={2007},
+  publisher={Wiley Online Library}
+}
+
+@article{liebe92,
+  title={Atmospheric 60-GHz oxygen spectrum: New laboratory measurements and line parameters},
+  author={Liebe, HJ and Rosenkranz, PW and Hufford, GA},
+  journal=JQSRT,
+  volume={48},
+  number={5-6},
+  pages={629--643},
+  year={1992},
+  publisher={Elsevier}
+}
