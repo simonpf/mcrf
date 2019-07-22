@@ -6,11 +6,11 @@ hydrometeors from sub-millimeter wave observations combined with radar observati
 
 ## Dependencies
 
-This package builds on the [ARTS](radiative-transfer.org) package for performing the simulations
+This package builds on the [ARTS](https://radiative-transfer.org) package for performing the simulations
 of radiative transfer as well as the retrievals. In addition to that, the following Python
 packages are required:
-- [typhon](github.com/atmtools/typhon)
-- [parts](github.com/simonpf/parts)
+- [typhon](https://github.com/atmtools/typhon)
+- [parts](https://github.com/simonpf/parts)
 
 
 
