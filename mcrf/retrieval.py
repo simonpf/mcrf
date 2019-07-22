@@ -1,5 +1,5 @@
 """
-crac.retrieval
+mcrf.retrieval
 
 Provides classes for performing forward simulations and cloud retrieval
 calculations.

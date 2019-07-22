@@ -3,13 +3,13 @@ import numpy as np
 import os
 
 import argparse
-import crac.liras.setup
-import crac.liras
-from   crac.retrieval        import CloudSimulation
-from   crac.sensors          import mwi, ici, lcpr
-from   crac.liras            import ice, liquid, snow, rain, rh_a_priori, cloud_water_a_priori
-from   crac.liras.gem        import gem_hydrometeors
-from   crac.liras.model_data import ModelDataProvider
+import mcrf.liras.setup
+import mcrf.liras
+from   mcrf.retrieval        import CloudSimulation
+from   mcrf.sensors          import mwi, ici, lcpr
+from   mcrf.liras            import ice, liquid, snow, rain, rh_a_priori, cloud_water_a_priori
+from   mcrf.liras.gem        import gem_hydrometeors
+from   mcrf.liras.model_data import ModelDataProvider
 
 parser = argparse.ArgumentParser(prog = "LIRAS forward simulations",
                                  description = 'Forward simulations using GEM model physics.')

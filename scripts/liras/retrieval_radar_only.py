@@ -1,11 +1,11 @@
 from parts.utils.data_providers import NetCDFDataProvider
 
-import crac.liras.setup
-import crac.liras
-from   crac.retrieval          import CloudRetrieval
-from   crac.sensors            import mwi, mwi_full, ici, lcpr
-from   crac.liras              import rh_a_priori, cloud_water_a_priori
-from   crac.liras.model_data import ModelDataProvider
+import mcrf.liras.setup
+import mcrf.liras
+from   mcrf.retrieval          import CloudRetrieval
+from   mcrf.sensors            import mwi, mwi_full, ici, lcpr
+from   mcrf.liras              import rh_a_priori, cloud_water_a_priori
+from   mcrf.liras.model_data import ModelDataProvider
 
 #
 # Parse arguments
@@ -37,7 +37,7 @@ snow_shape   = args.snow_shape[0]
 input_file   = args.input_file[0]
 output_file  = args.output_file[0]
 
-liras_path = crac.liras.liras_path
+liras_path = mcrf.liras.liras_path
 
 if not os.path.isabs(input_file):
     input_file = os.path.join(liras_path, input_file)
@@ -55,9 +55,9 @@ n = observations.file_handle.dimensions["profile"].size
 
 if not snow_shape == "None":
     if args.reference:
-        from crac.liras.reference import ice, snow, rain, rh_a_priori, cloud_water_a_priori
+        from mcrf.liras.reference import ice, snow, rain, rh_a_priori, cloud_water_a_priori
     else:
-        from crac.liras import ice, snow, rain, rh_a_priori, cloud_water_a_priori
+        from mcrf.liras import ice, snow, rain, rh_a_priori, cloud_water_a_priori
     ice_shape = os.path.join(liras_path, "data", "scattering", ice_shape)
     ice.scattering_data = ice_shape
     snow_shape = os.path.join(liras_path, "data", "scattering", snow_shape)
@@ -65,10 +65,10 @@ if not snow_shape == "None":
     hydrometeors = [ice, snow, rain]
 else:
     if args.reference:
-        from crac.liras.reference import ice, snow, rain, rh_a_priori, cloud_water_a_priori
+        from mcrf.liras.reference import ice, snow, rain, rh_a_priori, cloud_water_a_priori
     else:
-        from crac.liras.single_species import ice, rain
-        from crac.liras import snow, rh_a_priori, cloud_water_a_priori
+        from mcrf.liras.single_species import ice, rain
+        from mcrf.liras import snow, rh_a_priori, cloud_water_a_priori
     ice_shape = os.path.join(liras_path, "data", "scattering", ice_shape)
     ice.scattering_data = ice_shape
     hydrometeors = [ice, rain]
@@ -97,7 +97,7 @@ sensors = [lcpr]
 # Add a priori providers.
 #
 
-observation_errors = crac.liras.ObservationError(sensors)
+observation_errors = mcrf.liras.ObservationError(sensors)
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])
 data_provider.add(snow.a_priori[0])

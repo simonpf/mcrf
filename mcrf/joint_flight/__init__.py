@@ -1,6 +1,6 @@
 import os
-from crac.psds                import D14Ice, D14Snow, D14Liquid
-from crac.hydrometeors        import Hydrometeor
+from mcrf.psds                import D14Ice, D14Snow, D14Liquid
+from mcrf.hydrometeors        import Hydrometeor
 from parts.retrieval.a_priori import *
 from parts.jacobian           import Atanh
 

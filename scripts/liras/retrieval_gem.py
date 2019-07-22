@@ -1,13 +1,13 @@
 from parts.utils.data_providers import NetCDFDataProvider
 
-import crac.liras.setup
-import crac.liras
-from   crac.retrieval        import CloudRetrieval
-from   crac.sensors          import mwi, mwi_full, ici, lcpr
-from   crac.liras            import ice, liquid, rain, snow, rh_a_priori, \
+import mcrf.liras.setup
+import mcrf.liras
+from   mcrf.retrieval        import CloudRetrieval
+from   mcrf.sensors          import mwi, mwi_full, ici, lcpr
+from   mcrf.liras            import ice, liquid, rain, snow, rh_a_priori, \
  cloud_water_a_priori
-from   crac.liras.model_data import ModelDataProvider
-from   crac.liras.gem import gem_ice, gem_snow
+from   mcrf.liras.model_data import ModelDataProvider
+from   mcrf.liras.gem import gem_ice, gem_snow
 
 #
 # Parse arguments
@@ -30,7 +30,7 @@ i_start      = args.start_index[0]
 input_file   = args.input_file[0]
 output_file  = args.output_file[0]
 
-liras_path = crac.liras.liras_path
+liras_path = mcrf.liras.liras_path
 
 if not os.path.isabs(input_file):
     input_file = os.path.join(liras_path, input_file)
@@ -76,7 +76,7 @@ data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(cloud_water_a_priori)
 data_provider.add(rh_a_priori)
-data_provider.add(crac.liras.ObservationError(sensors))
+data_provider.add(mcrf.liras.ObservationError(sensors))
 data_provider.add(observations)
 
 #

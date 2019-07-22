@@ -1,5 +1,5 @@
 """
-The :code:`crac.sensors` module contains Python classes that
+The :code:`mcrf.sensors` module contains Python classes that
 represent the sensors that are used within the study. These
 are:
     - The Ice Cloud Imager (ICI)

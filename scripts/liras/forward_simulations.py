@@ -3,13 +3,13 @@ import numpy as np
 import os
 
 import argparse
-import crac.liras.setup
-import crac.liras
-from   crac.retrieval        import CloudSimulation
-from   crac.sensors          import mwi, ici, lcpr, mwi_full, hamp_radar
-from   crac.liras            import ice, rain
-from   crac.liras.gem        import gem_hydrometeors
-from   crac.liras.model_data import ModelDataProvider
+import mcrf.liras.setup
+import mcrf.liras
+from   mcrf.retrieval        import CloudSimulation
+from   mcrf.sensors          import mwi, ici, lcpr, mwi_full, hamp_radar
+from   mcrf.liras            import ice, rain
+from   mcrf.liras.gem        import gem_hydrometeors
+from   mcrf.liras.model_data import ModelDataProvider
 
 parser = argparse.ArgumentParser(prog = "LIRAS forward simulations",
                                  description = 'Forward simulations using GEM model physics.')
@@ -40,7 +40,7 @@ include_cloud_water = False
 arg_names = ["ice_psd", "snow_psd", "hail_psd", "graupel_psd", "liquid_psd"]
 kwargs = dict(zip(arg_names, [h.psd for h in hydrometeors]))
 data_provider = ModelDataProvider(99, scene = scene, **kwargs)
-sensors = [getattr(crac.sensors, n) for n in args.sensors]
+sensors = [getattr(mcrf.sensors, n) for n in args.sensors]
 
 simulation    = CloudSimulation(hydrometeors, sensors, data_provider,
                                 include_cloud_water)

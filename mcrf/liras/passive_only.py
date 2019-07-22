@@ -1,6 +1,6 @@
 import os
-from crac.psds                import D14NDmIce, D14NDmLiquid, D14NDmSnow
-from crac.hydrometeors        import Hydrometeor
+from mcrf.psds                import D14NDmIce, D14NDmLiquid, D14NDmSnow
+from mcrf.hydrometeors        import Hydrometeor
 from parts.retrieval.a_priori import *
 from parts.scattering.psd     import Binned
 from parts.jacobian           import Atanh, Log10, Identity, Composition

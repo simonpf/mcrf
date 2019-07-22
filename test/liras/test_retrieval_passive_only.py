@@ -1,13 +1,13 @@
 from parts.utils.data_providers import NetCDFDataProvider
 import os
 
-import crac.liras.setup
-import crac.liras
-from   crac.retrieval          import CloudRetrieval
-from   crac.sensors            import mwi, ici, lcpr
-from   crac.liras.passive_only import ice, liquid, snow, rain, rh_a_priori, cloud_water_a_priori
-#from   crac.liras              import ice, liquid, snow, rain, rh_a_priori, cloud_water_a_priori
-from   crac.liras.model_data   import ModelDataProvider
+import mcrf.liras.setup
+import mcrf.liras
+from   mcrf.retrieval          import CloudRetrieval
+from   mcrf.sensors            import mwi, ici, lcpr
+from   mcrf.liras.passive_only import ice, liquid, snow, rain, rh_a_priori, cloud_water_a_priori
+#from   mcrf.liras              import ice, liquid, snow, rain, rh_a_priori, cloud_water_a_priori
+from   mcrf.liras.model_data   import ModelDataProvider
 
 import matplotlib.pyplot as plt
 
@@ -21,7 +21,7 @@ if not ip is None:
 # Load observations.
 #
 
-filename     = os.path.join(crac.liras.liras_path, "data", "forward_simulations_a_noise.nc")
+filename     = os.path.join(mcrf.liras.liras_path, "data", "forward_simulations_a_noise.nc")
 
 offsets = {"a" : 3000,
            "b" : 2800}
@@ -56,7 +56,7 @@ sensors      = [mwi, ici]
 # Add a priori providers.
 #
 
-observation_errors = crac.liras.ObservationError(sensors,
+observation_errors = mcrf.liras.ObservationError(sensors,
                                                  footprint_error = False,
                                                  forward_model_error = False)
 
@@ -68,13 +68,13 @@ data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(cloud_water_a_priori)
 data_provider.add(rh_a_priori)
-data_provider.add(crac.liras.ObservationError(sensors))
+data_provider.add(mcrf.liras.ObservationError(sensors))
 data_provider.add(observations)
 
 #
 # Run the retrieval.
 #
-crac.liras.passive_only.settings["single_species"] = False
+mcrf.liras.passive_only.settings["single_species"] = False
 retrieval = CloudRetrieval(hydrometeors, sensors, data_provider, include_cloud_water = False)
 retrieval.setup()
 retrieval.simulation.retrieval.debug_mode = True

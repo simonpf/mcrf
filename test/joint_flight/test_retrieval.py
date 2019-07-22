@@ -2,12 +2,12 @@ from parts.utils.data_providers import NetCDFDataProvider
 import os
 
 os.environ["JOINT_FLIGHT_PATH"] = "/home/simonpf/data/joint_flight"
-import crac.joint_flight.setup
+import mcrf.joint_flight.setup
 
-import crac.liras
-from   crac.retrieval        import CloudRetrieval
-from   crac.sensors          import hamp_radar, hamp_passive, ismar
-from   crac.joint_flight     import ice, liquid, snow, rain, liquid_md_a_priori, \
+import mcrf.liras
+from   mcrf.retrieval        import CloudRetrieval
+from   mcrf.sensors          import hamp_radar, hamp_passive, ismar
+from   mcrf.joint_flight     import ice, liquid, snow, rain, liquid_md_a_priori, \
     rh_a_priori, ObservationError, temperature_a_priori
 
 from parts.retrieval.a_priori import SensorNoiseAPriori
@@ -23,7 +23,7 @@ if not ip is None:
 # Load observations.
 #
 
-filename     = os.path.join(crac.joint_flight.path, "data", "input.nc")
+filename     = os.path.join(mcrf.joint_flight.path, "data", "input.nc")
 data_provider = NetCDFDataProvider(filename)
 
 #

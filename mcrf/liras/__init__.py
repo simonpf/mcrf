@@ -1,6 +1,6 @@
 """
 Contains the hydrometeors for the LIRAS retrieval. The hydrometeors implement
-the `crac.liras.hydrometeors.Hydrometeor` and bundle hydrometeor definition
+the `mcrf.liras.hydrometeors.Hydrometeor` and bundle hydrometeor definition
 (type) with a priori assumption. The attributes of this module define the
 hydrometoers and a priori assumptions used for the retrievals for the
 ESA Wide Swath Cloud Profiling study.
@@ -19,8 +19,8 @@ Attributes:
 """
 import os
 import numpy as np
-from crac.psds                import D14NDmIce, D14NDmLiquid
-from crac.hydrometeors        import Hydrometeor
+from mcrf.psds                import D14NDmIce, D14NDmLiquid
+from mcrf.hydrometeors        import Hydrometeor
 from parts.retrieval.a_priori import *
 from parts.scattering.psd     import Binned
 from parts.jacobian           import Atanh, Log10, Identity, Composition
