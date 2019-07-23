@@ -118,17 +118,17 @@
   The upcoming Ice Cloud Imager (ICI) instrument, to be launched on board the
   second generation of European operational meteorological satellites (MetOpSG),
   will be the first microwave imager to provide sub-millimeter observations of
-  clouds. To investigate what can be learned from these newly available
-  frequencies, this study explores the potential of combining observations from
-  a sub-millimeter wave radiometer with those from a $94 \unit{GHz}$ cloud-radar
-  for the retrieval of frozen hydrometeors. Starting from a simplified numerical
-  experiment, it is shown that the complementary information content in the
-  radar and radiometer observations helps to better constrain the particle size
-  distribution of ice particles in the atmosphere. The feasibility of the
-  combined retrieval is demonstrated by applying a one-dimensional, variational
-  cloud-retrieval algorithm to simulated observations from a high-resolution
-  atmospheric model. Comparison of the retrieval results with passive- and
-  radar-only versions of the retrieval algorithm confirm that the synergistic
+  clouds. To investigate what can be learned about ice clouds from these newly
+  available frequencies, this study explores the potential of combining
+  observations from a sub-millimeter wave radiometer with those from a $94
+  \unit{GHz}$ cloud-radar to retrieve frozen hydrometeors. Starting from a
+  simplified numerical experiment, it is shown that the complementary
+  information content in the radar and radiometer observations helps to better
+  constrain the particle size distribution of the ice cloud. The feasibility of
+  the combined retrieval is demonstrated by applying a one-dimensional,
+  variational cloud-retrieval algorithm to simulated observations from a
+  high-resolution atmospheric model. Comparison of the results with passive- and
+  radar-only versions of the retrieval algorithm confirms that the synergistic
   information content from the active and passive observations helps to better
   constrain the microphysical properties of frozen hydrometeors. In addition to
   that, the synergistic retrieval shows potential to detect and retrieve liquid
@@ -142,26 +142,26 @@
 
 \introduction  %% \introduction[modified heading if necessary]
 
-Ice clouds play an important role in many weather- and climate-related
-processes in the atmosphere. They interact with incoming and outgoing
-radiation and thus influence the Earth's energy budget. Furthermore, as part
-of the global hydrological cycle and due to their relation to the dynamics of
-the atmosphere, observations of ice clouds provide important information to
-constrain the state of the atmosphere in forecasting models \citep{geer} as well as
-to validate predictions from climate models \citep{waliser09}.
+Ice clouds play an important role in many weather- and climate-related processes
+in the atmosphere. They interact with incoming and outgoing radiation and thus
+influence the Earth's energy budget. Furthermore, as part of the global
+hydrological cycle and due to their relation to the dynamics of the atmosphere,
+observations of ice clouds provide important information to constrain the state
+of the atmosphere in numerical weather prediction models \citep{geer} as
+well as to validate predictions from climate models \citep{waliser09}.
 
 Despite the importance of observations of ice clouds for climate and weather
-prediction, todays global earth observation system cannot provide
-accurate information on the distribution of ice in the atmosphere
-\citep{eliasson11,duncan18a}. What makes the remote sensing of ice from space
-so difficult is the large variability in sizes and concentrations in which
-ice particles occur in the atmosphere. The spectrum of ice crystal sizes,
-that ranges from micro- to millimeter scales, can only be partially resolved
-by currently available space-borne sensors.
+prediction, today's global observing system cannot provide accurate information
+on the global distribution of ice in the atmosphere
+\citep{eliasson11,duncan18a}. What makes the remote sensing of ice from space so
+difficult is the large variability in sizes and concentrations in which ice
+particles occur in the atmosphere. The spectrum of ice crystal sizes, that
+ranges from micro- to millimeter scales, can only be partially resolved by
+currently available space-borne sensors.
 
 The sensitivity of a remote sensing system to ice particles of a given size is
-determined mainly by its observing frequencies. The interaction of radiation
-with ice particles is strongest for sizes roughly equal to the wavelength,
+determined mainly by its observing frequencies. The scattering of radiation
+by ice particles is strongest for sizes roughly equal to the wavelength,
 $\lambda$, of the radiation. For particles with sizes smaller than $\lambda$,
 the sensitivity decreases so rapidly that they are practically invisible to the
 sensor. Particles larger than the wavelength $\lambda$ interact sufficiently
@@ -170,33 +170,32 @@ the signal and thus loss of sensitivity further down the line of sight.
 
 The observing frequencies that are currently available for measuring ice from
 space are limited to the microwave, infrared and optical domain. Infrared and
-optical sensors, on the one hand, provide sensitivity to small ice particles but
-cannot sense significant parts of the ice mass of thicker clouds due to
-saturation of the signal. Microwave observations, on the other hand, provide
-sensitivity throughout the whole atmospheric column but are insensitive to small
-ice particles. Although radars and lidars generally provide higher sensitivity
-than their passive counterparts, ultimately their sensitivity is limited by the
-same principles.
+optical sensors provide sensitivity to small ice particles but cannot sense
+significant parts of the ice mass of thicker clouds due to saturation of the
+signal. Microwave observations, in contrast, provide sensitivity throughout the
+whole atmospheric column but are insensitive to small ice particles. Although
+radars and lidars generally provide higher sensitivity than their passive
+counterparts, ultimately their sensitivity is limited by the same principles.
 
 To narrow this sensitivity gap, the upcoming Ice Cloud Imager (ICI) will extend
 the microwave frequencies available for studying clouds with channels at $243,
-325, 448$ and $664\unit{GHz}$. This extension of the smallest currently
+325, 448$ and $664\ \unit{GHz}$. This extension of the smallest currently
 available microwave wavelength from $1.6\unit{mm}$ at $183\unit{GHz}$ down to
 the sub-millimeter domain ($0.45\unit{mm}$ at $664\unit{GHz}$) will
 significantly improve the size-sensitivity of space-borne microwave observations
 of clouds.
 
 With the advent of space-borne sub-millimeter radiometry of clouds on the
-horizon, a natural question to ask is what can be learned from this new
-frequency domain about  ice in the atmosphere. For passive
-radiometer observations alone, this has been studied in detail for
-column-integrated ice mass \citep{jimenez07, wang16, brath18a} as well as for
-the vertical distribution of ice in the atmosphere \citep{wang16, grutzun18}.
-However, the concept of combining sub-millimeter observations with active
-observations from a cloud radar has remained mostly unexplored since it was
-first proposed by \cite{evans05}.
+horizon, a natural question to ask is what can be learned about ice particles in
+the atmosphere from this new frequency domain. For passive radiometer
+observations alone, this has been studied in detail for column-integrated ice
+mass \citep{jimenez07, wang17, brath18a} as well as for the vertical
+distribution of ice in the atmosphere \citep{grutzun18, aires19}. However, the
+concept of combining sub-millimeter observations with active observations from a
+cloud radar has remained mostly unexplored since it was first proposed by
+\cite{evans05}.
 
-This study revisits this concept and explores its potential for retrieving
+This study revisits the concept and explores its potential for retrieving
 vertically-resolved distributions of frozen hydrometeors in the atmospheric
 column. The work presented here was performed as part of a larger study funded
 by the European Space Agency, which aimed to evaluate the concept of a future
@@ -210,24 +209,23 @@ profile retrievals with the aim of extending the profiling capabilities of the
 radar to the wide swath of the passive imager.
 
 The aim of this study is to explore the fundamental synergies between radar and
-passive sub-millimeter observations. In particular, it aims to address the
-question to what extent the combined active and passive obervations can
-constrain the microphysics of ice particles in the atmosphere. Starting from
-a simplified numerical experiment, the complementarity of the information content
-of the active and passive observations is demonstrated. Following this, a
-synergistic, variational cloud-retrieval algorithm is presented. The algorithm
-is applied to simulated observations of cloud scenes from a high-resolution
-atmospheric model and used to further explore the synergies between the active
-and passive observations.
+passive sub-millimeter observations. In particular, it aims to investigate the
+extent to which the combined active and passive observations can constrain the
+microphysics of ice particles in the atmosphere. Starting from a simplified
+numerical experiment, the complementarity of the information content of the
+active and passive observations is demonstrated. Following this, a synergistic,
+variational cloud-retrieval algorithm is presented. The algorithm is applied to
+simulated observations of cloud scenes from a high-resolution atmospheric model
+and used to further explore the synergies between the active and passive
+observations.
 
-Following this introduction, Section \ref{sec:methods_and_data} introduces
-the test data, sensor configuration and the developed retrieval algorithm
-on which the study is based. This is followed by the presentation of the
-experimental results on the information content of the combined observations
-and the retrieval results of the joint retrieval on selected test scenes
-in Section \ref{sec:results}. The article closes with a discussion of
-the results in Section \ref{sec:discussion} and conclusions in section
-\ref{sec:conclusions}.
+Following this introduction, Section \ref{sec:methods_and_data} introduces the
+test data, sensor configuration and the developed retrieval algorithm on which
+the study is based. This is followed by the experimental results on the
+information content of the combined observations and the retrieval results of
+the joint retrieval on selected test scenes in Section \ref{sec:results}. The
+article closes with a discussion of the results in Section \ref{sec:discussion}
+and conclusions in section \ref{sec:conclusions}.
 
 
 \section{Methods and data}
@@ -1108,7 +1106,7 @@ fair comparison, the passive only retrieval uses very similar a priori
 assumptions as the other two retrievals, which in the presented case provide
 only very limited information on the vertical structure of the cloud. As other
 studies have shown, the passive observations do provide information on the
-vertical distribution of ice in the atmospheric column \citep{wang16,
+vertical distribution of ice in the atmospheric column \citep{wang17,
   grutzun18}, but the information content is limited to a few degrees of
 freedom. It is therefore unlikely, the vertical resolution of the passive-only
 can be improved drastically without further constraining it a priori, for
@@ -1211,12 +1209,12 @@ observed clouds than any of the single-instrument retrievals alone.
 \label{sec:conclusions}
 
 \begin{itemize}
-  - Demonstrated existence of synergies between the active and passive
+  \item Demonstrated existence of synergies between the active and passive
   microwave observations
-  - Retrieval of liquid clouds as an additional synergy
-  - Mass density as well as number density better constrained in combined
+  \item Retrieval of liquid clouds as an additional synergy
+  \item Mass density as well as number density better constrained in combined
   retrieval
-  - Particle shape affects retrieval, but no clear best fit was found
+  \item Particle shape affects retrieval, but no clear best fit was found
 \end{itemize}
 
 The results of this study clearly prove the existence of synergies between radar
@@ -1324,7 +1322,7 @@ TEXT
 %% authors experienced with BibTeX only have to include the following two lines:
 
 \bibliographystyle{copernicus}
-\bibliography{references.bib}
+\bibliography{references}
 %%
 %% URLs and DOIs can be entered in your BibTeX file as:
 %%
