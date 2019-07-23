@@ -8,6 +8,33 @@
 #+LaTeX_HEADER: \usepackage{todonotes}
 #+LaTeX_HEADER: \DeclareMathOperator\arctanh{arctanh}
 
+*** Discussion with Patrick
+    - Better title, perhaps drop microwave from title
+**** Introduction
+     - Mention ESA study, give more context
+     - Effect of larger particles
+     - Limits differ between active and passive
+     - Jimenez reference
+     - First step in this direction by Evans
+     - Inside sentence
+     - Space in front of unit
+     - Don't repeat what Figure says in text
+**** Methods
+     - Introduce shapes used in retrieval
+     - Mention mass size relation used in GEM model
+     - Mention that footprint issues have been considered
+     - Mention that ARTS provides approximate analytical Jacobians
+     - data in plural
+     - noise inflation in variances
+     - mention why retrieval is performed in D_m and N_0^*
+     - Color map for contour plot
+**** Results
+     - Discuss results a bit
+     - Other habits not introduced
+**** Discussion
+     - Formulate limitation of radar carefully -> add paragraph
+     - Expand on vertical resolution
+     - Cite Wang as well
   
 * Introduction
 
@@ -875,6 +902,7 @@ that is able to disentangle the cloud signal from the other atmospheric
 variables that affect the measurement.
 
  \todo{Do I need to mention that radar considers only single scattering?}
+
 
 ** Combined retrieval performance
 
