@@ -437,8 +437,7 @@ an ocean surface with emissivities calculated using the Tool to Estimate
 Sea‐Surface Emissivity from Microwaves to sub‐Millimeter waves (TESSEM,
 \cite{prigent16}). Polarization is neglected in all simulations performed in
 this study. Particle scattering data are taken from the ARTS scattering data
-base
-\citep{eriksson18}.
+base (SSDB) \citep{eriksson18}.
 
 \subsection{Retrieval algorithm}
 \label{sec:orgb528563}
@@ -621,9 +620,10 @@ at eleven grid points between surface and tropopause.
 \label{sec:results}
 
 In the first part of this section, results of a numerical experiment are
-presented that investigate the complementary information content of the active
-and passive observations. The remainder of this section presents  the retrieval results
-of the combined and the baseline retrievals applied to the reference cloud scenes.
+presented that investigates the complementary information content of the active
+and passive observations. The remainder of this section presents the retrieval
+results of the combined and the baseline retrievals applied to the reference
+cloud scenes.
 
 \subsection{Complementary information content}
 \label{sec:orgdc1b0b8}
@@ -633,27 +633,27 @@ observations in a retrieval is to what extent the observations contain
 non-redundant information. The degree of non-redundancy in the combined
 observations is what is referred to here as complementary information content.
 In order to explore this complementary information content in the radar and
-radiometer observations, an idealized, homogeneous cloud layer of thickness of
-$4\unit{km}$ located at an altitude of $10\unit{km}$ in a tropical atmosphere is
+radiometer observations, an idealized, homogeneous cloud layer with a thickness of
+$4\ \unit{km}$ located at an altitude of $10\ \unit{km}$ in a tropical atmosphere is
 considered. The cloud is assumed to consist of a single frozen hydrometeor
 species using the same PSD parametrization as the frozen hydrometeors used in
-the cloud retrieval.
+the cloud retrieval. As particle model, the 8-ColumnAggregate (ID 8) from the ARTS
+SSDB is used.
 
 The question that we address here is whether and to what extent the active and
 passive observations can constrain the two scaling factors of the PSD of frozen
-hydrometeors in the cloud. To investigate this, the $N_0^*$ and $D_m$ parameters
-of the PSD are varied and observations of the homogeneous cloud layer are
-simulated. Figure \ref{fig:isolines} displays the simulated cloud signal, i.e.
-the brightness temperature difference between clear sky and cloudy sky
-simulation, as filled contours for a selection of channels of the MWI and ICI
-sensors. For given values of $N_0^*$ and $D_m$, the ice mass density is given by
-the relation
+hydrometeors in the cloud. To investigate this, $N_0^*$ and $D_m$ are varied and
+observations of the homogeneous cloud layer are simulated. Figure
+\ref{fig:isolines} displays the simulated cloud signal, i.e. the brightness
+temperature difference between clear sky and cloudy sky simulation, as filled
+contours for a selection of channels of the MWI and ICI sensors. For given
+values of $N_0^*$ and $D_m$, the ice mass density is given by the relation
 \begin{align}
 m = \frac{\pi \rho}{4 ^ 4}N_0^* D_m^4.
 \end{align}
 Displaying the cloud signal in $D_m$-mass density space thus shows how the
-measured passive cloud signal varies with the parameters of the PSD of the
-frozen hydrometeors. Overlaid onto the contours of the passive cloud signal are
+measured passive cloud signal varies with the horizontal and vertical scaling
+parameters of the PSD. Overlaid onto the contours of the passive cloud signal are
 the isolines of the simulated radar reflectivity at the center of the cloud.
 
 \begin{figure}
@@ -668,20 +668,19 @@ cloud signal measured by selected radiometer channels of the MWI radiometer
 \end{figure}
 
 The contours of the measured active and passive cloud signals show the ambiguity
-of each signal with respect to the two parameters of the PSD: Along these
-contours the signal does not change, while the cloud composition does. A
-necessary condition for the passive observations to provide complementary
-information to the radar observations that can help to resolve the $N_0^*-D_m$
-ambiguity is that the contours of the passive signal and the radar signal cross
+of the single-instrument measurement with respect to the parameters of the PSD:
+Along these contours the signal does not change, while the cloud composition
+does. To resolve this ambiguity using the combined active and passive
+observations, a necessary condition is that the contours of the signals cross
 each other. The panels in Fig.~\ref{fig:isolines} thus give an indication to
 what extent the information in the radar measurement and the corresponding
-passive radiometer channel provide complementary information on the two moments
+passive radiometer channel provide complementary information on the parameters
 of the PSD. Considering the panels corresponding to the MWI channels, the
 results show that the observations contain complementary information only for
-dense clouds consisting of large particle. Compared to that, the ICI
-observations display a lower degree of parallelism already at lower densities
-and particle sizes, indicating higher complementary information content already
-for thinner clouds.
+dense clouds containing large particles. Compared to that, the ICI observations
+display a lower degree of parallelism already at lower densities and particle
+sizes, indicating higher complementary information content also for thinner
+clouds.
 
 \subsection{Retrieval results}
 
@@ -691,10 +690,10 @@ retrievals have been performed with a radar-only and a passive-only version of
 the algorithm to serve as baselines for the combined retrieval. Each retrieval
 was performed multiple times using different ice particle models. The tested
 particle shapes are listed together with the corresponding mass size relations
-and ARTS scattering database identifier in Table~\ref{tab:particles_retrieval}.
-Since the results for both test scenes are qualitatively similar, not all
-analyses are shown for both scenes. Instead, these are provided as a digital
-supplement to this article.
+and ARTS SSDB identifier in Table~\ref{tab:particles_retrieval}. Since the
+results for both test scenes are qualitatively similar, not all analyses are
+shown for both scenes. Instead, these are provided as a digital supplement to
+this article.
 
 \begin{table}
   \centering
@@ -714,49 +713,62 @@ supplement to this article.
   \label{tab:particles_retrieval}
 \end{table}
 
-The simulated observations for the first test scene are shown in
-Figure~\ref{fig:observations_a}. To account for sensor noise, independent
-Gaussian noise with standard deviations according to sensor specifications has
-been added to the simulated observations. To model the forward model error that
-would affect a real retrieval, the forward simulations have been performed using
-the full microphysics from the GEM model. This means that the synthetic
-observations were computed using six hydrometeor classes, while the retrieval
-forward model uses only two classes of hydrometeors. Errors due mismatch of
-sensor footprints or inhomogeneity of the atmosphere across the fields of view
-of the sensors are not represented in the simulated observations.
+The forward-simulated observations, which are used to test the retrieval, are shown
+for the first test scene Fig.~\ref{fig:observations_a}. To account for sensor
+noise, independent Gaussian noise with standard deviations according to sensor
+specifications has been added to the simulated observations. To model the
+forward model error that would affect a real retrieval, the forward simulations
+have been performed using the full microphysics from the GEM model. This means
+that the synthetic observations were computed using six hydrometeor classes,
+while the retrieval forward model uses only two classes of hydrometeors. Errors
+due mismatch of sensor footprints or inhomogeneity of the atmosphere across the
+fields of view of the sensors are not represented in the simulated observations.
 
 
 \begin{figure}
 \centering
 \includegraphics[width = 0.8\textwidth]{../plots/observations_a}
-\caption{Total hydrometeor content and simulated observations for the first
-  test scene. Panel (a) displays the total hydrometeor content in the scene,
-  i.e. the sum of the mass densities of all hydrometeor species of the GEM
-  model. Panel (b) shows the simulated radar reflectivities for the scene.
-  Panel (c) displays the simulated brightness temperatures for a selection
-  of the channels of the MWI and ICI radiometers that are used in the retrieval.}
+\caption{Total hydrometeor content and simulated observations for the first test
+  scene. Panel (a) displays the total hydrometeor content in the scene, i.e. the
+  sum of the mass densities of all hydrometeor species of the GEM model. Panel
+  (b) shows the simulated radar reflectivities. Panel (c) displays the simulated
+  brightness temperatures for a selection of the channels of the MWI and ICI
+  radiometers.}
 \label{fig:observations_a}
 \end{figure}
 
 \subsubsection{Mass concentrations}
 
 To provide an overview over how well the different retrievals are able to
-reproduce the cloud structures in the test scene, the retrieved ice mass
-concentration fields for the first test scene are shown in Figure
-\ref{fig:results_a}. The results shown in the figure were obtained using the
-LargePlateAggregate as particle model. Panel (a) of the figure displays the
-final value of the OEM cost function (normalized by the dimension of the
-measurement space) achieved during the minimization process. Already here, a
-first difference between the three retrievals becomes apparent: While the
-radar-only retrieval achieves a low final cost over almost the whole scene, the
-passive-only and the combined retrieval do not achieve a low cost in regions
-where the cloud is thick and complex in structure.
+reproduce the cloud structures in the test scene, the retrieved ice water
+content (IWC) fields for the first test scene are shown in Figure
+\ref{fig:results_a}. The results were obtained using the LargePlateAggregate as
+particle model, which was found to give the overall best retrieval performance.
 
-Panel (c) shows the results of the passive-only retrieval. Although there are
-similarities to the reference mass concentration, the results do not reproduce
-the vertical structure of the cloud very well. It should be noted, however, that
-the displayed mass-density range extends below the expected sensitivity limit of
-the passive-only observations around $10\ \unit{mg/m^3}$, which explains the
+Panel (a) of the figure displays the final value of the OEM cost function $l$
+(normalized by the dimension of the measurement space) achieved during the
+minimization process. A high final value of $l$ means that no state was found
+that agrees well with both the input observations and the a priori assumptions
+and thus indicates a low-quality retrieval. A first difference between the three
+retrievals becomes apparent from these results: While the radar-only retrieval
+achieves a low final cost over almost the whole scene, the passive-only and the
+combined retrieval do not achieve a low cost in regions where the cloud is thick
+and complex in structure.
+
+Panel (b) displays the retrieved column-integrated IWC, the ice water path
+(IWP). The IWP is plotted in $\unit{dB}$ relative to the reference IWP in the
+scene, since the curves could otherwise not be distinguished due to the high
+dynamic range of the reference values. The plot shows quite clearly, that,
+except for the regions where it fails to converge, the combined retrieval yields
+smaller errors in the retrieved IWP than either the radar or the passive-only
+retrieval.
+
+Panel (c) shows the IWC field retrieved using the passive-only retrieval.
+Although there are similarities to the reference mass concentration, the results
+do not reproduce the vertical structure of the cloud very well. It should be
+noted, however, that the displayed mass-density range extends below the expected
+sensitivity limit of the passive-only observations around
+$10^{-5}\ \unit{kg/m^3}$ (c.f. Fig. ~\ref{fig:contours}), which explains the
 smeared-out appearance of the results to some extent.
 
 In contrast to this, the radar-only results, shown in panel (d), reproduce the
@@ -788,7 +800,7 @@ top.
 To make the assessment of the retrieval performance more quantitiave, the
 reference mass concentrations are plotted against the retrieved values in
 Fig.~\ref{fig:results_scatter_a_1} and \ref{fig:results_scatter_a_2}. The plots
-show the results for all different retrieval configurations and and tested
+show the results for all different retrieval configurations and tested
 particle models. Markers in the plots are color-coded according to the
 prevailing hydrometeor type (by mass density) in the reference scene, in order
 to allow assessment of the retrieval performance for the different hydrometeor
