@@ -232,11 +232,11 @@ and conclusions in section \ref{sec:conclusions}.
 \label{sec:methods_and_data}
 
 For the performance assessment of the synergistic cloud retrieval, radiative
-transfer simulations of cloud scenes from a high-resolution climate model are
-used. This section introduces the selected reference cloud scenes, the sensor
-configuration and the modeling assumptions for the simulation of the synthetic
-observations. Furthermore, the theoretical formulation of the combined
-cloud-retrieval algorithm is presented.
+transfer simulations of cloud scenes from a high-resolution atmospheric
+circulation model are used. This section introduces the selected reference cloud
+scenes, the sensor configuration and the modeling assumptions for the simulation
+of the synthetic observations. Furthermore, the theoretical formulation of the
+combined cloud-retrieval algorithm is presented.
 
 \subsection{Reference cloud scenes}
 
@@ -278,6 +278,12 @@ Tab.~\ref{tab:species_parameters}.
 
 \begin{table}
   \centering
+  \caption{Particle-model names, IDs and parameters $\alpha, \beta$ of the
+    mass-size relationships $m = \alpha D_\text{max}^\beta$ used for simulating
+    observations from the GEM model scenes. The ID column contains the particle
+    shape identifier of the particle model in the \citet{eriksson18} scattering
+    database.}
+  \label{tab:species_parameters}
   \begin{tabular}{l|c|c|c|c}
     Hydrometeor species & Particle shape & ID & $\alpha$ & $\beta$ \\
     \hline
@@ -288,34 +294,27 @@ Tab.~\ref{tab:species_parameters}.
     Rain         & LiquidSphere & 25 & 523.6 & 3 \\
     Liquid cloud & LiquidSphere & 25 & 471.2 & 3 \\
   \end{tabular}
-  \caption{Particle-model names, IDs and parameters $\alpha, \beta$ of the
-    mass-size relationships $m = \alpha D_\text{max}^\beta$ used for simulating
-    observations from the GEM model scenes. The ID column contains the particle
-    shape identifier of the particle model in the ARTS scattering database
-    \citep{eriksson18}.}
-  \label{tab:species_parameters}
 \end{table}
 
-Examples of full particle size distributions of frozen hydrometeors are
-displayed in Fig.\ref{fig:gem_psds}. The four panels display the prognosed
-particle size distributions for the four frozen hydrometeor types together with
-renderings of the particle shapes used in the forward simulations. As these
-plots show, the assumed particle size distributions across different ice species
-vary mostly in their horizontal and vertical scaling, whereas the function shape
-shows less variability. Already here an important characteristic of the model
-can be seen, that will help to better understand the retrieval results: Cloud
-ice in the model is characterized by high particle number densities and small
-particle sizes, while snow exhibits lower number concentrations and larger
-particles.
+Examples of particle size distributions of frozen hydrometeors are displayed in
+Fig.\ref{fig:gem_psds}. The four panels display the prognosed particle size
+distributions for the four frozen hydrometeor types together with renderings of
+the particle shapes used in the forward simulations. As these plots show, the
+assumed particle size distributions across different ice species vary mostly in
+their horizontal and vertical scaling, whereas the function shape shows less
+variability. Furthermore, an important characteristic of the model can be
+identified here, that will help to better understand the retrieval results
+presented later: Cloud ice in the model is characterized by high particle number
+densities and small particle sizes, whereas snow exhibits lower number
+concentrations and larger particles.
 
 
 \begin{figure}[h!]
-\centering
-\includegraphics[width = \textwidth]{../plots/gem_hydrometeors.png}
-\caption{Realizations of particle size distributions from the cloud scenes used in
-this study. Shown are the PSDs corresponding to 100 randomly chosen grid points at
-which the mass concentration was higher than $10^{-5}$. Line color encodes the
-corresponding mass density.}
+\centering \includegraphics[width = \textwidth]{../plots/gem_hydrometeors.png}
+\caption{Realizations of particle size distributions from the cloud scenes used
+  in this study. Shown are the PSDs corresponding to 100 randomly chosen grid
+  points at which the mass concentration was higher than
+  $10^{-6}\ \unit{kg/m^3}$. Line color encodes the corresponding mass density.}
 \label{fig:gem_psds}
 \end{figure}
 
@@ -332,41 +331,44 @@ the Fascod climatology for tropical climates.
 \subsubsection{Sensor configuration}
 \label{sec:sensors}
 
-The assumed sensor configuration for the combined retrieval consists of the
-MWI and ICI radiometers and a W-band cloud radar similar to CloudSat CPR
-\citep{stephens02,tanelli08}. The choice of a CloudSat CPR-type radar is based
-mainly on the success and longevity of the CloudSat mission, that clearly
-demonstrates the maturity and robustness of the technology.
+The assumed sensor configuration for the combined retrieval consists of ICI and
+the upper channels of the Microwave Imager (MWI) radiometer. Since MWI will be
+flown on the same satellite as ICI, it seems natural to exploit the additional
+information contained in these channels, that range from $89$ up to
+$187\ \unit{GHz}$. The passive observations are combined with a W-band cloud
+radar similar to the CloudSat Cloud Profiling Radar (CPR)
+\citep{stephens02,tanelli08}. The choice of a CPR-type radar is based mainly on
+the success and longevity of the CloudSat mission, that clearly demonstrates the
+maturity and robustness of the technology.
 
 A number of simplifications are applied for the generation of the synthetic
 cloud observations: Firstly, the beams of all three sensors are modeled as
-perfectly coincident pencil beams. Secondly, for each vertical profile from the
-model scenes a synthetic observation is generated by simulating a
+perfectly coincident pencil beams. Secondly, a synthetic observation is
+generated for each vertical profile from the model scenes by simulating a
 one-dimensional, plane-parallel atmosphere, the properties of which are taken
 from the corresponding model profile. It follows from these modeling decisions
 that the atmosphere is assumed to be homogeneous across the beams of the active
 and passive sensors and that they all sense the same atmospheric volume. For
 space-borne observations, this would certainly not be the case and will incur a
-forward modeling error that is not accounted for in this study. The focus of
-this study are the fundamental synergies between the active and passive
-observations, which is why this error is neglected here. It will be considered
-in a follow-up study that evaluates the synergistic retrievals in the context of
-a potential future space mission.
+forward modeling error that is not accounted for in this study. Since the
+ focus of this study are the fundamental synergies between the active and passive
+ observations, quantifying the impact of beam width and inhomogeneity is left
+ for future investigation.
 
 Observations from the ICI radiometer are simulated by performing a single,
-non-polarized radiative transfer simulation located at the centers of the side
+non-polarized radiative transfer simulation located at the centers of the pass
 bands of each channel and averaging the resulting brightness temperatures. For
 channels with multiple polarizations, only a single simulation is performed.
 To compensate for this, the noise of the corresponding channel is reduced by a
 factor of $\sqrt{2}$. The simulated ICI channels and assumed noise levels are
-presented in  of Table \ref{tab:channels}. The off-nadir viewing angle of ICI
-is assumed to be $48\ \unit{^\circ}$.
+presented in  Table \ref{tab:channels}. The off-nadir viewing angle of ICI
+is assumed to be $48\ \unit{^\circ}$ at the sensor.
 
 Observations from the MWI radiometer are simulated in a similar manner as for
 ICI. However, from MWI only channels with frequencies larger than or equal to
-$89 \unit{GHz}$ are used. The reason for this is that the footprints of the
+$89\ \unit{GHz}$ are used. The reason for this is that the footprints of the
 channels with frequencies lower than $89\ \unit{GHz}$ will have full-width at
-half maximum of $50 \unit{km}$ compared to only $10 \unit{km}$ for the
+half maximum of $50\ \unit{km}$ compared to only $10\ \unit{km}$ for the
 high-frequency channels. It is therefore assumed that, due to the very little
 expected overlap of the footprints of the low-frequency channels with a radar,
 they would not be beneficial for a synergistic retrieval and are therefore
@@ -411,14 +413,14 @@ disregarded here. The included MWI channels are listed in Table
     \end{tabular}
 \end{table}
 
-The frequency of the the cloud radar is chosen to be $94\unit{GHz}$ similar to
+The frequency of the the cloud radar is chosen to be $94\ \unit{GHz}$ similar to
 CloudSat CPR. The vertical resolution of the radar observations is assumed to be
-$500\unit{m}$ ranging from $0.5$ to $20\unit{km}$ in altitude. The minimum
-sensitivity is set to be $-30\unit{dBZ}$ and the noise at each range gate is
-modeled to be independent with standard deviation $0.5\unit{dBZ}$. As mentioned above,
-the same incidence angle as for the passive radiometers is assumed also for the
-radar. In reality, this could be achieved by remapping the radar observations to
-the lines of sights of the passive beams.
+$500\ \unit{m}$ ranging from $0.5$ to $20\ \unit{km}$ in altitude. The minimum
+sensitivity is set to be $-30\ \unit{dBZ}$ and the noise at each range gate is
+modeled to be independent with standard deviation $0.5\ \unit{dBZ}$. As mentioned
+above, the same incidence angle as for the passive radiometers is assumed also
+for the radar. In practice, this could be achieved by remapping the radar
+observations to the lines of sights of the passive beams.
 
 \subsubsection{Radiative transfer simulations}
 \label{sec:orge741b86}
@@ -427,14 +429,15 @@ All simulations presented in this study were performed using Version 2.3.1245 of
 the Atmospheric Radiative Transfer Simulator (ARTS, \cite{arts18}). Radar
 reflectivities are computed using the ARTS' built-in single-scattering radar
 solver. For the simulation of passive radiances, a hybrid solver is used that
-combines the DISORT scattering solver with ARTS built-in line-by-line solver.
-The hybrid solver has been added to ARTS specifically for this study and
-provides approximate Jacobians, which are required to perform variational
-retrievals of hydrometeors. All simulations are performed assuming an
-ocean surface with emissivities calculated using the Tool to Estimate
+combines the DISORT scattering solver with the ARTS built-in line-by-line
+solver. The hybrid solver has been added to ARTS specifically for this study and
+provides approximate, analytical Jacobians, which are required for the
+variational retrievals of hydrometeors. All simulations are performed assuming
+an ocean surface with emissivities calculated using the Tool to Estimate
 Sea‐Surface Emissivity from Microwaves to sub‐Millimeter waves (TESSEM,
 \cite{prigent16}). Polarization is neglected in all simulations performed in
-this study. Particle scattering data are taken from the ARTS scattering data base
+this study. Particle scattering data are taken from the ARTS scattering data
+base
 \citep{eriksson18}.
 
 \subsection{Retrieval algorithm}
@@ -471,29 +474,39 @@ matrix $\mathbf{S}_e$.
 
 The input for the retrieval algorithm is the combined observation vector
 $\mathbf{y}$, which consists of the concatenated single-instrument observation
-vectors. Measurement errors are assumed to be independently Gaussian-distributed
+vectors. Measurement errors are assumed to be independent and Gaussian distributed
 with standard deviations according to the noise characteristics given in Section
 \ref{sec:sensors}. 
 
 \subsubsection{State space}
 \label{sec:orgae5ee4e}
 
-The proposed retrieval algorithm retrieves distributions of one frozen
-and one liquid hydrometeor species in the atmospheric column together with
-profiles of atmospheric humidity and liquid-cloud mass density.
+The proposed retrieval solves for distributions of one frozen and one liquid
+hydrometeor species in the atmospheric column together with profiles of
+atmospheric humidity and liquid-cloud mass density.
 
-The distributions of hydrometeors in the atmospheric column are represented
-using the normalized particle size distribution formalism proposed by
+The retrieval uses the same vertical grid as the model scenes, which has a
+vertical resolution of about $500\ \unit{m}$ throughout the troposphere. If not
+specified otherwise, retrieval quantities are retrieved at this resolution.
+
+Distributions of hydrometeors in the atmospheric column are represented using
+the normalized particle size distribution formalism proposed by
 \cite{delanoe05}. The PSD of a hydrometeor species at a given grid point is
-represented by a vertical and a horizontal scaling parameter, the normalized
-number density $N_0^*$ and the mass-weighted mean diamter $D_m$. The shape of
-the PSD, described by the parameters $\alpha$ and $\beta$, is assumed fixed for
-each hydrometeor species. For frozen hydrometeors, $\alpha$ and $\beta$ are
-chosen identical to version 3 of the DARDAR-CLOUD product \citep{cazenave18}.
-For liquid hydrometeors, the shape parameters are chosen so that they are
-equivalent to the shape used by the GEM model for rain drops. Figure
-\ref{fig:psds_retrieval} displays the resulting PSD shapes and corresponding
-parameter values.
+represented by a vertical and a horizontal scaling parameter, the mass-weighted
+mean diameter $D_m$ and the normalized number density $N_0^*$. For each
+hydrometeor species, only these two scaling parameters are retrieved while he
+shape of the PSD, described by the parameters $\alpha$ and $\beta$, is assumed
+fixed. This principle is illustrated in Fig.~\ref{fig:psds_retrieval}. The plot
+displays the a-priori-assumed shapes of the particle size distribution of frozen
+and liquid hydrometeors. The retrieved horizontal and vertical scaling
+parameters, $D_m$ and $N_0^*$, are used as units for the axes of the plot so
+that the shape of the PSD becomes independent of the retrieved distribution of
+hydrometeors. For frozen hydrometeors, the values of the shape parameters
+$\alpha$ and $\beta$ are chosen identical to version 3 of the DARDAR-CLOUD
+product \citep{cazenave18}. For liquid hydrometeors, the shape parameters are
+chosen so that they are equivalent to the shape used by the GEM model for rain
+drops. All calculations involving particles size distributions use the
+volume-equivalent diameter $D_\text{eq}$ as size variable.
 
 \begin{figure}
 \centering
@@ -507,10 +520,10 @@ The temperature-dependent a priori profile for $N_0^*$ of frozen
 hydrometeors is determined using the relation from \cite{delanoe14}
 
 \begin{align}
-N_0^* &= \exp (-0.076586 \cdot t + 17.948),
+N_0^* &= \exp (-0.076586 \cdot T + 17.948),
 \end{align}
 
-where $t$ is in $\unit{^\circ C}$. The a priori profile for $D_m$ for frozen
+where $T$ is in $\unit{^\circ C}$. The a priori profile for $D_m$ for frozen
 hydrometeors is chosen so that the a priori mass density is equal to
 $10^{-6}\ \unit{kg/m^3}$. For liquid hydrometeors, a
 fixed value for $N_0^*$ of $10^6\ \unit{m^4}$ is assumed and the
@@ -519,7 +532,7 @@ hydrometeors. Values of the mass-weighted mean diameter $D_m$ for both
 hydrometeor species are retrieved in linear space, whereas the normalized
 number concentration parameter $N_0^*$ is retrieved in $\text{log}_{10}$
 space. As additional constraints, the retrieval of frozen hydrometeors is
-restricted to the region between the $0\unit{^\circ C}$-isotherm and
+restricted to the region between the $0 \unit{^\circ C}$-isotherm and
 the tropopause, whereas the retrieval of liquid hydrometeors is restricted 
 to below the $0\unit{^\circ C}$-isotherm.
 
@@ -528,12 +541,12 @@ However, instead of retrieving relative humidity directly, an inverse hyperbolic
 tangens transformation is applied to the relative humidity profile $\mathbf{\phi}$:
 
 \begin{align}
-x = \text{arctanh}(\frac{2 \mathbf{\phi}}{1.2} - 1.0)
+x = \text{arctanh}(\frac{2 \mathbf{\phi}}{1.1} - 1.0)
 \end{align}
 
 The transformation restricts the retrieved relative humidity values to
-the range of $[0.0, 1.2]$. The a priori profile for relative humidity
-has rather arbitralily been chosen as
+the range of $[0.0, 1.1]$. The a priori profile for relative humidity
+is arbitralily chosen as
 
 \begin{align}
 \phi(t) = \begin{cases}
@@ -551,13 +564,14 @@ forward model to be purely absorbing using the absorption model by
 is retrieved in $\text{log}_{10}$-space and the a priori profile is set to a fixed
 value of $10^{-5}\ \unit{kg / m^3}$ in the permitted region of the atmosphere.
 
-The a priori distributions of the 6 retrieval quantities ($N_0^*$ and $D_m$
-for frozen and liquid hydrometeors, relative humidity $\phi$, cloud water)
-are assumed to be independent so that the overall a priori covariance matrix
-$\mathbf{S}_a$ has block-diagonal structure. Within each block, spatial
-correlations between grid points are assumed to be exponentially decaying.
-Hence, the correlation between grid points $i$ and $j$ of the values of the
-retrieval quantity $q$ are computed as
+The a priori distributions of the 6 retrieval quantities ($N_0^*$ and $D_m$ for
+frozen and liquid hydrometeors, relative humidity $\phi$, cloud water) are
+assumed to be independent so that the overall a priori covariance matrix
+$\mathbf{S}_a$ has block-diagonal structure. Within each block, vertical
+correlations between the values of a given retrieval quantity at different
+altitudes are assumed to be exponentially decaying. Hence, the correlation of
+the values of retrieval quantity $q$ at points $i$ and $j$ of the retrieval grid
+is computed as
 
 \begin{align}
 \left ( \mathbf{S}_{a,q} \right )_{i, j} &= \sigma_{q,i} \sigma_{q,j}
@@ -599,7 +613,7 @@ the combined retrieval, with the only difference being that frozen and liquid
 hydrometeors are retrieved at reduced resolution. For ice, $N_0^*$ is retrieved
 at two equally spaced grid points between $0\unit{^\circ C}$-isotherm and
 troposphere, while $D_m$ is retrieved at six. For liquid hydormeteors, the
-retrieval grids for $N_0^*$ and $D_m$ are reduced to 2 equally spaced points
+retrieval grids for $N_0^*$ and $D_m$ are reduced to two equally spaced points
 between surface and $0\unit{^\circ C}$-isotherm. Relative humidity is retrieved
 at eleven grid points between surface and tropopause.
 
