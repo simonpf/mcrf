@@ -118,25 +118,25 @@
   The upcoming Ice Cloud Imager (ICI) instrument, to be launched on board the
   second generation of European operational meteorological satellites (MetOpSG),
   will be the first microwave imager to provide sub-millimeter observations of
-  clouds. To investigate what can be learned about ice clouds from these newly
+  the atmosphere. To investigate what can be learned about ice clouds from these newly
   available frequencies, this study explores the potential of combining
   observations from a sub-millimeter wave radiometer with those from a $94
-  \unit{GHz}$ cloud-radar to retrieve frozen hydrometeors. Starting from a
+  \ \unit{GHz}$ cloud-radar to retrieve frozen hydrometeors. Starting from a
   simplified numerical experiment, it is shown that the complementary
-  information content in the radar and radiometer observations helps to better
-  constrain the particle size distribution of the ice cloud. The feasibility of
-  the combined retrieval is demonstrated by applying a one-dimensional,
-  variational cloud-retrieval algorithm to simulated observations from a
-  high-resolution atmospheric model. Comparison of the results with passive- and
-  radar-only versions of the retrieval algorithm confirms that the synergistic
-  information content from the active and passive observations helps to better
-  constrain the microphysical properties of frozen hydrometeors. In addition to
-  that, the synergistic retrieval shows potential to detect and retrieve liquid
-  clouds. The results of this study clearly demonstrate the potential of
-  combining radar and sub-millimeter radiometer observations for the study of
-  ice clouds. As observational concept, the combined retrievals point out a
-  potential way forward towards reducing uncertainties in the observational
-  record of ice in the atmosphere.
+  information content in the radar and radiometer observations can help to
+  better constrain the particle size distribution of the ice cloud. The
+  feasibility of the combined retrieval is demonstrated by applying a
+  one-dimensional, variational cloud-retrieval algorithm to simulated
+  observations from a high-resolution atmospheric model. Comparison of the
+  results with passive- and radar-only versions of the retrieval algorithm
+  confirms that the synergistic information content from the active and passive
+  observations improves the retrieval of microphysical properties of frozen
+  hydrometeors. In addition to that, the synergistic retrieval shows potential
+  to distinguish and retrieve liquid clouds. The results of this study clearly
+  demonstrate the potential of combining radar and sub-millimeter radiometer
+  observations for the study of ice clouds. As observational concept, the
+  combined retrievals point out a potential way forward towards reducing
+  uncertainties in the observational record of ice in the atmosphere.
 \end{abstract}
 
 
@@ -175,14 +175,14 @@ optical sensors provide sensitivity to small ice particles but cannot sense
 significant parts of the ice mass of thicker clouds due to saturation of the
 signal. Microwave observations, in contrast, provide sensitivity throughout the
 whole atmospheric column but are insensitive to small ice particles. Although
-radars and lidars generally provide higher sensitivity than their passive
-counterparts, ultimately their sensitivity is limited by the same principles.
+radars and lidars generally provide greater sensitivity than their passive
+counterparts, ultimately they are  limited by the same principles.
 
 To narrow this sensitivity gap, the upcoming Ice Cloud Imager (ICI) will extend
 the microwave frequencies available for studying clouds with channels at $243,
 325, 448$ and $664\ \unit{GHz}$. This extension of the smallest currently
-available microwave wavelength from $1.6\unit{mm}$ at $183\unit{GHz}$ down to
-the sub-millimeter domain ($0.45\unit{mm}$ at $664\unit{GHz}$) will
+available microwave wavelength from $1.6\ \unit{mm}$ at $183\ \unit{GHz}$ down to
+the sub-millimeter domain ($0.45\ \unit{mm}$ at $664\ \unit{GHz}$) will
 significantly improve the size-sensitivity of space-borne microwave observations
 of clouds.
 
@@ -260,7 +260,7 @@ of the scene.
 \includegraphics[width = 0.8\textwidth]{../plots/scene_overview.png}
 \caption{The distribution of total hydrometeor mass content in the two
 cloud scenes used to test the retrieval. Colored lines show the
- $m = 10^{-5} \unit{kg/m^3}$ contour for different
+ $m = 10^{-5}\  \unit{kg/m^3}$ contour for different
  hydrometeor species.}
 \label{fig:overview}
 \end{figure}
@@ -332,12 +332,11 @@ the Fascod climatology for tropical climates.
 \subsubsection{Sensor configuration}
 \label{sec:sensors}
 
-The assumed sensor configuration for the combined retrieval consists of ICI and
-the upper channels of the Microwave Imager (MWI) radiometer. Since MWI will be
-flown on the same satellite as ICI, it seems natural to exploit the additional
-information contained in these channels, that range from $89$ up to
-$187\ \unit{GHz}$. The passive observations are combined with a W-band cloud
-radar similar to the CloudSat Cloud Profiling Radar (CPR)
+In addition to the ICI radiometer, the experiments presented here make use
+of the upper channels of the Microwave Imager (MWI) radiometer. MWI will be
+flown on the same satellite as ICI so that co-located observations from the two
+sensors will be readily available. The passive observations are combined with a W-band
+cloud radar similar to the CloudSat Cloud Profiling Radar (CPR)
 \citep{stephens02,tanelli08}. The choice of a CPR-type radar is based mainly on
 the success and longevity of the CloudSat mission, that clearly demonstrates the
 maturity and robustness of the technology.
@@ -362,19 +361,18 @@ bands of each channel and averaging the resulting brightness temperatures. For
 channels with multiple polarizations, only a single simulation is performed.
 To compensate for this, the noise of the corresponding channel is reduced by a
 factor of $\sqrt{2}$. The simulated ICI channels and assumed noise levels are
-presented in  Table \ref{tab:channels}. The off-nadir viewing angle of ICI
-is assumed to be $48\ \unit{^\circ}$ at the sensor.
+presented in  Tab.~\ref{tab:channels}. The off-nadir viewing angle of ICI
+is assumed to be $48\unit{^\circ}$ at the sensor.
 
-Observations from the MWI radiometer are simulated in a similar manner as for
-ICI. However, from MWI only channels with frequencies larger than or equal to
-$89\ \unit{GHz}$ are used. The reason for this is that the footprints of the
-channels with frequencies lower than $89\ \unit{GHz}$ will have full-width at
-half maximum of $50\ \unit{km}$ compared to only $10\ \unit{km}$ for the
-high-frequency channels. It is therefore assumed that, due to the very little
-expected overlap of the footprints of the low-frequency channels with a radar,
-they would not be beneficial for a synergistic retrieval and are therefore
-disregarded here. The included MWI channels are listed in Table
-\ref{tab:channels}.
+Observations from the MWI radiometer are simulated in a similar manner as those
+from ICI. However, from MWI only channels with frequencies larger than or equal
+to $89\ \unit{GHz}$ are used. The reason for this is that the footprints of the
+channels with frequencies lower than $89\ \unit{GHz}$ have full-width at half
+maximum of $50\ \unit{km}$ compared to only $10\ \unit{km}$ for the
+higher-frequency channels. Due to the very small overlap of the footprints of
+these low-frequency channels with that of the radar, it is assumed they would
+not be beneficial for a synergistic retrieval and are therefore disregarded
+here. The included MWI channels are listed in Tab.~\ref{tab:channels}.
 
 \begin{table}[hbpt]
 \caption{Channels of the MWI and ICI radiometers used in the retrieval.}
@@ -438,7 +436,8 @@ an ocean surface with emissivities calculated using the Tool to Estimate
 Sea‐Surface Emissivity from Microwaves to sub‐Millimeter waves (TESSEM,
 \cite{prigent16}). Polarization is neglected in all simulations performed in
 this study. Particle scattering data are taken from the ARTS scattering data
-base (SSDB) \citep{eriksson18}.
+base (ARTS SSDB, \citet{eriksson18}).
+
 
 \subsection{Retrieval algorithm}
 \label{sec:orgb528563}
@@ -491,17 +490,17 @@ specified otherwise, retrieval quantities are retrieved at this resolution.
 
 Distributions of hydrometeors in the atmospheric column are represented using
 the normalized particle size distribution formalism proposed by
-\cite{delanoe05}. The PSD of a hydrometeor species at a given grid point is
+\cite{delanoe05}. The PSD of a hydrometeor species at a given height level is
 represented by a vertical and a horizontal scaling parameter, the mass-weighted
-mean diameter $D_m$ and the normalized number density $N_0^*$. For each
-hydrometeor species, only these two scaling parameters are retrieved while he
-shape of the PSD, described by the parameters $\alpha$ and $\beta$, is assumed
-fixed. This principle is illustrated in Fig.~\ref{fig:psds_retrieval}. The plot
+mean diameter $D_m$ and the normalized number density $N_0^*$. At each height level
+and hydrometeor species, only these two scaling parameters are retrieved while he
+shape of the PSD, described by the parameters $\alpha$ and $\beta$, remains
+fixed. The principle is illustrated in Fig.~\ref{fig:psds_retrieval}. The plot
 displays the a-priori-assumed shapes of the particle size distribution of frozen
 and liquid hydrometeors. The retrieved horizontal and vertical scaling
 parameters, $D_m$ and $N_0^*$, are used as units for the axes of the plot so
-that the shape of the PSD becomes independent of the retrieved distribution of
-hydrometeors. For frozen hydrometeors, the values of the shape parameters
+that the shape of the PSD becomes independent of the retrieved mass density
+and number concentration. For frozen hydrometeors, the values of the shape parameters
 $\alpha$ and $\beta$ are chosen identical to version 3 of the DARDAR-CLOUD
 product \citep{cazenave18}. For liquid hydrometeors, the shape parameters are
 chosen so that they are equivalent to the shape used by the GEM model for rain
@@ -520,21 +519,20 @@ The temperature-dependent a priori profile for $N_0^*$ of frozen
 hydrometeors is determined using the relation from \cite{delanoe14}
 
 \begin{align}
-N_0^* &= \exp (-0.076586 \cdot T + 17.948),
+N_0^* &= \exp \left ( -0.076586 \cdot (T - 272.5) + 17.948 \right ),
 \end{align}
 
-where $T$ is in $\unit{^\circ C}$. The a priori profile for $D_m$ for frozen
+where $T$ is in $\unit{K}$. The a priori profile for $D_m$ for frozen
 hydrometeors is chosen so that the a priori mass density is equal to
-$10^{-6}\ \unit{kg/m^3}$. For liquid hydrometeors, a
-fixed value for $N_0^*$ of $10^6\ \unit{m^4}$ is assumed and the
-a priori profile for $D_m$ is determined similarly as for frozen
-hydrometeors. Values of the mass-weighted mean diameter $D_m$ for both
-hydrometeor species are retrieved in linear space, whereas the normalized
-number concentration parameter $N_0^*$ is retrieved in $\text{log}_{10}$
-space. As additional constraints, the retrieval of frozen hydrometeors is
-restricted to the region between the $0 \unit{^\circ C}$-isotherm and
-the tropopause, whereas the retrieval of liquid hydrometeors is restricted 
-to below the $0\unit{^\circ C}$-isotherm.
+$10^{-6}\ \unit{kg/m^3}$. For liquid hydrometeors, a fixed value for $N_0^*$ of
+$10^6\ \unit{m^4}$ is assumed and the a priori profile for $D_m$ is determined
+similarly as for frozen hydrometeors. Values of the mass-weighted mean diameter
+$D_m$ for both hydrometeor species are retrieved in linear space, whereas the
+normalized number concentration parameter $N_0^*$ is retrieved in
+$\text{log}_{10}$ space. As additional constraints, the retrieval of frozen
+hydrometeors is restricted to the region between the freezing layer and the
+tropopause, whereas the retrieval of liquid hydrometeors is restricted to below
+the freezing layer.
 
 Humidity in the atmospheric column is retrieved in units of relative humidity.
 However, instead of retrieving relative humidity directly, an inverse hyperbolic
@@ -550,14 +548,14 @@ is arbitralily chosen as
 
 \begin{align}
 \phi(t) = \begin{cases}
- 0.7 &, 270\unit{K} < t \\
- 0.7 - 0.01 \cdot (t - 270) & ,220 < t \leq  270\unit{K} \\
+ 0.7 &, 270\ \unit{K} < t \\
+ 0.7 - 0.01 \cdot (t - 270) & ,220 < t \leq  270\ \unit{K} \\
  0.2 \cdot (t - 270) & ,t < 220 \\
  \end{cases}.
 \end{align}
 
 The retrieval of liquid cloud mass density is restricted to the region
-between the $0$ and $230\unit{^\circ C}$-isotherms. In contrast to the
+between the freezing layer and $230\ \unit{K}$-isotherm. In contrast to the
 frozen and liquid hydrometeors, cloud water is modeled in the retrieval
 forward model to be purely absorbing using the absorption model by
 \cite{liebe92} for suspended liquid cloud droplets. Liquid cloud mass density
@@ -575,13 +573,13 @@ is computed as
 
 \begin{align}
 \left ( \mathbf{S}_{a,q} \right )_{i, j} &= \sigma_{q,i} \sigma_{q,j}
- \cdot \exp ( -\frac{d(i, j)}{l_q}),
+ \cdot \exp  \left ( -\frac{d(i, j)}{l_q} \right ),
 \end{align}
 where $\sigma_{q, i}$ is the a priori uncertainty assumed for retrieval
 quantity $q$ at grid point $i$, $d(i, j)$ the distance between the grid
 points and $l_q$ the quantity-specific correlation length. The assumed
 a priori uncertainties and correlation lengths for the retrieval quantities
-are summarized in Table \ref{tab:a_priori}.
+are summarized in Tab.~\ref{tab:a_priori}.
 
 
 \begin{table}[h!]
@@ -593,9 +591,9 @@ are summarized in Table \ref{tab:a_priori}.
      Quantity $q$ & $\sigma_q$ & $l_q$ [km]\\
     \hline
     $\log_{10}(N_{0, \text{frozen}}^*)$    & $2$                       & $2$ \\
-    $D_{m, \text{ice}}$               & $300\unit{\mu m}$ & $2$ \\
+    $D_{m, \text{ice}}$               & $300\ \unit{\mu m}$ & $2$ \\
     $\log_{10}(N_{0, \text{liquid}}^*)$    & $2                      $ & $2$ \\
-    $D_{m, \text{liquid}}$            & $500\unit{\mu m}$ & $2$ \\
+    $D_{m, \text{liquid}}$            & $500\ \unit{\mu m}$ & $2$ \\
     $\text{arctanh}(\frac{2 \cdot \phi}{1.1} - 1.0)$ & $2$                       & $2$ \\
     $\log_{10}(m_\text{liquid cloud}) $ & $1$                       & $2$ \\
     \end{tabular}
@@ -611,16 +609,16 @@ model.
 The setup and retrieval quantities of the passive-only retrieval are similar to
 the combined retrieval, with the only difference being that frozen and liquid
 hydrometeors are retrieved at reduced resolution. For ice, $N_0^*$ is retrieved
-at two equally spaced grid points between $0\unit{^\circ C}$-isotherm and
+at two equally spaced grid points between $0\ \unit{^\circ C}$-isotherm and
 troposphere, while $D_m$ is retrieved at six. For liquid hydormeteors, the
 retrieval grids for $N_0^*$ and $D_m$ are reduced to two equally spaced points
-between surface and $0\unit{^\circ C}$-isotherm. Relative humidity is retrieved
+between surface and $0\ \unit{^\circ C}$-isotherm. Relative humidity is retrieved
 at eleven grid points between surface and tropopause.
 
 \section{Results}
 \label{sec:results}
 
-In the first part of this section, results of a numerical experiment are
+In the first part of this section results of a numerical experiment are
 presented that investigates the complementary information content of the active
 and passive observations. The remainder of this section presents the retrieval
 results of the combined and the baseline retrievals applied to the reference
@@ -641,14 +639,15 @@ species using the same PSD parametrization as the frozen hydrometeors used in
 the cloud retrieval. As particle model, the 8-ColumnAggregate (ID 8) from the ARTS
 SSDB is used.
 
-The question that we address here is whether and to what extent the active and
-passive observations can constrain the two scaling factors of the PSD of frozen
-hydrometeors in the cloud. To investigate this, $N_0^*$ and $D_m$ are varied and
-observations of the homogeneous cloud layer are simulated. Figure
-\ref{fig:isolines} displays the simulated cloud signal, i.e. the brightness
-temperature difference between clear sky and cloudy sky simulation, as filled
-contours for a selection of channels of the MWI and ICI sensors. For given
-values of $N_0^*$ and $D_m$, the ice mass density is given by the relation
+The question that we aim to address here is whether the combination of active
+and passive observations is able to constrain both the horizontal and the
+vertical scaling factors of the PSD of the cloud. To investigate this, the
+$N_0^*$ and $D_m$ parameters of the homogeneous cloud layer are varied and
+observations of the cloud layer are simulated. Figure \ref{fig:contours} displays
+the simulated cloud signal, i.e. the brightness temperature difference between
+clear sky and cloudy sky simulation, as filled contours for a selection of
+channels of the MWI and ICI sensors. For given values of $N_0^*$ and $D_m$, the
+ice mass density is given by the relation
 \begin{align}
 m = \frac{\pi \rho}{4 ^ 4}N_0^* D_m^4.
 \end{align}
@@ -665,15 +664,15 @@ varying mass density $m$ and mass-weighted mean diameter $D_m$. The panels
 display the radar reflectivity in dBZ at the cloud center overlaid onto the
 cloud signal measured by selected radiometer channels of the MWI radiometer
 (first row) and the ICI radiometer (second row).}
-\label{fig:isolines}
+\label{fig:contours}
 \end{figure}
 
 The contours of the measured active and passive cloud signals show the ambiguity
-of the single-instrument measurement with respect to the parameters of the PSD:
+of the single-instrument measurements with respect to the parameters of the PSD:
 Along these contours the signal does not change, while the cloud composition
 does. To resolve this ambiguity using the combined active and passive
 observations, a necessary condition is that the contours of the signals cross
-each other. The panels in Fig.~\ref{fig:isolines} thus give an indication to
+each other. The panels in Fig.~\ref{fig:contours} thus give an indication to
 what extent the information in the radar measurement and the corresponding
 passive radiometer channel provide complementary information on the parameters
 of the PSD. Considering the panels corresponding to the MWI channels, the
@@ -691,7 +690,7 @@ retrievals have been performed with a radar-only and a passive-only version of
 the algorithm to serve as baselines for the combined retrieval. Each retrieval
 was performed multiple times using different ice particle models. The tested
 particle shapes are listed together with the corresponding mass size relations
-and ARTS SSDB identifier in Table~\ref{tab:particles_retrieval}. Since the
+and ARTS SSDB identifier in Tab.~\ref{tab:particles_retrieval}. Since the
 results for both test scenes are qualitatively similar, not all analyses are
 shown for both scenes. Instead, these are provided as a digital supplement to
 this article.
@@ -714,16 +713,17 @@ this article.
   \label{tab:particles_retrieval}
 \end{table}
 
-The forward-simulated observations, which are used to test the retrieval, are shown
-for the first test scene Fig.~\ref{fig:observations_a}. To account for sensor
-noise, independent Gaussian noise with standard deviations according to sensor
-specifications has been added to the simulated observations. To model the
-forward model error that would affect a real retrieval, the forward simulations
-have been performed using the full microphysics from the GEM model. This means
-that the synthetic observations were computed using six hydrometeor classes,
-while the retrieval forward model uses only two classes of hydrometeors. Errors
-due mismatch of sensor footprints or inhomogeneity of the atmosphere across the
-fields of view of the sensors are not represented in the simulated observations.
+The forward-simulated observations that were generated to test the retrievals
+are shown for the first test scene Fig.~\ref{fig:observations_a}. Independent
+Gaussian noise with standard deviations according to sensor specifications has
+been added to the simulated observations to account for sensor noise. To model
+the forward model error that would affect a real retrieval, the forward
+simulations have been performed using the full microphysics from the GEM model.
+This means that the synthetic observations were computed using six hydrometeor
+classes, while the retrieval forward model uses only two classes of
+hydrometeors. Errors due mismatch of sensor footprints or inhomogeneity of the
+atmosphere across the fields of view of the sensors are not represented in the
+simulated observations.
 
 
 \begin{figure}
@@ -757,17 +757,17 @@ combined retrieval do not achieve a low cost in regions where the cloud is thick
 and complex in structure.
 
 Panel (b) displays the retrieved column-integrated IWC, the ice water path
-(IWP). The IWP is plotted in $\unit{dB}$ relative to the reference IWP in the
-scene, since the curves could otherwise not be distinguished due to the high
-dynamic range of the reference values. The plot shows quite clearly, that,
-except for the regions where it fails to converge, the combined retrieval yields
-smaller errors in the retrieved IWP than either the radar or the passive-only
-retrieval.
+(IWP). The IWP is plotted in $\ \unit{dB}$ relative to the reference IWP in the
+scene since the curves could otherwise not be distinguished due to the high
+dynamic range of the reference values. Although quite noisy, the combined
+retrieval yields the lowest deviations in the retrieved IWP over large parts of
+the scene except for the regions where the retrieval failed to find a good fit
+to the observations.
 
 Panel (c) shows the IWC field retrieved using the passive-only retrieval.
 Although there are similarities to the reference mass concentration, the results
 do not reproduce the vertical structure of the cloud very well. It should be
-noted, however, that the displayed mass-density range extends below the expected
+noted, however, that the displayed mass-density range extends below the
 sensitivity limit of the passive-only observations around
 $10^{-5}\ \unit{kg/m^3}$ (c.f. Fig. ~\ref{fig:contours}), which explains the
 smeared-out appearance of the results to some extent.
@@ -810,11 +810,11 @@ types of the GEM model.
 Not surprisingly, the results from the passive-only retrieval exhibit the
 strongest deviations from the diagonal. Since the passive channels alone contain
 only limited information on the vertical distribution of ice in the atmosphere,
-no very good performance can be expected from the results at the vertical
-resolution considered here. Although rather weak, a certain effect of the 
-ice particle model on the retrieval results can be observed. In particular, the
-GemCloudIce seems to lead to a systematic underestimation of ice mass densities,
-that are less pronounced for the other particle models.
+the retrieval cannot be expected to yield accurate results at the resolution
+considered here. Although rather weak, a certain effect of the ice particle
+model on the retrieval results can be observed. In particular, the GemCloudIce
+leads to a systematic underestimation of ice mass densities, that are less
+pronounced for the other particle models.
 
 \begin{figure}
 \centering
@@ -831,20 +831,19 @@ that are less pronounced for the other particle models.
 \label{fig:results_scatter_a_1}
 \end{figure}
 
-The results from the radar-only retrieval are more accurate than the passive-only
-retrieval, with almost all retrieval results located fairly close to the diagonal.
-The most distinct feature of the radar-only results, however, is the emergence
-of two clusters extending along the diagonal displaced above and below it. The
-color coding of the markers reveals that these clusters correspond to grid
-points dominated by ice for the clusters below the diagonal and snow for the
-cluster located above the diagonal. This indicates that the radar-only retrieval
-systematically underestimates mass densities for cloud ice but overestimates the
-mass density of snow. The effect is observed for all tested particle shapes
-indicating that it is probably related to the microphysical assumptions
-regarding the PSD rather than particle shape. In general, the radar-only results
-exhibit only very weak dependency on the assumed particle shape making the
-radar-only results for different assumed particle shapes virtually
-indistinguishable.
+The results from the radar-only retrieval are more accurate than the
+passive-only retrieval, with almost all retrieval results located fairly close
+to the diagonal. The most distinct feature of the radar-only results, however,
+is the emergence of two clusters that extend along the diagonal but are
+displaced above respectively below it. The color coding of the markers reveals
+that these clusters correspond to grid points dominated by ice for the clusters
+below the diagonal and snow for the cluster located above the diagonal. This
+indicates that the radar-only retrieval systematically underestimates mass
+densities for cloud ice but overestimates the mass density of snow. The effect
+is observed for all tested particle shapes indicating that isn't related to
+the assumed ice particle shape. In general, the radar-only results exhibit only
+very weak dependency on the particle model, making the radar-only results for
+different particle shapes virtually indistinguishable.
 
 Another feature that stands out in the radar-only results, is that the retrieval
 does not work for graupel. This, however, can be understood by comparing the
@@ -866,9 +865,8 @@ different regions of the cloud.
 Nonetheless, the results for the GemCloudIce particle stand out in the results.
 Even though the systematic deviations observed in the radar-only retrieval are
 reduced for most particle shapes, for this specific shape they are instead
-increased. This is caused mostly by the effect the particle shape has on the
-retrieval of snow, which is strongly underestimated for reference mass
-concentrations around $10^{-4} \ \unit{kg/m^3}.
+increased. The retrieval error is particularly large for snow, which is strongly
+underestimated for reference mass concentrations around $10^{-4} \ \unit{kg/m^3}$.
 
 \begin{figure}
 \centering
@@ -882,7 +880,7 @@ concentrations around $10^{-4} \ \unit{kg/m^3}.
 The results for the second test scene obtained using the LargePlateAggregate
 particle model are shown in Fig.~\ref{fig:results_b}. As mentioned above, the
 results are qualitatively very similar to those of the first scene. Also here,
-the final OEM cost, shown in Panel (a), displays a region of increased cost for
+the final OEM cost, shown in Panel~(a), displays a region of increased cost for
 the passive-only and combined retrievals. This is again a region of very dense
 cloud that consists of graupel and snow. Also similar to the first scene, the
 passive only retrieval does not reproduce the structure of the cloud well.
@@ -943,17 +941,16 @@ this gradient in most parts of the scene. Although its exact structure
 is not fully reproduced, this clearly shows sensitivity of the retrievals to
 the number density concentrations.
 
-Of interest is also the part of the scene where the combined retrieval shows
-the strongest deviations from the reference field, that is between $2$ and
-$3\unit{^\circ}$ latitude. Here, the results strongly underestimate the true
-number concentrations. Comparison with the cloud composition displayed Panel (a)
-of Fig.~\ref{fig:overview} shows that this region matches the regions of the
-cloud, that contain large amounts of both cloud ice and snow. Since the
-retrieval uses only a single hydrometeor species to represent ice in the
-atmosphere, it is not able to represent such heterogeneous conditions. Since
-snow will have the stronger impact on the observations, the retrieval in these
-regions tends to predict snow rather than ice, which leads to the low retrieved
-number densities.
+Of interest is also the part of the scene where the combined retrieval shows the
+strongest deviations from the reference field, that is between $2$ and
+$3\ \unit{^\circ}$ latitude. Here, the results strongly underestimate the true
+number concentrations. Comparison with the cloud composition displayed in Panel (a)
+of Fig.~\ref{fig:overview} shows that this region contains large amounts of both
+cloud ice and snow. Since the retrieval uses only a single hydrometeor species
+to represent ice in the atmosphere, it is not able to represent such
+heterogeneous conditions. Since snow will have the stronger impact on the
+observations, the retrieval in these regions tends to predict snow rather than
+ice, which leads to the low retrieved number densities.
 
 \begin{figure}
 \centering
@@ -969,12 +966,12 @@ number densities.
 Figure~\ref{fig:results_nd_scatter_a} displays scatter plots of the reference
 and retrieved number density concentrations for all three methods and two
 particle models from the first test scene. Markers in the plot are color coded
-according to a purity index, which has been defined as the ratio of the maximum
-mass density of any of the frozen hydrometeor species in the model and the total
-mass density. The color coding reveals the emergence of two clusters in the
-results: One located at low reference particle number concentrations
-corresponding to snow and one at high number concentrations corresponding to
-regions where the cloud consists of cloud ice or graupel.
+according to their homogeneity, here defined as the ratio of the maximum mass
+density of any of the frozen hydrometeor species in the model and the total mass
+density. The color coding reveals the emergence of two clusters in the results:
+One located at low reference particle number concentrations corresponding to
+snow and one at high number concentrations corresponding to regions where the
+cloud consists of cloud ice or graupel.
 
 The results confirm that the radar-only retrieval does not exhibit any skill in
 retrieving particle number densities. The passive-only results, however, seem to
@@ -993,44 +990,71 @@ which is why only the result for the LargePlateAggregate is shown here.
 \begin{figure}
 \centering
 \includegraphics[width = 0.7\textwidth]{../plots/results_nd_scatter_a}
-\caption{Scatter plots of the retrieved particle number densities at grid points with
-  reference mass density larger than $10^{-5}\ \unit{kg/m^3}$. Rows show the results
-  for the different particle models used in the retrieval while column display the
-  results for the different retrieval methods. Marker color encodes a purity index 
-  which grid point which is computed as the ratio of the maximum mass density of
-  any of the frozen hydrometeor species and the total mass density.}
+\caption{Scatter plots of the retrieved particle number densities at grid points
+  with reference mass density larger than $10^{-5}\ \unit{kg/m^3}$. Rows show
+  the results for the different particle models used in the retrieval while
+  column display the results for the different retrieval methods. The marker
+  color encodes the homogeneity of the corresponding ice mass computed as the
+  ratio of the maximum mass density of any of the frozen hydrometeor species and
+  the total ice mass density.}
 \label{fig:results_nd_scatter_a}
 \end{figure}
 
 \subsubsection{Impact of assumed ice particle shape}
 
-To better understand the effect that the assumed ice particle shape has on the
-retrieval results, the mass density relations for the tested particle models are
-displayed in panel (a) of Fig.~\ref{fig:costs}. As can be seen from this plot,
-the mass size relationship of the GemCloudIce particle clearly stands out as
-being much denser than the others. On the contrary, the other particles have
-quite similar mass size relationships. This seems to explain why the GemCloudIce
-particle model does not work well for snow in the combined retrievals,
-explaining the observed deviations in the retrieved mass densities.
+To allow the comparison of the retrieval performance for all tested retrievals
+and particle shapes, the logarithmic error for the retrieved IWC and IWP are
+displayed in Fig.~\ref{fig:boxes}. Considering first the results of the IWC
+retrieval, shown in Panel~(a) and (b), the plots confirm the findings from the
+analysis above: The combined retrieval generally yields the smallest retrieval
+errors. Especially for the second test scene, where snow constitutes the major
+part of the ice mass, the radar only retrieval produces significant systematic
+errors, that are corrected by the combined retrieval.
+
+At the same time, however, the combined retrieval exhibits a fairly strong
+dependence on the applied particle model. This becomes apparent particularly in
+the errors of the retrieved IWP, shown in Panel~(c) and (d), in which the
+systematic deviations observed in the IWC retrieval are enhanced. In particular
+the GemCloudIce and GemSnow particle models stand out as yielding the largest
+systematic deviations.
+
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width = 0.8\textwidth]{../plots/results_box}
+\caption{Distributions of the logarithmic retrieval error in IWC and IWP for all tested retrieval
+  methods and particle shapes displayed as box plots.}
+\label{fig:boxes}
+\end{figure}
+
+
+To further investigate the effect the that the assumed ice particle shape has
+on the retrieval results, the mass density relations for the tested particle
+models are displayed in Panel~(a) of Fig.~\ref{fig:costs}. As can be seen from
+this plot, the mass size relationship of the GemCloudIce particle clearly
+stands out as being more dense than the others. On the contrary, the other
+particles have quite similar mass size relationships. This may explain why
+the GemCloudIce particle model does not work well for snow in the combined
+retrievals, explaining the observed deviations in the retrieved mass densities.
 
 Also displayed in Fig~\ref{fig:costs} (panel (b) and (c)) are the final OEM
 costs of the combined retrieval that were obtained with the different particle
-models for both test scenes. Since the particle shape affects the sub-millimeter
-observations, one could hope that the retrieval results can be used to infer the
-prevailing ice particle shape within the cloud based on the quality of the fit
-of the forward model achieved during the retrieval.
+models for both test scenes. Since the particle shape has considerable effect on
+sub-millimeter observations \citep{ekelund19}, one could hope that the retrieval results can be
+used to infer the prevailing ice particle shape within the cloud based on the
+quality of the fit of the forward model achieved during the retrieval.
 
 Unfortunately, such clear conclusions cannot be drawn from the results. In the
 first test scene, the best fit is obtained by the GemSnow, GemCloudIce and the
-LargePlateAggregate particle models, although the GemCloudIce model clearly
-resulted in the worst retrieval performance. For the second scene, on the other
-hand, there appears to be better agreement between the lowest retrieval cost and
-retrieval performance. Here, the GemSnow particle consistently gives the lowest
-OEM cost which is also the dominant frozen hydrometeor species in the scene.
+LargePlateAggregate particle models, although the GemSnow and GemCloudIce models
+quite clearly yield the worst retrieval performance. For the second scene,
+similar results are observed. Here, the GemSnow particle consistently gives the
+lowest OEM cost but comparison with Fig~\ref{fig:boxes} clearly shows that it
+doesn't yield the best retrieval performance.
 
-\begin{figure}
+\begin{figure}[!h]
 \centering
-\includegraphics[width = 0.4\textwidth]{../plots/costs}
+\includegraphics[width = 0.8\textwidth]{../plots/costs}
 \caption{Mass-size relations (Panel (a)) and final OEM cost for the two test scenes
   (Panel (b) and (c)). The final cost curves where smoothed using a running average filter
 of a width of 20 profiles.}
@@ -1042,27 +1066,30 @@ of a width of 20 profiles.}
 
 The developed passive and combined retrieval algorithms also retrieve profiles
 of humidity and liquid cloud mass density. For relative humidity, both
-retrievals showed a certain sensitivity but no improvement could be observed in
-the results of the combined retrieval compared to the passive-only retrieval.
-Moreover, no suitable retrieval setup was found that would achieve satisfactory
-performance within the scope of this study. Considering that the sensor setup
-with only channels with frequencies at $89\ \unit{GHz}$ and higher is not ideal for
-humidity retrievals, we do not consider our results representative of what could
-be achieved with the observational approach and thus do not include them here.
+retrievals show sensitivity but no improvement could be observed in the results
+of the combined retrieval compared to the passive-only retrieval. Moreover, no
+suitable retrieval setup was found that yields satisfactory performance within
+the scope of this study. We do not consider our results representative of what
+could be achieved with the observational approach and thus do not include them
+here.
 
-Nonetheless, we provide results from the liquid cloud retrieval in
-Fig.~\ref{fig:results_cw_b} since these show another interesting synergy of the
-radar and passive microwave observations. The results in
-Fig.~\ref{fig:results_cw_b} display contours of the retrieved mass density field
-of liquid cloud drawn on top of the retrieved frozen hydrometeor mass density
-field for the passive-only and the combined retrieval. These results show
-clearly that the combined retrieval is able to detect and retrieve liquid clouds
-even when they overlap with ice clouds. Although some sensitivity of the
-retrieval to liquid clouds can be observed also in the passive retrieval, the
-cloud is put at the wrong altitude and its mass density is greatly
-underestimated. This indicates that the radar reflectivity profile contains
-useful information for the retrieval to better locate cloud water in the
-atmospheric column.
+Nonetheless, we provide results from the liquid cloud retrieval since these show
+another interesting synergy of the radar and passive microwave observations.
+Panel~(a) in Fig.~\ref{fig:results_cw_b} displays the reference and retrieved
+column-integrated liquid cloud mass density (LWP). Although both retrievals
+systematically underestimate the LWP, the underestimation is clearly reduced in
+the combined retrieval.
+
+Panel (b), (c) and (d) of Fig.~\ref{fig:results_cw_b} display contours of the
+retrieved mass density field of liquid cloud drawn on top of the retrieved
+frozen hydrometeor mass density field for the passive-only and the combined
+retrieval. These results show clearly that the combined retrieval is able to
+detect and retrieve liquid clouds even when they overlap with ice clouds.
+Although some sensitivity of the retrieval to liquid clouds can be observed also
+in the passive retrieval, the cloud is put at the wrong altitude and its mass
+density is greatly underestimated. This indicates that the radar reflectivity
+profile contains useful information for the retrieval to better locate cloud
+water in the atmospheric column.
 
 \begin{figure}
 \centering
@@ -1079,11 +1106,11 @@ atmospheric column.
 
 The principal aim of this study was to investigate the synergies between radar
 and passive sub-millimeter observations. To this end, a simplified numerical
-experiment has been presented, that clearly demonstrates the complementarity of
-the information contained in the radar and the sub-millimeter observations.
-Furthermore, a combined retrieval algorithm has been developed to demonstrate
-the feasibility of the synergistic retrievals and further explore their
-potential and limitations.
+experiment has been presented, that qualitatively demonstrates the
+complementarity of the information contained in the radar and the sub-millimeter
+observations. Furthermore, a combined retrieval algorithm has been developed to
+demonstrate the feasibility of the synergistic retrievals and further explore
+their potential and current limitations.
 
 \subsection{Fundamental synergies}
 
@@ -1092,23 +1119,21 @@ fundamental synergies of the active and passive microwave observations. It
 compared the cloud signals observed by a radar, a millimeter-wave radiometer and
 a sub-millimeter-wave radiometer. The results show that the combined
 observations can constrain the horizontal as well as the vertical scaling of the
-particle size distribution. Furthermore, the complementary information content
-between the active and passive observations was shown to depend on both the
-properties of the observed cloud and the frequency of the observations. For the
-lower frequencies considered in this study, i.e. the highest channels of the MWI
+particle size distribution. However, the complementary information content
+between the active and passive observations depends on both the properties of
+the observed cloud and the frequency of the observations. For the lower
+frequencies considered in this study, i.e. the highest channels of the MWI
 radiometer, the regions where both observations provide complementary
-information on the particle size distribution of the cloud are limited to high
-mass densities and particle sizes. As the passive observing frequency increases,
-the regions of complementary information content extend down to smaller particle
-sizes and cloud mass density. Especially the highest-frequency channels of the
-ICI radiometer can therefore be expected to provide additional information on
-the particle size distribution of ice clouds.
+information on the particle size distribution of the cloud are limited to very
+high mass densities and particle sizes. It should be noted, however, that since
+the radar simulations neglect multiple scattering, the results are likely
+less accurate in this region of the cloud-parameter space.
 
-These results indicate that the combination of active and passive microwave
-observations provides different synergies depending on the frequency of the
-passive observations: While the MWI channels will help to better constrain the
-distributions of precipitating hydrometeors, improvements of the retrieval of
-cloud ice can only be expected from the sub-millimeter observations.
+As the passive observing frequency increases, the regions of complementary
+information content extend down to smaller particle sizes and cloud mass
+density. Especially the highest-frequency channels of the ICI radiometer can
+therefore be expected to provide additional information on the particle size
+distribution of ice clouds.
 
 \subsection{Combined cloud retrieval}
 
@@ -1135,9 +1160,10 @@ only very limited information on the vertical structure of the cloud. As other
 studies have shown, the passive observations do provide information on the
 vertical distribution of ice in the atmospheric column \citep{wang17,
   grutzun18}, but the information content is limited to a few degrees of
-freedom. It is therefore unlikely, the vertical resolution of the passive-only
-can be improved drastically without further constraining it a priori, for
-example through an observation database in an empirical retrieval.
+freedom. It is therefore unlikely, that the vertical resolution of the
+passive-only retrieval can be improved drastically without further constraining
+it a priori, for example through an observation database in an empirical
+retrieval.
 
 As expected, the radar-only retrieval provides much better profile retrievals
 than the passive-only version. However, the results exhibit systematic
@@ -1173,52 +1199,73 @@ the combined observations was even more pronounced in the retrieved number
 density fields. Here, neither the passive- or radar-only retrieval showed any
 skill in retrieving the particle number concentrations. The combined retrieval,
 however, was able to reproduce the general structure of the number concentration
-fields in regions where the cloud composition was homogeneous. Despite the
-numerical accuracy of the number density is still low, this clearly shows that
-the joint observations constrain the cloud microphysics better than the passive
-or radar observations alone.
+fields in regions where the cloud composition was homogeneous. This clearly
+shows that the joint observations constrain the cloud microphysics better than
+the passive or radar observations alone.
 
-Although the presented results show that the combined observations can improve
-the ice cloud retrieval, the overall performance of the combined retrieval can
-even degrade if performed with an unrealistic particle habit. Moreover, the
-combined retrieval displayed a stronger dependence of the retrieval error on the
-assumed particle shape than the radar-only retrieval did. The higher sensitivity
-of the sub-millimeter channels thus increases the importance of a realistic
-particle model. Unfortunately, the final OEM cost function value did not display
-any clear relation to most the suitable particle model used in the retrieval.
-While this is a negative results for this study, it certainly does not mean that
-the observations do not provide any information on the particle shape. A good
-fit of a particle model in certain parts of the atmosphere can easily be swamped
-by other forward model errors or misfits in other parts of the atmospheric
-column, etc.
+Although the presented combined observations can improve the retrieval of frozen
+hydrometeors, its performance can even degrade if an unrealistic particle habit
+is used. These systematic errors were even more pronounced in the retrieved IWP.
+Moreover, the combined retrieval displayed a stronger dependence of the
+retrieval error on the assumed particle shape than the radar-only retrieval did.
+The increased sensitivity of the combined retrieval to the microphysical
+properties of the cloud thus increases the importance of a realistic particle
+model.
+
+A further note on the nature of the used particle models is in order here: The
+GemCloudIce and GemSnow particle models are simple models, that use a single
+shape that is scaled in size. Contrary to this, the three other models consist
+of pristine crystals up to a certain size and of aggregates for larger sizes.
+Generally, these habit models yield more accurate results than the simple models
+confirming the usefulness of this approach. However, it was not possible to
+deduce a clear relation between the mass-size relation of the particle model to
+the retrieval performance. Although a likely explanation for the bad performance
+of the GemCloudIce particle model is its unrealistic density, the mass-size
+relation alone cannot explain why the LargePlateAggregate performs best as
+particle model.
+
+[Not to sure if previous paragraph is correct but felt that this should be mentioned
+  here]
+
+Furthermore, it has been briefly investigated whether the final OEM cost
+function can provide information on the suitability of the chosen particle
+model. Unfortunately, this was not the case. The underlying question aimed to
+address with this experiment was whether the combined observations can constrain
+the particle shape or whether instead a good fit to the observations can be
+obtained regardless of the applied particle model. In the experiment no evidence
+of a relation between the final OEM cost and the retrieval performance were
+observed. From this, however, it can not be concluded that the combined
+observations cannot constrain the ice particle shape. An explanation for the
+observed lack of a shape signal in the OEM cost are for example that the applied
+particle model or PSD are still too simple to describe a mixture of ice species
+in the atmospheric column.
 
 As an outlook, we have also included results of a liquid cloud retrieval, that
 clearly shows the capability of the combined retrieval to distinguish liquid
 clouds from ice clouds and retrieve profiles of liquid cloud mass densities.
-Since the passive-retrieval alone was not able to retrieve the liquid cloud,
-this indicates an additional synergy between the active and the passive
-observations. Although no satisfactory results were obtained from the water
-vapor retrieval, the retrieval results (not shown) still indicate sensitivity of
-this setup for retrieving atmospheric humidity. The full exploration of the
+Since the passive-only retrieval was unable to locate the cloud at the correct
+altitude in the atmosphere, this constitutes an additional synergy between the
+active and passive observations. Although no satisfactory results were obtained
+from the water vapor retrieval, the retrieval results still indicate sensitivity
+of this setup for retrieving atmospheric humidity. The full exploration of the
 potential of the combined observations for liquid cloud and water vapor is out
 of the scope of this study and is left to future investigation.
 
 The combined retrieval implementation showed robust performance on fairly
 distinct and complex cloud scenes. Despite this, both scenes that were
-considered here contained parts where the OEM minimization did find a state that
+considered here contained parts where the OEM minimization did not find a state that
 results in a good fit to the observations. In contrast to that, the radar-only
-retrieval did achieve a was low in most regions where the final cost of the
-combined retrieval was high. This indicates that there is actually even more
-information contained in the combined observations, that the retrieval is not
-able to disentangle. This raises the question of the suitability of the OEM
-method applied here. The combined retrieval violates the two fundamental
-assumptions of the OEM method: The forward model is strongly non-linear and the
-assumed Gaussian a priori assumptions are likely not a very good description of
-reality. In addition to that, the current implementation of the retrieval is
-computationally too expensive to be applied operationally. For further
-development of the combined retrieval concept it may therefore be advisable to
-revisit the applied retrieval method in search for a potentially more suitable
-alternative.
+retrieval did converge well in most regions where the final cost of the combined
+retrieval remained high. This points towards the existence of additional
+information in the combined observations, that the retrieval method is not able
+to disentangle. This raises the question of the suitability of the OEM method
+applied here. The combined retrieval violates the two fundamental assumptions of
+the OEM method: The forward model is non-linear and the assumed Gaussian a
+priori assumptions do not describe reality very well. In addition to that, the
+current implementation of the retrieval is computationally very expensive. For
+further development of the combined retrieval concept it may therefore be
+advisable to revisit the applied retrieval method in search for a potentially
+more suitable alternative.
 
 Finally, it is important to consider the limitations of this study. Its primary
 limitation is certainly the restriction to the model scenes for the testing of
@@ -1226,69 +1273,58 @@ the retrieval. In addition to that, the forward simulations used to generate the
 synthetic observations do not consider beam filling issues, assume a slightly
 unrealistic viewing geometry and neglect multiple scattering in the radar
 simulations. It is therefore important to understand the results presented here
-in their relative sense rather than providing realistic performance
-characteristics of the considered retrieval methods. What the presented results
-show is that, due to the synergies of the active and passive observations, the
-combined retrieval is able to better predict the microphysical properties of the
-observed clouds than any of the single-instrument retrievals alone.
+in their qualitative sense rather than providing realistic performance
+characteristics of the considered retrieval methods.
 
 \conclusions  %% \conclusions[modified heading if necessary]
 \label{sec:conclusions}
 
-\begin{itemize}
-  \item Demonstrated existence of synergies between the active and passive
-  microwave observations
-  \item Retrieval of liquid clouds as an additional synergy
-  \item Mass density as well as number density better constrained in combined
-  retrieval
-  \item Particle shape affects retrieval, but no clear best fit was found
-\end{itemize}
+From the results presented above it can be concluded that complementary
+information contained in radar and passive microwave radiometer observations can
+be used to improve the retrieval of distributions of frozen hydrometeors in the
+atmosphere. Altough dependent on the passive observing frequency and the
+properties of the cloud itself, the combined observations can constrain both the
+vertical and horizontal scaling of the PSD, which is not possible from radar
+observations alone. For traditional microwave frequencies below $187
+\ \unit{GHz}$ this capability, is limited to thick clouds consisting of large
+and likely precipitating particles. The higher-frequency channels of the
+upcoming ICI radiometer, however, when combined with a cloud radar will allow to
+determine both scaling parameters even for thinner ice clouds made up of smaller
+particles. In the conducted retrieval experiments, this allowed the combined
+retrieval to distinguish the microphysical properties of cloud ice and snow and
+thus reduce systematic errors observed in the radar-only IWC retrieval. In
+addition to this, the combined retrieval displayed clear signs of sensitivity to
+the particle number density field, which was not the case for the radar-only
+retrieval.
 
-The results of this study clearly prove the existence of synergies between radar
-and sub-millimeter observations. For the retrieval of frozen hydrometeors,
-combining active with the passive radiometer observations helps to improve both
-the retrieval of mass densities as well as particle number concentrations.
-From these results together with the conceptual considerations based on the
-analysis of the cloud signal in the active and passive observations it can be
-concluded that the combined observations help to better constrain the
-microphysical properties of the observed ice particles.
+At the same time, the combined retrieval exhibited a strong dependence of the
+retrieval performance on the applied particle model. In particular for one of
+the models a significant increase in the systematic retrieval error could be
+observed compared to the radar-only retrieval. While the bad performance of this
+specific particle model could be understood on the base of its unrealistically
+high density, no clear explanation for performance differences of the other
+particle models could be found. Furthermore, no relation between the OEM cost
+and the aptness of the particle model could be established. Thus, to fully
+exploit the potential of the combined retrievals further work is required to
+understand the relation between properties of the ice particle model and the
+impact of the model on the retrieval results. At the same time, this sensitivity
+to the particle model opens up the possibility of using the combined retrievals
+as a tool to test particle models by combining observations from field campaigns
+with in-situ data.
 
-The retrieval results also point towards an additional synergy between the
-acitve and passive observations: The detection and retrieval of liquid clouds.
-Neither of the active-only or passive-only retrievals,  was capable
-In addition to this, the presented retrieval results also show potential for retrieval of liquid clouds. SInc e
+In addition to that, our results also point towards an additional synergy
+between the active and passive observations: The detection and retrieval of
+liquid clouds. Although, the passive-only retrieval also showed sensitivity to
+liquid clouds, the addition of the radar signal clearly improved the
+localization in the atmospheric column and with that also LWP retrieval.
 
-
-  
-The results presented in this study clearly show the existence of synergies
-between sub-millimeter radiometer and radar observations for the retrieval of
-frozen hydrometeors. The combined observations allow the retrieval of two
-moments of the particle size distribution and thus help to better constrain
-both the mass density as well as the particle number density in the cloud.
-In addition to that, our results indicate additional synergies for the retrieval
-of liquid clouds and water vapor.
-
-In this study, we have investigated fundamental synergies and demonstrated the
-feasibility of the combined retrievals. This work hence opens up a number of
-opportunities for further research: In addition to the rather obvious
-application of the retrieval to real observations, there is the exploration of
-the potential of the combined observations for the retrieval of humidity and
-liquid cloud. Fruthermore, our results have shown that a realistic ice particle
-model is required for the retrieval to work well. This highlights the need for a
-realistic particle model that is suitable for wide range of cloud configurations
-encountered in the real atmosphere. Finally, another question to address is
-whether there are suitable alternatives to the OEM method to use as a retrieval
-method for the combined retrieval.
-
-Since only microwave observations can provide sensitivity to frozen hydrometeors
-throughout the full atmospheric column in the presence of thick clouds, the
-concept of combining active and passive microwave observations has great
-potential to reduce uncertainties on global observations of ice in the
-atmosphere. Although this work constitutes only a small step towards
-fully-functional retrievals from combined radar and sub-millimeter observations,
-it clearly shows the potential of the approach. The ability of the joint
-observations to better constrain the microphysics of clouds should make them an
-interesting concept to consider for future field campaigns or space missions.
+The results presented in this study clearly demonstrate the feasibility and
+potential of combined retrievals of frozen hydrometeors using active and passive
+microwave observations. The unique capability of the combined microwave
+observations to better constrain cloud microphysics even inside thick clouds
+could help to reduce remaining uncertainties in observations of ice the
+atmosphere. As observational concept, such combined observations should
+therefore be interesting for future field campaigns or space missions.
 
 
 %% The following commands are for the statements about the availability of data sets and/or software code corresponding to the manuscript.
