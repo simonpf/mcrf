@@ -215,24 +215,25 @@ class HampPassive(PassiveSensor):
     sidebands = [np.array([0.0]) * 1e9] * 15 \
                 + [np.array([1.4, 2.3, 4.2, 8.5]) * 1e9] \
                 + [np.array([0.6,  1.5,  2.5, 3.5,  5.0,  7.5, 12.5]) * 1e9]
-    channels, sensor_reponse = sensor_properties(center_frequencies,
-                                                 sidebands,
-                                                 order = "positive")
 
     _nedt = np.array([0.1] * 7 + [0.2] * 7 + [0.25] + [0.6] * 4 + [0.6] * 7)
 
     def __init__(self, stokes_dimension = 1):
+        channels, sensor_response = sensor_properties(HampPassive.center_frequencies,
+                                                      HampPassive.sidebands,
+                                                      order = "positive")
         super().__init__(name = "hamp_passive",
-                         f_grid = HampPassive.channels,
+                         f_grid = channels,
                          stokes_dimension = stokes_dimension)
         self.sensor_line_of_sight = np.array([180.0])
         self.sensor_position     = np.array([12500.0])
 
-        self.sensor_response_f    = self.f_grid[:-11]
-        self.sensor_response_pol  = self.f_grid[:-11]
-        self.sensor_response_dlos = self.f_grid[:-11, np.newaxis]
-        self.sensor_response = HampPassive.sensor_response
-        self.sensor_f_grid   = self.f_grid[:-11]
+        m = sensor_response.shape[0]
+        self.sensor_response_f    = self.f_grid[:m]
+        self.sensor_response_pol  = self.f_grid[:m]
+        self.sensor_response_dlos = self.f_grid[:m, np.newaxis]
+        self.sensor_response = sensor_response
+        self.sensor_f_grid   = self.f_grid[:m]
 
     @property
     def nedt(self):
@@ -251,26 +252,26 @@ class Ismar(PassiveSensor):
                np.array([1.5, 3.5, 9.5]) * 1e9,
                np.array([4.2]) * 1e9]
 
-    channels, sensor_response = sensor_properties(center_frequencies,
-                                                  offsets,
-                                                  order = "positive")
 
     _nedt = np.array(10 * [2.0])
 
     def __init__(self, stokes_dimension = 1):
+        channels, sensor_response = sensor_properties(Ismar.center_frequencies,
+                                                      Ismar.offsets,
+                                                      order = "positive")
         super().__init__(name = "ismar",
-                         f_grid = Ismar.channels,
+                         f_grid = channels,
                          stokes_dimension = stokes_dimension)
         self.sensor_line_of_sight = np.array([180.0])
         self.sensor_position     = np.array([9300.0])
         self.iy_unit             = "RJBT"
 
-        self.sensor_response_f    = self.f_grid[:10]
-        self.sensor_response_pol  = self.f_grid[:10]
-        self.sensor_response_dlos = self.f_grid[:10, np.newaxis]
-
-        self.sensor_response = Ismar.sensor_response
-        self.sensor_f_grid   = self.f_grid[:10]
+        m = sensor_response.shape[0]
+        self.sensor_response_f    = self.f_grid[:m]
+        self.sensor_response_pol  = self.f_grid[:m]
+        self.sensor_response_dlos = self.f_grid[:m, np.newaxis]
+        self.sensor_response = sensor_response
+        self.sensor_f_grid   = self.f_grid[:m]
 
 
     @property

@@ -51,7 +51,7 @@ class CloudRetrieval:
             if hasattr(q, "limits_high"):
                 limit_high_1, limit_high_2 = q.limits_high
             else:
-                limit_high_1, limit_high_2 = None, None
+                limit_high_1, limit_high_2 = np.inf, np.inf
 
 
             md = q.moments[0]
@@ -149,6 +149,7 @@ class CloudRetrieval:
         elif any([isinstance(s, ActiveSensor) for s in self.sensors]):
             self.simulation.retrieval.callbacks = [("Radar only", radar_only),
                                                    ("All quantities", all_quantities)]
+            self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
         else:
             self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
 

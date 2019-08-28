@@ -47,7 +47,7 @@ class D14Liquid(D14MN):
     model.
     """
     def __init__(self):
-        super().__init__(2.0, 1.0, 1000.0)
+        super().__init__(0.0, 1.0, 1000.0)
         self.name  = "d14n"
         self.t_min = 270.0
 
@@ -96,7 +96,7 @@ class D14DmLiquid(D14):
     The shape is shape has been obtained by fit to ICON model scenes.
     """
     def __init__(self):
-        super().__init__(2.0, 1.0, 1000.0)
+        super().__init__(0.0, 1.0, 1000.0)
         self.name  = "d1n"
         self.t_min = 270.0
 
@@ -148,7 +148,7 @@ class D14NDmLiquid(D14N):
     distributions within a scene of the ICON model.
     """
     def __init__(self):
-        super().__init__(2.0, 1.0, 1000.0)
+        super().__init__(0.0, 1.0, 1000.0)
         self.name  = "d14"
         self.t_min = 270.0
 
