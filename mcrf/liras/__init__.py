@@ -62,7 +62,7 @@ ice_covariance  = Diagonal(0.25, mask = ice_mask, mask_value = 1e-12)
 ice_covariance  = SpatialCorrelation(ice_covariance, 10e3, mask = ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 4)
-ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 10, ice_mask, "altitude", provide_retrieval_grid = False)
+ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 20, ice_mask, "altitude", provide_retrieval_grid = False)
 
 ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori], ice_shape, ice_shape_meta)
 ice.transformations = [Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
@@ -138,13 +138,31 @@ def a_priori_shape(t):
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.2)
     return transformation(x)
 
+def a_priori_vmr(z):
+    z0 = np.array([119.26605505,  2118.57516973,   4027.60345297,
+                   5862.87711004,   7627.64498975,  9297.02869728,
+                   10892.59889357,  12434.63769365, 13904.25695207,
+                   15290.83137241,  16635.83815029,  17963.99841403,
+                   19346.95698534, 20750.73842791,  22184.62422791,
+                   23675.44467966, 25180.02964216, 26780.47609985,
+                   28320.01292605,  29820.7853969 , 31494.56521739])
+    q0 = np.array([2.51821658e-02,   1.45514777e-02,   4.41302228e-03,
+                  2.27390123e-03,   9.60074728e-04,   3.45144953e-04,
+                  8.58033141e-05,   2.07439434e-05,   6.57675492e-06,
+                  3.71219009e-06,   2.93834588e-06,   2.75786835e-06,
+                  2.60168486e-06,   2.63916645e-06,   2.81999017e-06,
+                  3.10463974e-06,   3.27712882e-06,   3.50106393e-06,
+                  3.73366696e-06,   3.97511724e-06,   4.18255652e-06])
+    return np.log10(np.interp(z, z0, q0))
 
-z_grid = np.linspace(0, 20e3, 11)
-rh_covariance = Diagonal(2.0)
-rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
+
+
+z_grid = np.linspace(0, 20e3, 21)
+rh_covariance = Diagonal(0.5 ** 2)
+rh_covariance = SpatialCorrelation(rh_covariance, 1e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
-rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude",
-                                  provide_retrieval_grid = False)
+#rh_a_priori = FunctionalAPriori("H2O", "altitude", a_priori_vmr, rh_covariance)
+rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude")
 
 ################################################################################
 # Observation error

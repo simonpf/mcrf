@@ -37,7 +37,7 @@ ice_covariance  = Diagonal(4, mask = ice_mask, mask_value = 1e-8)
 ice_covariance  = SpatialCorrelation(ice_covariance, 5e3, mask = ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori, ice_covariance,
                                     mask = ice_mask, mask_value = 0)
-ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 10, ice_mask, "altitude", provide_retrieval_grid = False)
+ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori, 20, ice_mask, "altitude", provide_retrieval_grid = False)
 
 ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori], ice_shape, ice_shape_meta)
 ice.transformations = [Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
@@ -74,7 +74,7 @@ snow.limits_low = [0, 1e-8]
 rain_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
-rain_mask  = TemperatureMask(273, 340.0)
+rain_mask  = TemperatureMask(270, 340.0)
 rain_covariance = Diagonal(500e-6 ** 2, mask = rain_mask, mask_value = 1e-24)
 rain_dm_a_priori = FixedAPriori("rain_dm", 500e-6, rain_covariance,
                                 mask = rain_mask, mask_value = 1e-8)

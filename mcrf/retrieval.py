@@ -10,7 +10,7 @@ from parts.sensor                import ActiveSensor, PassiveSensor
 from parts.atmosphere.surface    import Tessem
 from parts.retrieval.a_priori    import DataProviderAPriori, PiecewiseLinear
 from parts.retrieval             import RetrievalRun
-from parts.atmosphere.absorption import O2, N2, H2O, CloudWater, RelativeHumidity
+from parts.atmosphere.absorption import O2, N2, H2O, CloudWater, RelativeHumidity, VMR
 from parts.utils.data_providers  import NetCDFDataProvider
 from parts.scattering.solvers    import Disort
 from parts.simulation            import ArtsSimulation
@@ -75,8 +75,12 @@ class CloudRetrieval:
             h2o_a = h2o_a[0]
             atanh = Atanh(0.0, 1.1)
             pl    = PiecewiseLinear(h2o_a)
-            h2o.transformation = Composition(atanh, pl)
-            h2o.retrieval.unit = RelativeHumidity()
+            #h2o.transformation = Composition(atanh, pl)
+            #h2o.transformation = Composition(Log10(), pl)
+            h2o.transformation = Log10()
+            #h2o.transformation = atanh
+            #h2o.retrieval.unit = RelativeHumidity()
+            h2o.retrieval.unit = VMR()
             self.h2o = h2o
         else:
             self.h2o = None
@@ -124,7 +128,7 @@ class CloudRetrieval:
         def radar_only(rr):
             rr.sensors = [s for s in rr.sensors if isinstance(s, ActiveSensor)]
             rr.settings["lm_ga_settings"] = np.array([100.0, 3.0, 2.0, 1e5, 1.0, 1.0])
-            rr.settings["max_iter"] = 10
+            rr.settings["max_iter"] = 20
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             #rr.retrieval_quantities = [h.moments[1] for h in self.hydrometeors]
             rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
@@ -135,7 +139,7 @@ class CloudRetrieval:
                 rr.settings["max_iter"] = 20
             else:
                 rr.settings["lm_ga_settings"] = np.array([10.0, 3.0, 2.0, 1e5, 1.0, 10.0])
-                rr.settings["max_iter"] = 10
+                rr.settings["max_iter"] = 20
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
 
@@ -149,7 +153,7 @@ class CloudRetrieval:
         elif any([isinstance(s, ActiveSensor) for s in self.sensors]):
             self.simulation.retrieval.callbacks = [("Radar only", radar_only),
                                                    ("All quantities", all_quantities)]
-            self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
+            #self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
         else:
             self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
 
