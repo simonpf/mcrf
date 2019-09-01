@@ -74,13 +74,8 @@ class CloudRetrieval:
             self.simulation.retrieval.add(h2o)
             h2o_a = h2o_a[0]
             atanh = Atanh(0.0, 1.1)
-            pl    = PiecewiseLinear(h2o_a)
-            #h2o.transformation = Composition(atanh, pl)
-            #h2o.transformation = Composition(Log10(), pl)
-            h2o.transformation = Log10()
-            #h2o.transformation = atanh
-            #h2o.retrieval.unit = RelativeHumidity()
-            h2o.retrieval.unit = VMR()
+            h2o.transformation = atanh
+            h2o.retrieval.unit = RelativeHumidity()
             self.h2o = h2o
         else:
             self.h2o = None

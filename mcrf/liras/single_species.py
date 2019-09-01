@@ -74,7 +74,7 @@ snow.limits_low = [0, 1e-8]
 rain_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
-rain_mask  = TemperatureMask(270, 340.0)
+rain_mask  = TemperatureMask(272.15, 340.0)
 rain_covariance = Diagonal(500e-6 ** 2, mask = rain_mask, mask_value = 1e-24)
 rain_dm_a_priori = FixedAPriori("rain_dm", 500e-6, rain_covariance,
                                 mask = rain_mask, mask_value = 1e-8)

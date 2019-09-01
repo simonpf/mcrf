@@ -101,7 +101,7 @@ liquid_mask = TemperatureMask(230, 300.0)
 liquid_covariance = Diagonal(1 ** 2)
 cloud_water_a_priori = FixedAPriori("cloud_water", -6, liquid_covariance,
                                     mask = liquid_mask, mask_value = -20)
-cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, 7, liquid_mask,
+cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, 10, liquid_mask,
                                          "altitude", provide_retrieval_grid = False)
 
 ################################################################################
@@ -111,7 +111,7 @@ cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, 7, liquid_mask,
 rain_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
-rain_mask  = TemperatureMask(273, 340.0)
+rain_mask  = TemperatureMask(272, 340.0)
 rain_covariance = Diagonal(500e-6 ** 2, mask = rain_mask, mask_value = 1e-12)
 rain_dm_a_priori = FixedAPriori("rain_dm", 500e-6, rain_covariance, mask = rain_mask, mask_value = 1e-8)
 rain_dm_a_priori = MaskedRegularGrid(rain_dm_a_priori, 10, rain_mask, "altitude", provide_retrieval_grid = False)
@@ -138,30 +138,10 @@ def a_priori_shape(t):
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.2)
     return transformation(x)
 
-def a_priori_vmr(z):
-    z0 = np.array([119.26605505,  2118.57516973,   4027.60345297,
-                   5862.87711004,   7627.64498975,  9297.02869728,
-                   10892.59889357,  12434.63769365, 13904.25695207,
-                   15290.83137241,  16635.83815029,  17963.99841403,
-                   19346.95698534, 20750.73842791,  22184.62422791,
-                   23675.44467966, 25180.02964216, 26780.47609985,
-                   28320.01292605,  29820.7853969 , 31494.56521739])
-    q0 = np.array([2.51821658e-02,   1.45514777e-02,   4.41302228e-03,
-                  2.27390123e-03,   9.60074728e-04,   3.45144953e-04,
-                  8.58033141e-05,   2.07439434e-05,   6.57675492e-06,
-                  3.71219009e-06,   2.93834588e-06,   2.75786835e-06,
-                  2.60168486e-06,   2.63916645e-06,   2.81999017e-06,
-                  3.10463974e-06,   3.27712882e-06,   3.50106393e-06,
-                  3.73366696e-06,   3.97511724e-06,   4.18255652e-06])
-    return np.log10(np.interp(z, z0, q0))
-
-
-
 z_grid = np.linspace(0, 20e3, 21)
 rh_covariance = Diagonal(0.5 ** 2)
 rh_covariance = SpatialCorrelation(rh_covariance, 1e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
-#rh_a_priori = FunctionalAPriori("H2O", "altitude", a_priori_vmr, rh_covariance)
 rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude")
 
 ################################################################################
