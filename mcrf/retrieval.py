@@ -121,7 +121,7 @@ class CloudRetrieval:
             rr.sensors = [s for s in rr.sensors if isinstance(s, ActiveSensor)]
             rr.settings["lm_ga_settings"] = np.array(
                 [100.0, 3.0, 2.0, 1e5, 1.0, 1.0])
-            rr.settings["max_iter"] = 20
+            rr.settings["stop_dx"] = 1.0
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             #rr.retrieval_quantities = [h.moments[1] for h in self.hydrometeors]
             rr.retrieval_quantities += [
@@ -137,6 +137,7 @@ class CloudRetrieval:
                 rr.settings["lm_ga_settings"] = np.array(
                     [10.0, 3.0, 2.0, 1e5, 1.0, 10.0])
                 rr.settings["max_iter"] = 20
+                rr.settings["stod_dx"] = 0.1
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [
                 h.moments[1] for h in self.hydrometeors
