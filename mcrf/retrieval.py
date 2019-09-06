@@ -5,20 +5,21 @@ Provides classes for performing forward simulations and cloud retrieval
 calculations.
 """
 import numpy as np
-from parts.atmosphere            import Atmosphere1D
-from parts.sensor                import ActiveSensor, PassiveSensor
-from parts.atmosphere.surface    import Tessem
-from parts.retrieval.a_priori    import DataProviderAPriori, PiecewiseLinear
-from parts.retrieval             import RetrievalRun
+from parts.atmosphere import Atmosphere1D
+from parts.sensor import ActiveSensor, PassiveSensor
+from parts.atmosphere.surface import Tessem
+from parts.retrieval.a_priori import DataProviderAPriori, PiecewiseLinear
+from parts.retrieval import RetrievalRun
 from parts.atmosphere.absorption import O2, N2, H2O, CloudWater, RelativeHumidity, VMR
-from parts.utils.data_providers  import NetCDFDataProvider
-from parts.scattering.solvers    import Disort
-from parts.simulation            import ArtsSimulation
-from parts.jacobian              import Log10, Atanh, Composition, Identity
+from parts.utils.data_providers import NetCDFDataProvider
+from parts.scattering.solvers import Disort
+from parts.simulation import ArtsSimulation
+from parts.jacobian import Log10, Atanh, Composition, Identity
 
 ################################################################################
 # Cloud retrieval
 ################################################################################
+
 
 class CloudRetrieval:
     """
@@ -39,7 +40,6 @@ class CloudRetrieval:
 
         data_provider: The data provider used to perform the retrieval.
     """
-
     def _setup_retrieval(self):
         """
         Setup the parts simulation used to perform the retrieval.
@@ -53,18 +53,17 @@ class CloudRetrieval:
             else:
                 limit_high_1, limit_high_2 = np.inf, np.inf
 
-
             md = q.moments[0]
             self.simulation.retrieval.add(md)
             md.transformation = q.transformations[0]
-            md.retrieval.limit_low      = q.limits_low[0]
-            md.retrieval.limit_high     = limit_high_1
+            md.retrieval.limit_low = q.limits_low[0]
+            md.retrieval.limit_high = limit_high_1
 
             n0 = q.moments[1]
             self.simulation.retrieval.add(n0)
             n0.transformation = q.transformations[1]
-            n0.retrieval.limit_low      = q.limits_low[1]
-            n0.retrieval.limit_high     = limit_high_2
+            n0.retrieval.limit_low = q.limits_low[1]
+            n0.retrieval.limit_high = limit_high_2
 
         h2o = self.simulation.atmosphere.absorbers[-1]
 
@@ -92,51 +91,56 @@ class CloudRetrieval:
         else:
             self.cw = None
 
-    def __init__(self,
-                 hydrometeors,
-                 sensors,
-                 data_provider):
+    def __init__(self, hydrometeors, sensors, data_provider):
 
         cw_a = [p for p in data_provider.subproviders \
                 if getattr(p, "name", "") == "cloud_water"]
         self.include_cloud_water = len(cw_a) > 0
 
         self.hydrometeors = hydrometeors
-        absorbers  = [O2(), N2(), H2O()]
+        absorbers = [O2(), N2(), H2O()]
         if self.include_cloud_water:
             absorbers.insert(2, CloudWater())
         scatterers = hydrometeors
-        surface    = Tessem()
+        surface = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
         self.simulation = ArtsSimulation(atmosphere,
-                                         sensors = sensors,
-                                         scattering_solver = Disort())
+                                         sensors=sensors,
+                                         scattering_solver=Disort())
         self.sensors = sensors
 
-        self.data_provider            = data_provider
+        self.data_provider = data_provider
         self.simulation.data_provider = self.data_provider
 
         self._setup_retrieval()
 
-        self.radar_only = all([isinstance(s, ActiveSensor) for s in self.sensors])
+        self.radar_only = all(
+            [isinstance(s, ActiveSensor) for s in self.sensors])
 
         def radar_only(rr):
             rr.sensors = [s for s in rr.sensors if isinstance(s, ActiveSensor)]
-            rr.settings["lm_ga_settings"] = np.array([100.0, 3.0, 2.0, 1e5, 1.0, 1.0])
+            rr.settings["lm_ga_settings"] = np.array(
+                [100.0, 3.0, 2.0, 1e5, 1.0, 1.0])
             rr.settings["max_iter"] = 20
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             #rr.retrieval_quantities = [h.moments[1] for h in self.hydrometeors]
-            rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
+            rr.retrieval_quantities += [
+                h.moments[1] for h in self.hydrometeors
+            ]
 
         def all_quantities(rr):
             if all([isinstance(s, PassiveSensor) for s in rr.sensors]):
-                rr.settings["lm_ga_settings"] = np.array([1000.0, 3.0, 2.0, 1e5, 1.0, 10.0])
+                rr.settings["lm_ga_settings"] = np.array(
+                    [1000.0, 3.0, 2.0, 1e5, 1.0, 10.0])
                 rr.settings["max_iter"] = 20
             else:
-                rr.settings["lm_ga_settings"] = np.array([10.0, 3.0, 2.0, 1e5, 1.0, 10.0])
+                rr.settings["lm_ga_settings"] = np.array(
+                    [10.0, 3.0, 2.0, 1e5, 1.0, 10.0])
                 rr.settings["max_iter"] = 20
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
-            rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
+            rr.retrieval_quantities += [
+                h.moments[1] for h in self.hydrometeors
+            ]
 
             if not self.h2o is None:
                 rr.retrieval_quantities += [self.h2o]
@@ -147,12 +151,15 @@ class CloudRetrieval:
             self.simulation.retrieval.callbacks = [("Radar only", radar_only)]
         elif any([isinstance(s, ActiveSensor) for s in self.sensors]):
             self.simulation.retrieval.callbacks = [("Radar only", radar_only),
-                                                   ("All quantities", all_quantities)]
-            #self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
+                                                   ("All quantities",
+                                                    all_quantities)]
+            self.simulation.retrieval.callbacks = [("All quantities",
+                                                    all_quantities)]
         else:
-            self.simulation.retrieval.callbacks = [("All quantities", all_quantities)]
+            self.simulation.retrieval.callbacks = [("All quantities",
+                                                    all_quantities)]
 
-    def setup(self, verbosity = 1):
+    def setup(self, verbosity=1):
         """
         Run parts setup of simulation instance. This function needs to be executed
         before the retrieval can be calculated.
@@ -162,7 +169,7 @@ class CloudRetrieval:
             verbosity: ARTS workspace verbosity. 0 for silent.
         """
 
-        self.simulation.setup(verbosity = verbosity)
+        self.simulation.setup(verbosity=verbosity)
 
     def run(self, i):
         """
@@ -174,6 +181,7 @@ class CloudRetrieval:
         """
         self.index = i
         return self.simulation.run(i)
+
 
 class HybridRetrieval(CloudRetrieval):
     """
@@ -194,15 +202,10 @@ class HybridRetrieval(CloudRetrieval):
 
         data_provider: The data provider used to perform the retrieval.
     """
-
-    def __init__(self,
-                 hydrometeors,
-                 sensors,
-                 data_provider):
+    def __init__(self, hydrometeors, sensors, data_provider):
         CloudRetrieval.__init__(self, hydrometeors, sensors, data_provider)
 
-
-    def setup(self, verbosity = 0):
+    def setup(self, verbosity=0):
         """
         Run parts setup of simulation instance. This function needs to be executed
         before the retrieval can be calculated.
@@ -211,7 +214,7 @@ class HybridRetrieval(CloudRetrieval):
 
             verbosity: ARTS workspace verbosity. 0 for silent.
         """
-        self.simulation.setup(verbosity = verbosity)
+        self.simulation.setup(verbosity=verbosity)
 
     def run(self, i):
         """
@@ -230,10 +233,13 @@ class HybridRetrieval(CloudRetrieval):
 
         def radar_only(rr):
             rr.sensors = [s for s in rr.sensors if isinstance(s, ActiveSensor)]
-            rr.settings["lm_ga_settings"] = np.array([100.0, 3.0, 2.0, 1e5, 1.0, 1.0])
+            rr.settings["lm_ga_settings"] = np.array(
+                [100.0, 3.0, 2.0, 1e5, 1.0, 1.0])
             rr.settings["max_iter"] = 10
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
-            rr.retrieval_quantities += [h.moments[1] for h in self.hydrometeors]
+            rr.retrieval_quantities += [
+                h.moments[1] for h in self.hydrometeors
+            ]
 
         self.simulation.retrieval.callbacks = [("Radar only", radar_only)]
         self.simulation.run(i)
@@ -244,9 +250,10 @@ class HybridRetrieval(CloudRetrieval):
         covmat_sx = self.simulation.workspace.covmat_sx.value.to_dense()
         covmat_se = self.simulation.workspace.covmat_se.value.to_dense()
         K = self.simulation.workspace.jacobian.value
-        self.covmat = np.linalg.inv(K.T @ covmat_se @ K + np.linalg.inv(covmat_sx))
+        self.covmat = np.linalg.inv(K.T @ covmat_se @ K +
+                                    np.linalg.inv(covmat_sx))
 
-        rqs  = [h.moments[0] for h in self.hydrometeors]
+        rqs = [h.moments[0] for h in self.hydrometeors]
         rqs += [h.moments[1] for h in self.hydrometeors]
         if not self.h2o is None:
             rqs += [self.h2o]
@@ -260,7 +267,6 @@ class HybridRetrieval(CloudRetrieval):
             if not rq.retrieval.limit_low == None:
                 x = np.maximum(x, rq.retrieval.limit_low)
             return x
-
 
         masks = []
         for rq in rqs:
@@ -277,9 +283,13 @@ class HybridRetrieval(CloudRetrieval):
 
         simulation = self.simulation
         pr = simulation.retrieval.results[-1]
-        retrieval = RetrievalRun("Hybrid", simulation, simulation.retrieval._y, simulation.retrieval.settings,
-                                 simulation.retrieval.sensor_indices, rqs,
-                                 previous_run = pr)
+        retrieval = RetrievalRun("Hybrid",
+                                 simulation,
+                                 simulation.retrieval._y,
+                                 simulation.retrieval.settings,
+                                 simulation.retrieval.sensor_indices,
+                                 rqs,
+                                 previous_run=pr)
         retrieval.setup_a_priori(i)
 
         for rq in rqs:
@@ -300,14 +310,19 @@ class HybridRetrieval(CloudRetrieval):
             return (np.copy(simulation.workspace.y.value),
                     np.copy(simulation.workspace.jacobian.value))
 
-
-        m_p = sum([s.y_vector_length for s in self.sensors if isinstance(s, PassiveSensor)])
-        m_a = sum([s.y_vector_length for s in self.sensors if isinstance(s, ActiveSensor)])
+        m_p = sum([
+            s.y_vector_length for s in self.sensors
+            if isinstance(s, PassiveSensor)
+        ])
+        m_a = sum([
+            s.y_vector_length for s in self.sensors
+            if isinstance(s, ActiveSensor)
+        ])
         n = simulation.workspace.xa.value.size
-        self.xs  = np.zeros((n, self.ensemble_size))
+        self.xs = np.zeros((n, self.ensemble_size))
         self.ys_p = np.zeros((m_p, self.ensemble_size))
         self.ys_a = np.zeros((m_a, self.ensemble_size))
-        self.K_a  = np.zeros((m_a, n, self.ensemble_size))
+        self.K_a = np.zeros((m_a, n, self.ensemble_size))
 
         #
         # Initialize ensemble.
@@ -321,8 +336,9 @@ class HybridRetrieval(CloudRetrieval):
             for rq in rqs:
                 x = pr.get_result(rq)
                 if x is None:
-                    xa = retrieval.get_xa(rq, interpolate = False)
-                    f_cov = getattr(self.data_provider, "get_" + rq.name + "_covariance")
+                    xa = retrieval.get_xa(rq, interpolate=False)
+                    f_cov = getattr(self.data_provider,
+                                    "get_" + rq.name + "_covariance")
                     cov = f_cov(self.index)
                     x = np.random.multivariate_normal(xa, cov)
 
@@ -334,26 +350,31 @@ class HybridRetrieval(CloudRetrieval):
             self.ys_p[:, i] = simulate_passive(self.simulation)
             y, K = simulate_active(self.simulation)
             self.ys_a[:, i] = y
-            self.K_a[:, :, i]  = K
+            self.K_a[:, :, i] = K
 
-        covmat_se = self.data_provider.get_observation_error_covariance(self.index).todense()
+        covmat_se = self.data_provider.get_observation_error_covariance(
+            self.index).todense()
         covmat_se_inv = np.linalg.inv(covmat_se)
-        x_mean = np.mean(self.xs, axis = -1)
-        y_p_mean = np.mean(self.ys_p, axis = -1)
-        y_a_mean = np.mean(self.ys_a, axis = -1)
+        x_mean = np.mean(self.xs, axis=-1)
+        y_p_mean = np.mean(self.ys_p, axis=-1)
+        y_a_mean = np.mean(self.ys_a, axis=-1)
 
         self.ys = np.zeros((m_a + m_p, self.ensemble_size))
         for i in range(self.ensemble_size):
             self.ys[:m_a, i] = self.ys_a[:, i]
             self.ys[m_a:, i] = self.ys_p[:, i]
-        y_mean = np.mean(self.ys, axis = -1)
+        y_mean = np.mean(self.ys, axis=-1)
 
         N = self.ensemble_size
 
-        cov_yy_p = 1.0 / (N - 1) * (self.ys_p - y_p_mean.reshape(-1, 1)) @ (self.ys_p - y_p_mean.reshape(-1, 1)).T
-        cov_yy_a = 1.0 / (N - 1) * (self.ys_a - y_a_mean.reshape(-1, 1)) @ (self.ys_a - y_a_mean.reshape(-1, 1)).T
-        cov_xy = 1.0 / (N - 1) * (self.xs - x_mean.reshape(-1, 1)) @ (self.ys - y_mean.reshape(-1, 1)).T
-        cov_yy = 1.0 / (N - 1) * (self.ys - y_mean.reshape(-1, 1)) @ (self.ys - y_mean.reshape(-1, 1)).T
+        cov_yy_p = 1.0 / (N - 1) * (self.ys_p - y_p_mean.reshape(-1, 1)) @ (
+            self.ys_p - y_p_mean.reshape(-1, 1)).T
+        cov_yy_a = 1.0 / (N - 1) * (self.ys_a - y_a_mean.reshape(-1, 1)) @ (
+            self.ys_a - y_a_mean.reshape(-1, 1)).T
+        cov_xy = 1.0 / (N - 1) * (self.xs - x_mean.reshape(-1, 1)) @ (
+            self.ys - y_mean.reshape(-1, 1)).T
+        cov_yy = 1.0 / (N - 1) * (self.ys - y_mean.reshape(-1, 1)) @ (
+            self.ys - y_mean.reshape(-1, 1)).T
 
         dys = retrieval.y.reshape(-1, 1) - self.ys
 
@@ -362,8 +383,7 @@ class HybridRetrieval(CloudRetrieval):
 
         self.xs += dxs
 
-        self.debug = {"xs" : [],
-                      "ys" : []}
+        self.debug = {"xs": [], "ys": []}
 
         def ensemble_step():
             for i in range(self.ensemble_size):
@@ -383,13 +403,15 @@ class HybridRetrieval(CloudRetrieval):
                         self.ys_p[:, i] = simulate_passive(self.simulation)
                         y, K = simulate_active(self.simulation)
                         self.ys_a[:, i] = y
-                        self.K_a[:, :, i]  = K
+                        self.K_a[:, :, i] = K
 
                         success = True
                     except Exception as e:
                         print(e)
                         success = False
-                        coeffs = np.random.uniform(0, 1, size = self.ensemble_size - 1)
+                        coeffs = np.random.uniform(0,
+                                                   1,
+                                                   size=self.ensemble_size - 1)
                         coeffs /= coeffs.sum()
                         x_new = np.zeros(self.xs.shape[0])
                         for j in range(self.ensemble_size):
@@ -400,28 +422,30 @@ class HybridRetrieval(CloudRetrieval):
                         print("new x:", x_new)
                         self.xs[:, i] = x_new
 
+            x_mean = np.mean(self.xs, axis=-1)
+            y_p_mean = np.mean(self.ys_p, axis=-1)
+            y_a_mean = np.mean(self.ys_a, axis=-1)
 
-            x_mean = np.mean(self.xs, axis = -1)
-            y_p_mean = np.mean(self.ys_p, axis = -1)
-            y_a_mean = np.mean(self.ys_a, axis = -1)
-
-            x_mean = np.mean(self.xs, axis = -1)
-            y_p_mean = np.mean(self.ys_p, axis = -1)
-            y_a_mean = np.mean(self.ys_a, axis = -1)
+            x_mean = np.mean(self.xs, axis=-1)
+            y_p_mean = np.mean(self.ys_p, axis=-1)
+            y_a_mean = np.mean(self.ys_a, axis=-1)
 
             self.ys = np.zeros((m_a + m_p, self.ensemble_size))
             for i in range(self.ensemble_size):
                 self.ys[:m_a, i] = self.ys_a[:, i]
                 self.ys[m_a:, i] = self.ys_p[:, i]
 
-            self.ys += np.random.multivariate_normal(np.zeros(m_a + m_p), covmat_se, size = self.ensemble_size)
-            y_mean = np.mean(self.ys, axis = -1)
-
+            self.ys += np.random.multivariate_normal(np.zeros(m_a + m_p),
+                                                     covmat_se,
+                                                     size=self.ensemble_size)
+            y_mean = np.mean(self.ys, axis=-1)
 
             N = self.ensemble_size
 
-            cov_xy = 1.0 / (N - 1) * (self.xs - x_mean.reshape(-1, 1)) @ (self.ys - y_mean.reshape(-1, 1)).T
-            cov_yy = 1.0 / (N - 1) * (self.ys - y_mean.reshape(-1, 1)) @ (self.ys - y_mean.reshape(-1, 1)).T
+            cov_xy = 1.0 / (N - 1) * (self.xs - x_mean.reshape(-1, 1)) @ (
+                self.ys - y_mean.reshape(-1, 1)).T
+            cov_yy = 1.0 / (N - 1) * (self.ys - y_mean.reshape(-1, 1)) @ (
+                self.ys - y_mean.reshape(-1, 1)).T
             dys = retrieval.y.reshape(-1, 1) - self.ys
             dxs = np.linalg.solve(cov_yy + covmat_se, dys)
             dxs = self.mask.reshape(-1, 1) * cov_xy @ dxs
@@ -432,19 +456,19 @@ class HybridRetrieval(CloudRetrieval):
             print("Step {}:".format(i))
             dys = self.ys - retrieval.y.reshape(-1, 1)
             for j in range(self.ensemble_size):
-                print("\tMember {0}: {1}".format(j, np.sum(dys[:, j] * covmat_se @ dys[:, j])))
+                print("\tMember {0}: {1}".format(
+                    j, np.sum(dys[:, j] * covmat_se @ dys[:, j])))
 
             ensemble_step()
-
 
         #self.xs = xs
         #self.ys = ys
 
 
-
 ################################################################################
 # Cloud simulation
 ################################################################################
+
 
 class CloudSimulation:
     """
@@ -454,7 +478,7 @@ class CloudSimulation:
                  hydrometeors,
                  sensors,
                  data_provider,
-                 include_cloud_water = False):
+                 include_cloud_water=False):
         """
         Arguments:
 
@@ -469,25 +493,25 @@ class CloudSimulation:
         self.include_cloud_water = include_cloud_water
 
         self.hydrometeors = hydrometeors
-        absorbers  = [O2(), N2(), H2O()]
+        absorbers = [O2(), N2(), H2O()]
         if self.include_cloud_water:
             absorbers.insert(2, CloudWater())
         scatterers = hydrometeors
-        surface    = Tessem()
+        surface = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
         self.simulation = ArtsSimulation(atmosphere,
-                                         sensors = sensors,
-                                         scattering_solver = Disort())
+                                         sensors=sensors,
+                                         scattering_solver=Disort())
         self.sensors = sensors
 
-        self.data_provider            = data_provider
+        self.data_provider = data_provider
         self.simulation.data_provider = self.data_provider
 
-    def setup(self, verbosity = 1):
+    def setup(self, verbosity=1):
         """
         Run setup method of ArtsSimulation.
         """
-        self.simulation.setup(verbosity = verbosity)
+        self.simulation.setup(verbosity=verbosity)
 
     def run(self, *args, **kwargs):
         return self.simulation.run(*args, **kwargs)
