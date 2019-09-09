@@ -20,16 +20,16 @@ def n0_a_priori(t):
 
 def dm_a_priori(t):
     n0 = 10**n0_a_priori(t)
-    iwc = 5e-7
+    iwc = 1e-6
     dm = (4.0**4 * iwc / (np.pi * 917.0) / n0)**0.25
     return dm
 
 
 ice_shape = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
-ice_mask = And(TropopauseMask(), TemperatureMask(0.0, 278.0))
+ice_mask = And(TropopauseMask(), TemperatureMask(0.0, 272.5))
 
-ice_covariance = Diagonal(300e-6**2, mask=ice_mask, mask_value=1e-24)
+ice_covariance = Diagonal(400e-6**2, mask=ice_mask, mask_value=1e-24)
 ice_covariance = SpatialCorrelation(ice_covariance,
                                     2e3,
                                     mask=ice_mask,
@@ -42,7 +42,7 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm",
                                     mask_value=1e-8)
 
 ice_covariance = Diagonal(4, mask=ice_mask, mask_value=1e-8)
-ice_covariance = SpatialCorrelation(ice_covariance, 2e3, mask=ice_mask)
+ice_covariance = SpatialCorrelation(ice_covariance, 5e3, mask=ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0",
                                     "temperature",
                                     n0_a_priori,

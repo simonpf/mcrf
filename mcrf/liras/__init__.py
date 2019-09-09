@@ -47,7 +47,7 @@ def dm_a_priori(t):
     frozen hydrometeors as a function of the temperature t.
     """
     n0 = 10**n0_a_priori(t)
-    iwc = 1e-5
+    iwc = 1e-6
     dm = (4.0**4 * iwc / (np.pi * 917.0) / n0)**0.25
     return dm
 
@@ -200,7 +200,7 @@ def a_priori_shape(t):
 
 
 z_grid = np.linspace(0, 20e3, 21)
-rh_covariance = Diagonal(1**2)
+rh_covariance = Diagonal(2**2)
 rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
