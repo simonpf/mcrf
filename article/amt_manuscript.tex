@@ -281,7 +281,7 @@ moments using a species-dependent parametrization and mass-size relationship.
 The parameters of the mass-size relationship are given in
 Tab.~\ref{tab:species_parameters}. As shown in the table, the densities of all
 hydrometeor species in the model are assumed to scale with a power of three,
-which leads to unrealistically high densities for large particles.
+which leads to very high densities for large particles.
 
 \begin{table}
   \centering
@@ -482,10 +482,19 @@ be assessed using
   \right )^{-1} (\mathbf{y} - \hat{\mathbf{y}}).
 \end{align}
 %
-Given the underlying assumptions of Gaussian measurement error and a priori,
-the quantity $\chi^2$ follows a chi-square distribution with $m$ degrees of
-freedom. If the retrieval produces high  $\chi^2$ values, than this is an indicator
-of convergence problems or inability of the forward model to fit the observations.
+Given the underlying assumptions of Gaussian a priori distribution and
+measurement error, the quantity $\chi^2$ follows a chi-square distribution with
+$m$ degrees of freedom, where $m$ is the dimension of the measurement space. If
+the retrieval produces values that significantly deviate from the expected
+chi-square distribution, then this may indicate problems in the retrieval setup.
+
+Based on the OEM inversion, a formalism can derived to quantify the information
+content of a retrieval. This is done by computing the trace of the so call
+averaging kernel matrix (AVK):
+\begin{align}
+\mathbf{A} = (\mathbf{K}^T \mathbf{S}_e\mathbf{K} + \mathbf{S}_a^{-1})^{-1}
+\mathbf{K}^T\mathbf{S}_e^{-1}\mathbf{K}
+\end{align}
 
 \subsubsection{Measurement space}
 \label{sec:orge7dc286}
@@ -497,7 +506,7 @@ assumed to be independent and Gaussian distributed with standard deviations
 according to the noise characteristics given in Section \ref{sec:sensors}.
 
 \subsubsection{State space}
-\label{sec:orgae5ee4e}
+\label{sec:method:fowardmodel}
 
 The proposed retrieval solves for distributions of one frozen and one liquid
 hydrometeor species in the atmospheric column together with profiles of
@@ -658,21 +667,22 @@ results of the combined and the baseline retrievals applied to the reference
 cloud scenes.
 
 \subsection{Complementary information content}
-\label{sec:orgdc1b0b8}
+\label{sec:simple_cloud}
 
 A fundamental question regarding the benefit of combining two remote sensing
 observations in a retrieval is to what extent the observations contain
 non-redundant information. The degree of non-redundancy in the combined
 observations is what is referred to here as complementary information content.
 In order to explore this complementary information content in the radar and
-radiometer observations, an idealized, homogeneous cloud layer with a thickness of
-$4\ \unit{km}$ located at an altitude of $10\ \unit{km}$ in a tropical atmosphere is
-considered. The cloud is assumed to consist of a single frozen hydrometeor
-species using the same PSD parametrization as the frozen hydrometeors used in
-the cloud retrieval. As particle model, the 8-ColumnAggregate (ID 8) from the ARTS
-SSDB is used.
+radiometer observations, an idealized, homogeneous cloud layer with a thickness
+of $4\ \unit{km}$ located at an altitude of $10\ \unit{km}$ in a tropical
+atmosphere is considered. The cloud is assumed to consist of a single frozen
+hydrometeor species using the PSD parametrization for frozen hydrometeors
+described in Sec.~\ref{sec:method:fowardmodel}, which is also used in the
+retrieval. As particle model, the 8-ColumnAggregate (ID 8) from the ARTS SSDB is
+used.
 
-The question that we aim to address here is whether the combination of active
+The question that is addressed here is whether the combination of active
 and passive observations is able to constrain both the horizontal and the
 vertical scaling factors of the PSD of the ice particles in the cloud. To
 investigate this, the $N_0^*$ and $D_m$ parameters of the homogeneous cloud
@@ -705,17 +715,17 @@ cloud signal measured by selected radiometer channels of the MWI radiometer
 The contours of the measured active and passive cloud signals show the ambiguity
 of the single-instrument measurements with respect to the parameters of the PSD:
 Along these contours the signal does not change, while the cloud composition
-does. A necessary condition for the ability of a combined retrieval to resolve
+does. A necessary condition for a combined cloud retrieval to be able to resolve
 this ambiguity is that the contours of the active and passive signals cross each
-other. The panels in Fig.~\ref{fig:contours} thus give an indication to what
+other. The panels in Fig.~\ref{fig:contours} thus provide an indication to what
 extent the information in the radar measurement and the corresponding passive
 radiometer channel provide complementary information on the parameters of the
 PSD. Considering the panels corresponding to the MWI channels, the results show
 that the observations contain complementary information only for very dense
-clouds consisting of very large particles. Compared to that, the ICI
-observations display a lower degree of parallelism already at lower densities
-and particle sizes, indicating higher complementary information content also for
-thinner clouds.
+clouds consisting of very large particles. In contrast to that, the ICI
+observations exhibit crossing contours already at lower densities and particle
+sizes, indicating that the complementary information content in these observations
+is higher for less dense clouds consisting of smaller particles.
 
 \subsection{Retrieval results}
 
@@ -751,16 +761,12 @@ this article.
 The forward-simulated observations that were generated to test the retrievals
 are shown for the first test scene in Fig.~\ref{fig:observations_a}. Independent
 Gaussian noise with standard deviations according to sensor specifications has
-been added to the simulated observations to account for sensor noise. A source
-of forward model error is accounted for in the observations by To model
-the forward model error that would affect a real retrieval, the forward
-simulations have been performed using the full microphysics from the GEM model.
-This means that the synthetic observations were computed using six hydrometeor
-classes, while the retrieval forward model uses only two classes of
-hydrometeors. Errors due mismatch of sensor footprints or inhomogeneity of the
-atmosphere across the fields of view of the sensors are not represented in the
-simulated observations.
-
+been added to the simulated observations to account for sensor noise. It should
+be noted here, that the simulated observations used to test the retrieval
+assume different microphysics than the forward model used in the retrieval: The
+synthetic observations are computed using the six hydrometeor classes from the
+GEM model, while the retrieval forward model assumes only two classes of
+hydrometeors.
 
 \begin{figure}
 \centering
@@ -793,7 +799,7 @@ combined retrieval do not achieve a low cost in regions where the cloud is thick
 and complex in structure.
 
 Panel (b) displays the retrieved column-integrated IWC, the ice water path
-(IWP). The IWP is plotted in $\ \unit{dB}$ relative to the reference IWP in the
+(IWP). The IWP is plotted in $\unit{dB}$ relative to the reference IWP in the
 scene since the curves could otherwise not be distinguished due to the high
 dynamic range of the reference values. Although quite noisy, the combined
 retrieval yields the lowest deviations in the retrieved IWP over large parts of
@@ -862,7 +868,7 @@ pronounced for the other particle models.
   column), the radar only (third column) and the combined retrieval (fourth
   column). Markers are colored according to the prevailing hydrometeor type at
   the corresponding grid point in the reference scene. Due to their sparsity,
-  marker corresponding to hail are drawn at twice the size of the other
+  marker corresponding to graupel are drawn at twice the size of the other
   markers.}
 \label{fig:results_scatter_a_1}
 \end{figure}
@@ -1034,6 +1040,44 @@ which is why only the result for the LargePlateAggregate is shown here.
   ratio of the maximum mass density of any of the frozen hydrometeor species and
   the total ice mass density.}
 \label{fig:results_nd_scatter_a}
+\end{figure}
+
+\subsubsection{Information content}
+
+The retrieval results presented above show that the combined observations allow a more
+accurate retrieval of both mass and particle number density. This confirms the
+experimental results from Sec.~\ref{sec:simple_cloud}, that active and passive
+observations provide complementary information on the microphysics of ice
+particles. The information content of the retrievals can be assessed more
+quantitatively using the averaging kernel (AVK) matrix.
+
+The trace of the AVK, commonly referred to as the number of degrees of freedom
+for signal (DFS), quantifies the number of independent pieces of information
+contained in the observations. The distributions of the degrees of freedom of
+each retrieved profile in the test scenes are displayed in Fig.~\ref{fig:dofs}.
+Not-surprisingly, the combined observations exhibit the highest information
+content. Nonetheless, comparison with the DFS value of active- and passive-only
+observations shows that the observations contain a certain degree of redundancy
+leading to a lower combined information content than the sum of the two. The
+grouping into retrieval quantities furthermore reveals that the largest increase
+in the information content comes from water vapor, which is not retrieved in the
+radar-only retrieval. Although small, a significant increase in information
+content is observed for both scenes for the $N_0^*$ parameter for ice
+hydrometeors. Interestingly, this increase is observed even though the
+information content in the passive-only observations for $N_0^*$ is close to
+zero. For the $D_m$ parameter no such increase is observed and for the second
+test scene the information content is even decreased compared to the radar-only
+retrieval.
+
+\begin{figure}
+\centering
+\includegraphics[width = 0.7\textwidth]{../plots/dofs}
+\caption{Distributions of degrees of freedom of signal displayed as bar
+  plots grouped by retrieval quantity and method. Results for the first test scene are
+  displayed in  Panel (a) and for the second test scene in Panel (b).
+  Markers on the top of bars mark the extent of one standard deviation around
+  the mean of each distribution.}
+\label{fig:dofs}
 \end{figure}
 
 \subsubsection{Impact of assumed ice particle shape}
