@@ -38,9 +38,9 @@ ice_covariance = Diagonal(1 * np.ones(md_z_grid.size))
 ice_covariance = SpatialCorrelation(ice_covariance, 2e3, mask=ice_mask)
 
 # n0
-points_n0 = 2
+points_n0 = 3
 ice_covariance = Diagonal(1, mask=ice_mask, mask_value=1e-12)
-ice_covariance = SpatialCorrelation(ice_covariance, 2e3, mask=ice_mask)
+ice_covariance = SpatialCorrelation(ice_covariance, 5e3, mask=ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0",
                                     "temperature",
                                     n0_a_priori,
@@ -54,9 +54,9 @@ ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori,
                                     provide_retrieval_grid=False,
                                     transition=1e3)
 
-points_dm = 6
+points_dm = 5
 ice_covariance = Diagonal(200e-6**2, mask=ice_mask, mask_value=1e-16)
-ice_covariance = SpatialCorrelation(ice_covariance, 2e3, mask=ice_mask)
+ice_covariance = SpatialCorrelation(ice_covariance, 5e3, mask=ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm",
                                     "temperature",
                                     dm_a_priori,
@@ -76,7 +76,7 @@ ice.transformations = [
     Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
     Composition(Identity(), PiecewiseLinear(ice_dm_a_priori))
 ]
-ice.limits_low = [4, 1e-6]
+ice.limits_low = [4, 1e-8]
 ice.radar_only = False
 
 ################################################################################
@@ -141,7 +141,7 @@ rain.transformations = [
     Composition(Log10(), PiecewiseLinear(rain_n0_a_priori)),
     Composition(Identity(), PiecewiseLinear(rain_dm_a_priori))
 ]
-rain.limits_low = [2, 1e-6]
+rain.limits_low = [2, 1e-8]
 rain.retrieve_second_moment = True
 
 ################################################################################
@@ -162,10 +162,7 @@ rh_covariance = Diagonal(4.0)
 rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
-rh_a_priori = ReducedVerticalGrid(rh_a_priori,
-                                  z_grid,
-                                  "altitude",
-                                  provide_retrieval_grid=False)
+rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude")
 
 #rh_a_priori.transformation = Composition(transformation, PiecewiseLinear(rh_a_priori))
 

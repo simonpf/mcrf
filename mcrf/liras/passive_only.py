@@ -53,7 +53,7 @@ ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori,
 
 points_dm = 5
 ice_covariance = Diagonal(300e-6**2, mask=ice_mask, mask_value=1e-16)
-ice_covariance = SpatialCorrelation(ice_covariance, 4e3, mask=ice_mask)
+ice_covariance = SpatialCorrelation(ice_covariance, 5e3, mask=ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm",
                                     "temperature",
                                     dm_a_priori,
@@ -206,10 +206,7 @@ rh_covariance = Diagonal(4.0)
 rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
-rh_a_priori = ReducedVerticalGrid(rh_a_priori,
-                                  z_grid,
-                                  "altitude",
-                                  provide_retrieval_grid=False)
+rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude")
 
 ################################################################################
 # Observation error

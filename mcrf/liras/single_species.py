@@ -31,7 +31,7 @@ ice_mask = And(TropopauseMask(), TemperatureMask(0.0, 272.5))
 
 ice_covariance = Diagonal(400e-6**2, mask=ice_mask, mask_value=1e-24)
 ice_covariance = SpatialCorrelation(ice_covariance,
-                                    2e3,
+                                    5e3,
                                     mask=ice_mask,
                                     mask_value=1e-24)
 ice_dm_a_priori = FunctionalAPriori("ice_dm",
