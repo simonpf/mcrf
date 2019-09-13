@@ -48,7 +48,7 @@ ice_n0_a_priori = FunctionalAPriori("ice_n0",
                                     n0_a_priori,
                                     ice_covariance,
                                     mask=ice_mask,
-                                    mask_value=0)
+                                    mask_value=4)
 ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori,
                                     10,
                                     ice_mask,
@@ -61,7 +61,7 @@ ice.transformations = [
     Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
     Identity()
 ]
-ice.limits_low = [0, 1e-10]
+ice.limits_low = [4, 1e-10]
 
 ################################################################################
 # Rain particles
