@@ -7,7 +7,7 @@ import mcrf.joint_flight.setup
 import mcrf.liras
 from   mcrf.retrieval        import CloudRetrieval
 from   mcrf.sensors          import hamp_radar, hamp_passive, ismar
-from   mcrf.joint_flight     import ice, liquid, snow, rain, liquid_md_a_priori, \
+from   mcrf.joint_flight     import ice, snow, rain, cloud_water_a_priori, \
     rh_a_priori, ObservationError, temperature_a_priori
 
 from parts.retrieval.a_priori import SensorNoiseAPriori
@@ -30,7 +30,7 @@ data_provider = NetCDFDataProvider(filename)
 # Define hydrometeors and sensors.
 #
 
-hydrometeors = [ice, snow, rain]
+hydrometeors = [ice, rain]
 sensors      = [hamp_radar, hamp_passive, ismar]
 
 #
@@ -43,7 +43,7 @@ data_provider.add(snow.a_priori[0])
 data_provider.add(snow.a_priori[1])
 data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
-data_provider.add(liquid_md_a_priori)
+data_provider.add(cloud_water_a_priori)
 data_provider.add(rh_a_priori)
 data_provider.add(temperature_a_priori)
 data_provider.add(ObservationError(sensors))

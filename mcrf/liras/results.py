@@ -222,7 +222,7 @@ def plot_results(lats, z, qs, name, norm,
         #ax.axhline(y = 10, c = "k")
         ax.legend(loc = "center", ncol = 3, fontsize = 14, bbox_to_anchor = [0.5, 1.2])
 
-        ax.set_ylabel("$l$ []", fontsize = 14)
+        ax.set_ylabel(r"$\chi^2_y$ []", fontsize = 14)
         ax.set_xticks([])
         ax.set_xlim([x[0], x[-1]])
         ax.set_ylim([1e-3, 1e3])
@@ -324,7 +324,7 @@ def plot_results_2(lats, z, qs, name, norm, costs = None, cmap = magma, titles =
         ax.legend(loc = "upper left", ncol = 3)
 
         ax.set_ylim([1e-1, 1e3])
-        ax.set_ylabel("$l$ []")
+        ax.set_ylabel("$\chi^2_y$ []")
         ax.set_xticks([])
         ax.set_xlim([x[0], x[-1]])
         ax.set_ylim([-10, 20])
