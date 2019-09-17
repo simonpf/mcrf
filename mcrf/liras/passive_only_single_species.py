@@ -55,7 +55,7 @@ ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori,
                                     transition=1e3)
 
 points_dm = 4
-ice_covariance = Diagonal(200e-6**2, mask=ice_mask, mask_value=1e-16)
+ice_covariance = Diagonal(500e-6**2, mask=ice_mask, mask_value=1e-16)
 ice_covariance = SpatialCorrelation(ice_covariance, 5e3, mask=ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm",
                                     "temperature",
