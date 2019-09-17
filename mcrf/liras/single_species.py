@@ -41,7 +41,7 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm",
                                     mask=ice_mask,
                                     mask_value=1e-8)
 
-ice_covariance = Diagonal(4, mask=ice_mask, mask_value=1e-8)
+ice_covariance = Diagonal(1, mask=ice_mask, mask_value=1e-8)
 ice_covariance = SpatialCorrelation(ice_covariance, 2e3, mask=ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0",
                                     "temperature",
@@ -72,13 +72,17 @@ rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
 rain_mask = TemperatureMask(272.15, 340.0)
 rain_covariance = Diagonal(500e-6**2, mask=rain_mask, mask_value=1e-16)
-rain_covariance = SpatialCorrelation(rain_covariance, 2e3, mask=rain_mask, mask_value=1e-16)
+rain_covariance = SpatialCorrelation(rain_covariance,
+                                     2e3,
+                                     mask=rain_mask,
+                                     mask_value=1e-16)
 rain_dm_a_priori = FixedAPriori("rain_dm",
                                 500e-6,
                                 rain_covariance,
                                 mask=rain_mask,
                                 mask_value=1e-8)
-rain_dm_a_priori = ReducedVerticalGrid(rain_dm_a_priori, np.linspace(0, 12e3, 13), "altitude")
+rain_dm_a_priori = ReducedVerticalGrid(rain_dm_a_priori,
+                                       np.linspace(0, 12e3, 13), "altitude")
 
 z_grid = np.linspace(0, 12e3, 7)
 rain_covariance = Diagonal(1, mask=rain_mask, mask_value=1e-12)
