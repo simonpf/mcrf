@@ -2,7 +2,7 @@ import os
 from mcrf.psds                import D14NDmIce, D14NDmSnow, D14NDmLiquid
 from mcrf.hydrometeors        import Hydrometeor
 from parts.retrieval.a_priori import *
-from parts.jacobian           import Atanh, Log10, Identity
+from parts.jacobian           import Atanh, Log10, Identity, Composition
 
 path = os.environ["JOINT_FLIGHT_PATH"]
 scattering_data = os.path.join(path, "data", "scattering_data")
@@ -30,11 +30,12 @@ ice_covariance = Thikhonov(scaling = 1.0 / (500e-6 ** 2), mask = ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori,
                                     ice_covariance, mask=ice_mask, mask_value=1e-8)
 
-z_grid = np.linspace(0, 12e3, 13)
+z_grid = np.linspace(0, 12e3, 25)
 ice_covariance = Thikhonov(scaling = 0.25, mask = ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori,
                                     ice_covariance, mask=ice_mask, mask_value=4)
-ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori, z_grid, "altitude")
+ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori, z_grid, "altitude",
+                                      provide_retrieval_grid = False)
 
 ice = Hydrometeor("ice",
                   D14NDmIce(),
@@ -45,7 +46,7 @@ ice.radar_only = False
 ice.retrieve_second_moment = True
 
 ice.transformations = [
-    Log10(),
+    Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
     Identity()
 ]
 ice.limits_low = [0, 1e-10]
@@ -112,8 +113,8 @@ rain_dm_a_priori = FixedAPriori("rain_dm",
                                 mask_value=1e-8)
 rain_dm_a_priori = ReducedVerticalGrid(rain_dm_a_priori, np.linspace(0, 12e3, 13), "altitude")
 
-z_grid = np.linspace(0, 12e3, 7)
-rain_covariance = Thikhonov(scaling = 0.25, mask = rain_mask)
+z_grid = np.linspace(0, 12e3, 13)
+rain_covariance = Thikhonov(scaling = 1.0, mask = rain_mask)
 rain_n0_a_priori = FixedAPriori("rain_n0", 7, rain_covariance, mask = rain_mask, mask_value = 1)
 rain_n0_a_priori = ReducedVerticalGrid(rain_n0_a_priori, z_grid, "altitude",
                                          Diagonal(4 * np.ones(7)))
@@ -126,7 +127,7 @@ rain = Hydrometeor("rain",
 rain.retrieve_second_moment = True
 
 rain.transformations = [
-    Log10(),
+    Composition(Log10(), PiecewiseLinear(rain_n0_a_priori)),
     Identity()
 ]
 rain.limits_low = [0, 1e-10]
