@@ -31,10 +31,11 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm", "temperature", dm_a_priori,
                                     ice_covariance, mask=ice_mask, mask_value=1e-8)
 
 z_grid = np.linspace(0, 12e3, 25)
-ice_covariance = Thikhonov(scaling = 0.25, mask = ice_mask)
+ice_covariance = Thikhonov(scaling = 0.25, mask = ice_mask, z_grid = z_grid)
 ice_n0_a_priori = FunctionalAPriori("ice_n0", "temperature", n0_a_priori,
                                     ice_covariance, mask=ice_mask, mask_value=4)
 ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori, z_grid, "altitude",
+                                      covariance = ice_covariance,
                                       provide_retrieval_grid = False)
 
 ice = Hydrometeor("ice",
@@ -104,20 +105,24 @@ cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori,
 rain_shape      = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
+z_grid = np.linspace(0, 12e3, 13)
 rain_mask  = TemperatureMask(270, 340.0)
-rain_covariance = Thikhonov(scaling = 1.0 / (500e-6 ** 2), mask = rain_mask)
+rain_covariance = Thikhonov(scaling = 1.0 / (500e-6 ** 2),
+                            mask = rain_mask, z_grid = z_grid)
 rain_dm_a_priori = FixedAPriori("rain_dm",
                                 500e-6,
                                 rain_covariance,
                                 mask=rain_mask,
                                 mask_value=1e-8)
-rain_dm_a_priori = ReducedVerticalGrid(rain_dm_a_priori, np.linspace(0, 12e3, 13), "altitude")
+rain_dm_a_priori = ReducedVerticalGrid(rain_dm_a_priori, z_grid, "altitude",
+                                       covariance = rain_covariance)
 
-z_grid = np.linspace(0, 12e3, 13)
-rain_covariance = Thikhonov(scaling = 1.0, mask = rain_mask)
-rain_n0_a_priori = FixedAPriori("rain_n0", 7, rain_covariance, mask = rain_mask, mask_value = 1)
+rain_covariance = Thikhonov(scaling = 1.0, mask = rain_mask, z_grid = z_grid)
+rain_n0_a_priori = FixedAPriori("rain_n0", 7, rain_covariance, mask = rain_mask,
+                                mask_value = 1)
 rain_n0_a_priori = ReducedVerticalGrid(rain_n0_a_priori, z_grid, "altitude",
-                                         Diagonal(4 * np.ones(7)))
+                                       covariance = rain_covariance,
+                                       provide_retrieval_grid = False)
 
 rain = Hydrometeor("rain",
                      D14NDmLiquid(),
