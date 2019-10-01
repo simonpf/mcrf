@@ -12,7 +12,7 @@ from parts.retrieval.a_priori import DataProviderAPriori, PiecewiseLinear
 from parts.retrieval import RetrievalRun
 from parts.atmosphere.absorption import O2, N2, H2O, CloudWater, RelativeHumidity, VMR
 from parts.utils.data_providers import NetCDFDataProvider
-from parts.scattering.solvers import Disort
+from parts.scattering.solvers import Disort, RT4
 from parts.simulation import ArtsSimulation
 from parts.jacobian import Log10, Atanh, Composition, Identity
 
@@ -106,7 +106,7 @@ class CloudRetrieval:
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
         self.simulation = ArtsSimulation(atmosphere,
                                          sensors=sensors,
-                                         scattering_solver=Disort())
+                                         scattering_solver=RT4())
         self.sensors = sensors
 
         self.data_provider = data_provider
@@ -500,7 +500,7 @@ class CloudSimulation:
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
         self.simulation = ArtsSimulation(atmosphere,
                                          sensors=sensors,
-                                         scattering_solver=Disort())
+                                         scattering_solver=RT4())
         self.sensors = sensors
 
         self.data_provider = data_provider
