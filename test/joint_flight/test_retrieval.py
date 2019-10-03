@@ -1,7 +1,7 @@
-from parts.utils.data_providers import NetCDFDataProvider
 import os
-
 os.environ["JOINT_FLIGHT_PATH"] = "/home/simonpf/data/joint_flight"
+os.environ["ARTS_DATA_PATH"] = "/home/simonpf/src/joint_flight/data"
+
 import mcrf.joint_flight.setup
 
 import mcrf.liras
@@ -9,8 +9,8 @@ from   mcrf.retrieval        import CloudRetrieval
 from   mcrf.sensors          import hamp_radar, hamp_passive, ismar
 from   mcrf.joint_flight     import ice, snow, rain, cloud_water_a_priori, \
     rh_a_priori, ObservationError, temperature_a_priori
-
 from parts.retrieval.a_priori import SensorNoiseAPriori
+from parts.utils.data_providers import NetCDFDataProvider
 
 import matplotlib.pyplot as plt
 from IPython import get_ipython

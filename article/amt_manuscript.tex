@@ -1,4 +1,4 @@
-%% Copernicus Publications Manuscript Preparation Template for LaTeX Submissions
+%from% Copernicus Publications Manuscript Preparation Template for LaTeX Submissions
 %% ---------------------------------
 %% This template should be used for copernicus.cls
 %% The class file and some style files are bundled in the Copernicus Latex Package, which can be downloaded from the different journal webpages.
@@ -115,26 +115,26 @@
   flown on the same satellites and complement the ICI sensor with observations
   at traditional millimeter wavelengths. The addition of these two new passive
   microwave sensors to the global system of earth observation satellites opens
-  up opportunities for potential synergistic satellite missions that may help to
-  maximize the scientific return from the Metop-SG program. This study analyzes
-  the potential benefits of combining observations of the MWI and ICI
-  radiometers with a 94-$\unit{GHz}$ cloud radar for the retrieval of frozen
-  hydrometeors. Starting from a simplified numerical experiment, it is shown
-  that the complementary information content in the radar and radiometer
-  observations can help to better constrain the particle size distribution of
-  ice particles in the atmosphere. The feasibility of the combined retrieval is
-  demonstrated by applying a one-dimensional, variational cloud-retrieval
-  algorithm to simulated observations from a high-resolution atmospheric model.
-  Comparison of the results with passive- and radar-only versions of the
-  retrieval algorithm confirms that synergies between the active and passive
-  observations allow an improved retrieval of microphysical properties of frozen
-  hydrometeors. The effect of the assumed ice particle shape on the results is
-  analyzed and found to be critical for obtaining good retrieval performance. In
-  addition to this, the synergistic retrieval shows improved sensitivity to
-  liquid water in both warm and supercooled clouds. The results of this study
-  clearly demonstrate the potential of the combined observations to constrain
-  the microphysical properties of ice hydrometeors, which can help to reduce
-  errors in retrieved profiles of mass- and number densities.\end{abstract}
+  up opportunities for synergistic satellite missions aiming to maximize
+  the scientific return of the Metop-SG program. This study analyzes the
+  potential benefits of combining observations of the MWI and ICI radiometers
+  with a 94-$\unit{GHz}$ cloud radar for the retrieval of frozen hydrometeors.
+  Starting from a simplified numerical experiment, it is shown that the
+  complementary information content in the radar and radiometer observations can
+  help to better constrain the particle size distribution of ice particles in
+  the atmosphere. The feasibility of the combined retrieval is demonstrated by
+  applying a one-dimensional, variational cloud-retrieval algorithm to simulated
+  observations from a high-resolution atmospheric model. Comparison of the
+  results with passive- and radar-only versions of the retrieval algorithm
+  confirms that synergies between the active and passive observations allow an
+  improved retrieval of microphysical properties of frozen hydrometeors. The
+  effect of the assumed ice particle shape on the results is analyzed and found
+  to be critical for obtaining good retrieval performance. In addition to this,
+  the synergistic retrieval shows improved sensitivity to liquid water in both
+  warm and supercooled clouds. The results of this study clearly demonstrate the
+  potential of the combined observations to constrain the microphysical
+  properties of ice hydrometeors, which can help to reduce errors in retrieved
+  profiles of mass- and number densities.\end{abstract}
 
 
 \introduction  %% \introduction[modified heading if necessary]
@@ -248,7 +248,7 @@ theoretical formulation of the combined cloud-retrieval algorithm is introduced.
 
 The cloud scenes that will be used for the testing of the retrieval were
 produced by Environment and Climate Change Canada using a high-resolution NWP
-configuration of the Global Environmental Multiscale Model (GEM, \cite{cote98}).
+configuration of the Global Environmental Multiscale (GEM) Model (\cite{cote98}).
 For this study, we restrict ourselves to two designated, two-dimensional test
 scenes, which are displayed in Fig.~\ref{fig:overview}. The test scenes have a
 horizontal resolution of $1\ \unit{km}$ and both extend over $800\ \unit{km}$.
@@ -1085,7 +1085,7 @@ to those obtained with the LargePlateAggregate model.
 \centering
 \includegraphics[width = 0.7\textwidth]{figures/fig13}
 \caption{Scatter plots of the retrieved particle number densities at grid points
-  with reference mass density larger than $10^{-5}\ \unit{kg/m^3}$. Rows show
+  with reference mass density larger than $10^{-5}\ \unit{kg\ m^{-3}}$. Rows show
   the results for the different particle models used in the retrieval while
   column display the results for the different retrieval methods. The marker
   color encodes the homogeneity of the corresponding ice mass, which is computed

@@ -11,6 +11,7 @@ from parts.atmosphere.surface import Tessem
 from parts.retrieval.a_priori import DataProviderAPriori, PiecewiseLinear
 from parts.retrieval import RetrievalRun
 from parts.atmosphere.absorption import O2, N2, H2O, CloudWater, RelativeHumidity, VMR
+from parts.atmosphere.catalogs import Aer
 from parts.utils.data_providers import NetCDFDataProvider
 from parts.scattering.solvers import Disort, RT4
 from parts.simulation import ArtsSimulation
@@ -98,12 +99,18 @@ class CloudRetrieval:
         self.include_cloud_water = len(cw_a) > 0
 
         self.hydrometeors = hydrometeors
-        absorbers = [O2(), N2(), H2O()]
+        absorbers = [O2(model = "TRE05", from_catalog = False),
+                     N2(model = "SelfContStandardType", from_catalog = False),
+                     H2O(model = ["SelfContCKDMT320", "ForeignContCKDMT320"],
+                         lineshape = "Voigt_Kuntz6",
+                         normalization = "VVH",
+                         cutoff = 750e9)]
         if self.include_cloud_water:
-            absorbers.insert(2, CloudWater())
+            absorbers.insert(2, CloudWater(from_catalog = False))
         scatterers = hydrometeors
         surface = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
+        atmosphere.catalog = Aer("h2o_lines.xml.gz")
         self.simulation = ArtsSimulation(atmosphere,
                                          sensors=sensors,
                                          scattering_solver=RT4())
@@ -131,12 +138,12 @@ class CloudRetrieval:
             if all([isinstance(s, PassiveSensor) for s in rr.sensors]):
                 rr.settings["lm_ga_settings"] = np.array(
                     [10.0, 3.0, 2.0, 1e5, 1.0, 1.0])
-                rr.settings["max_iter"] = 20
+                rr.settings["max_iter"] = 10
                 rr.settings["stop_dx"] = 0.1
             else:
                 rr.settings["lm_ga_settings"] = np.array(
                     [10.0, 3.0, 2.0, 1e5, 1.0, 1.0])
-                rr.settings["max_iter"] = 20
+                rr.settings["max_iter"] = 10
                 rr.settings["stop_dx"] = 0.1
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [
@@ -494,7 +501,7 @@ class CloudSimulation:
         self.hydrometeors = hydrometeors
         absorbers = [O2(), N2(), H2O()]
         if self.include_cloud_water:
-            absorbers.insert(2, CloudWater())
+            absorbers.insert(2, CloudWater(model = "Ell07"))
         scatterers = hydrometeors
         surface = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
