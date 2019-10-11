@@ -1,5 +1,5 @@
 import os
-os.environ["JOINT_FLIGHT_PATH"] = "/home/simonpf/data/joint_flight"
+os.environ["JOINT_FLIGHT_PATH"] = "/home/simonpf/src/joint_flight"
 os.environ["ARTS_DATA_PATH"] = "/home/simonpf/src/joint_flight/data"
 
 import mcrf.joint_flight.setup
@@ -54,4 +54,4 @@ data_provider.add(ObservationError(sensors))
 
 retrieval = CloudRetrieval(hydrometeors, sensors, data_provider)
 retrieval.setup()
-retrieval.run(800)
+retrieval.run(100)

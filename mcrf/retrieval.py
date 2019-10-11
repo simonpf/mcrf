@@ -92,6 +92,15 @@ class CloudRetrieval:
         else:
             self.cw = None
 
+        t_a = [p for p in self.data_provider.subproviders \
+                 if getattr(p, "name", "") == "temperature"]
+        if len(t_a) > 0:
+            t = self.simulation.atmosphere.temperature
+            self.temperature = t
+            self.simulation.retrieval.add(self.temperature)
+        else:
+            self.temperature = None
+
     def __init__(self, hydrometeors, sensors, data_provider):
 
         cw_a = [p for p in data_provider.subproviders \
@@ -154,6 +163,10 @@ class CloudRetrieval:
                 rr.retrieval_quantities += [self.h2o]
             if not self.cw is None:
                 rr.retrieval_quantities += [self.cw]
+            if not self.temperature is None:
+                rr.retrieval_quantities += [self.temperature]
+
+
 
         if all([isinstance(s, ActiveSensor) for s in self.sensors]):
             self.simulation.retrieval.callbacks = [("Radar only", radar_only)]

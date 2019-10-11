@@ -216,7 +216,11 @@ class HampPassive(PassiveSensor):
                 + [np.array([1.4, 2.3, 4.2, 8.5]) * 1e9] \
                 + [np.array([0.6,  1.5,  2.5, 3.5,  5.0,  7.5, 12.5]) * 1e9]
 
-    _nedt = np.array([0.1] * 7 + [0.2] * 7 + [0.25] + [0.6] * 4 + [0.6] * 7)
+    _nedt = np.array([np.sqrt(0.5 ** 2 + 0.1 ** 2)]  * 7 +
+                     [np.sqrt(0.5 ** 2 + 0.2 ** 2)]  * 7 +
+                     [np.sqrt(0.25 ** 2 + 1.5 ** 2)] +
+                     [np.sqrt(0.6 ** 2 + 1.5 ** 2)] * 4 +
+                     [np.sqrt(0.6 ** 2 + 1.5 ** 2)] * 7)
 
     def __init__(self, stokes_dimension = 1):
         channels, sensor_response = sensor_properties(HampPassive.center_frequencies,
@@ -237,7 +241,7 @@ class HampPassive(PassiveSensor):
 
     @property
     def nedt(self):
-        return 0.1 * np.ones(self.sensor_response_f.size)
+        return HampPassive._nedt
 
 ################################################################################
 # ISMAR
@@ -276,7 +280,7 @@ class Ismar(PassiveSensor):
 
     @property
     def nedt(self):
-        return 0.1 * np.ones(self.sensor_response_f.size)
+        return 1.0 * np.ones(self.sensor_response_f.size)
 
 ################################################################################
 # Liras cloud profiling radar (LCPR).
@@ -306,7 +310,10 @@ class LCPR(ActiveSensor):
 class HampRadar(ActiveSensor):
 
     def __init__(self, stokes_dimension = 1):
-        range_bins = np.linspace(0.0, 10e3, 51) + 100.0
+        range_bins = np.linspace(0.0, 12e3, 101) + 100.0
+        range_bins += 0.5 * (range_bins[1] - range_bins[0])
+        range_bins = range_bins[:-1]
+
         super().__init__(name = "hamp_radar",
                          f_grid = [35.564e9],
                          range_bins = range_bins,
@@ -321,7 +328,7 @@ class HampRadar(ActiveSensor):
 
     @property
     def nedt(self):
-        return 0.5 * np.ones(self.range_bins.size - 1)
+        return 1.0 * np.ones(self.range_bins.size - 1)
 
 ################################################################################
 # RASTA

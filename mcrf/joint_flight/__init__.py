@@ -149,7 +149,7 @@ def a_priori_shape(t):
     return transformation(x)
 
 #rh_covariance = Thikhonov(scaling = 0.2)
-rh_covariance = Diagonal(5 * np.ones(66))
+rh_covariance = Diagonal(5)
 
 class RelativeHumidityAPriori(APrioriProviderBase):
     def __init__(self,
@@ -183,7 +183,8 @@ rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covaria
 # Temperature
 ################################################################################
 
-temperature_covariance = Diagonal(2 * np.ones(66))
+temperature_covariance = Diagonal(1 ** 2)
+temperature_covariance = SpatialCorrelation(temperature_covariance, 2e3)
 temperature_a_priori = DataProviderAPriori("temperature", temperature_covariance)
 
 class ObservationError(DataProviderBase):
