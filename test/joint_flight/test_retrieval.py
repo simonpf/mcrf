@@ -45,7 +45,7 @@ data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(cloud_water_a_priori)
 data_provider.add(rh_a_priori)
-data_provider.add(temperature_a_priori)
+#data_provider.add(temperature_a_priori)
 data_provider.add(ObservationError(sensors))
 
 #
@@ -54,4 +54,4 @@ data_provider.add(ObservationError(sensors))
 
 retrieval = CloudRetrieval(hydrometeors, sensors, data_provider)
 retrieval.setup()
-retrieval.run(100)
+retrieval.run(10)
