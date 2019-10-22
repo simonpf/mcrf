@@ -108,14 +108,16 @@ class CloudRetrieval:
         self.include_cloud_water = len(cw_a) > 0
 
         self.hydrometeors = hydrometeors
-        absorbers = [O2(model = "TRE05", from_catalog = False),
-                     N2(model = "SelfContStandardType", from_catalog = False),
-                     H2O(model = ["SelfContCKDMT320", "ForeignContCKDMT320"],
-                         lineshape = "Voigt_Kuntz6",
-                         normalization = "VVH",
-                         cutoff = 750e9)]
+        absorbers = [
+            O2(model="TRE05", from_catalog=False),
+            N2(model="SelfContStandardType", from_catalog=False),
+            H2O(model=["SelfContCKDMT320", "ForeignContCKDMT320"],
+                lineshape="Voigt_Kuntz6",
+                normalization="VVH",
+                cutoff=750e9)
+        ]
         if self.include_cloud_water:
-            absorbers.insert(2, CloudWater(from_catalog = False))
+            absorbers.insert(2, CloudWater(from_catalog=False))
         scatterers = hydrometeors
         surface = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
@@ -173,6 +175,8 @@ class CloudRetrieval:
         elif any([isinstance(s, ActiveSensor) for s in self.sensors]):
             self.simulation.retrieval.callbacks = [("Radar only", radar_only),
                                                    ("All quantities",
+                                                    all_quantities)]
+            self.simulation.retrieval.callbacks = [("All quantities",
                                                     all_quantities)]
         else:
             self.simulation.retrieval.callbacks = [("All quantities",
@@ -514,7 +518,7 @@ class CloudSimulation:
         self.hydrometeors = hydrometeors
         absorbers = [O2(), N2(), H2O()]
         if self.include_cloud_water:
-            absorbers.insert(2, CloudWater(model = "Ell07"))
+            absorbers.insert(2, CloudWater(model="Ell07"))
         scatterers = hydrometeors
         surface = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)

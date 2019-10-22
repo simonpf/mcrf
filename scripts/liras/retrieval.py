@@ -4,9 +4,9 @@
 
 import mcrf.liras.setup
 import mcrf.liras
-from   mcrf.retrieval        import CloudRetrieval
-from   mcrf.sensors          import mwi, mwi_full, ici, lcpr
-from   mcrf.liras.model_data import ModelDataProvider
+from mcrf.retrieval import CloudRetrieval
+from mcrf.sensors import mwi, mwi_full, ici, lcpr
+from mcrf.liras.model_data import ModelDataProvider
 from parts.utils.data_providers import NetCDFDataProvider
 
 #
@@ -16,29 +16,35 @@ from parts.utils.data_providers import NetCDFDataProvider
 import argparse
 import os
 
-parser = argparse.ArgumentParser(prog = "retrieval",
-                                 description = "Runs the combined LIRAS"
+parser = argparse.ArgumentParser(prog="retrieval",
+                                 description="Runs the combined LIRAS"
                                  " retrieval on a given test scene.")
-parser.add_argument('scene',       metavar = 'scene',       type = str, nargs = 1)
-parser.add_argument('start_index', metavar = 'start_index', type = int, nargs = 1)
-parser.add_argument('ice_shape',   metavar = 'ice_shape',   type = str, nargs = 1)
-parser.add_argument('snow_shape',  metavar = 'snow_shape',  type = str, nargs = 1)
-parser.add_argument('input_file',  metavar = 'input_file',  type = str, nargs = 1)
-parser.add_argument('output_file', metavar = 'output_file', type = str, nargs = 1)
-parser.add_argument('--sensors',   metavar = 'sensors', type = str, nargs = '*',
-                    default = ["lcpr", "ici", "mwi"])
-parser.add_argument("--reference", dest = "reference", action = "store_const",
-                    const = True, default = False,
-                    help = "Use reference a prioris.")
+parser.add_argument('scene', metavar='scene', type=str, nargs=1)
+parser.add_argument('start_index', metavar='start_index', type=int, nargs=1)
+parser.add_argument('ice_shape', metavar='ice_shape', type=str, nargs=1)
+parser.add_argument('snow_shape', metavar='snow_shape', type=str, nargs=1)
+parser.add_argument('input_file', metavar='input_file', type=str, nargs=1)
+parser.add_argument('output_file', metavar='output_file', type=str, nargs=1)
+parser.add_argument('--sensors',
+                    metavar='sensors',
+                    type=str,
+                    nargs='*',
+                    default=["lcpr", "ici", "mwi"])
+parser.add_argument("--reference",
+                    dest="reference",
+                    action="store_const",
+                    const=True,
+                    default=False,
+                    help="Use reference a prioris.")
 
 args = parser.parse_args()
 
-scene        = args.scene[0]
-i_start      = args.start_index[0]
-ice_shape    = args.ice_shape[0]
-snow_shape   = args.snow_shape[0]
-input_file   = args.input_file[0]
-output_file  = args.output_file[0]
+scene = args.scene[0]
+i_start = args.start_index[0]
+ice_shape = args.ice_shape[0]
+snow_shape = args.snow_shape[0]
+input_file = args.input_file[0]
+output_file = args.output_file[0]
 
 liras_path = mcrf.liras.liras_path
 
@@ -80,14 +86,11 @@ else:
 # Create the data provider.
 #
 if not snow_shape == "None":
-    kwargs = {"ice_psd"  : ice.psd,
-              "snow_psd" : snow.psd,
-              "liquid_psd" : rain.psd}
+    kwargs = {"ice_psd": ice.psd, "snow_psd": snow.psd, "liquid_psd": rain.psd}
 else:
-    kwargs = {"ice_psd"  : ice.psd,
-              "liquid_psd" : rain.psd}
+    kwargs = {"ice_psd": ice.psd, "liquid_psd": rain.psd}
 
-data_provider = ModelDataProvider(99, scene = scene.upper(), **kwargs)
+data_provider = ModelDataProvider(99, scene=scene.upper(), **kwargs)
 
 #
 # Define hydrometeors and sensors.
@@ -117,7 +120,7 @@ data_provider.add(observations)
 retrieval = CloudRetrieval(hydrometeors, sensors, data_provider)
 retrieval.setup()
 
-
-retrieval.simulation.initialize_output_file(output_file, [("profile", n, i_start)],
-                                           full_retrieval_output = True)
+retrieval.simulation.initialize_output_file(output_file,
+                                            [("profile", n, i_start)],
+                                            full_retrieval_output=True)
 retrieval.simulation.run_ranges(range(i_start, i_start + n))
