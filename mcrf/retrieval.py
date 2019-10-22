@@ -168,8 +168,6 @@ class CloudRetrieval:
             if not self.temperature is None:
                 rr.retrieval_quantities += [self.temperature]
 
-
-
         if all([isinstance(s, ActiveSensor) for s in self.sensors]):
             self.simulation.retrieval.callbacks = [("Radar only", radar_only)]
         elif any([isinstance(s, ActiveSensor) for s in self.sensors]):

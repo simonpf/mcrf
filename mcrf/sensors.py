@@ -310,7 +310,7 @@ class LCPR(ActiveSensor):
 class HampRadar(ActiveSensor):
 
     def __init__(self, stokes_dimension = 1):
-        range_bins = np.linspace(0.0, 12e3, 101) + 100.0
+        range_bins = np.linspace(0.0, 12e3, 61)
         range_bins += 0.5 * (range_bins[1] - range_bins[0])
         range_bins = range_bins[:-1]
 
