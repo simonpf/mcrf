@@ -76,9 +76,10 @@ retrieval.setup(verbosity=0)
 
 output_dir = os.path.dirname(filename)
 name = os.path.basename(filename)
-filename = name.replace("input", "output_no_ro_" + shape)
+filename = name.replace("input", "output_" + shape)
 output_file = os.path.join(output_dir, filename)
 
 retrieval.simulation.initialize_output_file(
-    output_file, [("profile", i_end - i_start, i_start)])
+    output_file, [("profile", i_end - i_start, i_start)],
+    full_retrieval_output=False)
 retrieval.simulation.run_ranges(range(i_start, min(i_end, 1441)))
