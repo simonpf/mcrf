@@ -48,13 +48,14 @@ def dm_a_priori(t):
         Array containing the priori for :math:`N_0^*`.
     """
     n0 = 10**n0_a_priori(t)
-    iwc = 1e-6
+    iwc = 5e-6
     dm = (4.0**4 * iwc / (np.pi * 917.0) / n0)**0.25
     return dm
 
-ice_shape       = os.path.join(scattering_data, "8-ColumnAggregate.xml")
-ice_shape_meta  = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
-ice_mask        = And(AltitudeMask(0.0, 12e3), TemperatureMask(0.0, 273.0))
+
+ice_shape = os.path.join(scattering_data, "8-ColumnAggregate.xml")
+ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
+ice_mask = And(AltitudeMask(0.0, 12e3), TemperatureMask(0.0, 273.0))
 
 #
 # D_m
@@ -62,7 +63,7 @@ ice_mask        = And(AltitudeMask(0.0, 12e3), TemperatureMask(0.0, 273.0))
 
 ice_covariance = Diagonal(400e-6**2, mask=ice_mask, mask_value=1e-24)
 ice_covariance = SpatialCorrelation(ice_covariance,
-                                    1e3,
+                                    1.0e3,
                                     mask=ice_mask,
                                     mask_value=1e-24)
 ice_dm_a_priori = FunctionalAPriori("ice_dm",
@@ -77,7 +78,7 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm",
 #
 
 ice_covariance = Diagonal(1, mask=ice_mask, mask_value=1e-8)
-ice_covariance = SpatialCorrelation(ice_covariance, 1e3, mask=ice_mask)
+ice_covariance = SpatialCorrelation(ice_covariance, 1.0e3, mask=ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0",
                                     "temperature",
                                     n0_a_priori,
@@ -86,15 +87,12 @@ ice_n0_a_priori = FunctionalAPriori("ice_n0",
                                     mask_value=4)
 z_grid = np.linspace(0, 12e3, 25)
 ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori,
-                                    20,
+                                    11,
                                     ice_mask,
                                     "altitude",
                                     provide_retrieval_grid=False)
-ice = Hydrometeor("ice",
-                  D14NDmIce(),
-                  [ice_n0_a_priori, ice_dm_a_priori],
-                  ice_shape,
-                  ice_shape_meta)
+ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori],
+                  ice_shape, ice_shape_meta)
 ice.radar_only = False
 ice.retrieve_second_moment = True
 
@@ -163,17 +161,30 @@ z_grid = np.linspace(0, 12e3, 13)
 rain_mask = TemperatureMask(270, 340.0)
 
 rain_covariance = Diagonal(500e-6**2, mask=rain_mask, mask_value=1e-16)
-rain_covariance = SpatialCorrelation(rain_covariance, 0.5e3, mask=rain_mask, mask_value=1e-16)
-rain_dm_a_priori = FixedAPriori("rain_dm", 500e-6, rain_covariance, mask=rain_mask, mask_value=1e-8)
+rain_covariance = SpatialCorrelation(rain_covariance,
+                                     0.5e3,
+                                     mask=rain_mask,
+                                     mask_value=1e-16)
+rain_dm_a_priori = FixedAPriori("rain_dm",
+                                500e-6,
+                                rain_covariance,
+                                mask=rain_mask,
+                                mask_value=1e-8)
 
 rain_covariance = Diagonal(1, mask=rain_mask, mask_value=1e-12)
-rain_n0_a_priori = FixedAPriori("rain_n0", 7, rain_covariance, mask=rain_mask, mask_value=0)
-rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori, 5, rain_mask, "altitude", provide_retrieval_grid=False)
+rain_n0_a_priori = FixedAPriori("rain_n0",
+                                7,
+                                rain_covariance,
+                                mask=rain_mask,
+                                mask_value=0)
+rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori,
+                                     5,
+                                     rain_mask,
+                                     "altitude",
+                                     provide_retrieval_grid=False)
 
-rain = Hydrometeor("rain",
-                   D14NDmLiquid(),
-                   [rain_n0_a_priori, rain_dm_a_priori],
-                   rain_shape,
+rain = Hydrometeor("rain", D14NDmLiquid(),
+                   [rain_n0_a_priori, rain_dm_a_priori], rain_shape,
                    rain_shape_meta)
 rain.retrieve_second_moment = True
 
@@ -231,9 +242,11 @@ rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
 # Temperature
 ################################################################################
 
-temperature_covariance = Diagonal(1 ** 2)
+temperature_covariance = Diagonal(1**2)
 temperature_covariance = SpatialCorrelation(temperature_covariance, 0.5e3)
-temperature_a_priori = DataProviderAPriori("temperature", temperature_covariance)
+temperature_a_priori = DataProviderAPriori("temperature",
+                                           temperature_covariance)
+
 
 class ObservationError(DataProviderBase):
     """
