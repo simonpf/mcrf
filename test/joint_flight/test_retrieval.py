@@ -26,6 +26,8 @@ if not ip is None:
 filename     = os.path.join(mcrf.joint_flight.path, "data", "input.nc")
 data_provider = NetCDFDataProvider(filename)
 
+ice.scattering_data = "/home/simonpf/src/joint_flight/data/scattering/IconSnow.xml"
+
 #
 # Define hydrometeors and sensors.
 #
@@ -45,7 +47,7 @@ data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(cloud_water_a_priori)
 data_provider.add(rh_a_priori)
-data_provider.add(temperature_a_priori)
+#data_provider.add(temperature_a_priori)
 data_provider.add(ObservationError(sensors))
 
 #
@@ -54,4 +56,4 @@ data_provider.add(ObservationError(sensors))
 
 retrieval = CloudRetrieval(hydrometeors, sensors, data_provider)
 retrieval.setup()
-retrieval.run(100)
+retrieval.run(659)

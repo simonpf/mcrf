@@ -61,9 +61,9 @@ ice_mask = And(AltitudeMask(0.0, 12e3), TemperatureMask(0.0, 273.0))
 # D_m
 #
 
-ice_covariance = Diagonal(400e-6**2, mask=ice_mask, mask_value=1e-24)
+ice_covariance = Diagonal(200e-6**2, mask=ice_mask, mask_value=1e-24)
 ice_covariance = SpatialCorrelation(ice_covariance,
-                                    1.0e3,
+                                    0.2e3,
                                     mask=ice_mask,
                                     mask_value=1e-24)
 ice_dm_a_priori = FunctionalAPriori("ice_dm",
@@ -301,3 +301,16 @@ class ObservationError(DataProviderBase):
         covmat = sp.sparse.diags(diag, format="coo")
 
         return covmat
+
+psd_shapes = {'GemCloudIce': array([-0.12104242, -0.37290501]),
+              'PlateType1': array([-0.07482611, -0.22687893]),
+              'ColumnType1': array([-0.03957543, -0.1191577 ]),
+              '6-BulletRosette': array([-0.07780157, -0.23603571]),
+              'GemGraupel': array([0., 0.]),
+              'GemHail': array([0., 0.]),
+              'IconHail': array([-0.11569386, -0.35577652]),
+              'LargePlateAggregate': array([-0.09142382, -0.27909084]),
+              'LargeColumnAggregate': array([-0.09593044, -0.29314433]),
+              '8-ColumnAggregate': array([-0.12104243, -0.37290503]),
+              'IconSnow': array([-0.13791779, -0.42784954]),
+              'LargeBlockAggregate': array([-0.09252217, -0.28254723])}
