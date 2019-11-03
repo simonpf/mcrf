@@ -360,16 +360,18 @@ class HampRadar(ActiveSensor):
 
 
 class RastaRadar(ActiveSensor):
-    def __init__(self, stokes_dimension=1):
+    def __init__(self, stokes_dimension = 1):
+        range_bins = np.linspace(0.0, 12e3, 61)
+        range_bins += 0.5 * (range_bins[1] - range_bins[0])
+        range_bins = range_bins[:-1]
 
-        range_bins = np.linspace(0.0, 10e3, 51) + 100.0
-        super().__init__(name="rasta",
-                         f_grid=[95e9],
-                         stokes_dimension=stokes_dimension)
+        super().__init__(name = "rasta",
+                         f_grid = [94e9],
+                         stokes_dimension = stokes_dimension)
 
         self.sensor_line_of_sight = np.array([180.0])
-        self.sensor_position = np.array([12500.0])
-        self.y_min = -16.0
+        self.sensor_position      = np.array([12500.0])
+        self.y_min = -20.0
 
     @property
     def nedt(self):
@@ -420,3 +422,9 @@ hamp_space.name = "hamp_space"
 hamp_space.range_bins = np.linspace(0.5, 20, 40) * 1e3
 
 ismar = Ismar()
+
+#
+# RASTA RADAR
+#
+
+rasta_radar = RastaRadar()
