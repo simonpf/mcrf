@@ -318,3 +318,17 @@ psd_shapes = {
     'IconSnow': np.array([-0.13791779, -0.42784954]),
     'LargeBlockAggregate': np.array([-0.09252217, -0.28254723])
 }
+psd_shapes_low = {
+    'GemCloudIce': np.array([0.09057627, 0.288721  ]),
+    'PlateType1': np.array([0.10635748, 0.33487314]),
+    'ColumnType1': np.array([0.10669262, 0.33583251]),
+    '6-BulletRosette': np.array([-0.0301881 ,  0.41605698]),
+    'GemGraupel': np.array([0., 0.]),
+    'GemHail': np.array([0., 0.]),
+    'IconHail': np.array([-0.01943259,  0.50897917]),
+    'LargePlateAggregate': np.array([-0.03695045,  0.43390347]),
+    'LargeColumnAggregate': np.array([-0.03629038,  0.43722814]),
+    '8-ColumnAggregate': np.array([-0.02789504,  0.47673042]),
+    'IconSnow': np.array([-0.02876806,  0.47403553]),
+    'LargeBlockAggregate': np.array([0.10467324, 0.3300683 ])
+}

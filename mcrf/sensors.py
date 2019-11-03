@@ -367,10 +367,14 @@ class RastaRadar(ActiveSensor):
 
         super().__init__(name = "rasta",
                          f_grid = [94e9],
+                         range_bins = range_bins,
                          stokes_dimension = stokes_dimension)
 
         self.sensor_line_of_sight = np.array([180.0])
         self.sensor_position      = np.array([12500.0])
+        self.instrument_pol = [1]
+        self.instrument_pol_array = [[1]]
+        self.extinction_scaling = 1.0
         self.y_min = -20.0
 
     @property
