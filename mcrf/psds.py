@@ -8,6 +8,7 @@ from parts.scattering.psd.d14 import D14MN, D14N, D14
 # Mass and N_0^*
 ################################################################################
 
+
 class D14Ice(D14MN):
     """
     Specialized class implementing a normalized modified gamma distribution
@@ -22,6 +23,7 @@ class D14Ice(D14MN):
     @property
     def moment_names(self):
         return ["n0", "md"][::-1]
+
 
 class D14Snow(D14MN):
     """
@@ -39,6 +41,7 @@ class D14Snow(D14MN):
     def moment_names(self):
         return ["n0", "md"][::-1]
 
+
 class D14Liquid(D14MN):
     """
     Specialized class implementing a normalized modified gamma distribution
@@ -48,16 +51,18 @@ class D14Liquid(D14MN):
     """
     def __init__(self):
         super().__init__(0.0, 1.0, 1000.0)
-        self.name  = "d14n"
+        self.name = "d14n"
         self.t_min = 270.0
 
     @property
     def moment_names(self):
         return ["n0", "md"][::-1]
 
+
 ################################################################################
-# Mass and D_m 
+# Mass and D_m
 ################################################################################
+
 
 class D14DmIce(D14):
     """
@@ -74,6 +79,7 @@ class D14DmIce(D14):
     def moment_names(self):
         return ["md", "dm"]
 
+
 class D14DmSnow(D14):
     """
     Specialized class implementing a normalized modified gamma distribution
@@ -89,6 +95,7 @@ class D14DmSnow(D14):
     def moment_names(self):
         return ["md", "dm"]
 
+
 class D14DmLiquid(D14):
     """
     Specialized class implementing a normalized modified gamma distribution
@@ -97,16 +104,18 @@ class D14DmLiquid(D14):
     """
     def __init__(self):
         super().__init__(0.0, 1.0, 1000.0)
-        self.name  = "d1n"
+        self.name = "d1n"
         self.t_min = 270.0
 
     @property
     def moment_names(self):
         return ["md", "dm"]
 
+
 ################################################################################
 # N_0^* and D_m
 ################################################################################
+
 
 class D14NDmIce(D14N):
     """
@@ -115,14 +124,15 @@ class D14NDmIce(D14N):
     mean diameter (D_m). The shape is the same as the one used for the
     DARDAR v3 retrievals.
     """
-    def __init__(self):
-        super().__init__(-0.26, 1.75, 917.0)
+    def __init__(self, alpha=-0.26, beta=1.75):
+        super().__init__(alpha, beta, 917.0)
         self.name = "d14"
         self.t_max = 280.0
 
     @property
     def moment_names(self):
         return ["n0", "dm"]
+
 
 class D14NDmSnow(D14N):
     """
@@ -140,6 +150,7 @@ class D14NDmSnow(D14N):
     def moment_names(self):
         return ["n0", "dm"]
 
+
 class D14NDmLiquid(D14N):
     """
     Specialized class implementing a normalized modified gamma distribution
@@ -149,7 +160,7 @@ class D14NDmLiquid(D14N):
     """
     def __init__(self):
         super().__init__(0.0, 1.0, 1000.0)
-        self.name  = "d14"
+        self.name = "d14"
         self.t_min = 270.0
 
     @property

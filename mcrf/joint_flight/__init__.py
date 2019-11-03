@@ -6,6 +6,7 @@ The joint flight module contains the a priori settings for the joint flight
 retrieval.
 """
 import os
+import numpy as np
 from mcrf.psds import D14NDmIce, D14NDmSnow, D14NDmLiquid
 from mcrf.hydrometeors import Hydrometeor
 from parts.retrieval.a_priori import *
@@ -302,15 +303,18 @@ class ObservationError(DataProviderBase):
 
         return covmat
 
-psd_shapes = {'GemCloudIce': array([-0.12104242, -0.37290501]),
-              'PlateType1': array([-0.07482611, -0.22687893]),
-              'ColumnType1': array([-0.03957543, -0.1191577 ]),
-              '6-BulletRosette': array([-0.07780157, -0.23603571]),
-              'GemGraupel': array([0., 0.]),
-              'GemHail': array([0., 0.]),
-              'IconHail': array([-0.11569386, -0.35577652]),
-              'LargePlateAggregate': array([-0.09142382, -0.27909084]),
-              'LargeColumnAggregate': array([-0.09593044, -0.29314433]),
-              '8-ColumnAggregate': array([-0.12104243, -0.37290503]),
-              'IconSnow': array([-0.13791779, -0.42784954]),
-              'LargeBlockAggregate': array([-0.09252217, -0.28254723])}
+
+psd_shapes = {
+    'GemCloudIce': np.array([-0.12104242, -0.37290501]),
+    'PlateType1': np.array([-0.07482611, -0.22687893]),
+    'ColumnType1': np.array([-0.03957543, -0.1191577]),
+    '6-BulletRosette': np.array([-0.07780157, -0.23603571]),
+    'GemGraupel': np.array([0., 0.]),
+    'GemHail': np.array([0., 0.]),
+    'IconHail': np.array([-0.11569386, -0.35577652]),
+    'LargePlateAggregate': np.array([-0.09142382, -0.27909084]),
+    'LargeColumnAggregate': np.array([-0.09593044, -0.29314433]),
+    '8-ColumnAggregate': np.array([-0.12104243, -0.37290503]),
+    'IconSnow': np.array([-0.13791779, -0.42784954]),
+    'LargeBlockAggregate': np.array([-0.09252217, -0.28254723])
+}

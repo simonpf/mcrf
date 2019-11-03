@@ -14,6 +14,8 @@ from   mcrf.joint_flight     import ice, snow, rain, cloud_water_a_priori, \
     rh_a_priori, ObservationError, temperature_a_priori
 
 from parts.retrieval.a_priori import SensorNoiseAPriori
+from mcrf.joint_flight import psd_shapes
+from mcrf.psds import D14NDmIce
 
 #
 # Parse arguments
@@ -50,7 +52,9 @@ data_provider = NetCDFDataProvider(filename)
 liras_path = mcrf.liras.liras_path
 ice_shape = os.path.join(liras_path, "data", "scattering", shape)
 ice.scattering_data = ice_shape
-
+if ice_shape in psd_shapes:
+    alpha, log_beta = psd_shapes[ice_shape]
+    ice.psd = D14NDmIce(alpha, np.exp(log_beta))
 hydrometeors = [ice, rain]
 sensors = [hamp_radar, hamp_passive, ismar]
 
@@ -76,7 +80,7 @@ retrieval.setup(verbosity=0)
 
 output_dir = os.path.dirname(filename)
 name = os.path.basename(filename)
-filename = name.replace("input", "output_" + shape)
+filename = name.replace("input", "output_high_" + shape)
 output_file = os.path.join(output_dir, filename)
 
 retrieval.simulation.initialize_output_file(
