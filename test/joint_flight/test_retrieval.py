@@ -4,11 +4,13 @@ os.environ["ARTS_DATA_PATH"] = "/home/simonpf/src/joint_flight/data"
 
 import mcrf.joint_flight.setup
 
+import numpy as np
 import mcrf.liras
+from   mcrf.psds import D14NDmIce
 from   mcrf.retrieval        import CloudRetrieval
 from   mcrf.sensors          import hamp_radar, hamp_passive, ismar
 from   mcrf.joint_flight     import ice, snow, rain, cloud_water_a_priori, \
-    rh_a_priori, ObservationError, temperature_a_priori
+    rh_a_priori, ObservationError, temperature_a_priori, psd_shapes_low, psd_shapes_high
 from parts.retrieval.a_priori import SensorNoiseAPriori
 from parts.utils.data_providers import NetCDFDataProvider
 
@@ -23,10 +25,15 @@ if not ip is None:
 # Load observations.
 #
 
-filename     = os.path.join(mcrf.joint_flight.path, "data", "input.nc")
+filename     = os.path.join(mcrf.joint_flight.path, "data", "combined", "input.nc")
 data_provider = NetCDFDataProvider(filename)
 
-ice.scattering_data = "/home/simonpf/src/joint_flight/data/scattering/IconSnow.xml"
+ice_shape = "GemCloudIce"
+ice.scattering_data = "/home/simonpf/src/joint_flight/data/scattering/{}.xml".format(ice_shape)
+
+if ice_shape in psd_shapes_low:
+    alpha, log_beta = psd_shapes_high[ice_shape]
+    ice.psd = D14NDmIce(alpha, np.exp(log_beta))
 
 #
 # Define hydrometeors and sensors.

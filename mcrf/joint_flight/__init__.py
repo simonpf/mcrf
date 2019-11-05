@@ -304,7 +304,7 @@ class ObservationError(DataProviderBase):
         return covmat
 
 
-psd_shapes = {
+psd_shapes_high = {
     'GemCloudIce': np.array([-0.12104242, -0.37290501]),
     'PlateType1': np.array([-0.07482611, -0.22687893]),
     'ColumnType1': np.array([-0.03957543, -0.1191577]),
