@@ -28,7 +28,7 @@ if not ip is None:
 filename     = os.path.join(mcrf.joint_flight.path, "data", "combined", "input.nc")
 data_provider = NetCDFDataProvider(filename)
 
-ice_shape = "GemCloudIce"
+ice_shape = "LargePlateAggregate"
 ice.scattering_data = "/home/simonpf/src/joint_flight/data/scattering/{}.xml".format(ice_shape)
 
 if ice_shape in psd_shapes_low:
@@ -63,4 +63,20 @@ data_provider.add(ObservationError(sensors))
 
 retrieval = CloudRetrieval(hydrometeors, sensors, data_provider)
 retrieval.setup()
-retrieval.run(659)
+retrieval.run(658)
+
+def plot_misfit():
+    ws = retrieval.simulation.workspace
+    y = ws.y.value
+    yf = ws.yf.value
+    y_hamp = y[:59]
+    yf_hamp = yf[:59]
+    plt.plot(y_hamp)
+    plt.plot(yf_hamp)
+
+    #plt.figure()
+    #y_hamp = y[59:]
+    #yf_hamp = yf[59:]
+    #plt.plot(y_hamp)
+    #plt.plot(yf_hamp)
+    #plt.figure()

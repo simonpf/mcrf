@@ -161,7 +161,7 @@ class D14NDmLiquid(D14N):
     def __init__(self):
         super().__init__(0.0, 1.0, 1000.0)
         self.name = "d14"
-        self.t_min = 270.0
+        self.t_min = 250.0
 
     @property
     def moment_names(self):

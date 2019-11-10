@@ -159,7 +159,7 @@ rain_shape = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
 z_grid = np.linspace(0, 12e3, 13)
-rain_mask = TemperatureMask(270, 340.0)
+rain_mask = TemperatureMask(250, 340.0)
 
 rain_covariance = Diagonal(500e-6**2, mask=rain_mask, mask_value=1e-16)
 rain_covariance = SpatialCorrelation(rain_covariance,
