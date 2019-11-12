@@ -2,6 +2,7 @@ from parts.utils.data_providers import NetCDFDataProvider
 import mcrf.joint_flight.setup
 import mcrf.liras
 
+import numpy as np
 import mpi4py
 mpi4py.rc.initialize = True
 mpi4py.rc.finalize = True
@@ -14,7 +15,7 @@ from   mcrf.joint_flight     import ice, snow, rain, cloud_water_a_priori, \
     rh_a_priori, ObservationError, temperature_a_priori
 
 from parts.retrieval.a_priori import SensorNoiseAPriori
-from mcrf.joint_flight import psd_shapes, psd_shapes_low
+from mcrf.joint_flight import psd_shapes_high, psd_shapes_low
 from mcrf.psds import D14NDmIce
 
 #
@@ -34,10 +35,12 @@ parser.add_argument('i_end',
                     nargs=1,
                     help="End of range of profiles to retrieve.")
 parser.add_argument('shape', metavar='shape', type=str, nargs=1)
+parser.add_argument('config', metavar='config', type=str, nargs=1)
 args = parser.parse_args()
 i_start = args.i_start[0]
 i_end = args.i_end[0]
 shape = args.shape[0]
+config = args.config[0]
 
 #
 # Load observations.
@@ -52,9 +55,13 @@ data_provider = NetCDFDataProvider(filename)
 liras_path = mcrf.liras.liras_path
 ice_shape = os.path.join(liras_path, "data", "scattering", shape)
 ice.scattering_data = ice_shape
-if ice_shape in psd_shapes_low:
-    alpha, log_beta = psd_shapes_low[ice_shape]
+if config == "low":
+    alpha, log_beta = psd_shapes_low[shape]
     ice.psd = D14NDmIce(alpha, np.exp(log_beta))
+if config == "high":
+    alpha, log_beta = psd_shapes_high[shape]
+    ice.psd = D14NDmIce(alpha, np.exp(log_beta))
+
 hydrometeors = [ice, rain]
 sensors = [hamp_radar, hamp_passive, ismar]
 
@@ -80,7 +87,7 @@ retrieval.setup(verbosity=0)
 
 output_dir = os.path.dirname(filename)
 name = os.path.basename(filename)
-filename = name.replace("input", "output_low_" + shape)
+filename = name.replace("input", "output_{}_".format(config) + shape)
 output_file = os.path.join(output_dir, filename)
 
 retrieval.simulation.initialize_output_file(
