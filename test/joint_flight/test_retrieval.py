@@ -80,3 +80,31 @@ def plot_misfit():
     #plt.plot(y_hamp)
     #plt.plot(yf_hamp)
     #plt.figure()
+
+def plot_masses():
+    from joint_flight.utils import iwc, rwc
+    ws = retrieval.simulation.workspace
+    ws.x2artsAtmAndSurf()
+
+    ice_n0 = ws.particle_bulkprop_field.value[0]
+    ice_dm = ws.particle_bulkprop_field.value[1]
+    rain_n0 = ws.particle_bulkprop_field.value[2]
+    rain_dm = ws.particle_bulkprop_field.value[3]
+    z = ws.z_field.value.ravel()
+
+    md_ice = iwc(ice_n0, ice_dm)
+    md_rain = rwc(rain_n0, rain_dm)
+
+    plt.plot(md_ice.ravel(), z)
+    plt.plot(md_rain.ravel(), z)
+    plt.plot(md_ice.ravel() + md_rain.ravel(), z)
+    plt.xscale("log")
+    plt.xlim([1e-7, 1e-3])
+
+    return (ice_n0, ice_dm, rain_n0, rain_dm)
+    #plt.figure()
+    #y_hamp = y[59:]
+    #yf_hamp = yf[59:]
+    #plt.plot(y_hamp)
+    #plt.plot(yf_hamp)
+    #plt.figure()

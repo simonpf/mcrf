@@ -19,7 +19,6 @@ scattering_data = os.path.join(path, "data", "scattering_data")
 # Ice particles
 ################################################################################
 
-
 def n0_a_priori(t):
     r"""
     The assumed a priori for :math:`N_0^*` as a function of t.
@@ -52,7 +51,6 @@ def dm_a_priori(t):
     iwc = 5e-6
     dm = (4.0**4 * iwc / (np.pi * 917.0) / n0)**0.25
     return dm
-
 
 ice_shape = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
@@ -137,6 +135,7 @@ snow.retrieve_second_moment = True
 # Rain particles
 ################################################################################
 
+
 liquid_mask = TemperatureMask(230.0, 300.0)
 liquid_covariance = Diagonal(1**2)
 liquid_covariance = SpatialCorrelation(liquid_covariance, 2e3)
@@ -155,38 +154,44 @@ cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori,
 # Rain particles
 ################################################################################
 
+def dm_a_priori_rain(t):
+    r"""
+    Prior for :math:`D_m`
+
+    The priori for :math:`D_m` is computed by assuming a fixed
+    mass of :math:`10^{-6}\ \unit{kg\ m^{-3}}` and applying
+    the :math:`N_0^*` assumption.
+
+    Args:
+        t(array): The temperature profile.
+
+    Return:
+        Array containing the priori for :math:`N_0^*`.
+    """
+    n0 = 10**7 * np.ones(t.shape)
+    iwc = 5e-6 * np.ones(t.shape)
+    dm = (4.0**4 * iwc / (np.pi * 1000.0) / n0)**0.25
+    return dm
+
 rain_shape = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
 z_grid = np.linspace(0, 12e3, 13)
 rain_mask = TemperatureMask(250, 340.0)
 
+# D_m
 rain_covariance = Diagonal(500e-6**2, mask=rain_mask, mask_value=1e-16)
-rain_covariance = SpatialCorrelation(rain_covariance,
-                                     0.5e3,
-                                     mask=rain_mask,
-                                     mask_value=1e-16)
-rain_dm_a_priori = FixedAPriori("rain_dm",
-                                500e-6,
-                                rain_covariance,
-                                mask=rain_mask,
-                                mask_value=1e-8)
+rain_covariance = SpatialCorrelation(rain_covariance, 0.5e3, mask=rain_mask, mask_value=1e-16)
+rain_dm_a_priori = FunctionalAPriori("rain_dm", "temperature", dm_a_priori_rain,
+                                     rain_covariance, mask=rain_mask, mask_value=1e-8)
 
+# N_0^*
 rain_covariance = Diagonal(1, mask=rain_mask, mask_value=1e-12)
-rain_n0_a_priori = FixedAPriori("rain_n0",
-                                7,
-                                rain_covariance,
-                                mask=rain_mask,
-                                mask_value=0)
-rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori,
-                                     5,
-                                     rain_mask,
-                                     "altitude",
+rain_n0_a_priori = FixedAPriori("rain_n0", 5, rain_covariance, mask=rain_mask, mask_value=0)
+rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori, 5, rain_mask, "altitude",
                                      provide_retrieval_grid=False)
 
-rain = Hydrometeor("rain", D14NDmLiquid(),
-                   [rain_n0_a_priori, rain_dm_a_priori], rain_shape,
-                   rain_shape_meta)
+rain = Hydrometeor("rain", D14NDmLiquid(), [rain_n0_a_priori, rain_dm_a_priori], rain_shape, rain_shape_meta)
 rain.retrieve_second_moment = True
 
 rain.transformations = [
