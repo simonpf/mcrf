@@ -86,7 +86,7 @@ ice_n0_a_priori = FunctionalAPriori("ice_n0",
                                     mask_value=4)
 z_grid = np.linspace(0, 12e3, 25)
 ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori,
-                                    11,
+                                    21,
                                     ice_mask,
                                     "altitude",
                                     provide_retrieval_grid=False)
@@ -140,7 +140,7 @@ liquid_mask = TemperatureMask(230.0, 300.0)
 liquid_covariance = Diagonal(1**2)
 liquid_covariance = SpatialCorrelation(liquid_covariance, 2e3)
 cloud_water_a_priori = FixedAPriori("cloud_water",
-                                    -6,
+                                    -5e6,
                                     liquid_covariance,
                                     mask=liquid_mask,
                                     mask_value=-20)
@@ -177,7 +177,7 @@ rain_shape = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
 z_grid = np.linspace(0, 12e3, 13)
-rain_mask = TemperatureMask(250, 340.0)
+rain_mask = TemperatureMask(272, 340.0)
 
 # D_m
 rain_covariance = Diagonal(500e-6**2, mask=rain_mask, mask_value=1e-16)

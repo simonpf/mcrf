@@ -28,7 +28,7 @@ if not ip is None:
 filename     = os.path.join(mcrf.joint_flight.path, "data", "combined", "input.nc")
 data_provider = NetCDFDataProvider(filename)
 
-ice_shape = "LargePlateAggregate"
+ice_shape = "FluffyMcSnowPhase"
 ice.scattering_data = "/home/simonpf/src/joint_flight/data/scattering/{}.xml".format(ice_shape)
 
 if ice_shape in psd_shapes_low:
@@ -74,12 +74,12 @@ def plot_misfit():
     plt.plot(y_hamp)
     plt.plot(yf_hamp)
 
-    #plt.figure()
-    #y_hamp = y[59:]
-    #yf_hamp = yf[59:]
-    #plt.plot(y_hamp)
-    #plt.plot(yf_hamp)
-    #plt.figure()
+    plt.figure()
+    y_hamp = y[59:]
+    yf_hamp = yf[59:]
+    plt.plot(y_hamp)
+    plt.plot(yf_hamp)
+    plt.figure()
 
 def plot_masses():
     from joint_flight.utils import iwc, rwc
@@ -102,9 +102,38 @@ def plot_masses():
     plt.xlim([1e-7, 1e-3])
 
     return (ice_n0, ice_dm, rain_n0, rain_dm)
+
+def plot_jacobianz(channel = -3):
+    ws = retrieval.simulation.workspace
+    j = ws.jacobian.value
+    rqs = retrieval.simulation.retrieval.retrieval_quantities
+
+    z = ws.z_field.value.ravel()
+
+    A  = rqs[0].transformation.transformations[1].A
+    m, n = A.shape
+    j_n0 = np.dot(j[channel, :m], A)
+    plt.figure()
+    plt.plot(j_n0, z)
+
+    i_start = m
+    plt.figure()
+    A  = rqs[2].transformation.transformations[1].A
+    m, n = A.shape
+    j_n0_r = np.dot(j[channel, i_start : i_start + m], A)
+    plt.plot(j_n0_r, z)
+
+    plt.figure()
+    i_start += m
+    j_dm = j[channel, i_start : i_start + 61]
+    plt.plot(j_dm, z)
+
     #plt.figure()
     #y_hamp = y[59:]
     #yf_hamp = yf[59:]
     #plt.plot(y_hamp)
     #plt.plot(yf_hamp)
     #plt.figure()
+
+
+    r
