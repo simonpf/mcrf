@@ -218,6 +218,53 @@ class MWI(PassiveSensor):
         self.sensor_response = sensor_response
         self.sensor_f_grid = self.f_grid[:m]
 
+class GMI(PassiveSensor):
+    center_frequencies = np.array([10.65, 18.7, 23.8, 36.5, 89.0, 166.5, 183.31]) * 1e9
+    sidebands = [
+        np.array([0.0]) * 1e9,
+        np.array([0.0]) * 1e9,
+        np.array([0.0]) * 1e9,
+        np.array([0.0]) * 1e9,
+        np.array([0.0]) * 1e9,
+        np.array([0.0]) * 1e9,
+        np.array([7.0, 3.0]) * 1e9
+    ]
+    nedt = np.array([1.0] * 8)
+
+    def __init__(self, name="gmi", band_indices=None, stokes_dimension=1):
+        if not band_indices is None:
+            channel_indices = []
+            i = 0
+            for bi in band_indices:
+                for o in GMI.sidebands[bi]:
+                    channel_indices += [i]
+                    i += 1
+
+            center_frequencies = [
+                GMI.center_frequencies[i] for i in band_indices
+            ]
+            offsets = [GMI.sidebands[i] for i in band_indices]
+            self.nedt = GMI.nedt[channel_indices]
+        else:
+            center_frequencies = GMI.center_frequencies
+            offsets = GMI.sidebands
+            self.nedt = GMI.nedt
+
+        channels, sensor_response = sensor_properties(center_frequencies,
+                                                      offsets,
+                                                      order="negative")
+        super().__init__(name, channels, stokes_dimension=stokes_dimension)
+        self.sensor_line_of_sight = np.array([[132.0]])
+        self.sensor_position = np.array([[600e3]])
+
+        m = sensor_response.shape[0]
+
+        self.sensor_response_f = self.f_grid[:m]
+        self.sensor_response_pol = self.f_grid[:m]
+        self.sensor_response_dlos = self.f_grid[:m, np.newaxis]
+        self.sensor_response = sensor_response
+        self.sensor_f_grid = self.f_grid[:m]
+
 
 ################################################################################
 # Hamp Passive
@@ -325,7 +372,6 @@ class LCPR(ActiveSensor):
         self.extinction_scaling = 1.0
         self.y_min = -30.0
 
-
 ################################################################################
 # HAMP
 ################################################################################
@@ -366,7 +412,7 @@ class RastaRadar(ActiveSensor):
         range_bins = range_bins[:-1]
 
         super().__init__(name = "rasta",
-                         f_grid = [94e9],
+                         f_grid = [95.04e9],
                          range_bins = range_bins,
                          stokes_dimension = stokes_dimension)
 
@@ -401,6 +447,10 @@ mwi_full.name = "mwi_full"
 mwi_full.sensor_line_of_sight = np.array([[132.0]])
 mwi_full.sensor_position = np.array([[600e3]])
 
+gmi = GMI()
+gmi.sensor_line_of_sight = np.array([[132.0]])
+gmi.sensor_position = np.array([[600e3]])
+
 #
 # HAMP Passive
 #
@@ -414,6 +464,15 @@ hamp_passive = HampPassive()
 lcpr = LCPR(stokes_dimension=1)
 lcpr.sensor_line_of_sight = np.array([[135.0]])
 lcpr.sensor_position = np.array([[600e3]])
+
+#
+# CloudSat
+#
+
+cloud_sat = LCPR(stokes_dimension=1)
+cloud_sat.name = "cloud_sat"
+cloud_sat.sensor_line_of_sight = np.array([[180.0]])
+cloud_sat.sensor_position = np.array([[600e3]])
 
 #
 # HAMP RADAR

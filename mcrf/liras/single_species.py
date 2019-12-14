@@ -81,8 +81,8 @@ rain_dm_a_priori = FixedAPriori("rain_dm",
                                 rain_covariance,
                                 mask=rain_mask,
                                 mask_value=1e-8)
-rain_dm_a_priori = ReducedVerticalGrid(rain_dm_a_priori,
-                                       np.linspace(0, 12e3, 13), "altitude")
+#rain_dm_a_priori = ReducedVerticalGrid(rain_dm_a_priori,
+#                                       np.linspace(0, 12e3, 13), "altitude")
 
 z_grid = np.linspace(0, 12e3, 7)
 rain_covariance = Diagonal(1, mask=rain_mask, mask_value=1e-12)
