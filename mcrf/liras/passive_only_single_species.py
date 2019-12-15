@@ -1,3 +1,17 @@
+"""
+A-priori assumptions for the passive-only retrieval with only a single
+species of frozen hydrometeors.
+
+Attributes:
+
+    ice:  Hydrometeor species representing frozen hydrometeors.
+
+    rain: Hydrometeor species representing precipitating, liquid hydrometeors.
+
+    rh_a_priori: A priori provider for humidity retrieval.
+
+    cloud_water_a_priori: A priori provider for cloud water retrieval.
+"""
 import os
 from mcrf.psds import D14NDmIce, D14NDmLiquid, D14NDmSnow
 from mcrf.hydrometeors import Hydrometeor
@@ -13,7 +27,6 @@ settings = {"single_species": True}
 ################################################################################
 # Ice particles
 ################################################################################
-
 
 def n0_a_priori(t):
     t = t - 272.15

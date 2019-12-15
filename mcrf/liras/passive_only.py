@@ -1,3 +1,18 @@
+"""
+A-priori assumptions for the passive-only retrieval.
+
+Attributes:
+
+    ice:  Hydrometeor species representing frozen hydrometeors.
+
+    snow: Hydrometeor species representing precipitating, frozen hydrometeors.
+
+    rain: Hydrometeor species representing precipitating, liquid hydrometeors.
+
+    rh_a_priori: A priori provider for humidity retrieval.
+
+    cloud_water_a_priori: A priori provider for cloud water retrieval.
+"""
 import os
 from mcrf.psds import D14NDmIce, D14NDmLiquid, D14NDmSnow
 from mcrf.hydrometeors import Hydrometeor
@@ -8,12 +23,9 @@ from parts.jacobian import Atanh, Log10, Identity, Composition
 liras_path = os.environ["LIRAS_PATH"]
 scattering_data = os.path.join(liras_path, "data", "scattering")
 
-settings = {"single_species": True}
-
 ################################################################################
 # Ice particles
 ################################################################################
-
 
 def n0_a_priori(t):
     t = t - 272.15
@@ -211,7 +223,6 @@ rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude")
 ################################################################################
 # Observation error
 ################################################################################
-
 
 class ObservationError(DataProviderBase):
     """

@@ -1,0 +1,100 @@
+% Created 2018-06-25 Mo 13:07
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{simon}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={Simon Pfreundschuh},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 24.5.1}, 
+ pdflang={English}}
+\begin{document}
+
+\setlength{\parindent}{0cm}
+
+\section*{General comments}
+
+\subsection{Referee comment:}
+
+1. As noted in Section 4.2.4, the a priori assumptions do not describe reality
+very well. In particular, I suspect that the information content of Dm and N0* is
+highly dependent on the a priori assumptions of these two variables in the
+retrieval framework. Especially with a radar measurement, since Z is sensitive to
+both parameters over a wide range of the parameter space, the relative
+sensitivity and therefore information content willalmost entirely depend on the
+relative constraints on these parameters imposed by Xaand Sa. As such it is
+imperative to accurately characterize these. I understand the choice to use the
+DARDAR constraints, but it’s clear from the cross-section plots thatthe model
+ice particle concentrations vary over a much wider range than the roughly2
+orders of magnitude that Eq. 4 provides over a 220-272 K temperature range.
+So, when the retrieval results are compared to model “reality”, it seems that a
+lot of N0* variability is folded into Dm and this is especially evident in
+Figures 13 and 14. My overall concern is that it is difficult to interpret some
+of the results when the modelfields and the a priori assumptions differ so
+strongly.
+
+\subsubsection*{Author response:}
+
+It should be clarified here that Eq. (4) only gives the variation of the mean
+profile of the a priori for $N_0^*$ and that the standard deviation for $N_0^*$
+has been set to a value of $2$ in log-space, allowing $N_0^*$ to vary over several
+orders of magnitude.
+
+Nonetheless, the point raised by the referee remains valid. Since the topic
+of the study are synergies between radar and radiometer observations, we aimed
+to keep the a priori assumptions realistic (the DARDAR mean profile) but at the
+same time sufficiently loose (high std. dev.) in order to not introduce information
+a priori that may be provided by the synergy. To clarify this, the following
+lines haves been added in the introduction:
+
+\vspace{1em}
+
+\textit{The standard deviations in the covariance matrix have been deliberately chosen
+  to be very loose in order to not synthetically introduce information that may be
+  provided by the radiometer observations.}
+
+\subsection*{Referee comment}
+
+2. Forward model error is introduced when the different species present in the
+model microphysics are combined into one species and when different scattering
+models are used to represent the ice particles. That this is not represented in
+Se could lead to over-fitting and poor convergence (I suspect this is part of
+the reason why the normalized cost is much higher for the radiometer-including
+retrievals). It should be relatively easy to quantify this error by re-running
+the simulations with the retrieval assumptions(combining ice species, different
+scattering models), and I suspect that this error term would dominate the
+instrument noise term for many channels.
+
+\subsubsection*{Author response}
+
+This is certainly another valid point and has been addressed in the way suggested
+by the authors. All calculations were repeated and the corresponding results
+updated in the manuscript. To clarify this a sub-section specifying the assumed observation
+errors has been added to Sect. 2.3..
+\vspace{1em}
+
+\textit{The standard deviations in the covariance matrix have been deliberately chosen
+  to be very loose in order to not synthetically introduce information that may be
+  provided by the radiometer observations.}
+
+\subsection*{Referee comment}
+I am quite certain that neither “Gaussianity” (p.3, line 2) nor “overproportionally” (p. 12,
+line 20) are real words.
+
+\end{document}

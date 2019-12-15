@@ -1,9 +1,9 @@
 """
 Contains the hydrometeors for the LIRAS retrieval. The hydrometeors implement
-the `mcrf.liras.hydrometeors.Hydrometeor` and bundle hydrometeor definition
-(type) with a priori assumption. The attributes of this module define the
-hydrometoers and a priori assumptions used for the retrievals for the
-ESA Wide Swath Cloud Profiling study.
+the `mcrf.liras.hydrometeors.Hydrometeor` class and bundle hydrometeor
+definition (type) with a priori assumptions. The attributes of this module
+define the hydrometoers and a priori assumptions used for the retrievals for
+the ESA Wide Swath Cloud Profiling study.
 
 Attributes:
 
@@ -32,14 +32,12 @@ scattering_data = os.path.join(liras_path, "data", "scattering")
 # Ice particles
 ################################################################################
 
-
 def n0_a_priori(t):
     """
     Defines the a priori mean for the normalized number density (N_0^*) for
     frozen hydrometeors as a function of the temperature t.
     """
     return 10.0 * np.ones(t.shape)
-
 
 def dm_a_priori(t):
     """
@@ -51,6 +49,9 @@ def dm_a_priori(t):
     dm = (4.0**4 * iwc / (np.pi * 917.0) / n0)**0.25
     return dm
 
+#
+# D_m
+#
 
 ice_shape = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
@@ -64,6 +65,10 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm",
                                     ice_covariance,
                                     mask=ice_mask,
                                     mask_value=1e-8)
+
+#
+# N_0^*
+#
 
 ice_covariance = Diagonal(0.25, mask=ice_mask, mask_value=1e-12)
 ice_covariance = SpatialCorrelation(ice_covariance, 10e3, mask=ice_mask)
@@ -79,12 +84,14 @@ ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori,
                                     "altitude",
                                     provide_retrieval_grid=False)
 
+
 ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori],
                   ice_shape, ice_shape_meta)
 ice.transformations = [
     Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
     Identity()
 ]
+# Lower limits for N_0^* and m in transformed space.
 ice.limits_low = [2, 1e-8]
 
 ################################################################################
@@ -96,6 +103,10 @@ snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
 #snow_mask       = And(TropopauseMask(), TemperatureMask(0.0, 278.0))
 snow_mask = And(AltitudeMask(0.0, 19e3), TemperatureMask(0.0, 276.0))
 
+#
+# D_m
+#
+
 snow_covariance = Diagonal(500e-6**2, mask=snow_mask, mask_value=1e-12)
 snow_covariance = SpatialCorrelation(snow_covariance, 5e3, mask=ice_mask)
 snow_dm_a_priori = FixedAPriori("snow_dm",
@@ -103,6 +114,10 @@ snow_dm_a_priori = FixedAPriori("snow_dm",
                                 snow_covariance,
                                 mask=snow_mask,
                                 mask_value=1e-8)
+
+#
+# N_0^*
+#
 
 snow_covariance = Diagonal(0.25, mask=snow_mask, mask_value=1e-12)
 snow_covariance = SpatialCorrelation(snow_covariance, 10e3, mask=snow_mask)
@@ -123,6 +138,7 @@ snow.transformations = [
     Composition(Log10(), PiecewiseLinear(snow_n0_a_priori)),
     Identity()
 ]
+# Lower limits for N_0^* and m in transformed space.
 snow.limits_low = [4, 1e-8]
 
 ################################################################################
@@ -183,6 +199,8 @@ rain.transformations = [
     Composition(Log10(), PiecewiseLinear(rain_n0_a_priori)),
     Composition(Identity(), PiecewiseLinear(rain_dm_a_priori))
 ]
+
+# Lower limits for N_0^* and m in transformed space.
 rain.limits_low = [2, 1e-8]
 rain.radar_only = True
 
@@ -190,14 +208,12 @@ rain.radar_only = True
 # Humidity
 ################################################################################
 
-
 def a_priori_shape(t):
     transformation = Atanh()
     transformation.z_max = 1.1
     transformation.z_min = 0.0
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.2)
     return transformation(x)
-
 
 z_grid = np.linspace(0, 20e3, 21)
 rh_covariance = Diagonal(2**2)

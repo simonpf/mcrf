@@ -3,7 +3,7 @@ Defines a priori assumptions for the reference cost calculation for the
  combined retrieval.
 
 The reference calculations use the reference hydrometeor concentrations from
-the model data to calculate an upper bound on the minimum achievable retrieval
+the model data to provide an upper bound on the minimum achievable retrieval
 cost.
 
 Attributes:
