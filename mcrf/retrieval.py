@@ -229,7 +229,7 @@ class CloudSimulation:
         self.hydrometeors = hydrometeors
         absorbers = [O2(), N2(), H2O()]
         if self.include_cloud_water:
-            absorbers.insert(2, CloudWater(model="ELL07", from catalog = False))
+            absorbers.insert(2, CloudWater(model="ELL07", from_catalog = False))
         scatterers = hydrometeors
         surface = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)

@@ -2,6 +2,8 @@ from parts.utils.data_providers import NetCDFDataProvider
 import os
 import numpy as np
 
+os.environ["LIRAS_PATH"] = "/home/simonpf/src/joint_flight"
+
 import mcrf.liras.setup
 import mcrf.liras
 from   mcrf.retrieval        import CloudRetrieval
@@ -28,6 +30,7 @@ scene = filename.split("_")[-2]
 offset = offsets[scene]
 observations = NetCDFDataProvider(filename)
 observations.add_offset("profile", -offset)
+shape = "8-ColumnAggregate"
 
 #
 # Create the data provider.
@@ -61,7 +64,7 @@ data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(rh_a_priori)
 data_provider.add(cloud_water_a_priori)
-data_provider.add(mcrf.liras.ObservationError(sensors))
+data_provider.add(mcrf.liras.ObservationError(sensors, False, True, scene = scene, shape = shape))
 data_provider.add(observations)
 
 

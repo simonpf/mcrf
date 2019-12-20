@@ -252,7 +252,9 @@ class ObservationError(DataProviderBase):
     def __init__(self,
                  sensors,
                  footprint_error=False,
-                 forward_model_error=False):
+                 forward_model_error=False,
+                 scene = "A",
+                 shape = "8-ColumnAggregate"):
         """
         Arguments:
             sensors(:code:`list`): List of :code:`parts.sensor.Sensor` objects
@@ -278,12 +280,9 @@ class ObservationError(DataProviderBase):
 
         self.nedt_fm = {}
         for n in [s.name for s in sensors]:
-            filename = os.path.join(liras_path, "data",
-                                    "nedt_" + n + "_fm.npy")
-            try:
-                self.nedt_fm[n] = np.load(filename)
-            except:
-                pass
+            filename = "e_" + scene.lower() + "_" + n + "_" + shape + ".npy"
+            filename = os.path.join(liras_path, "data", filename)
+            self.nedt_fm[n] = np.load(filename)
 
         self.noise_scaling = dict([(s.name, 1.0) for s in sensors])
 

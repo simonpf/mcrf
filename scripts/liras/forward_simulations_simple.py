@@ -43,6 +43,7 @@ ice_shape = os.path.join(liras_path, "data", "scattering", ice_shape)
 hydrometeors = gem_hydrometeors
 include_cloud_water = False
 for h in hydrometeors[:4]:
+    h.psd.t_max = 275.0
     h.scattering_data = ice_shape
 
 arg_names = ["ice_psd", "snow_psd", "hail_psd", "graupel_psd", "liquid_psd"]
