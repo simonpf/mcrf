@@ -9,8 +9,7 @@ function replace_variables () {
 LIRAS_PATH=${HOME}/src/liras
 
 replace_variables 8-ColumnAggregate | sbatch
+replace_variables IceSphere | sbatch
 replace_variables LargePlateAggregate | sbatch
-replace_variables GemSnow None | sbatch
-replace_variables GemCloudIce | sbatch
-replace_variables PlateType1 | sbatch
-replace_variables GemGraupel | sbatch
+replace_variables LargeColumnAggregate None | sbatch
+replace_variables SectorSnowflake | sbatch
