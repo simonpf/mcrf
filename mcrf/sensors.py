@@ -433,13 +433,15 @@ class RastaRadar(ActiveSensor):
 #
 
 ici = ICI(stokes_dimension=1)
+ici.sensor_line_of_sight = np.array([[180.0]])
+mwi.sensor_position = np.array([[600e3]])
 
 #
 # MWI
 #
 
 mwi = MWI(band_indices=[7, 8, 9, 10], stokes_dimension=1)
-mwi.sensor_line_of_sight = np.array([[132.0]])
+mwi.sensor_line_of_sight = np.array([[180]])
 mwi.sensor_position = np.array([[600e3]])
 
 mwi_full = MWI(stokes_dimension=1)
@@ -462,7 +464,7 @@ hamp_passive = HampPassive()
 #
 
 lcpr = LCPR(stokes_dimension=1)
-lcpr.sensor_line_of_sight = np.array([[135.0]])
+lcpr.sensor_line_of_sight = np.array([[180.0]])
 lcpr.sensor_position = np.array([[600e3]])
 
 #

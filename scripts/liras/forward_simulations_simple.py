@@ -40,13 +40,11 @@ n = i_end - i_start
 
 liras_path = mcrf.liras.liras_path
 ice_shape = os.path.join(liras_path, "data", "scattering", ice_shape)
-hydrometeors = gem_hydrometeors
-include_cloud_water = False
-for h in hydrometeors[:4]:
-    h.psd.t_max = 275.0
-    h.scattering_data = ice_shape
+ice.scattering_data = ice_shape
+hydrometeors = [ice, rain]
+include_cloud_water = True
 
-arg_names = ["ice_psd", "snow_psd", "hail_psd", "graupel_psd", "liquid_psd"]
+arg_names = ["ice_psd", "liquid_psd"]
 kwargs = dict(zip(arg_names, [h.psd for h in hydrometeors]))
 data_provider = ModelDataProvider(99, scene=scene, **kwargs)
 sensors = [getattr(mcrf.sensors, n) for n in args.sensors]
