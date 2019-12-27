@@ -434,7 +434,7 @@ class RastaRadar(ActiveSensor):
 
 ici = ICI(stokes_dimension=1)
 ici.sensor_line_of_sight = np.array([[180.0]])
-mwi.sensor_position = np.array([[600e3]])
+ici.sensor_position = np.array([[600e3]])
 
 #
 # MWI
