@@ -81,3 +81,5 @@ retrieval.run(ip)
 #
 
 ws = retrieval.simulation.workspace
+r = retrieval.simulation.retrieval
+rqs = r.retrieval_quantities

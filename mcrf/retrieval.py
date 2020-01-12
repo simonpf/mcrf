@@ -115,12 +115,13 @@ class CloudRetrieval:
                 normalization="VVH",
                 cutoff=750e9)
         ]
+        absorbers = [O2(), N2(), H2O()]
         if self.include_cloud_water:
             absorbers.insert(2, CloudWater(model = "ELL07", from_catalog=False))
         scatterers = hydrometeors
         surface = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
-        atmosphere.catalog = Perrin()#Aer("h2o_lines.xml.gz")
+        atmosphere.catalog = Aer("h2o_lines.xml.gz")
         self.simulation = ArtsSimulation(atmosphere,
                                          sensors=sensors,
                                          scattering_solver=RT4())
@@ -235,6 +236,7 @@ class CloudSimulation:
                 normalization="VVH",
                 cutoff=750e9)
         ]
+        absorbers = [O2(), N2(), H2O()]
         if self.include_cloud_water:
             absorbers.insert(2, CloudWater(model="ELL07", from_catalog = False))
         scatterers = hydrometeors
