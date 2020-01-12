@@ -253,8 +253,7 @@ class ObservationError(DataProviderBase):
                  sensors,
                  footprint_error=False,
                  forward_model_error=False,
-                 scene = "A",
-                 shape = "8-ColumnAggregate"):
+                 scene = "A"):
         """
         Arguments:
             sensors(:code:`list`): List of :code:`parts.sensor.Sensor` objects
@@ -280,7 +279,7 @@ class ObservationError(DataProviderBase):
 
         self.nedt_fm = {}
         for n in [s.name for s in sensors]:
-            filename = "e_" + scene.lower() + "_" + n + "_" + shape + ".npy"
+            filename = "e_" + scene.lower() + "_" + n + ".npy"
             filename = os.path.join(liras_path, "data", filename)
             self.nedt_fm[n] = np.load(filename)
 
@@ -319,3 +318,4 @@ class ObservationError(DataProviderBase):
             covmat[i_lcpr:j_lcpr, i_lcpr:j_lcpr] += self.lcpr_covmat
 
         return covmat
+

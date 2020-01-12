@@ -110,7 +110,9 @@ data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(cloud_water_a_priori)
 data_provider.add(rh_a_priori)
-data_provider.add(mcrf.liras.ObservationError(sensors))
+data_provider.add(mcrf.liras.ObservationError(sensors),
+                  forward_model_error = True,
+                  scene = scene)
 data_provider.add(observations)
 
 #
