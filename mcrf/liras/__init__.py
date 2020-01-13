@@ -149,7 +149,7 @@ liquid_mask = TemperatureMask(230.0, 300.0)
 liquid_covariance = Diagonal(1**2)
 liquid_covariance = SpatialCorrelation(liquid_covariance, 2e3)
 cloud_water_a_priori = FixedAPriori("cloud_water",
-                                    -6,
+                                    -8,
                                     liquid_covariance,
                                     mask=liquid_mask,
                                     mask_value=-20)

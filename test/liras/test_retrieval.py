@@ -54,6 +54,12 @@ sensors      = [lcpr, mwi, ici]
 # Add a priori providers.
 #
 
+observation_error = mcrf.liras.ObservationError(sensors,
+                                                forward_model_error = True,
+                                                scene = scene)
+observation_error.noise_scaling["mwi"] = np.sqrt(0.5)
+observation_error.noise_scaling["ici"] = np.sqrt(0.5)
+
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])
 data_provider.add(snow.a_priori[0])
@@ -63,7 +69,7 @@ data_provider.add(rain.a_priori[1])
 data_provider.add(rh_a_priori)
 data_provider.add(cloud_water_a_priori)
 data_provider.add(mcrf.liras.ObservationError(sensors,
-                                              forward_model_error = False,
+                                              forward_model_error = True,
                                               scene = scene))
 data_provider.add(observations)
 

@@ -111,6 +111,7 @@ class CloudRetrieval:
             O2(model="TRE05", from_catalog=False),
             N2(model="SelfContStandardType", from_catalog=False),
             H2O(model=["SelfContCKDMT320", "ForeignContCKDMT320"],
+                from_catalog = True,
                 lineshape="VP",
                 normalization="VVH",
                 cutoff=750e9)
@@ -136,10 +137,13 @@ class CloudRetrieval:
             [isinstance(s, ActiveSensor) for s in self.sensors])
 
         def radar_only(rr):
-            rr.sensors = [s for s in rr.sensors if isinstance(s, ActiveSensor)]
+
+            rr.settings["max_iter"] = 10
+            rr.settings["stop_dx"] = 1e-6
             rr.settings["lm_ga_settings"] = np.array(
                 [100.0, 3.0, 2.0, 1e5, 1.0, 1.0])
-            rr.settings["stop_dx"] = 0.1
+
+            rr.sensors = [s for s in rr.sensors if isinstance(s, ActiveSensor)]
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [
                 h.moments[1] for h in self.hydrometeors
@@ -147,16 +151,19 @@ class CloudRetrieval:
             #rr.retrieval_quantities = [h.moments[1] for h in self.hydrometeors]
 
         def all_quantities(rr):
-            if all([isinstance(s, PassiveSensor) for s in rr.sensors]):
-                rr.settings["lm_ga_settings"] = np.array(
-                    [10.0, 3.0, 2.0, 1e5, 1.0, 1.0])
-                rr.settings["max_iter"] = 20
-                rr.settings["stop_dx"] = 0.1
-            else:
-                rr.settings["lm_ga_settings"] = np.array(
-                    [10.0, 3.0, 2.0, 1e5, 1.0, 1.0])
-                rr.settings["max_iter"] = 20
-                rr.settings["stop_dx"] = 0.1
+
+            rr.settings["max_iter"] = 10
+            rr.settings["stop_dx"] = 1e-6
+            rr.settings["lm_ga_settings"] = np.array(
+                [100.0, 3.0, 2.0, 1e5, 1.0, 1.0]
+            )
+
+            #if all([isinstance(s, PassiveSensor) for s in rr.sensors]):
+            #    rr.settings["lm_ga_settings"] = np.array(
+            #        [0.0, 3.0, 2.0, 1e5, 1.0, 1.0])
+            #else:
+            #    rr.settings["lm_ga_settings"] = np.array(
+            #        [10.0, 3.0, 2.0, 1e5, 1.0, 1.0])
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
             rr.retrieval_quantities += [
                 h.moments[1] for h in self.hydrometeors
