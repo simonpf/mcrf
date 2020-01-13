@@ -72,7 +72,7 @@ class CloudRetrieval:
         if len(h2o_a) > 0:
             self.simulation.retrieval.add(h2o)
             h2o_a = h2o_a[0]
-            atanh = Atanh(0.0, 1.1)
+            atanh = Atanh(0.0, 1.2)
             h2o.transformation = atanh
             h2o.retrieval.unit = RelativeHumidity()
             self.h2o = h2o
