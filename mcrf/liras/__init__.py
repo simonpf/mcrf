@@ -145,7 +145,7 @@ snow.limits_low = [4, 1e-8]
 # Liquid particles
 ################################################################################
 
-liquid_mask = TemperatureMask(230.0, 300.0)
+liquid_mask = TemperatureMask(240.0, 300.0)
 liquid_covariance = Diagonal(1**2)
 liquid_covariance = SpatialCorrelation(liquid_covariance, 1e3)
 cloud_water_a_priori = FixedAPriori("cloud_water",
@@ -216,7 +216,7 @@ def a_priori_shape(t):
     return transformation(x)
 
 z_grid = np.linspace(0, 20e3, 21)
-rh_covariance = Diagonal(0.2)
+rh_covariance = Diagonal(0.4)
 rh_covariance = SpatialCorrelation(rh_covariance, 1e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
