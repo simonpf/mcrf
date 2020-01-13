@@ -89,3 +89,7 @@ retrieval.run(ip)
 ws = retrieval.simulation.workspace
 r = retrieval.simulation.retrieval
 rqs = r.retrieval_quantities
+
+xs = 0.1 * np.random.normal(size = 10000)
+ys = h2o.transformation.invert(xs)
+plt.hist(ys)
