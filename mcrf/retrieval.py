@@ -122,7 +122,6 @@ class CloudRetrieval:
         scatterers = hydrometeors
         surface = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
-        atmosphere.catalog = Aer("h2o_lines.xml.gz")
         self.simulation = ArtsSimulation(atmosphere,
                                          sensors=sensors,
                                          scattering_solver=RT4())
