@@ -147,7 +147,7 @@ snow.limits_low = [4, 1e-8]
 # Liquid particles
 ################################################################################
 
-liquid_mask = TemperatureMask(230.0, 300.0)
+liquid_mask = TemperatureMask(240.0, 300.0)
 liquid_covariance = Diagonal(1**2)
 liquid_covariance = SpatialCorrelation(liquid_covariance, 1e3)
 cloud_water_a_priori = FixedAPriori("cloud_water",
@@ -221,6 +221,7 @@ def a_priori_shape(t):
 
 z_grid = np.linspace(0, 20e3, 21)
 rh_covariance = Diagonal(0.5)
+rh_covariance = Diagonal(0.4)
 rh_covariance = SpatialCorrelation(rh_covariance, 1e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
@@ -300,18 +301,20 @@ class ObservationError(DataProviderBase):
                 if s.name == "lcpr":
                     i_lcpr = sum([v.size for v in diag])
                     j_lcpr = i_lcpr + s.nedt.size
-                diag += [(c * s.nedt)**2]
+                diag += [s.nedt**2]
 
                 if self.fme and not self.fpe:
                     diag[-1] += self.nedt_fm[s.name]**2
+                    diag[-1] *= c
 
         for s in self.sensors:
             c = self.noise_scaling[s.name]
             if isinstance(s, PassiveSensor):
-                diag += [(c * s.nedt)**2]
+                diag += [s.nedt**2]
 
                 if self.fme:
                     diag[-1] += self.nedt_fm[s.name]**2
+                    diag[-1] *= c
 
         diag = np.concatenate(diag).ravel()
 

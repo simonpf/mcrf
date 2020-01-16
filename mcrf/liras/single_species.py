@@ -27,7 +27,7 @@ def dm_a_priori(t):
 
 ice_shape = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
-ice_mask = And(TropopauseMask(), TemperatureMask(0.0, 274.0))
+ice_mask = And(TropopauseMask(), TemperatureMask(0.0, 273.0))
 
 ice_covariance = Diagonal(100e-6**2, mask=ice_mask, mask_value=1e-24)
 ice_covariance = SpatialCorrelation(ice_covariance,
@@ -70,8 +70,13 @@ ice.limits_low = [4, 1e-10]
 rain_shape = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
+<<<<<<< HEAD
 rain_mask = TemperatureMask(270.0, 340.0)
 rain_covariance = Diagonal(1000e-6**2, mask=rain_mask, mask_value=1e-16)
+=======
+rain_mask = TemperatureMask(272.0, 340.0)
+rain_covariance = Diagonal(500e-6**2, mask=rain_mask, mask_value=1e-16)
+>>>>>>> 2f2ec58f90748311516d3aed0b1d93924633fa73
 rain_covariance = SpatialCorrelation(rain_covariance,
                                      2e3,
                                      mask=rain_mask,
