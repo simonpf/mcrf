@@ -32,12 +32,14 @@ scattering_data = os.path.join(liras_path, "data", "scattering")
 # Ice particles
 ################################################################################
 
+
 def n0_a_priori(t):
     """
     Defines the a priori mean for the normalized number density (N_0^*) for
     frozen hydrometeors as a function of the temperature t.
     """
     return 10.0 * np.ones(t.shape)
+
 
 def dm_a_priori(t):
     """
@@ -48,6 +50,7 @@ def dm_a_priori(t):
     iwc = 1e-6
     dm = (4.0**4 * iwc / (np.pi * 917.0) / n0)**0.25
     return dm
+
 
 #
 # D_m
@@ -83,7 +86,6 @@ ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori,
                                     ice_mask,
                                     "altitude",
                                     provide_retrieval_grid=False)
-
 
 ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori],
                   ice_shape, ice_shape_meta)
@@ -208,6 +210,7 @@ rain.radar_only = True
 # Humidity
 ################################################################################
 
+
 def a_priori_shape(t):
     transformation = Atanh()
     transformation.z_max = 1.2
@@ -215,8 +218,9 @@ def a_priori_shape(t):
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.2)
     return transformation(x)
 
+
 z_grid = np.linspace(0, 20e3, 21)
-rh_covariance = Diagonal(0.2)
+rh_covariance = Diagonal(0.5)
 rh_covariance = SpatialCorrelation(rh_covariance, 1e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
@@ -253,7 +257,7 @@ class ObservationError(DataProviderBase):
                  sensors,
                  footprint_error=False,
                  forward_model_error=False,
-                 scene = "A"):
+                 scene="A"):
         """
         Arguments:
             sensors(:code:`list`): List of :code:`parts.sensor.Sensor` objects

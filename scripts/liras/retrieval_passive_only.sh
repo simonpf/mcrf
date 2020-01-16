@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#SBATCH -A C3SE2019-1-15 -p vera
+#SBATCH -A C3SE2020-1-7 -p vera
 #SBATCH -n 256
 #SBATCH -c 2
 #SBATCH -J clouds

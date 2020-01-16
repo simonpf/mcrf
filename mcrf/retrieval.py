@@ -21,6 +21,7 @@ from parts.jacobian import Log10, Atanh, Composition, Identity
 # Cloud retrieval
 ################################################################################
 
+
 class CloudRetrieval:
     """
     Class for performing cloud retrievals.
@@ -111,14 +112,14 @@ class CloudRetrieval:
             O2(model="TRE05", from_catalog=False),
             N2(model="SelfContStandardType", from_catalog=False),
             H2O(model=["SelfContCKDMT320", "ForeignContCKDMT320"],
-                from_catalog = True,
+                from_catalog=True,
                 lineshape="VP",
                 normalization="VVH",
                 cutoff=750e9)
         ]
         absorbers = [O2(), N2(), H2O()]
         if self.include_cloud_water:
-            absorbers.insert(2, CloudWater(model = "ELL07", from_catalog=False))
+            absorbers.insert(2, CloudWater(model="ELL07", from_catalog=False))
         scatterers = hydrometeors
         surface = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
@@ -137,7 +138,7 @@ class CloudRetrieval:
 
         def radar_only(rr):
 
-            rr.settings["max_iter"] = 10
+            rr.settings["max_iter"] = 20
             rr.settings["stop_dx"] = 1e-6
             rr.settings["lm_ga_settings"] = np.array(
                 [100.0, 3.0, 2.0, 1e5, 1.0, 1.0])
@@ -151,11 +152,10 @@ class CloudRetrieval:
 
         def all_quantities(rr):
 
-            rr.settings["max_iter"] = 10
+            rr.settings["max_iter"] = 20
             rr.settings["stop_dx"] = 1e-6
             rr.settings["lm_ga_settings"] = np.array(
-                [100.0, 3.0, 2.0, 1e5, 1.0, 1.0]
-            )
+                [100.0, 3.0, 2.0, 1e5, 1.0, 1.0])
 
             #if all([isinstance(s, PassiveSensor) for s in rr.sensors]):
             #    rr.settings["lm_ga_settings"] = np.array(
@@ -207,9 +207,11 @@ class CloudRetrieval:
         self.index = i
         return self.simulation.run(i)
 
+
 ################################################################################
 # Cloud simulation
 ################################################################################
+
 
 class CloudSimulation:
     """
@@ -244,7 +246,7 @@ class CloudSimulation:
         ]
         absorbers = [O2(), N2(), H2O()]
         if self.include_cloud_water:
-            absorbers.insert(2, CloudWater(model="ELL07", from_catalog = False))
+            absorbers.insert(2, CloudWater(model="ELL07", from_catalog=False))
         scatterers = hydrometeors
         surface = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)

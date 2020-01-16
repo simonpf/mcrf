@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-#SBATCH -A C3SE2019-1-15 -p vera
+#SBATCH -A C3SE2020-1-7 -p vera
 #SBATCH -n 256
 #SBATCH -c 2
 #SBATCH -J clouds
 #SBATCH -t 0-10:00:00
+#SBATCH --mail-type END
+#SBATCH --mail-user simon.pfreundschuh@chalmers.se
 
 cd ${HOME}/src/crac
 source ops/setup_vera.sh
