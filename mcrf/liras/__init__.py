@@ -296,18 +296,21 @@ class ObservationError(DataProviderBase):
                 if s.name == "lcpr":
                     i_lcpr = sum([v.size for v in diag])
                     j_lcpr = i_lcpr + s.nedt.size
-                diag += [(c * s.nedt)**2]
+                diag += [s.nedt**2]
 
                 if self.fme and not self.fpe:
                     diag[-1] += self.nedt_fm[s.name]**2
+                    diag[-1] *= c
 
         for s in self.sensors:
             c = self.noise_scaling[s.name]
             if isinstance(s, PassiveSensor):
-                diag += [(c * s.nedt)**2]
+                diag += [s.nedt**2]
 
                 if self.fme:
                     diag[-1] += self.nedt_fm[s.name]**2
+                    diag[-1] *= c
+
 
         diag = np.concatenate(diag).ravel()
 
