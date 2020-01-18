@@ -70,11 +70,15 @@ class CloudRetrieval:
         h2o_a = [p for p in self.data_provider.subproviders \
                  if getattr(p, "name", "") == "H2O"]
         if len(h2o_a) > 0:
-            self.simulation.retrieval.add(h2o)
             h2o_a = h2o_a[0]
-            atanh = Atanh(0.0, 1.2)
-            h2o.transformation = atanh
-            h2o.retrieval.unit = RelativeHumidity()
+            self.simulation.retrieval.add(h2o)
+            if h2o_a.unit == "vmr":
+                h2o.retrieval.unit = VMR()
+                h2o.transformation = Log10()
+            else:
+                atanh = Atanh(0.0, 1.2)
+                h2o.transformation = atanh
+                h2o.retrieval.unit = RelativeHumidity()
             self.h2o = h2o
         else:
             self.h2o = None
@@ -140,7 +144,7 @@ class CloudRetrieval:
             rr.settings["max_iter"] = 10
             rr.settings["stop_dx"] = 1e-6
             rr.settings["lm_ga_settings"] = np.array(
-                [100.0, 3.0, 2.0, 1e5, 1.0, 1.0])
+                [0.0, 3.0, 2.0, 1e5, 1.0, 1.0])
 
             rr.sensors = [s for s in rr.sensors if isinstance(s, ActiveSensor)]
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
@@ -154,7 +158,7 @@ class CloudRetrieval:
             rr.settings["max_iter"] = 10
             rr.settings["stop_dx"] = 1e-6
             rr.settings["lm_ga_settings"] = np.array(
-                [100.0, 3.0, 2.0, 1e5, 1.0, 1.0]
+                [0.0, 3.0, 2.0, 1e5, 1.0, 1.0]
             )
 
             #if all([isinstance(s, PassiveSensor) for s in rr.sensors]):

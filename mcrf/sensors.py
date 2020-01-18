@@ -122,11 +122,9 @@ class ICI(PassiveSensor):
         self.sensor_response = sensor_response
         self.sensor_f_grid = self.f_grid[:m]
 
-
 ################################################################################
 # Microwave imager (MWI).
 ################################################################################
-
 
 class MWI(PassiveSensor):
     """

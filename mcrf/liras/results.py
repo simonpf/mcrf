@@ -113,6 +113,8 @@ def get_reference_data(scene = "a",
     iwc_n0, swc_n0, gwc_n0, hwc_n0, lwc_n0, rwc_n0 = np.zeros((6, n, z.size))
     lats, lons = np.zeros((2, n))
     h2o = np.zeros((n, z.size))
+    temperature = np.zeros((n, z.size))
+
     for i in range(i_start, i_end):
         j = i - i_start
         iwc[j, :] = data_provider.get_gem_ice_mass_density(i)
@@ -142,6 +144,7 @@ def get_reference_data(scene = "a",
         h2o[j, :] = data_provider.get_relative_humidity(i)
         lats[j] = data_provider.get_latitude(i)
         lons[j] = data_provider.get_longitude(i)
+        temperature[j, :] = data_provider.get_temperature(i)
 
     return {
         "iwc" : iwc,
@@ -171,7 +174,8 @@ def get_reference_data(scene = "a",
         "h2o" : h2o,
         "lat" : lats,
         "lon" : lons,
-        "z" : z
+        "z" : z,
+        "temperature" : temperature
     }
 
 def plot_results(lats, z, qs, name, norm,

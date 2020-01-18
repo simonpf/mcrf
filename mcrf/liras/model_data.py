@@ -439,7 +439,7 @@ class ModelDataProvider(DataProviderBase):
         t   = self.get_temperature(i_p).ravel()
         p   = self.get_pressure(i_p).ravel()
         vmr = self.get_H2O(i_p).ravel()
-        q   = vmr2relative_humidity(vmr, p, t, e_eq = p_eq)
+        q   = vmr2relative_humidity(vmr, p, t)#, e_eq = p_eq)
         return q
 
     def get_O2(self, i_p, *args):
