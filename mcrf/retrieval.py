@@ -21,6 +21,7 @@ from parts.jacobian import Log10, Atanh, Composition, Identity
 # Cloud retrieval
 ################################################################################
 
+
 class CloudRetrieval:
     """
     Class for performing cloud retrievals.
@@ -71,14 +72,9 @@ class CloudRetrieval:
                  if getattr(p, "name", "") == "H2O"]
         if len(h2o_a) > 0:
             h2o_a = h2o_a[0]
-            self.simulation.retrieval.add(h2o)
-            if h2o_a.unit == "vmr":
-                h2o.retrieval.unit = VMR()
-                h2o.transformation = Log10()
-            else:
-                atanh = Atanh(0.0, 1.2)
-                h2o.transformation = atanh
-                h2o.retrieval.unit = RelativeHumidity()
+            atanh = Atanh(0.0, 1.1)
+            h2o.transformation = atanh
+            h2o.retrieval.unit = RelativeHumidity()
             self.h2o = h2o
         else:
             self.h2o = None
@@ -115,14 +111,14 @@ class CloudRetrieval:
             O2(model="TRE05", from_catalog=False),
             N2(model="SelfContStandardType", from_catalog=False),
             H2O(model=["SelfContCKDMT320", "ForeignContCKDMT320"],
-                from_catalog = True,
+                from_catalog=True,
                 lineshape="VP",
                 normalization="VVH",
                 cutoff=750e9)
         ]
         absorbers = [O2(), N2(), H2O()]
         if self.include_cloud_water:
-            absorbers.insert(2, CloudWater(model = "ELL07", from_catalog=False))
+            absorbers.insert(2, CloudWater(model="ELL07", from_catalog=False))
         scatterers = hydrometeors
         surface = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
@@ -141,10 +137,10 @@ class CloudRetrieval:
 
         def radar_only(rr):
 
-            rr.settings["max_iter"] = 10
+            rr.settings["max_iter"] = 20
             rr.settings["stop_dx"] = 1e-6
             rr.settings["lm_ga_settings"] = np.array(
-                [0.0, 3.0, 2.0, 1e5, 1.0, 1.0])
+                [10.0, 3.0, 2.0, 1e3, 1.0, 1.0])
 
             rr.sensors = [s for s in rr.sensors if isinstance(s, ActiveSensor)]
             rr.retrieval_quantities = [h.moments[0] for h in self.hydrometeors]
@@ -155,11 +151,10 @@ class CloudRetrieval:
 
         def all_quantities(rr):
 
-            rr.settings["max_iter"] = 10
+            rr.settings["max_iter"] = 20
             rr.settings["stop_dx"] = 1e-6
             rr.settings["lm_ga_settings"] = np.array(
-                [0.0, 3.0, 2.0, 1e5, 1.0, 1.0]
-            )
+                [10.0, 3.0, 2.0, 1e3, 1.0, 1.0])
 
             #if all([isinstance(s, PassiveSensor) for s in rr.sensors]):
             #    rr.settings["lm_ga_settings"] = np.array(
@@ -211,9 +206,11 @@ class CloudRetrieval:
         self.index = i
         return self.simulation.run(i)
 
+
 ################################################################################
 # Cloud simulation
 ################################################################################
+
 
 class CloudSimulation:
     """
@@ -248,7 +245,7 @@ class CloudSimulation:
         ]
         absorbers = [O2(), N2(), H2O()]
         if self.include_cloud_water:
-            absorbers.insert(2, CloudWater(model="ELL07", from_catalog = False))
+            absorbers.insert(2, CloudWater(model="ELL07", from_catalog=False))
         scatterers = hydrometeors
         surface = Tessem()
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)

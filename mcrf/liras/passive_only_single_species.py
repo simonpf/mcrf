@@ -28,6 +28,7 @@ settings = {"single_species": True}
 # Ice particles
 ################################################################################
 
+
 def n0_a_priori(t):
     t = t - 272.15
     return np.log10(np.exp(-0.076586 * t + 17.948))
@@ -45,8 +46,7 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 
 md_z_grid = np.linspace(0, 20e3, 5)
 #md_z_grid = np.array([5e3, 15e3])
-ice_mask = And(TropopauseMask(), TemperatureMask(0.0, 280.0))
-snow_mask = And(AltitudeMask(0.0, 18e3), TemperatureMask(0.0, 280.0))
+ice_mask = And(TropopauseMask(), TemperatureMask(0.0, 273.15))
 ice_covariance = Diagonal(1 * np.ones(md_z_grid.size))
 ice_covariance = SpatialCorrelation(ice_covariance, 2e3, mask=ice_mask)
 
@@ -80,8 +80,7 @@ ice_dm_a_priori = MaskedRegularGrid(ice_dm_a_priori,
                                     points_dm,
                                     ice_mask,
                                     "altitude",
-                                    provide_retrieval_grid=False,
-                                    transition=1e3)
+                                    provide_retrieval_grid=False)
 
 ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori],
                   ice_shape, ice_shape_meta)
@@ -96,14 +95,14 @@ ice.radar_only = False
 # Cloud water
 ################################################################################
 
-liquid_mask = TemperatureMask(230, 273.0)
+liquid_mask = TemperatureMask(230, 300.0)
 liquid_covariance = Diagonal(1**2)
 cloud_water_a_priori = FixedAPriori("cloud_water",
                                     -5,
                                     liquid_covariance,
                                     mask=liquid_mask,
                                     mask_value=-18)
-cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, 7, liquid_mask,
+cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori, 5, liquid_mask,
                                          "altitude")
 
 ################################################################################
@@ -114,7 +113,7 @@ rain_shape = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
 # mass density
-rain_mask = TemperatureMask(270, 340.0)
+rain_mask = TemperatureMask(273.15, 340.0)
 rain_covariance = Diagonal(4)
 
 rain_md_a_priori = FixedAPriori("rain_md", -5, rain_covariance)
@@ -164,9 +163,9 @@ rain.retrieve_second_moment = True
 
 def a_priori_shape(t):
     transformation = Atanh()
-    transformation.z_max = 1.2
+    transformation.z_max = 1.1
     transformation.z_min = 0.0
-    x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.1)
+    x = np.maximum(np.minimum(0.8 - (270 - t) / 100.0, 0.2), 0.1)
     return transformation(x)
 
 

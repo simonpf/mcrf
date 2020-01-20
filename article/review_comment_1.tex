@@ -115,7 +115,52 @@ remainder of the scene.
 Line  98  (also  176,252,449):  Instead  of  vertical/horizontal  (which  are  dependentone the convention used for plotting), I recommend the use of concentration/size tocharacterize the dimensions of the particle size distribution.
 
 \subsubsection*{Author response}
-This has been fixed in the updated version of the manuscript.
+
+The proposed changes will be adopted in the revised version of the manuscript
+by introducing the following changes:
+
+L. 98:
+
+\textit{
+As these plots show, the
+assumed particle size distributions across different ice species vary mostly in
+their scaling with respect to size and concentration, whereas the function shape shows less
+variability.}
+
+L. 176:
+
+\textit{ The PSD of a hydrometeor species at a given height level is represented
+  by two scaling parameters: The mass-weighted mean diameter $D_m$, which scales
+  the size of the particles, and the normalized number density $N_0^*$, which
+  scales the concentration of particles.}
+
+L. 252:
+
+\textit{ In the figure, the cloud signal is displayed in $D_m$-mass density
+  space and thus shows how the measured passive cloud signal varies with size
+  and concentration of particles in the cloud. }
+
+
+L. 449:
+\textit{The results show that the combined observations can simultaneously
+  constrain the size and concentration of particles in the cloud.}
+
+
+In addition to this, also the following sentences which referred to the horizontal and vertical
+scaling of the PSD will be changed accordingly:
+
+L. 183:
+
+\textit{ The retrieved scaling parameters of particle size and concentration,
+  $D_m$ and $N_0^*$, are used as units for the axes of the plot so that the
+  shape of the PSD becomes independent of the retrieved mass density and number
+  concentration. }
+
+L. 244:
+
+\texit{The question that is addressed here is whether the combination of active
+  and passive observations is able to constrain both the size and concentration
+  of the ice particles in the cloud.}
 
 \subsection*{Reviewer comment 3}
 
@@ -123,23 +168,68 @@ Line 100: A few more details on the Milbrant and Yau microphysics sheme that are
 
 \subsubsection*{Author response}
 
-The comment has been addressed by adding the following explanation to the manuscript:
+To address the reviewers comment, the paragraph describing the Milbrandt-Yau microphysics scheme
+has been rewritten and now reads as follows:
 
+\textit{
+The GEM model uses a two-moment scheme with six types of hydrometeors to
+represent clouds and precipitation \citep{milbrandtyau05}: Two classes of liquid
+hydrometeors (rain and liquid cloud) and four of frozen hydrometeors (cloud ice,
+snow, hail and graupel). The particle size distribution (PSD) of each
+hydrometeor class is described by a three-parameter gamma distribution. The
+prognostic parameters of the two-moment scheme are the slope and intercept
+parameters of the distribution, which are derived from the mixing ratios and
+number densities predicted by the GEM model. The third parameter of the PSD and
+the mass-size relationship of each hydrometeor class are set to fixed,
+class-specific values. The parameters of the mass-size relationships are given
+in Tab.~\ref{tab:species_parameters}. The masses of all ice particles in the
+model are assumed to scale with a power of three, which leads to high densities
+for large particles.
+  }
 
 \subsection*{Reviewer comment 4}
 Line 135: Does the ARTS radar solver also provide analytic Jacobians?
 
 \subsubsection*{Author response}
-Yes, it does. This is now also mentioned in the description of the retrieval forward model.
+Yes, it does. This is now also mentioned in the description of the retrieval forward model:
+
+\textit{
+All simulations presented in this study were performed using Version 2.3.1245 of
+the Atmospheric Radiative Transfer Simulator (ARTS, \cite{arts18}). Radar
+reflectivities are computed using ARTS' built-in single-scattering radar solver,
+which provides analytic Jacobians. For the ...
+}
 
 \subsection*{Reviewer comment 5}
 Line 187: “particles” should be “particle”
 
 \subsubsection*{Author response}
-This will be corrected in the manuscript.
+
+This will be corrected in the revised version of the manuscript.
+
 
 \subsection{Reviewer comment 6}
 Line 198: Is Dm also only retrieved at these 10 points, or just N0* (and Dm retrievedin each radar range gate as in Grecu et al. 2016)?
+
+\subsubsection*{Author response}
+
+$D_m$ is actually retrieved at the resolution of the GEM model scenes. To make this more clear
+the following sketch has been created and will be included in the beginning of the section
+describing the retrieval setup:
+
+\begin{figure}
+\centering
+\includegraphics[width = 0.8\linewidth]{../plots/retrieval_sketch}
+\caption{Illustration of the retrieval quantities and their respective retrieval
+  grids. Grey, dashed lines show the resolution of the GEM model data while the
+  filled circles represent the grid points of the different retrieval
+  quantities. Panel (a) shows the configuration used in the radar-only and
+  combined retrieval. Panel (b) shows the configuration used in the passive-only
+  retrieval}
+\label{fig:retrieval_sketch}
+\end{figure}
+
+
 
 \subsection{Reviewer comment}
 7.  Line 256:  Actually, this is only one example of how the radar and radiometer measurements can be complementary.  Even if the lines were parallel (and thus no infor-mation distinguishing size from concentration could be obtained), the radar still locates the cloud and describes its vertical structure.  One can imagine a cloud of the same ice water path and particle size at two different heights having different brightness temperatures due to changes in the water vapor absorption above the cloud – having theradar information would provide increased information content about the ice water pathin this case than the radiometer measurement alone.

@@ -280,18 +280,19 @@ cloud scenes used to test the retrieval. Colored lines show the
 \label{fig:overview}
 \end{figure}
 
-
-The GEM model uses six types of hydrometeors to represent clouds and
-precipitation \citep{milbrandtyau05}: Two classes of liquid hydrometeors (rain
-and liquid cloud) and four of frozen hydrometeors (cloud ice, snow, hail and
-graupel). The particle size distribution (PSD) of each hydrometeor type is
-parametrized by its particle number concentration and mass density. The full
-particle size distribution can be prognosed from the two moments using a
-species-dependent parametrization and mass-size relationship. The parameters of
-the mass-size relationship are given in Tab.~\ref{tab:species_parameters}. As
-shown in the table, the masses of all ice particles in the model are
-assumed to scale with a power of three, which leads to high densities for
-large particles.
+The GEM model uses a two-moment scheme with six types of hydrometeors to
+represent clouds and precipitation \citep{milbrandtyau05}: Two classes of liquid
+hydrometeors (rain and liquid cloud) and four of frozen hydrometeors (cloud ice,
+snow, hail and graupel). The particle size distribution (PSD) of each
+hydrometeor class is described by a three-parameter gamma distribution. The
+prognostic parameters of the two-moment scheme are the slope and intercept
+parameters of the distribution, which are derived from the mixing ratios and
+number densities predicted by the GEM model. The third parameter of the PSD and
+the mass-size relationship of each hydrometeor class are set to fixed,
+class-specific values. The parameters of the mass-size relationships are given
+in Tab.~\ref{tab:species_parameters}. The masses of all ice particles in the
+model are assumed to scale with a power of three, which leads to high densities
+for large particles.
 
 \begin{table}
   \centering
@@ -314,11 +315,11 @@ large particles.
 \end{table}
 
 Examples of particle size distributions of frozen hydrometeors are displayed in
-Fig.~\ref{fig:gem_psds}. The four panels display the prognosed particle size
+Fig.~\ref{fig:gem_psds}. The four panels display the derived particle size
 distributions for the four frozen hydrometeor types together with renderings of
 the particle shapes used in the forward simulations. As these plots show, the
 assumed particle size distributions across different ice species vary mostly in
-their horizontal and vertical scaling, whereas the function shape shows less
+their scaling with respect to size and concentration, whereas the function shape shows less
 variability. Furthermore, an important characteristic of the model can be
 identified here, which will help to better understand the retrieval results
 presented later: Cloud ice in the model is characterized by high particle number
@@ -341,7 +342,7 @@ concentrations and larger particles.
 
 A simulated observation is generated for each vertical profile in the
 model test scenes. The simulations apply the same microphysics scheme
-as the model, which means that they use the same six hydrometeor classes
+as the GEM test scenes, which means that they use the same six hydrometeor classes
 and PSD parametrizations.
 
 \subsubsection{Sensor configuration}
@@ -352,28 +353,26 @@ highest-frequency channels of the MWI radiometer and all channels of the ICI
 radiometer. The passive observations are combined with a W-band cloud radar
 similar to the CloudSat Cloud Profiling Radar (CPR, \citet{stephens02,tanelli08}).
 
-A number of simplifications are applied for the generation of the synthetic
-cloud observations: Firstly, the beams of all three sensors are modeled as
-perfectly coincident pencil beams. Secondly, a synthetic observation is
-generated for each vertical profile from the model scenes by simulating a
-one-dimensional, plane-parallel atmosphere, the properties of which are taken
-from the corresponding model profile. It follows from these modeling decisions
-that the atmosphere is assumed to be homogeneous across the beams of the active
-and passive sensors and that they all sense the same atmospheric volume. This is
-certainly not the case for space-borne observations and will incur a forward
-modeling error that is not accounted for in this study. Since the focus of this
-study are the fundamental synergies between the active and passive observations,
-quantifying the impact of beam width and inhomogeneity is left for future
-investigation.
-
-Observations from the ICI radiometer are simulated by performing a single,
-non-polarized radiative transfer simulation located at the centers of the pass
-bands of each channel and averaging the resulting brightness temperatures. For
-channels with multiple polarizations, only a single simulation is performed.
-To compensate for this, the noise of the corresponding channel is reduced by a
-factor of $\sqrt{2}$. The simulated ICI channels and assumed noise levels are
-presented in  Tab.~\ref{tab:channels}. The off-nadir viewing angle of ICI
-is assumed to be $48\unit{^\circ}$ at the sensor.
+In order to reduce the complexity of generating simulated observations, a number
+of simplifications are applied to the viewing geometry and the radiative
+transfer modeling. The beams of all three sensors are assumed to point at nadir
+and to be perfectly coincident pencil beams. In this way, observations for the
+GEM model scenes can be simulated by performing a single 1-dimensional radiative
+transfer calculation for each profile. Moreover, multiple scattering effects in
+the radar observations are neglected. The simulations therefore do not take into
+account beam filling effects caused by atmospheric inhomogeneity across the
+footprints of the different sensors. The incidence angles of the beams of ICI
+and MWI will be around $53^\circ$ at the Earth's surface, so the simulations
+performed here do not represent the viewing geometry of a space-borne
+configuration involving ICI and MWI accurately. Realistic modeling of the
+viewing geometry as well as multiple scattering effects in a variational
+retrieval are currently not feasible at reasonable computational cost with the
+tools used in this study. Assuming observations at nadir further allows neglecting
+polarization effects, which can be several Kelvin at typical viewing geometries
+of imager sensors \cite{xie15}. Since the focus of this study are the fundamental
+synergies between the active and passive observations, this was deemed
+sufficient for its scope. Moreover, these assumptions are justifiable for
+air-borne observations, which adds practical relevance to the simulations.
 
 Observations from the MWI radiometer are simulated in a similar manner as those
 from ICI. However, from MWI only channels with frequencies larger than or equal
@@ -390,36 +389,36 @@ here. The included MWI channels are listed in Tab.~\ref{tab:channels}.
 \label{tab:channels}
     \begin{tabular}{c|r|r}
     \multicolumn{3}{c}{MWI}\\
-    Channel & Freq. [GHz] & Noise [K]\\
+    Channel & Freq. [GHz] & Noise [K] & Footprint FWHM [km]\\
     \hline
-    MWI-8  & $89$              & $1.1$ \\
-    MWI-9  & $118.75 \pm 3.2$  & $1.3$ \\
-    MWI-10 & $\pm 2.1$         & $1.3$ \\
-    MWI-11 & $\pm 1.4$         & $1.3$ \\
-    MWI-12 & $\pm 1.2$         & $1.3$ \\
-    MWI-13 & $165.5 \pm 0.75$  & $1.3$ \\
-    MWI-14 & $183.31 \pm 7.0$  & $1.2$ \\
-    MWI-15 & $ \pm 6.1$        & $1.2$ \\
-    MWI-16 & $ \pm 4.9$        & $1.2$ \\
-    MWI-17 & $ \pm 3.4$        & $1.2$ \\
-    MWI-18 & $ \pm 2.0$        & $1.3$ \\
+    MWI-8  & $89$              & $1.1$ & 10\\
+    MWI-9  & $118.75 \pm 3.2$  & $1.3$ & 10\\
+    MWI-10 & $\pm 2.1$         & $1.3$ & 10\\
+    MWI-11 & $\pm 1.4$         & $1.3$ & 10\\
+    MWI-12 & $\pm 1.2$         & $1.3$ & 10\\
+    MWI-13 & $165.5 \pm 0.75$  & $1.3$ & 10\\
+    MWI-14 & $183.31 \pm 7.0$  & $1.2$ & 10\\
+    MWI-15 & $ \pm 6.1$        & $1.2$ & 10\\
+    MWI-16 & $ \pm 4.9$        & $1.2$ & 10\\
+    MWI-17 & $ \pm 3.4$        & $1.2$ & 10\\
+    MWI-18 & $ \pm 2.0$        & $1.3$ & 10\\
     \end{tabular}%
     \hspace{1cm}%
     \begin{tabular}{c|r|r}
     \multicolumn{3}{c}{ICI}\\
-    Channel & Freq. [GHz] & Noise [K] \\
+    Channel & Freq. [GHz] & Noise [K]  & Footprint FWHM [km]\\
     \hline
-    ICI-1  & $183.31 \pm 7.0$ & $0.8$\\
-    ICI-2  & $       \pm 3.4$ & $0.8$\\
-    ICI-3  & $       \pm 2.0$ & $0.8$\\
-    ICI-4  & $243    \pm 2.5$ & $\frac{1}{\sqrt{2}} \cdot 0.7$\\
-    ICI-5  & $325.15 \pm 9.5$ & $1.2$\\
-    ICI-6  & $       \pm 3.5$ & $1.3$\\
-    ICI-7  & $       \pm 1.5$ & $1.5$\\
-    ICI-8  & $448    \pm 7.2$ & $1.4$\\
-    ICI-9  & $       \pm 3.0$ & $1.6$\\
-    ICI-10 & $       \pm 1.4$ & $2.0$\\
-    ICI-11 & $664    \pm 4.2$ & $\frac{1}{\sqrt{2}} \cdot 1.6$\\
+    ICI-1  & $183.31 \pm 7.0$ & $0.8$ & 16\\
+    ICI-2  & $       \pm 3.4$ & $0.8$ & 16\\
+    ICI-3  & $       \pm 2.0$ & $0.8$ & 16\\
+    ICI-4  & $243    \pm 2.5$ & $\frac{1}{\sqrt{2}} \cdot 0.7$ & 16\\
+    ICI-5  & $325.15 \pm 9.5$ & $1.2$ & 16\\
+    ICI-6  & $       \pm 3.5$ & $1.3$ & 16\\
+    ICI-7  & $       \pm 1.5$ & $1.5$ & 16\\
+    ICI-8  & $448    \pm 7.2$ & $1.4$ & 16\\
+    ICI-9  & $       \pm 3.0$ & $1.6$ & 16\\
+    ICI-10 & $       \pm 1.4$ & $2.0$ & 16\\
+    ICI-11 & $664    \pm 4.2$ & $\frac{1}{\sqrt{2}} \cdot 1.6$ & 16\\
     \end{tabular}
 \end{table}
 
@@ -437,19 +436,20 @@ observations to the lines of sights of the passive beams.
 
 All simulations presented in this study were performed using Version 2.3.1245 of
 the Atmospheric Radiative Transfer Simulator (ARTS, \cite{arts18}). Radar
-reflectivities are computed using ARTS' built-in single-scattering radar solver.
-For the simulation of passive radiances, a hybrid solver is used which combines
-the DISORT \citep{disort00} scattering solver with the ARTS standard scheme for
-pencil beam radiative transfer. The hybrid solver has been added to ARTS
-specifically for this study and provides approximate, analytical Jacobians,
-which are required for the variational retrievals of hydrometeors. All
-simulations are performed assuming an ocean surface with emissivities calculated
-using the Tool to Estimate Sea‐Surface Emissivity from Microwaves to
-sub‐Millimeter waves (TESSEM, \cite{prigent16}). Polarization is neglected in
-all simulations performed in this study. Particle scattering data are taken from
-the ARTS scattering data base (hereafter ARTS SSDB, \citet{eriksson18}). Gaseous
-absorption is modeled using the absorption models from \cite{rosenkranz93}
-for $N_2$, $O_2$ and from \cite{rosenkranz98}  for $H_2O$.
+reflectivities are computed using ARTS' built-in single-scattering radar solver,
+which provides analytic Jacobians. For the simulation of passive radiances, a
+hybrid solver is used which combines the DISORT \citep{disort00} scattering
+solver with the ARTS standard scheme for pencil beam radiative transfer. The
+hybrid solver has been added to ARTS specifically for this study and provides
+approximate, analytical Jacobians, which are required for the variational
+retrievals of hydrometeors. All simulations are performed assuming an ocean
+surface with emissivities calculated using the Tool to Estimate Sea‐Surface
+Emissivity from Microwaves to sub‐Millimeter waves (TESSEM, \cite{prigent16}).
+Polarization is neglected in all simulations performed in this study. Particle
+scattering data are taken from the ARTS scattering data base (hereafter ARTS
+SSDB, \citet{eriksson18}). Gaseous absorption is modeled using the absorption
+models from \cite{rosenkranz93} for $N_2$, $O_2$ and from \cite{rosenkranz98}
+for $H_2O$.
 
 
 \subsection{Retrieval algorithm}
@@ -519,38 +519,52 @@ noise characteristics given in Section \ref{sec:sensors}.
 \subsubsection{State space}
 \label{sec:method:fowardmodel}
 
-The proposed retrieval solves for distributions of one frozen and one liquid
-hydrometeor species in the atmospheric column together with profiles of
-atmospheric humidity and liquid-cloud mass density. The retrieval uses the same
-vertical grid as the model scenes, which have a vertical resolution of about
-$500\ \unit{m}$ throughout the troposphere. If not specified otherwise,
-retrieval quantities are retrieved at this resolution.
+The proposed retrieval solves for profiles of two degrees of freedom of the PSDs
+of one frozen and one liquid hydrometeor species in the atmospheric column
+along with profiles of atmospheric humidity and liquid-cloud mass density.
+The retrieval uses the same vertical grid as the model scenes, which have a
+vertical resolution of at least $500\ \unit{m}$ throughout the troposphere. The
+resolutions of the vertical grids of the GEM model and of all retrieved
+quantities displayed in Fig.~\ref{fig:retrieval_sketch}.
+
+\begin{figure}
+\centering
+\includegraphics[width = 0.8\linewidth]{../plots/retrieval_sketch}
+\caption{Illustration of the retrieval quantities and their respective retrieval
+  grids. Grey, dashed lines show the resolution of the GEM model data while the
+  filled circles represent the grid points of the different retrieval
+  quantities. Panel (a) shows the configuration used in the radar-only and
+  combined retrieval. Panel (b) shows the configuration used in the passive-only
+  retrieval}
+\label{fig:retrieval_sketch}
+\end{figure}
 
 Distributions of hydrometeors in the atmospheric column are represented using
 the normalized particle size distribution formalism proposed by
 \cite{delanoe05}. The PSD of a hydrometeor species at a given height level is
-represented by a vertical and a horizontal scaling parameter, the mass-weighted
-mean diameter $D_m$ and the normalized number density $N_0^*$. Alternative 
+represented by two scaling parameters: The mass-weighted mean diameter $D_m$,
+which scales the size of the particles, and the normalized number density
+$N_0^*$, which scales the concentration of particles. Alternative
 parametrizations using mass density and $D_m$ or the mass density and $N_0^*$
 have been tested but no considerable effect on retrieval performance has been
 observed.
 
 The retrieval computes vertical profiles of the two scaling parameters $D_m$ and
 $N_0^*$ for each of the two hydrometeor species. The remaining shape of each PSD
-is described by the shape parameters $\alpha$ and $\beta$, not to
-be confused with the parameters of the mass-size relationship shown in
-Tab.~\ref{tab:species_parameters}. The shape parameters are set to fixed, species-specific
-values. This principle is illustrated in Fig.~\ref{fig:psds_retrieval}.
-The plot displays the a-priori-assumed shapes of the particle size distribution
-of frozen and liquid hydrometeors. The retrieved horizontal and vertical scaling
-parameters, $D_m$ and $N_0^*$, are used as units for the axes of the plot so
-that the shape of the PSD becomes independent of the retrieved mass density and
-number concentration. For frozen hydrometeors, the values of the shape
-parameters $\alpha$ and $\beta$ are chosen identical to version 3 of the
-DARDAR-CLOUD product \citep{cazenave18}. For liquid hydrometeors, the shape
-parameters are chosen so that they are equivalent to the shape used by the GEM
-model for rain drops. All calculations involving particles size distributions
-use the volume-equivalent diameter $D_\text{eq}$ as size variable.
+is described by the shape parameters $\alpha$ and $\beta$, not to be confused
+with the parameters of the mass-size relationship shown in
+Tab.~\ref{tab:species_parameters}. The shape parameters are set to fixed,
+species-specific values. This principle is illustrated in
+Fig.~\ref{fig:psds_retrieval}. The plot displays the a-priori-assumed shapes of
+the particle size distribution of frozen and liquid hydrometeors. The retrieved
+scaling parameters of particle size and concentration, $D_m$ and $N_0^*$, are
+used as units for the axes of the plot so that the shape of the PSD becomes
+independent of the retrieved mass density and number concentration. For frozen
+hydrometeors, the values of the shape parameters $\alpha$ and $\beta$ are chosen
+identical to version 3 of the DARDAR-CLOUD product \citep{cazenave18}. For
+liquid hydrometeors, the shape parameters are chosen so that they are equivalent
+to the shape used by the GEM model for rain drops. All calculations involving
+PSDs use the volume-equivalent diameter $D_\text{eq}$ as size variable.
 
 \begin{figure}
 \centering
@@ -692,22 +706,22 @@ frozen hydrometeors represented using the PSD parametrization which is also used
 in the retrieval and described in Sec.~\ref{sec:method:fowardmodel}. As particle
 model, the 8-ColumnAggregate (ID 8) from the ARTS SSDB is used.
 
-The question that is addressed here is whether the combination of active
-and passive observations is able to constrain both the horizontal and the
-vertical scaling factors of the PSD of the ice particles in the cloud. To
-investigate this, the $N_0^*$ and $D_m$ parameters of the homogeneous cloud
-layer are varied and observations of the cloud layer are simulated. Figure
-\ref{fig:contours} displays the simulated passive cloud signal, i.e. the brightness
-temperature difference between clear sky and cloudy sky simulation, as filled
-contours for a selection of channels of the MWI and ICI sensors. For given
-values of $N_0^*$ and $D_m$, the corresponding ice mass density is given by
+The question that is addressed here is whether the combination of active and
+passive observations is able to constrain both the size and concentration of the
+ice particles in the cloud. To investigate this, the $N_0^*$ and $D_m$
+parameters of the homogeneous cloud layer are varied and observations of the
+cloud layer are simulated. Figure \ref{fig:contours} displays the simulated
+passive cloud signal, i.e. the brightness temperature difference between clear
+sky and cloudy sky simulation, as filled contours for a selection of channels of
+the MWI and ICI sensors. For given values of $N_0^*$ and $D_m$, the
+corresponding ice mass density is given by
 the relation
 \begin{align}
 m = \frac{\pi \rho}{4 ^ 4}N_0^* D_m^4.
 \end{align}
 In the figure, the cloud signal is displayed in $D_m$-mass density space and
-thus shows how the measured passive cloud signal varies with the horizontal and
-vertical scaling parameters of the PSD. Overlaid onto the contours of the
+thus shows how the measured passive cloud signal varies with size and concentration
+of particles in the cloud. Overlaid onto the contours of the
 passive cloud signal are the isolines of the maximum radar reflectivity returned
 from the cloud.
 
@@ -1239,8 +1253,8 @@ The experiment presented in the first part of this study aimed to establish the
 fundamental synergies of the active and passive microwave observations. It
 compared the cloud signals observed by a radar, a millimeter-wave radiometer and
 a sub-millimeter-wave radiometer. The results show that the combined
-observations can simultaneously constrain the horizontal and vertical scaling of
-the particle size distribution. However, the complementary information content
+observations can simultaneously constrain the size and concentration of particles
+in the cloud. However, the complementary information content
 between the active and passive observations depends on both the properties of
 the observed cloud and the frequency of the observations. For the lower
 frequencies considered in this study, i.e. the highest channels of the MWI

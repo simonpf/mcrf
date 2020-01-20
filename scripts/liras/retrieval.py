@@ -103,10 +103,9 @@ sensors = [getattr(mcrf.sensors, n) for n in args.sensors]
 #
 
 observation_error = mcrf.liras.ObservationError(sensors,
-                                                forward_model_error = True,
-                                                scene = scene)
-observation_error.noise_scaling["mwi"] = np.sqrt(0.5)
-observation_error.noise_scaling["ici"] = np.sqrt(0.5)
+                                                forward_model_error=True,
+                                                scene=scene)
+observation_error.noise_scaling["lcpr"] = 1
 
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])
