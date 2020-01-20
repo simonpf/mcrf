@@ -38,8 +38,7 @@ def n0_a_priori(t):
     Defines the a priori mean for the normalized number density (N_0^*) for
     frozen hydrometeors as a function of the temperature t.
     """
-    return 10.0 * np.ones(t.shape)
-
+    return 10.0 * np.ones(t.shape) 
 
 def dm_a_priori(t):
     """
@@ -151,7 +150,7 @@ liquid_mask = TemperatureMask(240.0, 300.0)
 liquid_covariance = Diagonal(1**2)
 liquid_covariance = SpatialCorrelation(liquid_covariance, 2e3)
 cloud_water_a_priori = FixedAPriori("cloud_water",
-                                    np.log10(5e-6),
+                                    np.log10(1e-6),
                                     liquid_covariance,
                                     mask=liquid_mask,
                                     mask_value=-20)
@@ -210,14 +209,12 @@ rain.radar_only = True
 # Humidity
 ################################################################################
 
-
 def a_priori_shape(t):
     transformation = Atanh()
     transformation.z_max = 1.1
     transformation.z_min = 0.0
     x = np.maximum(np.minimum(0.8 - (270 - t) / 100.0, 0.7), 0.1)
     return transformation(x)
-
 
 z_grid = np.linspace(0, 20e3, 21)
 rh_covariance = Diagonal(np.sqrt(0.5))
@@ -226,46 +223,6 @@ rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
 #rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude")
 rh_a_priori.unit = "rh"
-
-
-h2o_a = np.array([2.58447062e-02, 2.69673411e-02, 2.66398173e-02, 2.61946078e-02,
-                  2.55061015e-02, 2.46480536e-02, 2.37351097e-02, 2.27651428e-02,
-                  2.17026044e-02, 2.05006562e-02, 1.90897863e-02, 1.74998716e-02,
-                  1.57153029e-02, 1.36984792e-02, 1.16422735e-02, 9.94344894e-03,
-                  8.74184351e-03, 7.59707438e-03, 6.33715233e-03, 5.18693868e-03,
-                  4.23728814e-03, 3.51121463e-03, 3.01235658e-03, 2.72390852e-03,
-                  2.56464165e-03, 2.31602299e-03, 1.82141364e-03, 1.21596735e-03,
-                  7.66066718e-04, 5.30487625e-04, 3.88698856e-04, 2.94491736e-04,
-                  2.28191726e-04, 1.69457882e-04, 1.14241164e-04, 7.21092147e-05,
-                  4.41122938e-05, 2.67505548e-05, 1.70276253e-05, 1.18182998e-05,
-                  8.76325885e-06, 6.82847531e-06, 5.79014659e-06, 5.28021201e-06,
-                  4.76875084e-06, 4.16743660e-06, 3.95517463e-06, 4.24789550e-06,
-                  4.68759299e-06, 5.02692137e-06, 5.17676199e-06, 5.16781029e-06,
-                  5.27377324e-06, 5.58680358e-06, 5.90385525e-06, 6.04998377e-06,
-                  5.95746815e-06, 5.86110718e-06])
-
-h2o_b = np.array([2.58447062e-02, 2.69673411e-02, 2.66398173e-02, 2.61946078e-02,
-                  2.55061015e-02, 2.46480536e-02, 2.37351097e-02, 2.27651428e-02,
-                  2.17026044e-02, 2.05006562e-02, 1.90897863e-02, 1.74998716e-02,
-                  1.57153029e-02, 1.36984792e-02, 1.16422735e-02, 9.94344894e-03,
-                  8.74184351e-03, 7.59707438e-03, 6.33715233e-03, 5.18693868e-03,
-                  4.23728814e-03, 3.51121463e-03, 3.01235658e-03, 2.72390852e-03,
-                  2.56464165e-03, 2.31602299e-03, 1.82141364e-03, 1.21596735e-03,
-                  7.66066718e-04, 5.30487625e-04, 3.88698856e-04, 2.94491736e-04,
-                  2.28191726e-04, 1.69457882e-04, 1.14241164e-04, 7.21092147e-05,
-                  4.41122938e-05, 2.67505548e-05, 1.70276253e-05, 1.18182998e-05,
-                  8.76325885e-06, 6.82847531e-06, 5.79014659e-06, 5.28021201e-06,
-                  4.76875084e-06, 4.16743660e-06, 3.95517463e-06, 4.24789550e-06,
-                  4.68759299e-06, 5.02692137e-06, 5.17676199e-06, 5.16781029e-06,
-                  5.27377324e-06, 5.58680358e-06, 5.90385525e-06, 6.04998377e-06,
-                  5.95746815e-06, 5.86110718e-06])
-
-h2o_xa = 0.5 * (np.log10(h2o_a) + np.log10(h2o_b))
-h2o_covariance = Diagonal(1)
-h2o_covariance = SpatialCorrelation(rh_covariance, 2e3)
-h2o_a_priori = FixedAPriori("H2O", h2o_xa, rh_covariance)
-h2o_a_priori.unit = "vmr"
-
 
 ################################################################################
 # Observation error
