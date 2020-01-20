@@ -60,7 +60,7 @@ ice_shape = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 ice_mask = And(AltitudeMask(0.0, 19e3), TemperatureMask(0.0, 276.0))
 
-ice_covariance = Diagonal(100e-6**2, mask=ice_mask, mask_value=1e-12)
+ice_covariance = Diagonal(500e-6**2, mask=ice_mask, mask_value=1e-12)
 ice_covariance = SpatialCorrelation(ice_covariance, 5e3, mask=ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm",
                                     "temperature",
@@ -149,9 +149,9 @@ snow.limits_low = [4, 1e-8]
 
 liquid_mask = TemperatureMask(240.0, 300.0)
 liquid_covariance = Diagonal(1**2)
-liquid_covariance = SpatialCorrelation(liquid_covariance, 1e3)
+liquid_covariance = SpatialCorrelation(liquid_covariance, 2e3)
 cloud_water_a_priori = FixedAPriori("cloud_water",
-                                    -6,
+                                    np.log10(5e-6),
                                     liquid_covariance,
                                     mask=liquid_mask,
                                     mask_value=-20)
@@ -213,16 +213,15 @@ rain.radar_only = True
 
 def a_priori_shape(t):
     transformation = Atanh()
-    transformation.z_max = 1.2
+    transformation.z_max = 1.1
     transformation.z_min = 0.0
-    x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.2)
+    x = np.maximum(np.minimum(0.8 - (270 - t) / 100.0, 0.7), 0.1)
     return transformation(x)
 
 
 z_grid = np.linspace(0, 20e3, 21)
-rh_covariance = Diagonal(0.5)
-rh_covariance = Diagonal(0.4)
-rh_covariance = SpatialCorrelation(rh_covariance, 1e3)
+rh_covariance = Diagonal(np.sqrt(0.5))
+rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
                                 rh_covariance)
 rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude")
