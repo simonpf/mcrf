@@ -145,7 +145,7 @@ cloud_water_a_priori = FixedAPriori("cloud_water",
                                     mask=liquid_mask,
                                     mask_value=-20)
 cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori,
-                                         5,
+                                         7,
                                          liquid_mask,
                                          "altitude",
                                          provide_retrieval_grid=False)
@@ -161,7 +161,7 @@ rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 rain_mask = TemperatureMask(273, 340.0)
 rain_covariance = Diagonal(4)
 
-rain_md_a_priori = FixedAPriori("rain_md", -5, rain_covariance)
+rain_md_a_priori = FixedAPriori("rain_dm", -5, rain_covariance)
 rain_md_a_priori = ReducedVerticalGrid(rain_md_a_priori, md_z_grid, "altitude")
 
 # n0
@@ -204,21 +204,30 @@ rain.retrieve_second_moment = True
 # Humidity
 ################################################################################
 
+upper_limit = 1.1
+lower_limit = 0.0
 
 def a_priori_shape(t):
     transformation = Atanh()
-    transformation.z_max = 1.1
-    transformation.z_min = 0.0
-    x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.2)
+    transformation.z_max = upper_limit
+    transformation.z_min = lower_limit
+    x = np.maximum(np.minimum(0.8 - (270 - t) / 100.0, 0.7), 0.1)
     return transformation(x)
 
-
-z_grid = np.linspace(0, 20e3, 21)
-rh_covariance = Diagonal(4.0)
-rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
+rh_mask = AltitudeMask(-1, 20e3)
+rh_covariance = Diagonal(1.0, mask = rh_mask)
+rh_covariance = SpatialCorrelation(rh_covariance, 2e3, mask = rh_mask)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
-                                rh_covariance)
-rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude")
+                                rh_covariance,
+                                mask = rh_mask,
+                                mask_value = -100)
+rh_a_priori = MaskedRegularGrid(rh_a_priori,
+                                21,
+                                rh_mask,
+                                quantity = "altitude",
+                                provide_retrieval_grid = False)
+rh_a_priori.unit = "rh"
+rh_a_priori.transformation = Composition(Atanh(lower_limit, upper_limit), PiecewiseLinear(rh_a_priori))
 
 ################################################################################
 # Observation error

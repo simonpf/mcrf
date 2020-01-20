@@ -209,6 +209,9 @@ rain.radar_only = True
 # Humidity
 ################################################################################
 
+upper_limit = 1.1
+lower_limit = 0.0
+
 def a_priori_shape(t):
     transformation = Atanh()
     transformation.z_max = 1.1
@@ -216,13 +219,20 @@ def a_priori_shape(t):
     x = np.maximum(np.minimum(0.8 - (270 - t) / 100.0, 0.7), 0.1)
     return transformation(x)
 
-z_grid = np.linspace(0, 20e3, 21)
-rh_covariance = Diagonal(np.sqrt(0.5))
+rh_mask = AltitudeMask(-1, 20e3)
+rh_covariance = Diagonal(1.0, mask = rh_mask)
 rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
-                                rh_covariance)
-#rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude")
+                                rh_covariance,
+                                mask = rh_mask,
+                                mask_value = -100)
+rh_a_priori = MaskedRegularGrid(rh_a_priori,
+                                21,
+                                rh_mask,
+                                quantity = "altitude",
+                                provide_retrieval_grid = False)
 rh_a_priori.unit = "rh"
+rh_a_priori.transformation = Composition(Atanh(0.0, 1.1), PiecewiseLinear(rh_a_priori))
 
 ################################################################################
 # Observation error
