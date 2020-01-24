@@ -140,7 +140,7 @@ rain_dm_a_priori = FixedAPriori("rain_dm",
                                 mask=rain_mask,
                                 mask_value=1e-12)
 rain_dm_a_priori = MaskedRegularGrid(rain_dm_a_priori,
-                                     4,
+                                     2,
                                      rain_mask,
                                      "altitude",
                                      provide_retrieval_grid=False)

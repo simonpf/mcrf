@@ -139,7 +139,7 @@ class CloudRetrieval:
         def radar_only(rr):
 
             rr.settings["max_iter"] = 10
-            rr.settings["stop_dx"] = 1e-6
+            rr.settings["stop_dx"] = 1e-1
             rr.settings["lm_ga_settings"] = np.array(
                 [10.0, 3.0, 2.0, 10e3, 1.0, 1.0])
 
@@ -153,7 +153,7 @@ class CloudRetrieval:
         def all_quantities(rr):
 
             rr.settings["max_iter"] = 10
-            rr.settings["stop_dx"] = 1e-6
+            rr.settings["stop_dx"] = 1e-1
             rr.settings["lm_ga_settings"] = np.array(
                 [10.0, 3.0, 2.0, 10e3, 1.0, 1.0])
 

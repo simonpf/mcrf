@@ -1,0 +1,408 @@
+
+% Created 2018-06-25 Mo 13:07
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{simon}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={Simon Pfreundschuh},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 24.5.1}, 
+ pdflang={English}}
+\begin{document}
+
+\setlength{\parindent}{0cm}
+
+\subsection*{Reviewer comment 1}
+
+The paper is presented as an application for ICI in combination with a
+Cloudsat like configuration but it is not clear to me what geometry of
+observations the authors are thinking about. They state “As mentioned above, the
+same incidence angle as for the passive radiometers is assumed also for the
+radar. In practice, this could be achieved by remapping the radar observations to
+the lines of sights of the passive beam”. Are they thinking about a scanning
+W-band radar? or at a off-nadir pointing radar? If the former is true then they
+should discuss what is a realistic technological solution (and what are the
+consequences in terms of sensitivity) and the authors should refer to state of
+the art scanning W-band radar concepts (there is none at the moment!); if the
+latter is true they should discuss what are the consequences of such a selection
+(e.g. forground clutter) and they need to convince me that what we could gain
+from such a configuration compensate from the loss of information introduced by
+pointing in such a slanted direction. There should be a certain degree of
+“realism” in what we are trying to simulate, especially if this was part of an
+ESA study.
+
+\subsubsection*{Author response:}
+
+The reviewer raises a very relevant point with his comment. To address this,
+we changed our simulation setup to simulate perfectly co-located observations
+at nadir. Realistic modeling of a space-borne viewing geometry (at least
+in a variational retrieval) is currently not feasible due to the computational
+complexity. We deem this sufficient for the scope of the study, i.e. studying
+the fundamental synergies between active and passive observations. Moreover,
+since the assumptions are realistic for air-borne observations the simulations
+still have practical relevance. To make these limitations clear to the reader
+the second paragraph of Sect. 2.2.1 will be revised to read as follows:
+
+\textit{
+In order to reduce the complexity of generating simulated observations, a number
+of simplifications are applied to the viewing geometry and the radiative
+transfer modeling. The beams of all three sensors are assumed to point at nadir
+and to be perfectly coincident pencil beams. In this way, observations for the
+GEM model scenes can be simulated by performing a single 1-dimensional radiative
+transfer calculation for each profile. Moreover, multiple scattering effects in
+the radar observations are neglected. The simulations therefore do not take into
+account beam filling effects caused by atmospheric inhomogeneity across the
+footprints of the different sensors. The incidence angles of the beams of ICI
+and MWI will be around $53^\circ$ at the Earth's surface, so the simulations
+performed here do not represent the viewing geometry of a space-borne
+configuration involving ICI and MWI accurately. Realistic modeling of the
+viewing geometry as well as multiple scattering effects in a variational
+retrieval are currently not feasible at reasonable computational cost with the
+tools used in this study. Since the focus of this study are the fundamental
+synergies between the active and passive observations, this was deemed
+sufficient for its scope. Moreover, these assumptions are justifiable for
+air-borne observations, which adds practical relevance to the simulations.
+}
+
+\subsection*{Reviewer comment 2}
+
+ “the beams of all three sensors are modeled as perfectly coincident pencil
+beams”. Again this is quite an assumption. Non uniform beam filling will play a
+key factor. This is one of the many simplifications (no polarization, no multiple
+scattering,1D, ...) that needs to be clearly listed at the beginning of
+Sect.2.2.1 (some appear only at page 27). For this reason I would actually pitch
+more towards an airborne configuration where these simplification indeed can
+be realistically assumed or of a radar with a radiometric mode (where you can
+actuallymatch footprints). Otherwise the (not massive) gain of having a
+radar-radiometer combination that you show later on can be completely washed
+out by the errors introduced to these assumptions. I imagine that you may also
+have airborne data where to test how realistic your forward model is.
+
+\subsubsection*{Author response}
+
+Also here we fully agree with the points raised by the reviewer. To address
+this, the second paragraph of Sect. 2.1.1 will be revised as presented in the
+previous response. Furthermore, these limitations as well as the applicability
+to airborne observations are now mentioned in the conclusions by adding the
+following lines:
+
+
+
+
+
+
+\subsection*{Reviewer comment 3}
+Fig2: these PSDs look very weird to me. Why do they have the plateau at small
+sizes? y-axis units are obviously wrong unless you are renormalizing by some mass
+(but it is not explained).
+
+\subsubsection*{Author response}
+
+\subsection*{Reviewer comment 4}
+
+Fig3: sorry I do not follow what is this (what is the y-axis?), and why this plot is meaningful.
+
+\subsubsection*{Author response}
+The plot displays the shape of the particle size distribution.
+
+
+\subsection*{Reviewer comment 5}
+Eq.6: Clearly with values lower than 230 K it does not make any sense (negative RH, or large than1.1???)
+
+\subsubsection*{Author response}
+
+We would like to thank the author to point out this inconsistency, as there are indeed two mistakes
+in Eq.~6. The right equation should be
+\begin{align}
+\phi(t) = \begin{cases}
+ 0.7, & 270\ \unit{K} < t \\
+ 0.7 + 0.01 \cdot (t - 270), &220 < t \leq  270\ \unit{K} \\
+ 0.2,  & t < 220 \\
+ \end{cases}.
+\end{align}
+This will of course be corrected in the updated version of the manuscript.
+
+\subsection*{Reviewer comment 6}
+Line 210; this means that the vertical resolution changes with the surfacetemperature, really weird choice.
+
+\subsubsection*{Author response}
+
+\subsection*{Reviewer comment 7}
+fIG4 : not clear to me why the scattering depression is not increasing at
+higher frequencies. I would expect that the optical thicknesswould drastically
+increase increasing frequency. Is this due to very large asymmetry parameters
+then? But this is not what I do see in Fig.5 (though Fig4 is of course a very
+idealized case) If this is the case then results will be very dependent on
+particle habits (which may introduce additional uncertainties in the retrieval)
+
+\subsubsection*{Author response}
+
+The reason for the missing increase in the scattering depression at higher
+frequencies are the clear-sky background temperatures, which are lower at these
+frequencies. Since the observed TBs are bounded from below by the lowest temperatures
+in the atmospheric column, this leads to frequency-dependent saturation effects
+in the scattering depression. If the scattering depressions are computed for the
+TBs shown in Fig.~5, similar effects can be observed also there, as is displayed
+in the figure below.
+
+\begin{figure}[!hbpt]
+  \centering
+  \includegraphics[width=0.8\textwidth]{../../plots/observations_a_3}
+\end{figure}
+
+\subsection*{Reviewer comment 8}
+8) Line 275: notclear what you mean, in Tab.4 there are 6. 
+
+\subsubsection*{Author response}
+
+\subsection*{Reviewer comment 9}
+9) “extends below the sensitivity limit of the passive-only observations around 10−5 kg m−3” : very sloppy sentence. Passive mi-crowave radiometer are sensitive to integrated contents! 
+
+\subsubsection*{Author response}
+
+As response to another reviewer's comment the corresponding paragraph has been rewritten
+and the sentence removed.
+
+\textit{ Panel (c) shows the IWC field retrieved using the passive-only
+  retrieval. Despite a certain resemblance in the overall structure between the
+  retrieved and reference IWC field, the results do not reproduce the vertical
+  structure of the cloud very well. It should be noted, however, that the
+  displayed mass-density range extends below the sensitivity limit of the
+  passive-only observations around $10^{-5}\ \unit{kg\ m^{-3}}$ (c.f. Fig.
+  ~\ref{fig:contours}), which explains the smeared-out appearance of the results
+  to some extent. }
+
+
+\subsection*{Reviewer comment 10}
+ Fig 6d: this retrieval looksreally weird. Where are all the stripes coming from? Certainly this does not look like acloud, or? What kind of constraint have you imposed on the cloud top?
+
+\subsubsection*{Author response}
+
+\subsection*{Reviewer comment 11}
+“In general, the radar-only results exhibit only very weak dependency on the particle model, mak-ing the results for different particle shapes virtually indistinguishable.”  Again another dangerous sentence.  We know (unfortunately) that this is not true (otherwise our iceproblems would be sorted). Here my guess is that you have not properly explored thebackscattering variability (particularly looking at the different degree of riming). It is notclear to me whether there is enough variability in your ARTS database, I guess you are more focused at ice particles (including aggregates) but you are not considering really rimed particles. Regions where graupel is present should be avoided from the discussion of the radar-only retrieval for the simple reason that in those regions attenuation correction and multiple scattering effects make the problem very tricky. I guess that the radiometer as well is in serious trouble when entering those areas.  Again I would not start tackling regions the observation system is not tailored for. 
+
+\subsubsection*{Author response}
+
+\subsection*{Reviewer comment 12}
+Fig.10 is missing!!!
+\subsubsection*{Author response}
+
+\subsection*{Reviewer comment 13}
+13) “Since the calculation of the AVK involves the forward model Jacobian, this effectmust be related to the non-linearity of the forward model” well I would avoid such veryspeculative statements.
+
+\subsubsection*{Author response}
+
+Following the reviewers suggestion, the sentence will be removed from the manuscript.
+
+
+
+\subsection*{Reviewer comment 14}
+You need to be very careful how you present the results inFig.14. The
+conclusions that I can draw is the following: a CloudSat like radar is
+pro-viding much more information than the ICI+MWI radiometers when
+characterizing iceparticles (really the radiometer is providing some additional
+water vapour information).As a result we should invest in the former and not the
+latter. While I may agree withthe previous statement and strongly support a
+CloudSat-like radar on an operational mission my feeling is that you are
+pitching your radiometer system at the wrong kind of scenes (I already see an
+improvement going from the first to the second scene). I would have selected
+completely different scenes (including high latitude clouds withmixed phase). It
+is to me an overkill to try to retrieve D_M of rain for these scenes from your
+PMW radiometer suite of sensor. If you have any skill in warm rain you
+should properly prove it
+
+\subsubsection*{Author response}
+
+\subsection*{Reviewer comment 15}
+ LWP and Fig.16.  I have a serious problem here.  The cloud Isee on the right is a liquid cloud. So how it is possible that your radiometer is doing sobadly in the LWP retrieval and why the combined is so much better? I guess this mustgo back to understanding surface emissivity and integrated water vapour (maybe somecomments there should be made to explain what kind of surface/IWP we are dealingwith).  You have not included radar path integrated attenuation in your retrieval (like istypically done in radar retrievals) but this could of course help in this case.
+
+\subsubsection*{Author response}
+
+\subsection*{Reviewer comment 16}
+I do notthink that for OE to work The forward model must be linear as stated at line 544.
+
+\section{Minor comments}
+
+\subsubsection*{Author response}
+
+\subsection*{Reviewer comment 16}
+17)Sect.4 and 5:  a lot of waffling here (e.g.  the three bullet conclusion, you need to bemuch more quantitative and linked to what you have proved; the three statements aresomething I could have formulated on my own without making any simulation).  Again the conclusions must be related to the cloud regime you are considering (and cannotbe valid for all!)
+
+\subsubsection*{Author response}
+
+\subsection*{Reviewer comment}
+I would avoid the use of “ice mass density” and use “ice water content”
+
+\subsubsection*{Author response}
+
+\subsection*{Reviewer comment}
+Table 2:  it would be good to see footprints as well
+
+\subsubsection*{Author response}
+Footprintsizes will be added to the table. The table now looks as follows:
+
+\begin{table}[hbpt]
+\caption{Channels of the MWI and ICI radiometers used in the retrieval.}
+\label{tab:channels}
+    \begin{tabular}{c|r|r}
+    \multicolumn{3}{c}{MWI}\\
+    Channel & Freq. [GHz] & Noise [K] & Footprint FWHM [km]\\
+    \hline
+    MWI-8  & $89$              & $1.1$ & 10\\
+    MWI-9  & $118.75 \pm 3.2$  & $1.3$ & 10\\
+    MWI-10 & $\pm 2.1$         & $1.3$ & 10\\
+    MWI-11 & $\pm 1.4$         & $1.3$ & 10\\
+    MWI-12 & $\pm 1.2$         & $1.3$ & 10\\
+    MWI-13 & $165.5 \pm 0.75$  & $1.3$ & 10\\
+    MWI-14 & $183.31 \pm 7.0$  & $1.2$ & 10\\
+    MWI-15 & $ \pm 6.1$        & $1.2$ & 10\\
+    MWI-16 & $ \pm 4.9$        & $1.2$ & 10\\
+    MWI-17 & $ \pm 3.4$        & $1.2$ & 10\\
+    MWI-18 & $ \pm 2.0$        & $1.3$ & 10\\
+    \end{tabular}%
+    \hspace{1cm}%
+    \begin{tabular}{c|r|r}
+    \multicolumn{3}{c}{ICI}\\
+    Channel & Freq. [GHz] & Noise [K]  & Footprint FWHM [km]\\
+    \hline
+    ICI-1  & $183.31 \pm 7.0$ & $0.8$ & 16\\
+    ICI-2  & $       \pm 3.4$ & $0.8$ & 16\\
+    ICI-3  & $       \pm 2.0$ & $0.8$ & 16\\
+    ICI-4  & $243    \pm 2.5$ & $\frac{1}{\sqrt{2}} \cdot 0.7$ & 16\\
+    ICI-5  & $325.15 \pm 9.5$ & $1.2$ & 16\\
+    ICI-6  & $       \pm 3.5$ & $1.3$ & 16\\
+    ICI-7  & $       \pm 1.5$ & $1.5$ & 16\\
+    ICI-8  & $448    \pm 7.2$ & $1.4$ & 16\\
+    ICI-9  & $       \pm 3.0$ & $1.6$ & 16\\
+    ICI-10 & $       \pm 1.4$ & $2.0$ & 16\\
+    ICI-11 & $664    \pm 4.2$ & $\frac{1}{\sqrt{2}} \cdot 1.6$ & 16\\
+    \end{tabular}
+\end{table}
+
+
+
+\subsubsection*{Author response}
+Line 130: dBZ are the wrong unitsfor a std of a reflectivity!
+
+\subsection*{Reviewer comment}
+Line 180: “The remaining shape of each PSD is described by the shape parameters alpha and beta, not to be confused with the parameters of themass-size relationship shown in Tab. 1.”; very confusing. Why are you using the sameletters????  
+\subsubsection*{Author response}
+
+The reason to use $\alpha$ and $\beta$ here is because this is how the
+parameters are denoted in \citet{delanoe15}. We decided to stick to their
+convention in order to avoid having to redefine the functional form of
+the PSD, which we considered a formality that would not add much to the
+paper.
+
+\subsection*{Reviewer comment}
+Line 193: wrong units 
+
+\subsubsection*{Author response}
+
+This will be corrected in the revised version of the manuscript.
+
+\subsection*{Reviewer comment}
+Line 199: English
+
+\subsubsection*{Author response}
+
+Although this it was not exactly clear what the comment referred to, the paragraph
+has been revised and now reads as follows:
+
+\textit{To further regularize the retrieval, $N_0^*$ for ice is retrieved at
+  only 10 equally-spaced grid points between freezing layer and the tropopause.
+  Similarly, $D_m$ and $N_0^*$ for rain are retrieved at 10 respectively 4
+  points between surface and freezing layer. This was necessary for the
+  retrieval to avoid getting stuck in spurious local minima. An approach similar
+  to this one is also taken in the GPM combined precipitation retrievals
+  \citep{grecu16}.}
+
+
+\subsubsection*{Author response}
+Line 35 page 2 (not really limited,this is a wide range!!)
+
+\subsubsection*{Author response}
+
+The corresponding sentence has been replaced and now reads:
+
+\textit{Currently available systems for observing ice hydrometeors typically make use of
+radiation from the microwave, infrared or optical domain.}
+
+\subsection*{Reviewer comment}
+Line 54 page 2.  maybe it is worth mentioning all the heritage coming from radar-radiometer retrievals with W-band (Ka and Ku-band) radars with PMW radiometers. 
+
+\subsubsection*{Author response}
+Following the suggestion of the reviewer, the following paragraph will be added to the introduction:
+
+\textit{
+... has been
+investigated \citep{evans05, jiang19}.
+
+Combined retrievals using radar and passive radiometer observations, have also
+been developed for the Tropical Rainfall Measuring Mission (TRMM,
+\citet{kummerow98, grecu04}) and the Global Precipitation Measurement (GPM,
+\cite{hou14, grecu16, munchak11}) mission. However, since the principal target
+of these missions were liquid hydrometeors, they make use of sensors at
+comparably low microwave frequencies, which provide only limited sensitivity to
+frozen hydrometeors.
+
+This work ...
+}
+
+\subsection*{Reviewer comment}
+Line 54 page 2.  maybe it is worth mentioning all the heritage coming from radar-radiometer retrievals with W-band (Ka and Ku-band) radars with PMW radiometers. 
+
+\subsubsection*{Author response}
+
+\subsection*{Reviewer comment}
+Line 229: “troposphere” is too generic Line
+
+\subsection*{Reviewer comment}
+
+The use of the word \textit{troposphere} and should have been \textit{tropopause}.
+This will be corrected in the revised version of the manuscript.
+tropopaus
+
+
+\subsubsection*{Author response}
+Fig 4 caption: you need to include how thick is the layer.
+
+\subsection*{Reviewer comment}
+
+The figure caption will be revised and now reads:
+
+\textit{Simulated observations of a homogeneous, $5\ \unit{km}$ thick cloud
+  layer with varying water content $m$ and mass-weighted mean diameter $D_m$.
+  The panels display the maximum radar reflectivity in dBZ overlaid onto the
+  cloud signal measured by selected radiometer channels of the MWI (first row)
+  and ICI radiometers (second row).}
+
+\subsubsection*{Author response}
+250: rho is not defined
+
+\subsection*{Reviewer comment}
+Line 4: 272.5????
+
+\subsubsection*{Author response}
+
+\subsection*{Reviewer comment}
+Fig 4 caption: you need to include how thick is the layer.
+
+\subsubsection*{Author response}

@@ -1,0 +1,87 @@
+* Changes
+
+** General
+
+- TODO R1: Discussion of the influence of a priori
+- TODO R1: Forward model error
+- TODO R3: Replace ice mass density with ice water content
+
+** Introduction
+
+  - DONE R2: sensitivity?
+  - DONE R2: Mention spectral channels of MWI
+  - DONE R2: Replace high-resolution with cloud-resolving
+  - DONE R2: Mention nadir pointing radar
+  - DONE R2 + R3: Mention GPM combined retrievals
+
+  - DONE R3: replace limited
+
+
+** Methods and data
+
+  - DONE R1: Geographical spatial references
+  - DONE R1, R2: concentration/size to describe dimensions of the particle size distributions
+  - DONE R1: Information on Milbrandt Yau microphysics scheme (PSD-shape, prognostic variables)
+  - DONE R1: Jacobian of radar solver
+  - DONE R1: Spelling: particles -> particle
+  - DONE R1: Retrieval grid for $D_m$
+  - DONE R1: Values of GemSnow and GemGraupel
+
+  - DONE R2: Better discussion of improved choice of particles, combined Tab. 1 and 4
+  - DONE R2: Motivation for diagnosis of PSD
+  - DONE R2: prognose -> diagnose
+  - DONE R2: wording: GEM test scenes
+  - DONE R2: polarization effects neglected, citation
+  - DONE R2: Justification for $\Chi^2$ choice
+  - DONE R2: First introduce all variables
+  - DONE R2: Sketch of retrieval setup
+
+  - DONE R3: Describe new viewing geometry
+  - DONE R3: Make limitations more clear at beginning of Sect. 2.2.1
+  - DONE R3: Fix Eq. 6
+  - DONE R3: Add footprints to table
+  - DONE R3: 193: Fix units
+  - DONE R3: L 199: English
+  - DONE R3: L 229: Troposphere -> Tropopause
+
+** Results
+
+   - DONE R1: Additional synergy: Vertical resolution of radar
+   - DONE R1 + R2: Combined Fig. 7 and 8
+   - DONE R1: represent -> predict
+   - DONE R1: reference -> references
+     
+   - DONE R2: cloud signal -> dTB
+   - TODO R2: Humidity information content
+   - TODO R2: Cumulative degrees of freedom
+   - DONE R2: Move part of that to appendix
+   - DONE R2: Remove figure-caption-like statements
+   - DONE R2: Best performing particle model?
+   - DONE R2: shorten L283-L307
+   - DONE R2: Refere to figure
+   - DONE R2: L325: Streamline paragraphs
+   - DONE R2: L333-344: Appendix
+   - DONE R2: Fig 5: Add freezing layer height
+   - DONE R2: Fig 6: Add absolute IWP
+
+   - DONE R3: Remove sentence on PMW sensitivity
+   - DONE R3: Remove statement on AVK
+   - DONE R3: Fig 4.: Layer thickness
+   - DONE R3: L 250: define rho
+
+** Discussion
+
+   - DONE R2: L444: Make clear how this goes beyond what GPM is doing
+   - TODO R2: Conclusion on particle choice
+   - DONE R2: Extend discussion of a priori
+   - TODO R3: Mention airborne observations
+
+** Conclusions
+   - DONE R2: Bullet structure
+
+Discussion:
+
+- 
+* Final checklist
+  - TODO Check levels in retrieval setup sketch.
+  - TODO Mention limitations and application to airborne observations in conclusions

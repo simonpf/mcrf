@@ -239,9 +239,9 @@ Although this is certainly one advantage of combining radar and radiometer
 observations, the authors would not consider this a true synergy of the active
 and passive observations since correctly locating the cloud in the atmosphere is
 something that the radar can do alone. For the passive to add benefit to the
-radar , the combined observations must provide additional information on the
-microphysics that the radar alone does not provide. To better clarify this
-reasoning the following sentence will be added to the manuscript:
+radar, the combined observations must provide additional information on the
+microphysics that the radar alone does not provide.
+
 
 \subsection*{Reviewer comment 8}
 Table 4: Why are the values for GemSnow and GemGraupel different than in Table1?
@@ -249,12 +249,41 @@ Table 4: Why are the values for GemSnow and GemGraupel different than in Table1?
 \subsubsection*{Author response}
 
 The differences in the reported values for GemSnow and GemGraupel were due to a mistake
-made by the authors. The values will be corrected in the updated version of the manuscript.
+made by the authors. The values defined in \citet{milbrandtyau05} differ slightly from
+the ones obtained by fitting the particle data, which were then mixed up in the two tables.
+In the revised version of the manuscript this will be corrected and, upon recommendation
+by reviewer 2, merged into a single table. The table now looks as follows:
+
+\begin{table}
+  \centering
+  \caption{Particle model name, ARTS scattering database ID and parameters
+    $\alpha, \beta$ of the mass-size relationships of the particle habits used
+    in the retrieval.}
+  \begin{tabular}{l|c|c|c}
+    Name & ID & $\alpha$ & $\beta$ \\
+    \hline
+    LiquidSphere & 25  & 523.6    & 3 \\
+    GemCloudIce  & 11  & 440      & 3 \\
+    GemSnow      & 32  & 24       & 2.86 \\
+    GemGraupel   & 33  & 172.7527 & 2.9646 \\
+    GemHail      & 34  & 3.02     & 2.9646 \\
+    \hline
+    SectorSnowflake      &  3  & 0.0008 & 1.44 \\
+    8-ColumnAggregate    &  8  & 65     & 3 \\
+    LargeColumnAggregate &  18 & 0.25   & 2.43 \\
+    LargePlateAggregate  &  20 & 0.21   & 2.26 \\
+    IceSphere            &  24 & 2.2571 & 0.2085 \\
+  \end{tabular}
+  \label{tab:particle_properties}
+\end{table}
+
 
 \subsection*{Reviewer comment 9}
+
 Figures 7 and 8:  I’m not sure why these are separate figures – it seems like allpanels could fit on one page.
 
 \subsubsection*{Author response}
+
 The figures will be combined into a single figure.
 
 \subsection*{Reviewer comment 11.}
@@ -263,7 +292,7 @@ The figures will be combined into a single figure.
 \subsubsection*{Author response}
 The proposed change will be adopted in the updated version of the manuscript.
 
-\subsection*{Reviewer comment 12}
+\subsection*{Reviewer commene 12}
  Line 382: should be “reference” instead of “references”
 
 \subsubsection*{Author response}
