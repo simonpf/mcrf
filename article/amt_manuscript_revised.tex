@@ -381,8 +381,17 @@ tools used in this study. Assuming observations at nadir further allows neglecti
 polarization effects, which can be several Kelvin at typical viewing geometries
 of imager sensors \cite{xie15}. Since the focus of this study are the fundamental
 synergies between the active and passive observations, this was deemed
-sufficient for its scope. Moreover, these assumptions are justifiable for
-air-borne observations, which adds practical relevance to the simulations.
+sufficient for its scope. Moreover, since these assumptions are justifiable for
+air-borne observations they still possess practical relevance.
+
+Observations from the ICI radiometer are simulated by performing a single,
+non-polarized radiative transfer simulation located at the centers of the pass
+bands of each channel and averaging the resulting brightness temperatures. For
+channels with multiple polarizations, only a single simulation is performed.
+To compensate for this, the noise of the corresponding channel is reduced by a
+factor of $\sqrt{2}$. The simulated ICI channels and assumed noise levels are
+presented in  Tab.~\ref{tab:channels}. The off-nadir viewing angle of ICI
+is assumed to be $48\unit{^\circ}$ at the sensor.
 
 Observations from the MWI radiometer are simulated in a similar manner as those
 from ICI. However, from MWI only channels with frequencies larger than or equal
@@ -498,13 +507,13 @@ quantity
   \delta \mathbf{y},
 \end{align}
 where $\delta \mathbf{y} = \mathbf{y} - \hat{\mathbf{y}}$. The quantity
-$\chi^2_y$   corresponds to the squared error in the fitted observations
-weighted by the uncertainties in each channel. It should be noted that
-the quantity has no meaningful interpretation in terms of $\chi^2$-statistic
-for the errors in the fitted observations since they will neither be independent
-(c.f. Chapter~12 in \cite{rodgers00}) nor Gaussian due to the presence of forward
-model error. The value is used here as a heuristic to quantify the goodness of the
-fit to the true observations.
+$\chi^2_y$ corresponds to the sum of squared errors in the fitted observations
+weighted by the uncertainties in each channel. It should be noted that the
+quantity has no meaningful interpretation in terms of $\chi^2$-statistic for the
+errors in the fitted observations since they will neither be independent (c.f.
+Chapter~12 in \cite{rodgers00}) nor Gaussian due to the presence of forward
+model error. The value is therefore used here solely as a heuristic to quantify
+the goodness of the fit to the true observations.
 
 The amount of information contained in a retrieval can be quantified by
 computing the degrees of freedom for signal (DFS). Let $\mathbf{K} \in
@@ -574,7 +583,7 @@ N_0^* &= \exp \left ( -0.076586 \cdot (T - 272.5) + 17.948 \right ),
 where $T$ is in $\unit{K}$. The a priori profile for $D_m$ for frozen
 hydrometeors is chosen so that the a priori mass density is equal to
 $10^{-6}\ \unit{kg\ m^{-3}}$. For liquid hydrometeors, a fixed value for $N_0^*$
-of $10^6\ \unit{m^-4}$ is assumed and the a priori profile for $D_m$ is
+of $10^6\ \unit{m^{-4}}$ is assumed and the a priori profile for $D_m$ is
 determined similarly as for frozen hydrometeors. Values of the mass-weighted
 mean diameter $D_m$ for both hydrometeor species are retrieved in linear space,
 whereas the normalized number concentration parameter $N_0^*$ is retrieved in
@@ -1379,6 +1388,12 @@ the current implementation of the retrieval is computationally very expensive.
 For further development of the combined retrieval concept it may therefore be
 advisable to revisit the applied retrieval method in search for a potentially
 more suitable alternative.
+
+Some of the above-mentioned problems could likely be counteracted by accounting
+for the forward model error caused by the simplified forward model applied in
+the retrieval. However, finding an accurate description of this error
+would require developing a suitable model for it which was deemed out of the
+this studies' scope.
 
 \subsubsection{Limitations}
 

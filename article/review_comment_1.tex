@@ -14,10 +14,10 @@
 \usepackage{amssymb}
 \usepackage{capt-of}
 \usepackage{hyperref}
+\usepackage[framemethod=TikZ]{mdframed}
 \usepackage[authoryear,round]{natbib}
-\author{simon}
-\date{\today}
-\title{}
+\title{Response to reviewer 1}
+\date{}
 \hypersetup{
  pdfauthor={Simon Pfreundschuh},
  pdftitle={},
@@ -27,9 +27,9 @@
  pdflang={English}}
 
 \RequirePackage[normalem]{ulem} %DIF PREAMBLE
-\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
-\providecommand{\DIFadd}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
-\providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+\RequirePackage{luacolor}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{{\protect\textcolor{blue}{\uwave{#1}}}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{{\protect\textcolor{red}{\sout{#1}}}}                      %DIF PREAMBLE
 %DIF SAFE PREAMBLE %DIF PREAMBLE
 \providecommand{\DIFaddbegin}{} %DIF PREAMBLE
 \providecommand{\DIFaddend}{} %DIF PREAMBLE
@@ -43,7 +43,14 @@
 \providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
 \providecommand{\DIFdelendFL}{} %DIF PREAMBLE
 
+\newenvironment{change}[1][]{%
+  \begin{mdframed}[frametitle={Line #1:}]%
+}{%
+  \end{mdframed}%
+}
+
 \begin{document}
+\maketitle
 
 \setlength{\parindent}{0cm}
 
@@ -98,6 +105,7 @@ changes to the manuscript:
 \item To make the role of the a priori clearer the discussion of the a priori
   assumptions will be rewritten:
 
+\begin{change}[491]
 \DIFdelbegin \DIFdel{The a priori assumptions which were used in this study were similar but not
 identical to what is used in the DARDAR retrievals. Also here it should be
 noted, that the presented results should not be taken to be representative for
@@ -127,16 +135,20 @@ retrieval, however, this may not be necessary since the increased information
 content makes it less dependent on the a priori to infer the microphysical
 properties of the cloud.
 }\DIFaddend 
+\end{change}
 
 \item The statement from Section~4.2.4 on the a priori assumptions is corrected:
 
+\begin{change}[544]
 The forward model is non-linear and \DIFdelbegin \DIFdel{the assumed }\DIFdelend \DIFaddbegin \DIFadd{it is difficult to describe the variability
 of cloud parameters using }\DIFaddend Gaussian a priori assumptions\DIFdelbegin \DIFdel{do
 not describe reality very well}\DIFdelend .
+\end{change}
 
 \item A paragraph is added to Section~4.2.5 emphasizing that the results should
   not be interpreted in absolute terms:
 
+\begin{change}[549]
 \DIFdelbegin \DIFdel{Finally, it is important to consider the limitations }\DIFdelend \DIFaddbegin \DIFadd{An important limitation }\DIFaddend of this study \DIFdelbegin \DIFdel{. The }\DIFdelend \DIFaddbegin \DIFadd{is its scope: The aim here was not to develop
 a production-ready combined retrieval product but rather a proof-of-concept to
 explore the observational approach. The retrieval }\DIFaddend results presented here \DIFdelbegin \DIFdel{are }\DIFdelend \DIFaddbegin \DIFadd{should
@@ -146,7 +158,7 @@ priori assumptions, the combined retrieval demonstrates higher sensitivity to
 the microphysical properties than the radar-only retrieval and lower errors
 in terms of IWC than the passive-only retrieval.
 }
-
+\end{change}
 
 \subsection*{Reviewer comment 2}
 
@@ -164,24 +176,27 @@ instrument noise term for many channels.
 
 It is certainly true that the simplified forward model used in the retrieval
 introduces a forward modeling error and that it will likely dominate the sensor
-noise. However, we do not agree with the reviewer that this is really easy to
-quantify. First of all, the error will not be Gaussian and will depend on the
-cloud composition and the assumed particle shape, so that a more sophisticated
-error model would be required to describe the error accurately. Then, fitting
-such a model to the test scenes will yield overly optimistic results as this
-would mean making use of information that would not be available for real
+noise. However, we do not agree with the reviewer that this is easy to quantify.
+First of all, the error will not be Gaussian and will depend on the cloud
+composition and the assumed particle shape, so that a more sophisticated error
+model would be required to describe the error accurately. Furthermore, fitting
+such a model to the test scenes would likely yield overly optimistic results as
+this would mean making use of information that would not be available for real
 retrieval observations.
 
 Because of these difficulties we decided to not pursue this in this study.
-However, also mention this 
+However, since this is an important point to mention, the following will
+be added to the discussion of the retrieval method:
 
-
-However, we disagree that i
-This is certainly another valid point and has been addressed in the way suggested
-by the authors. All calculations were repeated and the corresponding results
-updated in the manuscript. To clarify this a sub-section specifying the assumed observation
-errors has been added to Sect. 2.3..
-\vspace{1em}
+\begin{change}[548]
+\DIFaddbegin \DIFadd{Some of the above-mentioned problems could likely be counteracted by accounting
+for the forward model error caused by the simplified forward model applied in
+the retrieval. However, finding an accurate description of this error
+would require developing a suitable model for it which was deemed out of the
+this studies' scope.
+\DIFaddend 
+}
+\end{change}
 
 
 \section{Specific comments}
@@ -191,18 +206,17 @@ Lines  85-88:   I  recommend  the  use  of  geographical  spatial  references  (
 
 \subsubsection*{Author response}
 
-The proposed change is adopted in the revised version of the manuscript and the corresponding
-sentences now read as follows:
+The proposed change will be adopted in the revised version of the manuscript by introducing
+the following changes:
 
-\textit{
-The first test scene, shown in panel (a), is located in the
-tropical Pacific and contains a convective storm system in the northern half of
-the scene and its anvil that extends into the southern half of the scene. The
-second scene, shown in panel (b), is located in the North Atlantic and contains
-an ice cloud in the southern part and a low-level, mixed-phase cloud in the
-remainder of the scene.
-}
-
+\begin{change}[85]
+... retrieval. The first test scene, shown in panel (a), is
+located in the tropical Pacific and contains a convective storm system in the
+\DIFdelbegin \DIFdel{right }\DIFdelend \DIFaddbegin \DIFadd{northern }\DIFaddend half of the scene and its anvil that extends into the \DIFdelbegin \DIFdel{left }\DIFdelend \DIFaddbegin \DIFadd{southern }\DIFaddend half of
+the scene. The second scene, shown in panel (b), is located in the North
+Atlantic and contains an ice cloud in the \DIFdelbegin \DIFdel{first quarter }\DIFdelend \DIFaddbegin \DIFadd{southern part }\DIFaddend and a low-level,
+mixed-phase cloud in the remainder of the scene.
+\end{change}
 
 
 \subsection*{Reviewer comment 2}
@@ -221,12 +235,26 @@ assumed particle size distributions across different ice species vary mostly in
 their scaling with respect to size and concentration, whereas the function shape shows less
 variability.}
 
-L. 176:
+\begin{change}[97]
+\ldots simulations. As these plots show, the
+assumed particle size distributions across different ice species vary mostly in
+their \DIFdelbegin \DIFdel{horizontal and vertical scaling }\DIFdelend \DIFaddbegin \DIFadd{scaling with respect to size and concentration}\DIFaddend , whereas the function \ldots
+\end{change}
 
-\textit{ The PSD of a hydrometeor species at a given height level is represented
-  by two scaling parameters: The mass-weighted mean diameter $D_m$, which scales
-  the size of the particles, and the normalized number density $N_0^*$, which
-  scales the concentration of particles.}
+\begin{change}[176]
+ The PSD of a hydrometeor species at a given height level is
+\DIFdelbegin \DIFdel{represented by a vertical and a horizontal scaling parameter}\DIFdelend \DIFaddbegin \DIFadd{given by a generalized gamma-distribution function with four parameters. Two of
+them}\DIFaddend , the mass-weighted mean diameter $D_m$\DIFaddbegin \DIFadd{, which scales the PSD along the size
+dimension, }\DIFaddend and the normalized number density $N_0^*$\DIFdelbegin \DIFdel{. Alternative 
+parametrizations using mass density and $D_m$ or the mass density and $N_0^*$
+have been tested but no considerable effect on retrieval performance has been
+observed. }%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{The retrieval computes vertical profiles of the two scaling parameters $D_m$ and
+$N_0^*$ for each of the two hydrometeor species. The remaining shape of each }\DIFdelend \DIFaddbegin \DIFadd{, which scales the particle
+concentration, are retrieved. The \ldot
+\end{change}
 
 L. 252:
 
