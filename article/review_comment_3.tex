@@ -11,10 +11,13 @@
 \usepackage{rotating}
 \usepackage[normalem]{ulem}
 \usepackage{amsmath}
+\usepackage{capt-of}
 \usepackage{textcomp}
 \usepackage{amssymb}
 \usepackage{capt-of}
 \usepackage{hyperref}
+\usepackage{units}
+\usepackage[authoryear,round]{natbib}
 \author{simon}
 \date{\today}
 \title{}
@@ -60,7 +63,7 @@ since the assumptions are realistic for air-borne observations the simulations
 still have practical relevance. To make these limitations clear to the reader
 the second paragraph of Sect. 2.2.1 will be revised to read as follows:
 
-\textit{
+{\itshape 
 In order to reduce the complexity of generating simulated observations, a number
 of simplifications are applied to the viewing geometry and the radiative
 transfer modeling. The beams of all three sensors are assumed to point at nadir
@@ -164,7 +167,7 @@ in the figure below.
 
 \begin{figure}[!hbpt]
   \centering
-  \includegraphics[width=0.8\textwidth]{../../plots/observations_a_3}
+  \includegraphics[width=0.8\textwidth]{../plots/observations_a_3}
 \end{figure}
 
 \subsection*{Reviewer comment 8}
@@ -180,7 +183,7 @@ in the figure below.
 As response to another reviewer's comment the corresponding paragraph has been rewritten
 and the sentence removed.
 
-\textit{ Panel (c) shows the IWC field retrieved using the passive-only
+{\itshape  Panel (c) shows the IWC field retrieved using the passive-only
   retrieval. Despite a certain resemblance in the overall structure between the
   retrieved and reference IWC field, the results do not reproduce the vertical
   structure of the cloud very well. It should be noted, however, that the
@@ -224,7 +227,7 @@ CloudSat-like radar on an operational mission my feeling is that you are
 pitching your radiometer system at the wrong kind of scenes (I already see an
 improvement going from the first to the second scene). I would have selected
 completely different scenes (including high latitude clouds withmixed phase). It
-is to me an overkill to try to retrieve D_M of rain for these scenes from your
+is to me an overkill to try to retrieve D\_M of rain for these scenes from your
 PMW radiometer suite of sensor. If you have any skill in warm rain you
 should properly prove it
 
@@ -256,12 +259,11 @@ I would avoid the use of “ice mass density” and use “ice water content”
 Table 2:  it would be good to see footprints as well
 
 \subsubsection*{Author response}
-Footprintsizes will be added to the table. The table now looks as follows:
+Footprint sizes will be added to the table. The table now looks as follows:
 
-\begin{table}[hbpt]
-\caption{Channels of the MWI and ICI radiometers used in the retrieval.}
+\captionof{table}{Channels of the MWI and ICI radiometers used in the retrieval.}
 \label{tab:channels}
-    \begin{tabular}{c|r|r}
+    \begin{tabular}{c|r|r|p{2cm}}
     \multicolumn{3}{c}{MWI}\\
     Channel & Freq. [GHz] & Noise [K] & Footprint FWHM [km]\\
     \hline
@@ -278,7 +280,7 @@ Footprintsizes will be added to the table. The table now looks as follows:
     MWI-18 & $ \pm 2.0$        & $1.3$ & 10\\
     \end{tabular}%
     \hspace{1cm}%
-    \begin{tabular}{c|r|r}
+    \begin{tabular}{c|r|r|p{2cm}}
     \multicolumn{3}{c}{ICI}\\
     Channel & Freq. [GHz] & Noise [K]  & Footprint FWHM [km]\\
     \hline
@@ -294,8 +296,6 @@ Footprintsizes will be added to the table. The table now looks as follows:
     ICI-10 & $       \pm 1.4$ & $2.0$ & 16\\
     ICI-11 & $664    \pm 4.2$ & $\frac{1}{\sqrt{2}} \cdot 1.6$ & 16\\
     \end{tabular}
-\end{table}
-
 
 
 \subsubsection*{Author response}
@@ -306,7 +306,7 @@ Line 180: “The remaining shape of each PSD is described by the shape parameter
 \subsubsection*{Author response}
 
 The reason to use $\alpha$ and $\beta$ here is because this is how the
-parameters are denoted in \citet{delanoe15}. We decided to stick to their
+parameters are denoted in \citet{delanoe14}. We decided to stick to their
 convention in order to avoid having to redefine the functional form of
 the PSD, which we considered a formality that would not add much to the
 paper.
@@ -326,7 +326,7 @@ Line 199: English
 Although this it was not exactly clear what the comment referred to, the paragraph
 has been revised and now reads as follows:
 
-\textit{To further regularize the retrieval, $N_0^*$ for ice is retrieved at
+{\itshape To further regularize the retrieval, $N_0^*$ for ice is retrieved at
   only 10 equally-spaced grid points between freezing layer and the tropopause.
   Similarly, $D_m$ and $N_0^*$ for rain are retrieved at 10 respectively 4
   points between surface and freezing layer. This was necessary for the
@@ -342,7 +342,7 @@ Line 35 page 2 (not really limited,this is a wide range!!)
 
 The corresponding sentence has been replaced and now reads:
 
-\textit{Currently available systems for observing ice hydrometeors typically make use of
+{\itshape Currently available systems for observing ice hydrometeors typically make use of
 radiation from the microwave, infrared or optical domain.}
 
 \subsection*{Reviewer comment}
@@ -351,7 +351,7 @@ Line 54 page 2.  maybe it is worth mentioning all the heritage coming from radar
 \subsubsection*{Author response}
 Following the suggestion of the reviewer, the following paragraph will be added to the introduction:
 
-\textit{
+{\itshape 
 ... has been
 investigated \citep{evans05, jiang19}.
 
@@ -376,7 +376,7 @@ Line 229: “troposphere” is too generic Line
 
 \subsection*{Reviewer comment}
 
-The use of the word \textit{troposphere} and should have been \textit{tropopause}.
+The use of the word {\itshape troposphere} and should have been {\itshape tropopause}.
 This will be corrected in the revised version of the manuscript.
 tropopaus
 
@@ -388,7 +388,7 @@ Fig 4 caption: you need to include how thick is the layer.
 
 The figure caption will be revised and now reads:
 
-\textit{Simulated observations of a homogeneous, $5\ \unit{km}$ thick cloud
+{\itshape Simulated observations of a homogeneous, $5\ \unit{km}$ thick cloud
   layer with varying water content $m$ and mass-weighted mean diameter $D_m$.
   The panels display the maximum radar reflectivity in dBZ overlaid onto the
   cloud signal measured by selected radiometer channels of the MWI (first row)
@@ -406,3 +406,8 @@ Line 4: 272.5????
 Fig 4 caption: you need to include how thick is the layer.
 
 \subsubsection*{Author response}
+
+\bibliographystyle{copernicus}
+\bibliography{references}
+
+\end{document}

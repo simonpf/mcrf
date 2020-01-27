@@ -11,9 +11,13 @@
 \usepackage[normalem]{ulem}
 \usepackage{amsmath}
 \usepackage{textcomp}
+\usepackage{units}
 \usepackage{amssymb}
 \usepackage{capt-of}
 \usepackage{hyperref}
+\usepackage{capt-of}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage[authoryear,round]{natbib}
 \author{simon}
 \date{\today}
 \title{}
@@ -24,6 +28,30 @@
  pdfsubject={},
  pdfcreator={Emacs 24.5.1}, 
  pdflang={English}}
+
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{luacolor}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{{\protect\textcolor{blue}{\uwave{#1}}}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{{\protect\textcolor{red}{\sout{#1}}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+
+\newenvironment{change}[1][]{%
+  \begin{mdframed}[frametitle={Line #1:}]%
+}{%
+  \end{mdframed}%
+}
+
 \begin{document}
 
 \setlength{\parindent}{0cm}
@@ -45,21 +73,84 @@ in both?
 
 \subsubsection*{Author response:}
 
-The authors agree with the reviewer that the rather arbitrary choice of
-tested particles has been a weak spot of the study. To improve this,
-the authors tried to come up with a more principled selection of particles
-to test. The new selection is based on the particle properties described
-in \citet{ekelund19} and covers a broader range of mass-size relationships
-and scattering parameters. In particular, the GemSnow model has been removed
-from the selection of test particles, because it does not cover small
-ice particle sizes. The following paragraph has been added in Sect.~2.3 which discusses
-the choice of the particle model and the difficulty connecting model output
-with single scattering properties.
-\vspace{1em}
+The authors agree with the reviewer that the rather arbitrary choice of tested
+particles is a weak spot of the study. To improve this, the experiments will be
+repeated with a more principled selection of particles. The new selection is
+based on the particle properties described in \citet{ekelund19} and covers a
+broader range of mass-size relationships and scattering parameters. In
+particular, the GemSnow model has been removed from the selection of test
+particles because it does not cover small ice particle sizes.
 
-\textit{The standard deviations in the covariance matrix have been deliberately
-  chosen to be very loose in order avoid the introduction of constraining
-  information that may be provided by the radiometer observations.}
+The following changes will be introduced in the manuscript:
+
+\begin{itemize}
+\item To explain how hydrometeor concentration from the model scenes are
+  connected to ice particle models  the following paragraph will be added
+  to sections describing the GEM model scenes:
+
+  \begin{change}[101]
+\DIFaddbegin \DIFadd{In order to simulate microwave observations for the GEM model scenes, the
+hydrometeor classes in the model must be associated with particle models that
+define their shape and thus their radiometric properties. The ARTS
+single-scattering database contains particle models that were designed to be
+consistent with the six classes of hydrometeors of GEM microphysics scheme. Rain
+and liquid cloud drops are modeled as liquid spheres. Ice, snow, hail and
+graupel are represented using the GemCloudIce, GemSnow, GemHail and GemGraupel
+particle models. The properties of the particle models used for the frozen
+hydrometeor types are listed together with their parameters in
+Tab.~3.}
+\DIFaddend
+  \end{change}
+
+\item To describe the difficulties of representing the complex mixture of
+  particle shapes from the GEM model scenes in the retrieval, the following
+  subsection is added to the section describing the retrieval:
+
+  \begin{change}[231]
+\DIFadd{The forward model employed in the retrieval uses only a single species to
+represent frozen hydrometeors in order to o reduce the complexity of the
+retrieval problem. This raises the problem of finding a suitable ice particle
+model that can accurately describe the mixture of different hydrometeor classes
+in the GEM model scenes. Since the representation of ice particles in radiative
+transfer simulations remains an open problem the approach taken here is to
+choose a set of five ice particle models from the ARTS SSDB. Each of them will
+be tested in the retrieval to assess its impact on the retrieval results. The
+selection of particles aims to cover the available spectrum of particle
+properties both in terms of mass-size relationship as well as optical properties
+and is based on the results from \mbox{%DIFAUXCMD
+\citet{ekelund19}}\hspace{0pt}%DIFAUXCMD
+. The selected particles and
+their properties are listed in Tab.~\ref{tab:particle_properties}.
+}
+\DIFaddend
+\end{change}
+
+  \item Tables 1 and 4 will be combined:
+
+
+\begin{change}[231]
+\DIFaddbegin
+\setcounter{table}{2}    
+  \captionof{table}{\DIFaddFL{Particle model name, ARTS scattering database ID and parameters
+    $\alpha, \beta$ of the mass-size relationships of the particle habits used
+    in the retrieval.}}
+  \begin{tabular}{l|c|c|c}
+    \DIFaddFL{Name }& \DIFaddFL{ID }& \DIFaddFL{$\alpha$ }& \DIFaddFL{$\beta$ }\\
+    \hline
+    \DIFaddFL{LiquidSphere }& \DIFaddFL{25 }& \DIFaddFL{523.6 }& \DIFaddFL{3 }\\
+    \DIFaddFL{GemCloudIce          }& \DIFaddFL{11  }& \DIFaddFL{440      }& \DIFaddFL{3 }\\
+    \DIFaddFL{GemSnow              }& \DIFaddFL{32  }& \DIFaddFL{24  }& \DIFaddFL{2.86 }\\
+    \DIFaddFL{GemGraupel           }& \DIFaddFL{33  }& \DIFaddFL{172.7527 }& \DIFaddFL{2.9646 }\\
+    \DIFaddFL{GemHail              }& \DIFaddFL{34  }& \DIFaddFL{3.02 }& \DIFaddFL{2.9646 }\\
+    \hline
+    \DIFaddFL{SectorSnowflake      }&  \DIFaddFL{3 }& \DIFaddFL{0.0008   }& \DIFaddFL{1.44 }\\
+    \DIFaddFL{8-ColumnAggregate    }&  \DIFaddFL{8   }& \DIFaddFL{65       }& \DIFaddFL{3 }\\
+    \DIFaddFL{LargeColumnAggregate }&  \DIFaddFL{18 }& \DIFaddFL{0.25     }& \DIFaddFL{2.43 }\\
+    \DIFaddFL{LargePlateAggregate  }&  \DIFaddFL{20 }& \DIFaddFL{0.21     }& \DIFaddFL{2.26 }\\
+    \DIFaddFL{IceSphere            }&  \DIFaddFL{24 }& \DIFaddFL{2.2571   }& \DIFaddFL{0.2085 }\\
+  \end{tabular}
+ \end{change}
+  \end{itemize}
 
 \subsection*{Reviewer comment 2}
 
@@ -72,19 +163,21 @@ aspects but in the end I ammissing a clear message on the outcome of the test
 
 \subsubsection*{Author response}
 
-It is true that vertical changes in the particle shape are not considered in the
-retrieval forward model. However, the retrieval forward model can adjust two
-degrees of freedom of the PSD. This should allow represent sedimentation of particles,
-which would lead to a decrease of the number density and an increase of the particle
-size towards the base of the cloud.
+The first statement made by the reviewer is not fully correct. Since the retrieval
+can reduce the concentration of particles and increase their size it can modify
+the ratio of small to large particles and thus represent the effects of sedimentation
+to some extent. Vertical changes in particle shape, i.e. transition from single crystals
+to aggregates, is represented indirectly through the particle size.
+
 
 Polarization effects are neglected in this study for several reasons. Firstly,
 oriented scattering data has only recently become available. Secondly, the GEM
-model does not provide any information on oriented particles.
+model does not provide any information on oriented particles. In addition to that,
+for the revised version of the manuscript the assumed viewing direction was changed
+to nadir for all sensors so that polarization effects can indeed be neglected.
 
-To address the point of a missing recommendation on the best particle model, the
-following recommendation based on the results obtained with the new selection of
-particle shapes has been added to the manuscript.
+Based on the new selection of particles, a clearer recommendation will be added to
+the discussion.
 
 \subsection*{Reviewer comment 3}
 
@@ -107,7 +200,7 @@ the synergy works.
 
 Regarding the information content on water vapor, a possible explanation is the
 way relative humidity was calculated within ARTS. ARTS follows the method
-proposed by \citet{}, which effectively interpolates between the relative
+proposed by \citet{bla}, which effectively interpolates between the relative
 humidities w.r.t. water and ice. Since relative humidity was arctan-transformed
 with a threshold value of 1.2, high relative humidities at low temperatures may
 have lead to a vanishing of gradients and therefore a miscalculation of the
@@ -161,7 +254,7 @@ L48: MWI will also cover new spectral channels, e.g. 118 GHz
 
 To incorporate this information the corresponding sentence will be changed to:
 
-\textit{MWI will complement ICI's observations with measurements at traditional
+{\itshape MWI will complement ICI's observations with measurements at traditional
   millimeter wavelengths as well as a novel spectral band around the
   $118\ \unit{GHz}$ Oxygen line.}
 
@@ -174,7 +267,7 @@ L62: “high-resolution” is always relative for a model. I would recommend avo
 The proposed improvement will be adopted in the revised version of the manuscript.
 The sentence now reads:
 
-\textit{The algorithm is applied to synthetic observations of cloud scenes from
+{\itshape The algorithm is applied to synthetic observations of cloud scenes from
   a cloud-resolving atmospheric model and used to further explore the synergies
   between the active and passive observations.}
 
@@ -190,31 +283,31 @@ L68:  After you mention GPM (with scanning radar) it might be good to say that y
 To incorporate the proposed improvement the corresponding sentence has been
 modified as follows:
 
-\textit{This work applies the concept of synergistic radar and sub-millimeter radiometer
+{\itshape This work applies the concept of synergistic radar and sub-millimeter radiometer
 retrievals to the upcoming ICI and MWI sensors by combining them with a
 conceptual, nadir-pointing W-band cloud radar.}
 
 \subsection*{Reviewer comment 4}
 
-L70:  There has been quite some literature about combining active and passive MWusing a Bayesian framework which should be acknowledged, e.g. Grecu, M., & Olson,W. S. (2006), Johnson et al. (2012) , Munchak, S. J., & Kummerow
+L70:  There has been quite some literature about combining active and passive MWusing a Bayesian framework which should be acknowledged, e.g. Grecu, M., \& Olson,W. S. (2006), Johnson et al. (2012) , Munchak, S. J., \& Kummerow
 
 \subsubsection*{Author response}
 
 Following the suggestion of the reviewer, the following paragraph will be added to the introduction:
 
-\textit{
-... has been
+{\itshape
+\ldots has been
 investigated \citep{evans05, jiang19}.
 
 Combined retrievals using radar and passive radiometer observations, have also
 been developed for the Tropical Rainfall Measuring Mission (TRMM,
 \citet{kummerow98, grecu04}) and the Global Precipitation Measurement (GPM,
-\cite{hou14, grecu16, munchak11}) mission. However, since the principal target
+\citet{hou14, grecu16, munchak11}) mission. However, since the principal target
 of these missions were liquid hydrometeors, they make use of sensors at
 comparably low microwave frequencies, which provide only limited sensitivity to
 frozen hydrometeors.
 
-This work ...
+This work \ldots
 }
 
 
@@ -224,26 +317,25 @@ L84:  Test scenes have a grid resolution of 1 km horizontally.  As this is not t
 
 \subsubsection*{Author response}
 
-Not doing this.
-
 The point raised by the reviewer is certainly correct. However, the decision to restrict simulations
 to two test scenes was motivated by the computational costs of performing the retrievals. Furthermore,
 the scatter plots in Fig.~10, that was unfortunately missing from the manuscript but is shown below,
 shows that the scatter plots are similar for both test scenes. This certainly indicates that the
 test scenes contain sufficient profile variability to be representative. 
 
-\textit{}
+
 
 \subsection*{Reviewer comment 6}
 
-Motivation lacking:  “To perform RT simulations for each GEM profile the PSD needs to be diagnosed from the prognostic GEM variables, i.e. N and m..”
+Motivation lacking: “To perform RT simulations for each GEM profile the PSD
+needs to be diagnosed from the prognostic GEM variables, i.e. N and m..”
 
 \subsubsection*{Author response}
 
 To address another comment by another reviewer the paragraph containing the sentence
 will be rewritten and the sentence removed.
 
-\textit{ The prognostic parameters of the two-moment scheme are the slope and
+{\itshape The prognostic parameters of the two-moment scheme are the slope and
   intercept parameters of the distribution, which are derived from the mixing
   ratios and number densities predicted by the GEM model. The third parameter of
   the PSD and the mass-size relationship of each hydrometeor class are set to
@@ -262,7 +354,7 @@ L92:“prognoses”   means   forward   in   time   -   you   mean   diagnosed, 
 
 The  word will be replaced by derived in the updated version of the manuscript.
 
-\textit{The four panels display the derived particle size distributions for the
+{\itshape The four panels display the derived particle size distributions for the
   four frozen hydrometeor types together with renderings of the particle shapes
   used in the forward simulations.}
 
@@ -275,7 +367,7 @@ L98: I find the term “horizontal and vertical scaling” strange – why not s
 The proposed  change will be adopted in the updated version of the manuscript. The sentence has been changed
 as follows:
 
-\textit{
+{\itshape
 As these plots show, the
 assumed particle size distributions across different ice species vary mostly in
 their scaling with respect to size and concentration, whereas the function shape shows less
@@ -287,33 +379,33 @@ to make the wording consistent:
 
 L. 176:
 
-\textit{ The PSD of a hydrometeor species at a given height level is represented
+{\itshape The PSD of a hydrometeor species at a given height level is represented
   by two scaling parameters: The mass-weighted mean diameter $D_m$, which scales
   the size of the particles, and the normalized number density $N_0^*$, which
   scales the concentration of particles.}
 
 L. 183:
 
-\textit{ The retrieved scaling parameters of particle size and concentration,
+{\itshape The retrieved scaling parameters of particle size and concentration,
   $D_m$ and $N_0^*$, are used as units for the axes of the plot so that the
   shape of the PSD becomes independent of the retrieved mass density and number
   concentration. }
 
 L. 244:
 
-\texit{The question that is addressed here is whether the combination of active
+{\itshape The question that is addressed here is whether the combination of active
   and passive observations is able to constrain both the size and concentration
   of the ice particles in the cloud.}
 
 L. 252:
 
-\textit{ In the figure, the cloud signal is displayed in $D_m$-mass density
+{\itshape In the figure, the cloud signal is displayed in $D_m$-mass density
   space and thus shows how the measured passive cloud signal varies with size
   and concentration of particles in the cloud. }
 
 
 L. 449:
-\textit{The results show that the combined observations can simultaneously
+{\itshape The results show that the combined observations can simultaneously
   constrain the size and concentration of particles in the cloud.}
 
 
@@ -325,7 +417,7 @@ L103: model test – be careful also at other instances that “model” can mea
 The proposed change will be adopted in the revised version of the manuscript by
 changing the sentence as follows:
 
-\textit{
+{\itshape
 The simulations apply the same microphysics scheme
 as the GEM test scenes, which means that they use the same six hydrometeor classes
 and PSD parametrizations.}
@@ -341,7 +433,7 @@ geometry assumed in the simulations to observations at nadir. Furthermore, the
 second paragraph of Sect. 2.1.1 has been rewritten to clearly state the simplifying
 assumptions made in the simulations. The paragraph now reads as follows:
 
-\textit{In order to reduce the complexity of generating simulated observations, a number
+{\itshape In order to reduce the complexity of generating simulated observations, a number
 of simplifications are applied to the viewing geometry and the radiative
 transfer modeling. The beams of all three sensors are assumed to point at nadir
 and to be perfectly coincident pencil beams. In this way, observations for the
@@ -372,15 +464,15 @@ L157-159: needs to be better motived, references?
 The $\chi^2$ value defined in the manuscript corresponds to the component of the OEM cost that
 is related to the misfit in the observation vector. We use this value here as a heuristic
 to asses the goodness of the retrieval fit. Since neither the a priori distribution nor the
-observation error can be assumed to be Gaussian, applying a true $\Chi^2$-test is not really
+observation error can be assumed to be Gaussian, applying a true $\chi^2$-test is not really
 meaningful. Similar applications can for example be found in \citet{duncan16}.
 
 To state this more clearly in the manuscript, the following changes will be introduced:
 
-\textit{The quantity $\chi^2_y$ corresponds to the squared error in the fitted
+{\itshape The quantity $\chi^2_y$ corresponds to the squared error in the fitted
   observations weighted by the uncertainties in each channel. It should be noted
   that the quantity has no meaningful interpretation in terms of
-  $\Chi^2$-statistic for the errors in the fitted observations since they will
+  $\chi^2$-statistic for the errors in the fitted observations since they will
   neither be independent (c.f. Chapter~12 in \cite{rodgers00}) nor Gaussian due
   to the presence of forward model error. The value is used here as a heuristic
   to quantify the goodness of the fit to the true observations.}
@@ -394,7 +486,7 @@ L172: I doubt that the model has constant vertical resolution.  It will be bette
 This is indeed the case. To make this clear to the reader the following sentence
 is introduced in the paragraph describing the GEM model scenes:
 
-\textit{The vertical resolution of the model scenes varies between 250
+{\itshape The vertical resolution of the model scenes varies between 250
 and $500\ \unit{m}$ below an altitude of $18\ \unit{km}$ and decreases
 steadily above that.}
 
@@ -430,7 +522,7 @@ will be included in the revised version of the manuscript:
 
 The motivation for retrieving $N_0^*$ in log-space is that its a priori
 distribution is more similar to a Log-normal rather than a Gaussian distribution
-(see for example \textcite{delanoe15}). Since typical values for $D_m$ follow a
+(see for example \citet{delanoe14}). Since typical values for $D_m$ follow a
 Gaussian distribution rather well these values are retrieved in linear space.
 
 The handling of supercooled liquid in the GEM model scenes is similar to that
@@ -467,7 +559,7 @@ L283-L307: Can be shortened significantly
 Following the reviewers recommendations the section will be shortened and
 now  reads as follows:
 
-\textit{
+{\itshape
 Results of the retrieved water content for the first test scene are displayed in
 Fig.~\ref{fig:results_a}. The corresponding results from the second test scene
 are included in Appendix~\ref{app:results_b}. The reference water content is
@@ -479,7 +571,7 @@ in Panel (a), gives an indication of how well the retrievals were able to fit
 the observations. For the radar-only retrieval, the values are far below 1
 for most parts of the scene, while for the passive-only and combined retrieval
 the around 1. This indicates that all methods fitted the observations well over
-the whole scene except for the region around $3^\degree\ N$, where the cloud
+the whole scene except for the region around $3^\circ\ N$, where the cloud
 is particularly thick.
 
 In terms of IWP, all methods provide fairly good estimates of the reference IWP
@@ -492,8 +584,7 @@ evident that the radar-only retrieval deviates systematically from the reference
 IWC in specific regions of the cloud, such as for example the upper part of the
 cloud between $0^\circ N$ and $2^\circ N$. These deviations are corrected in
 the results from the combined retrieval, although certain retrieval artifacts
-are visible here.
-}
+are visible here.}
 
 
 \subsection*{Reviewer comment 15}
@@ -512,7 +603,7 @@ L325: The two paragraph here give similar information -> streamline
 To make the description of the results from the scatter plots more
 concise the section will rewritten as follows:
 
-\textit{
+{\itshape
 Not surprisingly, the results from the
 passive-only retrieval exhibit the strongest deviations from the diagonal. Since
 the passive channels alone contain only limited information on the vertical
@@ -555,7 +646,7 @@ L444: Here it needs to be made clearer how this goes beyond what GPM is doing.
 To clarify how our work goes beyond what GPM is doing the following paragraph
 will be added to the manuscript:
 
-\textit{The novelty of this work lies, for one part, in the application of ICI's
+{\itshape The novelty of this work lies, for one part, in the application of ICI's
 sub-millimeter channels, which sets it apart from the combined retrievals
 developed for the TRMM and GPM missions. For the other part, it lies in the
 development of a fully-consistent variational retrieval in which all retrieval
@@ -572,7 +663,7 @@ L495:  “does not say much about the general validity of the assumption”.   H
 To extend the discussion of the role of the a priori assumptions in the retrieval
 the corresponding paragraph will be modified as follows:
 
-\textit{
+{\itshape 
   The a priori assumptions which were used in this study were similar but not
   identical to what is used in the DARDAR retrievals. Also here it should be
   noted, that the presented results should not be taken to be representative for
@@ -601,7 +692,7 @@ L560:  Rethink the bullet structure.  2.  Is not an independent result.  For eac
 To improve the presentation of the conclusions, the bullet points will be removed
 and the first paragraphs of the conclusions will be rewritten as follows:
 
-\textit{The main conclusion from this work is that the combination of radar and
+{\itshape The main conclusion from this work is that the combination of radar and
   sub-millimeter radiometer observations allows to constrain both the size
   as well as the concentration of frozen hydrometeors. The sensitivity of
   the combined observations to the microphysics of the cloud reduced the
@@ -648,7 +739,7 @@ referred to in the text as $\Delta T_B$ and the radar signal as
 $\text{dBZ}_\text{max}$. The corresponding paragraph will also be changed
 to make it more concise:
 
-\textit{
+{\itshape 
 The question that is addressed here is whether the combination of active and
 passive observations is able to constrain both the size and concentration of the
 ice particles in the cloud. To investigate this, the $N_0^*$ and $D_m$
@@ -656,7 +747,7 @@ parameters of the homogeneous cloud layer are varied and observations of the
 cloud layer are simulated. The passive cloud signal ($\Delta T_B$) is the
 difference between the cloudy- and clear-sky  brightness temperatures. The
 signal in the active observations is here defined as the maximum in the measured
-profile of radar reflectivity $\text{dBZ}_\text{max}$. Figure~\ref{fig:contoures}
+profile of radar reflectivity $\text{dBZ}_\text{max}$. Figure~\ref{fig:contours}
 displays the contours of $\Delta T_B$ and $\text{dBZ}_\text{max}$ with respect
 to $D_m$ and the clouds IWC, which is proportional to $N_0^*$:
 \begin{align}
@@ -717,7 +808,7 @@ Fig.  7:  I think it is retrieved vs.  truth.  The word following is not really 
 The following will be corrected and Fig. 7 and 8 will be combined into 1 to look as follows:
 
 \begin{figure}
-\centering \includegraphics[width = 0.8\textwidth]{../plots/results_scatter.png}
+\centering \includegraphics[width = 0.8\textwidth]{../plots/results_scatter_a.png}
 \caption{Retrieved IWC plotted against reference IWC for the tested retrieval
   configurations. Each row shows the retrieval results for the particle shape
   shown in the first panel. The following panels show the retrieval results for
@@ -739,9 +830,8 @@ Fig.~9 will be moved to the appendix.
 Fig. 10 I only see the caption???
 
 \subsubsection*{Author response}
-Fig. 10 was unfortunately missing from the manuscript and as the responsible author I would like
-to apologize for this mistake. The figure has been included in the appendix with the analysis
-of the second test scene.
+Fig. 10 was unfortunately missing from the manuscript. The figure will be included in the appendix
+with the analysis of the second test scene.
 
 \subsection*{Reviewer comment 29}
 Tab. 1. Assumed particle model information for each hydrometeor class given by GEMmodel. In fact it could be good to combine it
@@ -753,5 +843,9 @@ Unfortunately we are not sure how to interpret this comment.
 
 The authors would like to thank the reviewer for the additional comments which all
 will be integrated into the updated manuscript.
+
+
+\bibliographystyle{copernicus}
+\bibliography{references}
 
 \end{document}

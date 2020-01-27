@@ -54,6 +54,9 @@
 
 \setlength{\parindent}{0cm}
 
+First of all we would like to thank the reviewer for her constructive feedback
+which helped us to improve the improve the study.
+
 \section{General comments}
 
 \subsection*{Reviewer comment 1}
@@ -80,7 +83,7 @@ We would like to clarify that the variation of the a priori mean with
 temperature, which is given by Eq. 4, does not limit the retrieved values of
 $N_0^*$ to this range. How much $N_0^*$ is allowed to vary around the a priori
 mean is determined by the covariance matrix. Since the standard deviation for
-$log_{10}(N_0^*)$ at each grid point was set to $2$ (c.f. Tab.~3), $N_0^*$ is
+$\text{log}_{10}(N_0^*)$ at each grid point was set to $2$ (c.f. Tab.~3), $N_0^*$ is
 free to vary over several orders of magnitude in addition to the variation of
 the a priori profile.
 
@@ -160,6 +163,8 @@ in terms of IWC than the passive-only retrieval.
 }
 \end{change}
 
+\end{itemize}
+
 \subsection*{Reviewer comment 2}
 
 Forward model error is introduced when the different species present in the
@@ -227,14 +232,6 @@ Line  98  (also  176,252,449):  Instead  of  vertical/horizontal  (which  are  d
 The proposed changes will be adopted in the revised version of the manuscript
 by introducing the following changes:
 
-L. 98:
-
-\textit{
-As these plots show, the
-assumed particle size distributions across different ice species vary mostly in
-their scaling with respect to size and concentration, whereas the function shape shows less
-variability.}
-
 \begin{change}[97]
 \ldots simulations. As these plots show, the
 assumed particle size distributions across different ice species vary mostly in
@@ -242,47 +239,35 @@ their \DIFdelbegin \DIFdel{horizontal and vertical scaling }\DIFdelend \DIFaddbe
 \end{change}
 
 \begin{change}[176]
- The PSD of a hydrometeor species at a given height level is
-\DIFdelbegin \DIFdel{represented by a vertical and a horizontal scaling parameter}\DIFdelend \DIFaddbegin \DIFadd{given by a generalized gamma-distribution function with four parameters. Two of
+The PSD of a hydrometeor species at a \DIFdelbegin \DIFdel{given }\DIFdelend \DIFaddbegin \DIFadd{certain }\DIFaddend height level is
+\DIFdelbegin \DIFdel{represented by a vertical and a horizontal scaling parameter}\DIFdelend \DIFaddbegin \DIFadd{given by a generalized gamma distribution function with four parameters. Two of
 them}\DIFaddend , the mass-weighted mean diameter $D_m$\DIFaddbegin \DIFadd{, which scales the PSD along the size
 dimension, }\DIFaddend and the normalized number density $N_0^*$\DIFdelbegin \DIFdel{. Alternative 
 parametrizations using mass density and $D_m$ or the mass density and $N_0^*$
 have been tested but no considerable effect on retrieval performance has been
-observed. }%DIFDELCMD < 
+observed.
+}%DIFDELCMD < 
 
 %DIFDELCMD < %%%
 \DIFdel{The retrieval computes vertical profiles of the two scaling parameters $D_m$ and
 $N_0^*$ for each of the two hydrometeor species. The remaining shape of each }\DIFdelend \DIFaddbegin \DIFadd{, which scales the particle
-concentration, are retrieved. The \ldot
+  concentration, are retrieved. The \ldots}\DIFaddend
 \end{change}
 
-L. 252:
+\begin{change}[252]
+The question that is addressed here is whether the combination of active and
+passive observations is able to constrain both the \DIFdelbegin \DIFdel{horizontal and the
+vertical scaling factors of the PSD }\DIFdelend \DIFaddbegin \DIFadd{size and concentration }\DIFaddend of the
+ice particles in the cloud. 
+\end{change}
 
-\textit{ In the figure, the cloud signal is displayed in $D_m$-mass density
-  space and thus shows how the measured passive cloud signal varies with size
-  and concentration of particles in the cloud. }
+\begin{change}[449]
+The results show that the combined
+observations can simultaneously constrain the \DIFdelbegin \DIFdel{horizontal and vertical scaling of
+the particle size distribution}\DIFdelend \DIFaddbegin \DIFadd{size and concentration of
+particles in the cloud}\DIFaddend .
+\end{change}
 
-
-L. 449:
-\textit{The results show that the combined observations can simultaneously
-  constrain the size and concentration of particles in the cloud.}
-
-
-In addition to this, also the following sentences which referred to the horizontal and vertical
-scaling of the PSD will be changed accordingly:
-
-L. 183:
-
-\textit{ The retrieved scaling parameters of particle size and concentration,
-  $D_m$ and $N_0^*$, are used as units for the axes of the plot so that the
-  shape of the PSD becomes independent of the retrieved mass density and number
-  concentration. }
-
-L. 244:
-
-\textit{The question that is addressed here is whether the combination of active
-  and passive observations is able to constrain both the size and concentration
-  of the ice particles in the cloud.}
 
 \subsection*{Reviewer comment 3}
 
@@ -291,43 +276,57 @@ Line 100: A few more details on the Milbrant and Yau microphysics sheme that are
 \subsubsection*{Author response}
 
 To address the reviewers comment, the paragraph describing the Milbrandt-Yau microphysics scheme
-has been rewritten and now reads as follows:
+has been extended to provided the information demanded by the reviewer:
 
-\textit{
-The GEM model uses a two-moment scheme with six types of hydrometeors to
+\begin{change}[91]
+The GEM model uses \DIFaddbegin \DIFadd{a two-moment scheme with }\DIFaddend six types of hydrometeors to
 represent clouds and precipitation \citep{milbrandtyau05}: Two classes of liquid
 hydrometeors (rain and liquid cloud) and four of frozen hydrometeors (cloud ice,
 snow, hail and graupel). The particle size distribution (PSD) of each
-hydrometeor class is described by a three-parameter gamma distribution. The
+hydrometeor \DIFdelbegin \DIFdel{type is parametrized by its particle number concentration and mass density. The
+full
+particle size distributioncan be prognosed from the two moments using a
+species-dependent parametrization and
+}\DIFdelend \DIFaddbegin \DIFadd{class is described by a three-parameter gamma distribution. The
 prognostic parameters of the two-moment scheme are the slope and intercept
 parameters of the distribution, which are derived from the mixing ratios and
 number densities predicted by the GEM model. The third parameter of the PSD and
-the mass-size relationship of each hydrometeor class are set to fixed,
-class-specific values. The parameters of the mass-size relationships are given
-in Tab.~\ref{tab:species_parameters}. The masses of all ice particles in the
+the }\DIFaddend mass-size relationship \DIFaddbegin \DIFadd{of each hydrometeor class are set to fixed,
+class-specific values}\DIFaddend . The parameters of the mass-size \DIFdelbegin \DIFdel{relationship }\DIFdelend \DIFaddbegin \DIFadd{relationships }\DIFaddend are given
+in Tab.~\DIFdelbegin \DIFdel{\ref{tab:species_parameters}. As
+shown in the table, the }\DIFdelend \DIFaddbegin \DIFadd{\ref{tab:partice_properties}. The }\DIFaddend masses of all ice particles in the
 model are assumed to scale with a power of three, which leads to high densities
 for large particles.
-  }
+\end{change}
 
 \subsection*{Reviewer comment 4}
 Line 135: Does the ARTS radar solver also provide analytic Jacobians?
 
 \subsubsection*{Author response}
+
 Yes, it does. This is now also mentioned in the description of the retrieval forward model:
 
-\textit{
+\begin{change}[135]
 All simulations presented in this study were performed using Version 2.3.1245 of
 the Atmospheric Radiative Transfer Simulator (ARTS, \cite{arts18}). Radar
-reflectivities are computed using ARTS' built-in single-scattering radar solver,
-which provides analytic Jacobians. For the ...
-}
+reflectivities are computed using ARTS' built-in single-scattering radar solver\DIFaddbegin \DIFadd{,
+which provides analytic Jacobians}\DIFaddend . For \ldots
+\end{change}
 
 \subsection*{Reviewer comment 5}
 Line 187: “particles” should be “particle”
 
 \subsubsection*{Author response}
 
-This will be corrected in the revised version of the manuscript.
+The sentence will actually be removed in the revised version of the manuscript as it
+the information it conveyed was not really relevant.
+
+\begin{change}[187]
+  \ldots rain drops. \DIFdelbegin \DIFdel{All calculations involving particles
+    size distributions use the volume-equivalent diameter $D_\text{eq}$ as size
+    variable.
+}%DIFDELCMD < 
+\end{change}
 
 
 \subsection{Reviewer comment 6}
@@ -335,34 +334,32 @@ Line 198: Is Dm also only retrieved at these 10 points, or just N0* (and Dm retr
 
 \subsubsection*{Author response}
 
-$D_m$ is actually retrieved at the resolution of the GEM model scenes. To make this more clear
-the following sketch has been created and will be included in the beginning of the section
-describing the retrieval setup:
+$D_m$ is actually retrieved at the resolution of the GEM model scenes. To make
+this more clear the following sketch will be added in the beginning of the
+section describing the retrieval setup:
 
-\begin{figure}
-\centering
-\includegraphics[width = 0.8\linewidth]{../plots/retrieval_sketch}
-\caption{Illustration of the retrieval quantities and their respective retrieval
-  grids. Grey, dashed lines show the resolution of the GEM model data while the
-  filled circles represent the grid points of the different retrieval
-  quantities. Panel (a) shows the configuration used in the radar-only and
-  combined retrieval. Panel (b) shows the configuration used in the passive-only
-  retrieval}
+  \begin{figure}
+\begin{center}
+\includegraphics[width = 1.0\linewidth]{../plots/retrieval_sketch}
+\caption{\DIFaddFL{Illustration of the retrieval quantities and their respective retrieval
+  grids. Grey, dashed lines in the background display the vertical grid of the GEM
+  model.  Filled markers represent the retrieval grids of each retrieval quantity
+  for the combined, radar-only and passive-only retrieval.}}
 \label{fig:retrieval_sketch}
+\end{center}
 \end{figure}
-
-
 
 \subsection{Reviewer comment}
 7.  Line 256:  Actually, this is only one example of how the radar and radiometer measurements can be complementary.  Even if the lines were parallel (and thus no infor-mation distinguishing size from concentration could be obtained), the radar still locates the cloud and describes its vertical structure.  One can imagine a cloud of the same ice water path and particle size at two different heights having different brightness temperatures due to changes in the water vapor absorption above the cloud – having theradar information would provide increased information content about the ice water pathin this case than the radiometer measurement alone.
 
 \subsubsection*{Author response}
+
 Although this is certainly one advantage of combining radar and radiometer
-observations, the authors would not consider this a true synergy of the active
-and passive observations since correctly locating the cloud in the atmosphere is
-something that the radar can do alone. For the passive to add benefit to the
-radar, the combined observations must provide additional information on the
-microphysics that the radar alone does not provide.
+observations, we do not consider this a true synergy of the active and passive
+observations since correctly locating the cloud in the atmosphere is something
+that the radar can do alone. For the passive to add benefit to the radar, the
+combined observations must provide additional information on the microphysics
+that the radar alone does not provide.
 
 
 \subsection*{Reviewer comment 8}
@@ -370,43 +367,61 @@ Table 4: Why are the values for GemSnow and GemGraupel different than in Table1?
 
 \subsubsection*{Author response}
 
-The differences in the reported values for GemSnow and GemGraupel were due to a mistake
-made by the authors. The values defined in \citet{milbrandtyau05} differ slightly from
-the ones obtained by fitting the particle data, which were then mixed up in the two tables.
-In the revised version of the manuscript this will be corrected and, upon recommendation
-by reviewer 2, merged into a single table. The table now looks as follows:
+The differences in the reported values for GemSnow and GemGraupel were due to a
+mistake made by the authors. In the revised version of the manuscript this will
+be corrected and, upon recommendation by reviewer 2, merged into a single table.
+The table now looks as follows:
 
 \begin{table}
-  \centering
-  \caption{Particle model name, ARTS scattering database ID and parameters
+  \begin{center}
+  \caption{\DIFaddFL{Particle model name, ARTS scattering database ID and parameters
     $\alpha, \beta$ of the mass-size relationships of the particle habits used
-    in the retrieval.}
+    in the retrieval.}}
   \begin{tabular}{l|c|c|c}
-    Name & ID & $\alpha$ & $\beta$ \\
+    \DIFaddFL{Name }& \DIFaddFL{ID }& \DIFaddFL{$\alpha$ }& \DIFaddFL{$\beta$ }\\
     \hline
-    LiquidSphere & 25  & 523.6    & 3 \\
-    GemCloudIce  & 11  & 440      & 3 \\
-    GemSnow      & 32  & 24       & 2.86 \\
-    GemGraupel   & 33  & 172.7527 & 2.9646 \\
-    GemHail      & 34  & 3.02     & 2.9646 \\
+    \DIFaddFL{LiquidSphere }& \DIFaddFL{25 }& \DIFaddFL{523.6 }& \DIFaddFL{3 }\\
+    \DIFaddFL{GemCloudIce          }& \DIFaddFL{11  }& \DIFaddFL{440      }& \DIFaddFL{3 }\\
+    \DIFaddFL{GemSnow              }& \DIFaddFL{32  }& \DIFaddFL{24  }& \DIFaddFL{2.86 }\\
+    \DIFaddFL{GemGraupel           }& \DIFaddFL{33  }& \DIFaddFL{172.7527 }& \DIFaddFL{2.9646 }\\
+    \DIFaddFL{GemHail              }& \DIFaddFL{34  }& \DIFaddFL{3.02 }& \DIFaddFL{2.9646 }\\
     \hline
-    SectorSnowflake      &  3  & 0.0008 & 1.44 \\
-    8-ColumnAggregate    &  8  & 65     & 3 \\
-    LargeColumnAggregate &  18 & 0.25   & 2.43 \\
-    LargePlateAggregate  &  20 & 0.21   & 2.26 \\
-    IceSphere            &  24 & 2.2571 & 0.2085 \\
+    \DIFaddFL{SectorSnowflake      }&  \DIFaddFL{3 }& \DIFaddFL{0.0008   }& \DIFaddFL{1.44 }\\
+    \DIFaddFL{8-ColumnAggregate    }&  \DIFaddFL{8   }& \DIFaddFL{65       }& \DIFaddFL{3 }\\
+    \DIFaddFL{LargeColumnAggregate }&  \DIFaddFL{18 }& \DIFaddFL{0.25     }& \DIFaddFL{2.43 }\\
+    \DIFaddFL{LargePlateAggregate  }&  \DIFaddFL{20 }& \DIFaddFL{0.21     }& \DIFaddFL{2.26 }\\
+    \DIFaddFL{IceSphere            }&  \DIFaddFL{24 }& \DIFaddFL{2.2571   }& \DIFaddFL{0.2085 }\\
   \end{tabular}
   \label{tab:particle_properties}
+\end{center}
 \end{table}
-
 
 \subsection*{Reviewer comment 9}
 
-Figures 7 and 8:  I’m not sure why these are separate figures – it seems like allpanels could fit on one page.
+Figures 7 and 8:  I’m not sure why these are separate figures – it seems like all panels could fit on one page.
 
 \subsubsection*{Author response}
 
-The figures will be combined into a single figure.
+The figure 7 and 8 will be combined into a single figure in the revised version
+of the manuscript:
+
+\begin{figure}
+\begin{center} \DIFdelbeginFL %DIFDELCMD < \includegraphics[width = 0.8\textwidth]{figures/fig07}
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width = 0.75\textwidth]{../plots/results_scatter_a}
+\DIFaddendFL \caption{\DIFdelbeginFL \DIFdelFL{Reference }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Retrieved }\DIFaddendFL IWC plotted against \DIFdelbeginFL \DIFdelFL{retrieved }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{reference }\DIFaddendFL IWC for the tested retrieval
+  configurations. Each row shows the retrieval results for the particle shape
+  shown in the first panel. The following panels show the retrieval results for
+  the passive only (first column), the radar only (second column) and the
+  combined retrieval (third column). Markers are colored according to the
+  prevailing hydrometeor type at the corresponding grid point in the test
+  scene. Due to their sparsity, markers corresponding to graupel are drawn at
+  twice the size of the other markers.}
+\DIFdelbeginFL %DIFDELCMD < \label{fig:results_scatter_a_1}
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \label{fig:results_scatter_a}
+\DIFaddendFL \end{figure}
+\end{center}
 
 \subsection*{Reviewer comment 11.}
  Line 374: recommend using “represent” instead of “predict”
@@ -414,30 +429,52 @@ The figures will be combined into a single figure.
 \subsubsection*{Author response}
 The proposed change will be adopted in the updated version of the manuscript.
 
+\begin{change}[374]
+Since snow will have the
+stronger impact on the observations, the retrieval in these regions tends to
+\DIFdelbegin \DIFdel{predict }\DIFdelend \DIFaddbegin 
+\end{change}
+
 \subsection*{Reviewer commene 12}
  Line 382: should be “reference” instead of “references”
 
+
 \subsubsection*{Author response}
 This will be corrected in the updated version of the manuscript.
+
+ \begin{change}[382]
+ The radar-only retrieval does not exhibit any retrieval skill, hardly
+ reproducing any of the variation of the \DIFdelbegin \DIFdel{references
+ }\DIFdelend \DIFaddbegin \DIFadd{reference }\DIFaddend values. Contrary to
+ this, the combined retrieval moves both clusters towards the diagonal,
+ indicating that it is capable of distinguishing the microphysical properties of
+ cloud ice and snow.
+ \end{change}
 
 \subsection*{Reviewer comment 13}
 
 Line  414:  How  are  the  truncated  PSDs  (using  GemSnow)  represented  in  theforward simulations? Is total ice water content conserved? If so, how is it spread amongthe valid particle sizes – equally, or is the truncated mass allocated to the smallest size bin?
 
 \subsubsection*{Author response}
+
 Total IWC is not conserved in the handling of PSDs. The point raised by the reviewer has been
-investigated by assessing the effect of the truncation of the IWC. The results of the analysis
-are given in the figure below. As the results show, the truncation can introduce significant
-errors. This, however, is only the case when the GemSnow particle is used to represent all
-ice species. If it is used only to represent snow, the errors are negligible (not shown). Because
-of that as well as another comment regarding the choice of the tested particles, the selection of
-tested particles will be modified and the GemSnow particle will not be included.
+investigated by assessing the effect of the truncation on the water content of snow in the
+forward simulations. The results of the analysis are given in the figure below. As these results
+show, the effects of the truncation in the forward simulations are negligible.
+
+However, when the GemSnow particle model is used in the retrieval it can
+introduce significant errors. For this reason as well as another reviewers
+comment regarding the choice of tested particles, the selection of particles to
+be used in the retrieval will be changed for the revised manuscript and the
+GemSnow particle will not be included. Instead, only particle models will be used
+that cover all relevant particles sizes.
 
 \begin{figure}[!hbpt]
-  \centering
+  \begin{center}
   \includegraphics[width = 1.0\textwidth]{../plots/truncated_iwc}
-  \caption{Joint distribution of truncated and true ice water content (IWC) for the
+  \caption{Joint distribution of truncated and full snow water content (SWC) for the
     two test scenes.}
+  \end{center}
 \end{figure}
 
 \bibliographystyle{copernicus}
