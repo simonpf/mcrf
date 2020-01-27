@@ -14,9 +14,10 @@
 \usepackage{amssymb}
 \usepackage{capt-of}
 \usepackage{hyperref}
-\author{simon}
-\date{\today}
-\title{}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage[authoryear,round]{natbib}
+\title{Response to reviewer 1}
+\date{}
 \hypersetup{
  pdfauthor={Simon Pfreundschuh},
  pdftitle={},
@@ -24,7 +25,32 @@
  pdfsubject={},
  pdfcreator={Emacs 24.5.1}, 
  pdflang={English}}
+
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{luacolor}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{{\protect\textcolor{blue}{\uwave{#1}}}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{{\protect\textcolor{red}{\sout{#1}}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+
+\newenvironment{change}[1][]{%
+  \begin{mdframed}[frametitle={Line #1:}]%
+}{%
+  \end{mdframed}%
+}
+
 \begin{document}
+\maketitle
 
 \setlength{\parindent}{0cm}
 
@@ -32,42 +58,107 @@
 
 \subsection*{Reviewer comment 1}
 
-1. As noted in Section 4.2.4, the a priori assumptions do not describe reality
-very well. In particular, I suspect that the information content of Dm and N0* is
+As noted in Section 4.2.4, the a priori assumptions do not describe reality very
+well. In particular, I suspect that the information content of Dm and N0* is
 highly dependent on the a priori assumptions of these two variables in the
-retrieval framework. Especially with a radar measurement, since Z is sensitive to
-both parameters over a wide range of the parameter space, the relative
+retrieval framework. Especially with a radar measurement, since Z is sensitive
+to both parameters over a wide range of the parameter space, the relative
 sensitivity and therefore information content will almost entirely depend on the
 relative constraints on these parameters imposed by Xa and Sa. As such it is
 imperative to accurately characterize these. I understand the choice to use the
 DARDAR constraints, but it’s clear from the cross-section plots that the model
 ice particle concentrations vary over a much wider range than the roughly 2
-orders of magnitude that Eq. 4 provides over a 220-272 K temperature range.
-So, when the retrieval results are compared to model “reality”, it seems that a
-lot of N0* variability is folded into Dm and this is especially evident in
-Figures 13 and 14. My overall concern is that it is difficult to interpret some
-of the results when the model fields and the a priori assumptions differ so
-strongly.
+orders of magnitude that Eq. 4 provides over a 220-272 K temperature range. So,
+when the retrieval results are compared to model “reality”, it seems that a lot
+of N0* variability is folded into Dm and this is especially evident in Figures
+13 and 14. My overall concern is that it is difficult to interpret some of the
+results when the model fields and the a priori assumptions differ so strongly.
 
 \subsubsection*{Author response:}
 
-It should be clarified here that Eq. (4) only gives the variation of the mean
-profile of the a priori for $N_0^*$ and that the standard deviation for $N_0^*$
-has been set to a value of $2$ in log-space, allowing $N_0^*$ to vary over several
-orders of magnitude.
+We would like to clarify that the variation of the a priori mean with
+temperature, which is given by Eq. 4, does not limit the retrieved values of
+$N_0^*$ to this range. How much $N_0^*$ is allowed to vary around the a priori
+mean is determined by the covariance matrix. Since the standard deviation for
+$log_{10}(N_0^*)$ at each grid point was set to $2$ (c.f. Tab.~3), $N_0^*$ is
+free to vary over several orders of magnitude in addition to the variation of
+the a priori profile.
 
-Nonetheless, the point raised by the referee remains valid. Since the topic
-of the study are synergies between radar and radiometer observations, we aimed
-to keep the a priori assumptions realistic (the DARDAR mean profile) but at the
-same time sufficiently loose (high std. dev.) in order to not introduce information
-a priori that may be provided by the synergy. To clarify this, the following
-lines haves been added in the introduction:
+Furthermore, the sentence in Section~4.2.4 did not really express what we wanted
+to say here. The a priori assumptions are not generally bad for the model
+(after all the overall results for the first scene are good) but rather they are
+insufficient to accurately describe the variability in $D_m$ and $N_0^*$.
 
-\vspace{1em}
+Nonetheless, the point raised by the reviewer certainly remains valid: In
+absolute terms, the interpretation of the retrieval results is dependent on the
+a priori assumptions. We argue here, however, that by applying equivalent a
+priori assumptions in all retrievals, we can still derive conclusions on the
+benefits of the combined retrieval approach based on a relative interpretation
+of the retrieval results. In particular, our results indicate that the combined
+retrieval has to rely less on a priori assumptions than the radar-only
+retrieval.
 
-\textit{The standard deviations in the covariance matrix have been deliberately
-  chosen to be very loose in order avoid the introduction of constraining
-  information that may be provided by the radiometer observations.}
+To address the issue raised by the reviewer, we propose the following
+changes to the manuscript:
+
+\begin{itemize}
+\item To make the role of the a priori clearer the discussion of the a priori
+  assumptions will be rewritten:
+
+\begin{change}[491]
+\DIFdelbegin \DIFdel{The a priori assumptions which were used in this study were similar but not
+identical to what is used in the DARDAR retrievals. Also here it should be
+noted, that the presented results should not be taken to be representative for
+the DARDAR product. Rather than this, the DARDAR a priori settings were chosen
+since they represent well established and validated assumptions for ice cloud
+retrievals and therefore should provide a reasonable starting point for the
+development of a combined cloud retrieval. The fact that the a priori
+assumptions used in the DARDAR retrieval do not agree with the microphysical
+properties of ice and snow in the GEM model, does not say much about the general
+validity of these assumptions.
+}%DIFDELCMD < 
+
+\DIFadd{The a priori assumptions used in this study are based on the DARDAR-CLOUD
+product, since they represent well established and validated assumptions for ice
+cloud retrievals. The role of the a priori is to complement the observations
+with additional information required to make the retrieval problem tractable.
+For the hydrometeor retrieval this means that the a priori determines how the
+information from the observations, which alone is insufficient to accurately
+determine both degrees of freedom of the PSD, is distributed between its $D_m$
+and $N_0^*$ parameters. For the radar-only retrieval, this works well for cloud
+systems containing both ice and snow but leads to biased retrievals in both IWC
+and IWP when this is not the case, as seen in Fig.~\ref{fig:results_boxes}.
+These problems could be remedied by introducing more specific a priori
+assumptions. However, these will be dependent on the cloud and hydrometeor type
+imposing the question of how these can be determined a priori. For the combined
+retrieval, however, this may not be necessary since the increased information
+content makes it less dependent on the a priori to infer the microphysical
+properties of the cloud.
+}\DIFaddend 
+\end{change}
+
+\item The statement from Section~4.2.4 on the a priori assumptions is corrected:
+
+\begin{change}[544]
+The forward model is non-linear and \DIFdelbegin \DIFdel{the assumed }\DIFdelend \DIFaddbegin \DIFadd{it is difficult to describe the variability
+of cloud parameters using }\DIFaddend Gaussian a priori assumptions\DIFdelbegin \DIFdel{do
+not describe reality very well}\DIFdelend .
+\end{change}
+
+\item A paragraph is added to Section~4.2.5 emphasizing that the results should
+  not be interpreted in absolute terms:
+
+\begin{change}[549]
+\DIFdelbegin \DIFdel{Finally, it is important to consider the limitations }\DIFdelend \DIFaddbegin \DIFadd{An important limitation }\DIFaddend of this study \DIFdelbegin \DIFdel{. The }\DIFdelend \DIFaddbegin \DIFadd{is its scope: The aim here was not to develop
+a production-ready combined retrieval product but rather a proof-of-concept to
+explore the observational approach. The retrieval }\DIFaddend results presented here \DIFdelbegin \DIFdel{are }\DIFdelend \DIFaddbegin \DIFadd{should
+therefore not be interpreted in absolute terms. The primary results are based on
+the relative performances of the three retrieval methods: Given equivalent a
+priori assumptions, the combined retrieval demonstrates higher sensitivity to
+the microphysical properties than the radar-only retrieval and lower errors
+in terms of IWC than the passive-only retrieval.
+}
+\end{change}
 
 \subsection*{Reviewer comment 2}
 
@@ -83,11 +174,29 @@ instrument noise term for many channels.
 
 \subsubsection*{Author response}
 
-This is certainly another valid point and has been addressed in the way suggested
-by the authors. All calculations were repeated and the corresponding results
-updated in the manuscript. To clarify this a sub-section specifying the assumed observation
-errors has been added to Sect. 2.3..
-\vspace{1em}
+It is certainly true that the simplified forward model used in the retrieval
+introduces a forward modeling error and that it will likely dominate the sensor
+noise. However, we do not agree with the reviewer that this is easy to quantify.
+First of all, the error will not be Gaussian and will depend on the cloud
+composition and the assumed particle shape, so that a more sophisticated error
+model would be required to describe the error accurately. Furthermore, fitting
+such a model to the test scenes would likely yield overly optimistic results as
+this would mean making use of information that would not be available for real
+retrieval observations.
+
+Because of these difficulties we decided to not pursue this in this study.
+However, since this is an important point to mention, the following will
+be added to the discussion of the retrieval method:
+
+\begin{change}[548]
+\DIFaddbegin \DIFadd{Some of the above-mentioned problems could likely be counteracted by accounting
+for the forward model error caused by the simplified forward model applied in
+the retrieval. However, finding an accurate description of this error
+would require developing a suitable model for it which was deemed out of the
+this studies' scope.
+\DIFaddend 
+}
+\end{change}
 
 
 \section{Specific comments}
@@ -97,18 +206,17 @@ Lines  85-88:   I  recommend  the  use  of  geographical  spatial  references  (
 
 \subsubsection*{Author response}
 
-The proposed change is adopted in the revised version of the manuscript and the corresponding
-sentences now read as follows:
+The proposed change will be adopted in the revised version of the manuscript by introducing
+the following changes:
 
-\textit{
-The first test scene, shown in panel (a), is located in the
-tropical Pacific and contains a convective storm system in the northern half of
-the scene and its anvil that extends into the southern half of the scene. The
-second scene, shown in panel (b), is located in the North Atlantic and contains
-an ice cloud in the southern part and a low-level, mixed-phase cloud in the
-remainder of the scene.
-}
-
+\begin{change}[85]
+... retrieval. The first test scene, shown in panel (a), is
+located in the tropical Pacific and contains a convective storm system in the
+\DIFdelbegin \DIFdel{right }\DIFdelend \DIFaddbegin \DIFadd{northern }\DIFaddend half of the scene and its anvil that extends into the \DIFdelbegin \DIFdel{left }\DIFdelend \DIFaddbegin \DIFadd{southern }\DIFaddend half of
+the scene. The second scene, shown in panel (b), is located in the North
+Atlantic and contains an ice cloud in the \DIFdelbegin \DIFdel{first quarter }\DIFdelend \DIFaddbegin \DIFadd{southern part }\DIFaddend and a low-level,
+mixed-phase cloud in the remainder of the scene.
+\end{change}
 
 
 \subsection*{Reviewer comment 2}
@@ -127,12 +235,26 @@ assumed particle size distributions across different ice species vary mostly in
 their scaling with respect to size and concentration, whereas the function shape shows less
 variability.}
 
-L. 176:
+\begin{change}[97]
+\ldots simulations. As these plots show, the
+assumed particle size distributions across different ice species vary mostly in
+their \DIFdelbegin \DIFdel{horizontal and vertical scaling }\DIFdelend \DIFaddbegin \DIFadd{scaling with respect to size and concentration}\DIFaddend , whereas the function \ldots
+\end{change}
 
-\textit{ The PSD of a hydrometeor species at a given height level is represented
-  by two scaling parameters: The mass-weighted mean diameter $D_m$, which scales
-  the size of the particles, and the normalized number density $N_0^*$, which
-  scales the concentration of particles.}
+\begin{change}[176]
+ The PSD of a hydrometeor species at a given height level is
+\DIFdelbegin \DIFdel{represented by a vertical and a horizontal scaling parameter}\DIFdelend \DIFaddbegin \DIFadd{given by a generalized gamma-distribution function with four parameters. Two of
+them}\DIFaddend , the mass-weighted mean diameter $D_m$\DIFaddbegin \DIFadd{, which scales the PSD along the size
+dimension, }\DIFaddend and the normalized number density $N_0^*$\DIFdelbegin \DIFdel{. Alternative 
+parametrizations using mass density and $D_m$ or the mass density and $N_0^*$
+have been tested but no considerable effect on retrieval performance has been
+observed. }%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{The retrieval computes vertical profiles of the two scaling parameters $D_m$ and
+$N_0^*$ for each of the two hydrometeor species. The remaining shape of each }\DIFdelend \DIFaddbegin \DIFadd{, which scales the particle
+concentration, are retrieved. The \ldot
+\end{change}
 
 L. 252:
 
@@ -158,7 +280,7 @@ L. 183:
 
 L. 244:
 
-\texit{The question that is addressed here is whether the combination of active
+\textit{The question that is addressed here is whether the combination of active
   and passive observations is able to constrain both the size and concentration
   of the ice particles in the cloud.}
 
@@ -239,9 +361,9 @@ Although this is certainly one advantage of combining radar and radiometer
 observations, the authors would not consider this a true synergy of the active
 and passive observations since correctly locating the cloud in the atmosphere is
 something that the radar can do alone. For the passive to add benefit to the
-radar , the combined observations must provide additional information on the
-microphysics that the radar alone does not provide. To better clarify this
-reasoning the following sentence will be added to the manuscript:
+radar, the combined observations must provide additional information on the
+microphysics that the radar alone does not provide.
+
 
 \subsection*{Reviewer comment 8}
 Table 4: Why are the values for GemSnow and GemGraupel different than in Table1?
@@ -249,12 +371,41 @@ Table 4: Why are the values for GemSnow and GemGraupel different than in Table1?
 \subsubsection*{Author response}
 
 The differences in the reported values for GemSnow and GemGraupel were due to a mistake
-made by the authors. The values will be corrected in the updated version of the manuscript.
+made by the authors. The values defined in \citet{milbrandtyau05} differ slightly from
+the ones obtained by fitting the particle data, which were then mixed up in the two tables.
+In the revised version of the manuscript this will be corrected and, upon recommendation
+by reviewer 2, merged into a single table. The table now looks as follows:
+
+\begin{table}
+  \centering
+  \caption{Particle model name, ARTS scattering database ID and parameters
+    $\alpha, \beta$ of the mass-size relationships of the particle habits used
+    in the retrieval.}
+  \begin{tabular}{l|c|c|c}
+    Name & ID & $\alpha$ & $\beta$ \\
+    \hline
+    LiquidSphere & 25  & 523.6    & 3 \\
+    GemCloudIce  & 11  & 440      & 3 \\
+    GemSnow      & 32  & 24       & 2.86 \\
+    GemGraupel   & 33  & 172.7527 & 2.9646 \\
+    GemHail      & 34  & 3.02     & 2.9646 \\
+    \hline
+    SectorSnowflake      &  3  & 0.0008 & 1.44 \\
+    8-ColumnAggregate    &  8  & 65     & 3 \\
+    LargeColumnAggregate &  18 & 0.25   & 2.43 \\
+    LargePlateAggregate  &  20 & 0.21   & 2.26 \\
+    IceSphere            &  24 & 2.2571 & 0.2085 \\
+  \end{tabular}
+  \label{tab:particle_properties}
+\end{table}
+
 
 \subsection*{Reviewer comment 9}
+
 Figures 7 and 8:  I’m not sure why these are separate figures – it seems like allpanels could fit on one page.
 
 \subsubsection*{Author response}
+
 The figures will be combined into a single figure.
 
 \subsection*{Reviewer comment 11.}
@@ -263,7 +414,7 @@ The figures will be combined into a single figure.
 \subsubsection*{Author response}
 The proposed change will be adopted in the updated version of the manuscript.
 
-\subsection*{Reviewer comment 12}
+\subsection*{Reviewer commene 12}
  Line 382: should be “reference” instead of “references”
 
 \subsubsection*{Author response}
@@ -288,5 +439,8 @@ tested particles will be modified and the GemSnow particle will not be included.
   \caption{Joint distribution of truncated and true ice water content (IWC) for the
     two test scenes.}
 \end{figure}
+
+\bibliographystyle{copernicus}
+\bibliography{references}
 
 \end{document}

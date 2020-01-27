@@ -10,7 +10,7 @@ import mcrf.liras.setup
 import mcrf.liras
 from   mcrf.retrieval        import CloudRetrieval
 from   mcrf.sensors          import mwi, ici, lcpr
-from   mcrf.liras  import snow, rh_a_priori, cloud_water_a_priori, h2o_a_priori
+from   mcrf.liras  import snow, rh_a_priori, cloud_water_a_priori
 from   mcrf.liras.single_species import ice, rain
 from   mcrf.liras.model_data import ModelDataProvider
 
@@ -25,7 +25,7 @@ if not ip is None:
 # Input data.
 #
 
-filename = os.path.join(mcrf.liras.liras_path, "data", "forward_simulations_b_noise.nc")
+filename = os.path.join(mcrf.liras.liras_path, "data", "forward_simulations_a_noise.nc")
 offsets = {"a" : 3000,
            "b" : 2200}
 scene = filename.split("_")[-2]
@@ -38,7 +38,7 @@ shape = "8-ColumnAggregate"
 # Create the data provider.
 #
 
-ip = offset + 10
+ip = offset + 796
 data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
                                   snow_psd   = snow.psd,
@@ -56,9 +56,8 @@ sensors      = [lcpr, mwi, ici]
 #
 
 observation_error = mcrf.liras.ObservationError(sensors,
-                                                forward_model_error = True,
+                                                forward_model_error = False,
                                                 scene = scene)
-observation_error.noise_scaling["lcpr"] = 2.0
 
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])
@@ -87,8 +86,3 @@ retrieval.run(ip)
 ws = retrieval.simulation.workspace
 r = retrieval.simulation.retrieval
 rqs = r.retrieval_quantities
-
-h2o = rqs[-2]
-xs = 0.5 * np.random.normal(size = 10000)
-ys = h2o.transformation.invert(xs)
-plt.hist(ys)

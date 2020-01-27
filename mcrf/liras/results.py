@@ -14,7 +14,7 @@ from netCDF4 import Dataset
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.colors   import LogNorm, Normalize
-from matplotlib.cm import magma
+from matplotlib.cm import magma, bone_r, bone
 
 def get_results(scene = "a",
                 config = "",
@@ -183,7 +183,8 @@ def plot_results(lats, z, qs, name, norm,
                  cmap = magma,
                  include_columns = False,
                  column_label = None,
-                 titles = None):
+                 titles = None,
+                 reference = None):
 
     n_plots = len(qs)
 
@@ -224,7 +225,7 @@ def plot_results(lats, z, qs, name, norm,
             ax.set_title(prefix[0] + " Final OEM cost", fontsize = 14, loc = "left")
 
         #ax.axhline(y = 10, c = "k")
-        ax.legend(loc = "center", ncol = 3, fontsize = 14, bbox_to_anchor = [0.5, 1.2])
+        ax.legend(loc = "center", ncol = 3, fontsize = 14, bbox_to_anchor = [0.5, 1.17])
 
         ax.set_ylabel(r"$\chi^2_y$", fontsize = 14)
         ax.set_xticks([])
@@ -238,9 +239,9 @@ def plot_results(lats, z, qs, name, norm,
     #
 
     if include_columns:
+
         ax = plt.subplot(gs[i])
         qr = np.trapz(qs[0], x = z)
-        #ax.plot(x, qr, label = "Reference", c = "k", ls = "--")
 
         for j, q in enumerate(qs[1:]):
             q = np.copy(q)
@@ -256,7 +257,41 @@ def plot_results(lats, z, qs, name, norm,
         ax.set_ylim([-5, 5])
         #ax.set_yscale("log")
         ax.set_xlim([x[0], x[-1]])
-        i = i + 1
+        ax.grid(False)
+
+        ax.set_zorder(10)
+        ax2 = ax.twinx()
+        ax.patch.set_visible(False)
+        if not reference is None:
+            iwp = np.zeros(x.size)
+
+            colors = ["k", "dimgrey", "grey", "lightgrey"]
+            hatch = [r"", r"", r"", r""]
+            handles = []
+            for j,s in enumerate(["swc", "iwc", "gwc", "hwc"]):
+                iwp_s = np.trapz(reference[s], x = z)
+                handles += [ax2.fill_between(x,
+                                            y1 = iwp,
+                                            y2 = iwp + iwp_s,
+                                            linewidth = 1,
+                                            edgecolor = "white",
+                                            alpha = 0.7,
+                                            facecolor = bone((j + 1) /  5),
+                                            hatch = hatch[j],
+                                            zorder = -10 - j)]
+                iwp = iwp + iwp_s
+
+            labels = ["Snow", "Ice", "Graupel", "Hail"]
+            ax2.set_ylim([1e-2, 1e2])
+            ax2.set_yscale("log")
+            ax2.set_xlim([x[0], x[-1]])
+            ax2.set_ylabel("IWP, Reference [$kg\ m^{-2}$]", fontsize = 14, color = bone(2 / 5))
+
+            ax2.grid(False)
+            ax2.legend(handles = handles, labels = labels, loc = "center", ncol = 4,
+                       fontsize = 14, bbox_to_anchor = [0.5, 1.17])
+
+            i = i + 1
 
 
     for j in range(n_plots):
