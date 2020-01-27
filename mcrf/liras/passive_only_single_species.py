@@ -47,7 +47,9 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 md_z_grid = np.linspace(0, 20e3, 5)
 #md_z_grid = np.array([5e3, 15e3])
 ice_mask = And(TropopauseMask(), TemperatureMask(0.0, 273.15))
-ice_covariance = Diagonal(1 * np.ones(md_z_grid.size), mask=ice_mask, mask_value=1e-12)
+ice_covariance = Diagonal(1 * np.ones(md_z_grid.size),
+                          mask=ice_mask,
+                          mask_value=1e-12)
 ice_covariance = SpatialCorrelation(ice_covariance, 2e3, mask=ice_mask)
 
 # n0
@@ -68,7 +70,7 @@ ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori,
                                     transition=1e3)
 
 points_dm = 5
-ice_covariance = Diagonal(500e-6**2, mask=ice_mask, mask_value=1e-16)
+ice_covariance = Diagonal(300e-6**2, mask=ice_mask, mask_value=1e-16)
 ice_covariance = SpatialCorrelation(ice_covariance, 5e3, mask=ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm",
                                     "temperature",
@@ -154,4 +156,3 @@ rain.transformations = [
 ]
 rain.limits_low = [2, 1e-8]
 rain.retrieve_second_moment = True
-

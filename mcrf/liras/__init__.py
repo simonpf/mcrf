@@ -38,7 +38,8 @@ def n0_a_priori(t):
     Defines the a priori mean for the normalized number density (N_0^*) for
     frozen hydrometeors as a function of the temperature t.
     """
-    return 10.0 * np.ones(t.shape) 
+    return 10.0 * np.ones(t.shape)
+
 
 def dm_a_priori(t):
     """
@@ -212,27 +213,32 @@ rain.radar_only = True
 upper_limit = 1.1
 lower_limit = 0.0
 
+
 def a_priori_shape(t):
     transformation = Atanh()
     transformation.z_max = 1.1
     transformation.z_min = 0.0
-    x = np.maximum(np.minimum(0.8 - (270 - t) / 100.0, 0.7), 0.1)
+    x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.2)
     return transformation(x)
 
+
 rh_mask = AltitudeMask(-1, 20e3)
-rh_covariance = Diagonal(1.0, mask = rh_mask)
+rh_covariance = Diagonal(0.5, mask=rh_mask)
 rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
-rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
+rh_a_priori = FunctionalAPriori("H2O",
+                                "temperature",
+                                a_priori_shape,
                                 rh_covariance,
-                                mask = rh_mask,
-                                mask_value = -100)
+                                mask=rh_mask,
+                                mask_value=-100)
 rh_a_priori = MaskedRegularGrid(rh_a_priori,
                                 21,
                                 rh_mask,
-                                quantity = "altitude",
-                                provide_retrieval_grid = False)
+                                quantity="altitude",
+                                provide_retrieval_grid=False)
 rh_a_priori.unit = "rh"
-rh_a_priori.transformation = Composition(Atanh(0.0, 1.1), PiecewiseLinear(rh_a_priori))
+rh_a_priori.transformation = Composition(Atanh(0.0, 1.1),
+                                         PiecewiseLinear(rh_a_priori))
 
 ################################################################################
 # Observation error

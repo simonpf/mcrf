@@ -125,7 +125,7 @@ class CloudRetrieval:
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
         self.simulation = ArtsSimulation(atmosphere,
                                          sensors=sensors,
-                                         scattering_solver=RT4())
+                                         scattering_solver=Disort())
         self.sensors = sensors
 
         self.data_provider = data_provider
@@ -252,7 +252,7 @@ class CloudSimulation:
         atmosphere = Atmosphere1D(absorbers, scatterers, surface)
         self.simulation = ArtsSimulation(atmosphere,
                                          sensors=sensors,
-                                         scattering_solver=RT4())
+                                         scattering_solver=Disort())
         self.sensors = sensors
 
         self.data_provider = data_provider
