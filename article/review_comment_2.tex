@@ -65,8 +65,9 @@ Based on the combined comments of the referees, we have decided to implement the
 changes:
 
 \begin{itemize}
-\item We will switch to an airborne measurement set-up
-\item The test in the result section will be significantly shorter
+\item We will switch to an airborne measurement set-up and
+  the introduction section will be modified accordingly
+\item The text in the result section will be shortened significantly
 \item Redundant results for scene 2 will be placed in an appendix
 \item The selection of tested retrieval habits will be revised/changed
 \end{itemize}
@@ -107,9 +108,8 @@ We propose to make the following changes to the manuscript:
   the particle models that have been developed to match the assumptions of
   the GEM microphysics scheme and that are used to simulate observations.
 \item Add a paragraph to the description of the retrieval implementation that
-  explains the difficulties of representing the complex mixture of different
-  particle with a single particle model and that we therefore test several
-  of them.
+  explains the difficulty of representing the complex mixture of different
+  particles in the GEM model scenes with a single particle model.
 \item To combined Tab. 1 and 4. into a single table.
 \end{itemize}
 
@@ -197,7 +197,7 @@ aspects but in the end I ammissing a clear message on the outcome of the test
 
 The first statement made by the reviewer is not fully correct. Since the retrieval
 can reduce the concentration of particles and increase their size it can modify
-the ratio of small to large particles and thus represent the effects of sedimentation
+the ratio of small and large particles and thus represent the effects of sedimentation
 on the PSD.
 
 Vertical changes in particle shape, i.e. transition from single crystals to
@@ -212,17 +212,17 @@ suitable scattering data for oriented particles has only recently been released
 \citep{brath19}. Since for the revised version the sensors are assumed to point
 at nadir, it is justified to neglect polarization effects. We will, however,
 state clearly in the revised manuscript that polarization effects will have
-non-negligible impact on the observations of the MWI and ICI sensors .
+non-negligible impact on the observations of the MWI and ICI sensors.
 
-
-This was certainly not sufficiently well described in the manuscript. To address this
-as well as to provide a clearer message on the outcome of our tests we propose
-the following changes for the revised manuscript:
+We agree that in particular the variation of the particle shape was not
+described well in the manuscript. To address this as well as to provide a
+clearer message on the outcome of our tests we propose the following changes for
+the revised manuscript:
 
 \begin{itemize}
-\item State clearly in Sect.~2 that for MWI and ICI polarization effects can
+\item State clearly in Sect.~2.2 that for MWI and ICI polarization effects can
   not be neglected.
-\item Improve the description of the employed particle models in Sect.~2.
+\item Improve the description of the employed particle models in Sect.~2.3.
 \item Extend the discussion of the tested particle shapes to derive clearer
   recommendations for the future.
 \end{itemize}
@@ -249,20 +249,20 @@ the synergy works.
 As can be seen in Fig.~8 from \cite{eriksson19}, the information content on
 water vapor from ICI alone are at most 4 degrees of freedom for clear-sky
 scenarios. Since in the retrieval also the channels from MWI are included, the
-expected information content on water vapor should be higher. However, this is
-for clear-sky scenarios. In the presence of clouds, it is likely that the
-information content is reduced.
+expected information content on water vapor should be somewhat higher. However, this is
+for clear-sky scenarios. In the presence of clouds, the information content will
+be significantly reduced.
 
 Regarding the results of the retrieved cloud liquid water content (CLWC),
 Fig.~16 shows quite clearly an improvement, both in terms of CLWC and cloud
 liquid water path (CLWP), in the results of the combined retrieval compared to
-the passive-only retrieval. The altitudes at which supercooled liquid is present
-in the GEM model scenes is something we didn't not investigate further. However,
-since supercooled water is present at these very high altitudes only in the
-first scene and not the second, it is not relevant for the interpretation of Fig. 16.
+the passive-only retrieval. Yes, liquid clouds droplets are present at high
+altitudes in the first model scene but only below the $230\ \unit{K}$ isotherm.
+However, since this is the case only for the first scene, it does not seem
+relevant for the interpretation of Fig. 16.
 
 To shed more light onto the information content regarding humidity and
-CLWC we will follow the referees suggestion and add a figure that will display
+CLWC we will follow the referee's suggestion and add a figure that will display
 the information content for the different retrievals.
 
 \subsection*{Reviewer comment 4}
@@ -271,8 +271,8 @@ the information content for the different retrievals.
 extract the majorpoints. I strongly suggest a) to move part of the analysis into
 an appendix (, b) remove double statement (see minor comments, also the LWC plot)
 and c) to remove figurecaption like information (for example L92 or “filled
-contours”) from the text. The textmust make sense without looking at the figure.
-Figure only support the statementsmade in the text. Lengthy descriptions such as
+contours”) from the text. The text must make sense without looking at the figure.
+Figure only support the statements made in the text. Lengthy descriptions such as
 “The plot shows..” need to be avoided.
 
 \subsubsection*{Author response}
@@ -565,9 +565,8 @@ L172: I doubt that the model has constant vertical resolution.  It will be bette
 \subsubsection*{Author response}
 
 As suggested by the reviewer, this will be mentioned when the GEM test scenes are
-introduced. Moreover, an sketch will be added to the manuscript that displays the
-GEM model grid and the grids of all retrieval quantities for all retrieval
-configurations.
+introduced. Moreover, a sketch will be added to the manuscript which displays the
+GEM model grid and the grids of all retrieval quantities for the retrievals.
 
 %This is indeed the case. To make this clear to the reader the following sentence
 %is introduced in the paragraph describing the GEM model scenes:
@@ -584,23 +583,22 @@ configurations.
 
 L 174: for all hydrometeor species of the model? It would be helpful to first
 introduce all retrieval quantities – I was missing a motivation for the
-paragraph around L195. How do you define the freezing layer (and later the
+paragraph around L195. How do you define the freezing level (and later the
 troposphere)? How do they vary in both test scenes? The model also likely has
 supercooled liquid water above the freezing layer – how is this treated?
 
 \subsubsection*{Author response}
 
 As mentioned above, a figure will be added to the manuscript that displays all
-retrieval variables as well as the freezing layer and the tropopause. Moreover,
-we will add an explanation of how the freezing layer and tropopause are defined
+retrieval variables as well as the freezing level and the tropopause. Moreover,
+we will add an explanation of how the freezing level and tropopause are defined
 in the manuscript.
 
-For the simulated observations, supercooled liquid in the freezing layer is
-treated in just the same way as liquid water below the freezing layer. As described
-in the paragraph around L. 211, cloud liquid water in the retrieval is treated as
-purely absorbing and simulated using a parametrized absorption model. Moreover, it is
+For the simulated observations, supercooled liquid is treated in just the same
+way as liquid water below the freezing level. As described in the paragraph
+around L. 211, cloud liquid water in the retrieval is treated as purely
+absorbing and simulated using a parametrized absorption model. Moreover, it is
 restricted to temperatures of $230\ \unit{K}$ and up.
-
 
 %In order to provide a better overview over the retrieval variables and
 %grid resolutions the following sketch of the different retrieval setups has
@@ -644,7 +642,7 @@ The relatively low number of grid points was found necessary to sufficiently reg
 the retrieval to avoid convergence problems. Except that it was found to work, there is
 no exact reason for choosing 4 points. 
 
-The freezing level does indeed vary between the two scenes. The freezing layers of both
+The freezing level does indeed vary between the two scenes. The freezing levels of both
 scenes will be added to Fig. 1.
 
 \subsection{Reviewer comment 16}
@@ -802,7 +800,7 @@ of the a priori assumptions.
 %}
 
 \subsection*{Reviewer comment 23}
-L560:  Rethink the bullet structure.  2.  Is not an independent result.  For each resultrefer to the part of the manuscript where you can clearly see that.  Especially result 3 should be detailed – how do ICI channel advance the currently available data?
+L560:  Rethink the bullet structure.  2.  Is not an independent result.  For each result refer to the part of the manuscript where you can clearly see that.  Especially result 3 should be detailed – how do ICI channel advance the currently available data?
 
 \subsubsection*{Author response}
 
@@ -838,11 +836,12 @@ Fig.  3: Is it really worth having the slightly different size distribution shap
 
 \subsubsection*{Author response}
 
-This is certainly true but in most clouds ice and rain can be distinguished a
-priori, which simplifies using different PSD shapes for the liquid and frozen
-hydrometeors. Distinguishing between different frozen hydrometeors is difficult
-to do a priori and using multiple species of hydrometeors in the retrieval was
-found to cause ambiguities that the retrieval is not able to resolve.
+This is certainly true but in most clouds ice and rain can be distinguished
+fairly well a priori, which simplifies treating them as different species
+using different PSD shapes. Distinguishing between different frozen hydrometeors is
+difficult to do a priori and using multiple species of hydrometeors in the
+retrieval was found to cause ambiguities which the retrieval is not able to
+resolve.
 
 
 %We agree with the reviewer that the slightly different size distributions shapes likely do
@@ -895,9 +894,9 @@ Fig. 5: Can you add freezing layer height?
 
 \subsubsection*{Author response}
 
-We propose to add the freezing layer height to Fig.~1 as it will then
-also show the freezing layer height for the second scene and with
-this address minor comment 15.
+We propose to add the freezing layer height to Fig.~1, since this will
+allow showing the freezing level height for both scenes, which 
+addresses minor comment 15 as well.
 
 %Freezing layer has been added to Fig.~5, which now looks as follows:
 %
@@ -915,12 +914,12 @@ this address minor comment 15.
 
 
 \subsection*{Reviewer comment 28}
-Fig.  6:  It would be nice to see the absolute values of IWP somewhere.  Maybe youcould add another time series with IWP as the sum of the different components such that the reader can see where the different categories (cloud, graupel, snow and hail) contribute most?
+Fig.  6:  It would be nice to see the absolute values of IWP somewhere.  Maybe you could add another time series with IWP as the sum of the different components such that the reader can see where the different categories (cloud, graupel, snow and hail) contribute most?
 
 \subsubsection*{Author response}
 
-To address the reviewers request we will the absolute reference IWP and its
-decomposition into different hydrometeor classes to Fig. 6.
+To address the reviewers request we will add absolute IWP of the reference scene
+and its decomposition into different hydrometeor classes to Fig. 6.
 
 %To address the reviewers request the figure will be modified as follows:
 %
@@ -943,7 +942,7 @@ Fig.  7:  I think it is retrieved vs.  truth.  The word following is not really 
 
 \subsubsection*{Author response}
 
-Fig. 7 and 8 will be merged and the label will be corrected.
+Fig. 7 and 8 will be merged and the caption will be corrected.
 
 %The following will be corrected and Fig. 7 and 8 will be combined into 1 to look as follows:
 %
@@ -985,8 +984,8 @@ Tables 1 and 4 will be combined in the revised version of the manuscript.
 
 \section*{Grammar, typos and reformulations}
 
-The authors would like to thank the reviewer for the additional comments which all
-will be incorporated into the revised manuscript.
+The authors would like to thank the reviewer for the additional comments, all of
+which will be incorporated into the revised manuscript.
 
 
 \bibliographystyle{copernicus}
