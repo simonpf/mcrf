@@ -31,7 +31,7 @@ ice_shape = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 ice_mask = And(TropopauseMask(), TemperatureMask(0.0, 271.0))
 
-ice_covariance = Diagonal(300 - 6**2, mask=ice_mask, mask_value=1e-24)
+ice_covariance = Diagonal(300e-6**2, mask=ice_mask, mask_value=1e-24)
 ice_covariance = SpatialCorrelation(ice_covariance,
                                     10e3,
                                     mask=ice_mask,
@@ -74,7 +74,7 @@ rain_shape = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 
 rain_mask = TemperatureMask(270.0, 340.0)
-rain_covariance = Diagonal(500e-6**2, mask=rain_mask, mask_value=1e-16)
+rain_covariance = Diagonal(300e-6**2, mask=rain_mask, mask_value=1e-16)
 rain_covariance = SpatialCorrelation(rain_covariance,
                                      10e3,
                                      mask=rain_mask,
