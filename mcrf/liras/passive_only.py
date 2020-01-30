@@ -40,7 +40,6 @@ def dm_a_priori(t):
     Functional relation for of the a priori mean of :math:`D_m`
     using the DARDAR :math:`N_0^*` a priori and a fixed water
     content of :math:`10^{-6}` kg m:math:`^{-3}`.
-
     """
     n0 = 10**n0_a_priori(t)
     iwc = 1e-5
@@ -191,7 +190,7 @@ rain_n0_a_priori = FixedAPriori("rain_n0",
                                 mask_value=0)
 rain_n0_a_priori = ReducedVerticalGrid(rain_n0_a_priori,
                                        z_grid,
-                                       "altitude"
+                                       "altitude",
                                        provide_retrieval_grid=False)
 
 #
