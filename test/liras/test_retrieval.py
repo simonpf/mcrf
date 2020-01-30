@@ -3,7 +3,7 @@ import numpy as np
 
 os.environ["LIRAS_PATH"] = "/home/simonpf/src/joint_flight"
 os.environ["ARTS_DATA_PATH"] = "/home/simonpf/src/arts_xml"
-os.environ["ARTS_BUILD_PATH"] = "/home/simonpf/build/arts"
+os.environ["ARTS_BUILD_PATH"] = "/home/simonpf/build/arts_fast"
 
 from parts.utils.data_providers import NetCDFDataProvider
 import mcrf.liras.setup
@@ -38,7 +38,7 @@ shape = "8-ColumnAggregate"
 # Create the data provider.
 #
 
-ip = offset + 796
+ip = offset + 130 * 3 + 32
 data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
                                   snow_psd   = snow.psd,

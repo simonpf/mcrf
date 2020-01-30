@@ -1,14 +1,19 @@
-from parts.utils.data_providers import NetCDFDataProvider
 import os
+import numpy as np
+
+os.environ["LIRAS_PATH"] = "/home/simonpf/src/joint_flight"
+os.environ["ARTS_DATA_PATH"] = "/home/simonpf/src/arts_xml"
+os.environ["ARTS_BUILD_PATH"] = "/home/simonpf/build/arts_fast"
 
 import mcrf.liras.setup
 import mcrf.liras
+from   mcrf.liras              import ObservationError
 from   mcrf.retrieval          import CloudRetrieval
 from   mcrf.sensors            import mwi, ici, lcpr
 from   mcrf.liras.passive_only import rh_a_priori, cloud_water_a_priori
 from   mcrf.liras.passive_only_single_species import ice, rain
-#from   mcrf.liras              import ice, liquid, snow, rain, rh_a_priori, cloud_water_a_priori
 from   mcrf.liras.model_data   import ModelDataProvider
+from parts.utils.data_providers import NetCDFDataProvider
 
 import matplotlib.pyplot as plt
 
@@ -22,12 +27,10 @@ if not ip is None:
 # Load observations.
 #
 
-filename     = os.path.join(mcrf.liras.liras_path, "data", "forward_simulations_b_noise.nc")
-
+filename     = os.path.join(mcrf.liras.liras_path, "data", "forward_simulations_a_noise.nc")
+scene = "a"
 offsets = {"a" : 3000,
            "b" : 2800}
-
-scene = "b"
 offset = offsets[scene]
 observations = NetCDFDataProvider(filename)
 observations.add_offset("profile", -offset)
@@ -36,8 +39,7 @@ observations.add_offset("profile", -offset)
 # Create the data provider.
 #
 
-ip = offset + 253 * 3 + 32
-
+ip = offset + 213 * 3 + 32
 data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
                                   liquid_psd = rain.psd,
@@ -54,9 +56,9 @@ sensors      = [mwi, ici]
 # Add a priori providers.
 #
 
-observation_error = mcrf.liras.ObservationError(sensors,
-                                                forward_model_error = False,
-                                                scene = scene)
+observation_error = ObservationError(sensors,
+                                     forward_model_error = False,
+                                     scene = scene)
 
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])

@@ -252,6 +252,7 @@ def a_priori_shape(t):
     x = np.maximum(np.minimum(0.7 - (270 - t) / 100.0, 0.7), 0.2)
     return transformation(x)
 
+rh_mask = AltitudeMask(-1, 20e3)
 rh_covariance = Diagonal(1.0, mask = rh_mask)
 rh_covariance = SpatialCorrelation(rh_covariance, 2e3, mask = rh_mask)
 rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape,
