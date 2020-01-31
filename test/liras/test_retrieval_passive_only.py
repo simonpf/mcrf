@@ -10,7 +10,7 @@ import mcrf.liras
 from   mcrf.liras              import ObservationError
 from   mcrf.retrieval          import CloudRetrieval
 from   mcrf.sensors            import mwi, ici, lcpr
-from   mcrf.liras.passive_only import rh_a_priori, cloud_water_a_priori
+from   mcrf.liras.passive_only import h2o_a_priori, cloud_water_a_priori
 from   mcrf.liras.passive_only_single_species import ice, rain
 from   mcrf.liras.model_data   import ModelDataProvider
 from parts.utils.data_providers import NetCDFDataProvider
@@ -65,7 +65,7 @@ data_provider.add(ice.a_priori[1])
 data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(cloud_water_a_priori)
-data_provider.add(rh_a_priori)
+data_provider.add(h2o_a_priori)
 data_provider.add(observation_error)
 data_provider.add(observations)
 

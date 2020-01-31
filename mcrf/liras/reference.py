@@ -12,7 +12,7 @@ Attributes:
 
      rain: Hydrometeor and a priori definition for liquid hydrometeors.
 
-     rh_a_priori: A priori for humidity retrieval.
+     h2o_a_priori: A priori for humidity retrieval.
 
      cloud_water_a_priori: A priori for liquid cloud retrieval.
 """
@@ -155,9 +155,9 @@ def a_priori_shape(t):
 z_grid = np.linspace(0, 20e3, 21)
 rh_covariance = Diagonal(1.0)
 rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
-rh_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
-rh_a_priori = ReferenceAPriori("H2O", rh_covariance, transformation = Atanh(0.0, 1.2),
-                               a_priori = rh_a_priori,
+h2o_a_priori = FunctionalAPriori("H2O", "temperature", a_priori_shape, rh_covariance)
+h2o_a_priori = ReferenceAPriori("H2O", rh_covariance, transformation = Atanh(0.0, 1.2),
+                               a_priori = h2o_a_priori,
                                variable = "relative_humidity")
-rh_a_priori = ReducedVerticalGrid(rh_a_priori, z_grid, "altitude",
+h2o_a_priori = ReducedVerticalGrid(h2o_a_priori, z_grid, "altitude",
                                   provide_retrieval_grid = False)

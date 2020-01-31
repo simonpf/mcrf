@@ -13,7 +13,7 @@ from mcrf.retrieval import CloudSimulation
 from mcrf.sensors import gmi, ici
 from examples.data_provider.atmosphere import Tropical
 from   mcrf.joint_flight     import ice, snow, rain, cloud_water_a_priori, \
-    rh_a_priori, ObservationError, temperature_a_priori
+    h2o_a_priori, ObservationError, temperature_a_priori
 
 from parts.retrieval.a_priori import SensorNoiseAPriori
 

@@ -4,7 +4,7 @@ import mcrf.liras.setup
 import mcrf.liras
 from   mcrf.retrieval          import CloudRetrieval
 from   mcrf.sensors            import mwi, mwi_full, ici, lcpr
-from   mcrf.liras              import rh_a_priori, cloud_water_a_priori
+from   mcrf.liras              import h2o_a_priori, cloud_water_a_priori
 from   mcrf.liras.model_data import ModelDataProvider
 
 #
@@ -55,9 +55,9 @@ n = observations.file_handle.dimensions["profile"].size
 
 if not snow_shape == "None":
     if args.reference:
-        from mcrf.liras.reference import ice, snow, rain, rh_a_priori, cloud_water_a_priori
+        from mcrf.liras.reference import ice, snow, rain, h2o_a_priori, cloud_water_a_priori
     else:
-        from mcrf.liras import ice, snow, rain, rh_a_priori, cloud_water_a_priori
+        from mcrf.liras import ice, snow, rain, h2o_a_priori, cloud_water_a_priori
     ice_shape = os.path.join(liras_path, "data", "scattering", ice_shape)
     ice.scattering_data = ice_shape
     snow_shape = os.path.join(liras_path, "data", "scattering", snow_shape)
@@ -65,10 +65,10 @@ if not snow_shape == "None":
     hydrometeors = [ice, snow, rain]
 else:
     if args.reference:
-        from mcrf.liras.reference import ice, snow, rain, rh_a_priori, cloud_water_a_priori
+        from mcrf.liras.reference import ice, snow, rain, h2o_a_priori, cloud_water_a_priori
     else:
         from mcrf.liras.single_species import ice, rain
-        from mcrf.liras import snow, rh_a_priori, cloud_water_a_priori
+        from mcrf.liras import snow, h2o_a_priori, cloud_water_a_priori
     ice_shape = os.path.join(liras_path, "data", "scattering", ice_shape)
     ice.scattering_data = ice_shape
     hydrometeors = [ice, rain]

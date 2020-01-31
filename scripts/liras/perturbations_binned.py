@@ -7,7 +7,7 @@ import mcrf.liras.setup
 import mcrf.liras
 from   mcrf.retrieval        import CloudSimulation
 from   mcrf.sensors          import mwi, ici, lcpr
-from   mcrf.liras            import ice, liquid, snow, rain, rh_a_priori, cloud_water_a_priori
+from   mcrf.liras            import ice, liquid, snow, rain, h2o_a_priori, cloud_water_a_priori
 from   mcrf.liras.gem        import gem_hydrometeors, gem_hydrometeors_binned
 from   mcrf.liras.model_data import ModelDataProvider
 

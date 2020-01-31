@@ -5,7 +5,7 @@ import mcrf.liras.setup
 import mcrf.liras
 from   mcrf.retrieval        import CloudRetrieval
 from   mcrf.sensors          import mwi, ici, lcpr
-from   mcrf.liras            import ice, liquid, snow, rain, rh_a_priori, cloud_water_a_priori
+from   mcrf.liras            import ice, liquid, snow, rain, h2o_a_priori, cloud_water_a_priori
 from   mcrf.liras.model_data import ModelDataProvider
 
 import matplotlib.pyplot as plt
@@ -57,7 +57,7 @@ data_provider.add(snow.a_priori[1])
 data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(cloud_water_a_priori)
-data_provider.add(rh_a_priori)
+data_provider.add(h2o_a_priori)
 data_provider.add(mcrf.liras.ObservationError(sensors))
 data_provider.add(observations)
 

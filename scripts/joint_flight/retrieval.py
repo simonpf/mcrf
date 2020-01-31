@@ -12,7 +12,7 @@ import mcrf.liras
 from mcrf.retrieval import CloudRetrieval
 from mcrf.sensors import hamp_radar, hamp_passive, ismar
 from   mcrf.joint_flight     import ice, snow, rain, cloud_water_a_priori, \
-    rh_a_priori, ObservationError, temperature_a_priori
+    h2o_a_priori, ObservationError, temperature_a_priori
 
 from parts.retrieval.a_priori import SensorNoiseAPriori
 from mcrf.joint_flight import psd_shapes_high, psd_shapes_low
@@ -74,7 +74,7 @@ data_provider.add(ice.a_priori[1])
 data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(cloud_water_a_priori)
-data_provider.add(rh_a_priori)
+data_provider.add(h2o_a_priori)
 #data_provider.add(temperature_a_priori)
 data_provider.add(ObservationError(sensors))
 

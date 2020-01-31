@@ -18,6 +18,8 @@
 \usepackage{hyperref}
 \usepackage{units}
 \usepackage[authoryear,round]{natbib}
+\usepackage{xcolor}
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
 \author{}
 \date{}
 \title{Response to reviewer 3}
@@ -170,7 +172,7 @@ in Eq.~6. The right equation should be
 This will of course be corrected in the updated version of the manuscript.
 
 \subsection*{Reviewer comment 6}
-Line 210; this means that the vertical resolution changes with the surfacetemperature, really weird choice.
+Line 210; this means that the vertical resolution changes with the surface temperature, really weird choice.
 
 \subsubsection*{Author response}
 
@@ -191,18 +193,17 @@ particle habits (which may introduce additional uncertainties in the retrieval)
 It is correct that the scattering extinction increases rapidly with frequency, but the
 final scattering depression depends also on other factors. One consideration is the
 background absorption due to gases. A higher gas absorption decreases the effect of
-scattering, and this effect increases in general with frequency. It is correct that also
+scattering, and this effect generally increases with frequency. It is correct that also
 the asymmetry parameter needs to be considered, which increases with frequency. A higher
 asymmetry parameter gives a lower depression for a given cloud optical depth, see Fig. 5
 of \citet{eriksson15}.
 
-It can be a bit hard to judge the scattering depression in a figure like Fig. 5,
-as the clear-sky values differ between the channels. In the version found below,
+It can be hard to judge the scattering depression in a figure like Fig. 5, as
+the clear-sky values differ between the channels. In the version found below,
 extracted scattering depressions are shown in the second panel. For high-clouds
 with moderate cloud optical depth, the scattering depression increases
 monotonously with frequency, while in the most dense cloud region (around lat
-2.7) this is far from the case for the reasons discussed above.
-
+2.7) this is not the case for the reasons discussed above.
 
 \begin{figure}[!hbpt]
   \centering
@@ -214,24 +215,27 @@ monotonously with frequency, while in the most dense cloud region (around lat
 \end{figure}
 
 \subsection*{Reviewer comment 8}
-8) Line 275: notclear what you mean, in Tab.4 there are 6. 
+8) Line 275: not clear what you mean, in Tab.4 there are 6. 
 
 \subsubsection*{Author response}
 
-What is meant here is that we test different choices for the ice particle shape
-which is assumed for the single frozen hydrometeor species which is used in the
-retrieval. The particles that are tested are listed in Tab.~4.
+What is meant here is that we test different ice shapes for the single frozen
+hydrometeor species which is used in the retrieval. Tab.~4 lists the different
+shape models that are tested.
 
-Since we will be reformulating the sections describing the selection of the
-particle models, this sentence will be reformulated to make it clearer.
+Since the section describing the selection of particle models will be rewritten,
+this sentence will be reformulated to make it clearer.
 
 \subsection*{Reviewer comment 9}
-9) “extends below the sensitivity limit of the passive-only observations around 10-5 kg m-3” : very sloppy sentence. Passive mi-crowave radiometer are sensitive to integrated contents! 
+
+9) “extends below the sensitivity limit of the passive-only observations around
+10-5 kg m-3” : very sloppy sentence. Passive mi-crowave radiometer are sensitive
+to integrated contents!
 
 \subsubsection*{Author response}
 
-As response to another reviewer's comment the corresponding paragraph has been
-rewritten and the sentence will be removed.
+As response to a comment from another reviewer the corresponding paragraph will be
+rewritten and this sentence will be removed.
 
 %{\itshape  Panel (c) shows the IWC field retrieved using the passive-only
 %  retrieval. Despite a certain resemblance in the overall structure between the
@@ -272,20 +276,22 @@ really rimed particles. Regions where graupel is present should be avoided from
 the discussion of the radar-only retrieval for the simple reason that in those
 regions attenuation correction and multiple scattering effects make the problem
 very tricky. I guess that the radiometer as well is in serious trouble when
-entering those areas. Again I would not start tackling regions the observation
+entering those areas. Again, I would not start tackling regions the observation
 system is not tailored for.
 
 \subsubsection*{Author response}
 
-We will revise the particle habits used in the retrieval, see below, but we
-expect that particle shape will continue to have a smaller impact on our
+As mentioned above we will revise the particle habits used in the retrieval, but
+we expect that particle shape will continue to have a smaller impact on our
 radar-only retrieval. On the other hand, we see significant errors that can be
-referred to particle size distribution (PSD). However, it is difficult in
+attributed to the particle size distribution (PSD). However, it is difficult in
 general to draw a clear line between particle shape and PSD. This is especially
 true if particle size is described by Dmax, and the PSD is defined accordingly.
 In this case, IWC of a given PSD will depend on the particles effective density,
 and e.g. degree of riming becomes critical. Accordingly, to what extent
 retrieval errors are due to shape or PSD, depend partly on definitions.
+\todo{Not sure if necessary to mention $D_\text{max}$, since this might only
+  confusion.}
 
 The ARTS single scattering database does include several types of rimed
 particles. Two of them are the GemGraupel and GemHail models which are used in
@@ -308,15 +314,14 @@ Fig.10 is missing!!!
 \subsubsection*{Author response}
 
 Fig. 10 was unfortunately missing from the manuscript. The figure will be included in the appendix
-with the analysis of the second test scene.
-
+of the revised version with the analysis of the second test scene.
 
 \subsection*{Reviewer comment 13}
  “Since the calculation of the AVK involves the forward model Jacobian, this effectmust be related to the non-linearity of the forward model” well I would avoid such veryspeculative statements.
 
 \subsubsection*{Author response}
 
-Following the reviewers suggestion, the sentence will be removed from the manuscript.
+Following the suggestion of the reviewer, the sentence will be removed from the manuscript.
 
 \subsection*{Reviewer comment 14}
 You need to be very careful how you present the results in Fig. 14. The
@@ -335,14 +340,14 @@ should properly prove it
 
 \subsubsection*{Author response}
 
-We are neither interested in arguing particularly for one or the other
-observation system. The question that we want to address is whether the
-combination of data has extra value compared to separate observations. The
-combination could be achieved by performing joint flights with the aircraft
-carrying ISMAR and some other one carrying a radar, or by flying a cloud radar
-in constellation to Metop-SG or by adding a sub-millimeter radiometer to the
-platform carrying some future cloud radar. That is, to achieve this in practice
-could mean no new instrument at all, or either a radar or radiometer.
+Our interested is neither arguing for one nor the other observation system. The
+question that we want to address is whether the combination of observations has
+extra value compared to separate observations. This combination could be achieved
+by performing joint flights with the aircraft carrying ISMAR and some other one
+carrying a radar, or by flying a cloud radar in constellation to Metop-SG or by
+adding a sub-millimeter radiometer to the platform carrying some future cloud
+radar. That is, to achieve this in practice could mean no new instrument at all,
+or either a radar or radiometer.
 
 As the referee clearly favours radars, we would like to balance this by mentioning that
 passive instruments have an additional strength in their much higher areal coverage. The
@@ -370,9 +375,9 @@ rain and so we do not agree that we are required to prove to have it.
 
 \subsection*{Reviewer comment 15}
 
- LWP and Fig.16. I have a serious problem here. The cloud Isee on the right is a
+ LWP and Fig.16. I have a serious problem here. The cloud I see on the right is a
  liquid cloud. So how it is possible that your radiometer is doing sobadly in
- the LWP retrieval and why the combined is so much better? I guess this mustgo
+ the LWP retrieval and why the combined is so much better? I guess this must go
  back to understanding surface emissivity and integrated water vapour (maybe
  somecomments there should be made to explain what kind of surface/IWP we are
  dealingwith). You have not included radar path integrated attenuation in your
@@ -381,7 +386,7 @@ rain and so we do not agree that we are required to prove to have it.
 
 \subsubsection*{Author response}
 
-The cloud in the right of the scene is a mixed phase cloud. So, considering that
+The cloud in the right of the scene is a mixed phase cloud. So considering that
 only frequencies from $89\ \unit{GHz}$ and up are included it is not too
 surprising that the passive-only configuration doesn't perform well. Again, the
 performance of the passive-only retrieval is related to the lack of a priori
@@ -397,11 +402,12 @@ I do not think that for OE to work The forward model must be linear as stated at
 
 \subsubsection*{Author response}
 
-The OEM can of course be applied to non-linear problems but once complication is
-that it can get stuck in secondary minima. The sentence will be corrected in
-the revised version of the manuscript.
+The OEM can of course be applied to non-linear problems but a complication that
+arises is that it can get stuck in secondary minima. The sentence will be
+corrected in the revised version of the manuscript.
 
 \subsection*{Reviewer comment 17}
+
 17)Sect.4 and 5: a lot of waffling here (e.g. the three bullet conclusion, you
 need to bemuch more quantitative and linked to what you have proved; the three
 statements aresomething I could have formulated on my own without making any
@@ -434,20 +440,25 @@ Table 2:  it would be good to see footprints as well
 
 \subsubsection*{Author response}
 
-Footprint sizes will be added to the table.
+Since in the revised manuscript an airborne viewing geometry will be considered
+the footprint sizes of MWI and ICI are not relevant anymore.
 
 \subsection*{Reviewer comment 3}
-Line 130: dBZ are the wrong unitsfor a std of a reflectivity!
+Line 130: dBZ are the wrong units for a std of a reflectivity!
 
 \subsubsection*{Author response}
-This will be corrected in the revised version of the manuscript.
+
+We are unsure what the reviewer is referring to here, since quantifying
+uncertainty in the radar observations in dBZ seems to fairly common. This is for
+example how it is handled in the DARDAR cloud \citep{delanoe10} product as well
+as in the study by \citet{jiang19}.
 
 \subsection*{Reviewer comment 4}
 
 Line 180: “The remaining shape of each PSD is described by the shape parameters
 alpha and beta, not to be confused with the parameters of themass-size
 relationship shown in Tab. 1.”; very confusing. Why are you using the
-sameletters????
+same letters????
 
 \subsubsection*{Author response}
 
