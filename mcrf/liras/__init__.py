@@ -190,7 +190,7 @@ rain.radar_only = True
 ################################################################################
 
 liquid_mask = TemperatureMask(240.0, 300.0)
-liquid_covariance = Diagonal(1**2)
+liquid_covariance = Diagonal(2**2)
 liquid_covariance = SpatialCorrelation(liquid_covariance, 2e3)
 cloud_water_a_priori = FixedAPriori("cloud_water",
                                     np.log10(1e-6),

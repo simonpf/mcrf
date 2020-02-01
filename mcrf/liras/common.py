@@ -7,15 +7,15 @@ from parts.jacobian import Atanh
 from parts.retrieval.a_priori import And, TropopauseMask, TemperatureMask
 
 """
-Mask limiting retrieval of ice to between 280 K isotherm
-and the tropopause.
+Mask limiting retrieval of ice to between 280 K isotherm and the tropopause.
 """
-ice_mask = And(TropopauseMask(), TemperatureMask(0.0, 280.0))
+ice_mask = And(TropopauseMask(),
+               TemperatureMask(0.0, 273.15, lower_inclusive = True))
 
 """
 Mask limiting retrieval of rain to between surface and 264 K isotherm.
 """
-rain_mask = TemperatureMask(264.0, 340.0)
+rain_mask = TemperatureMask(273.15, 340.0, upper_inclusive = True)
 
 def n0_a_priori(t):
     """
