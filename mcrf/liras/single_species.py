@@ -1,7 +1,8 @@
 import os
 from mcrf.psds import D14NDmIce, D14NDmLiquid
 from mcrf.hydrometeors import Hydrometeor
-from mcrf.liras.common import n0_a_priori, dm_a_priori, rh_a_priori
+from mcrf.liras.common import (n0_a_priori, dm_a_priori, rh_a_priori,
+                               ice_mask, rain_mask)
 from parts.retrieval.a_priori import *
 from parts.scattering.psd import Binned
 from parts.jacobian import Atanh, Log10, Identity, Composition
@@ -23,7 +24,6 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 # D_m
 #
 
-ice_mask = And(TropopauseMask(), TemperatureMask(0.0, 271.0))
 ice_covariance = Diagonal(300e-6**2, mask=ice_mask, mask_value=1e-24)
 ice_covariance = SpatialCorrelation(ice_covariance,
                                     10e3,
@@ -76,7 +76,6 @@ rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 # D_m
 #
 
-rain_mask = TemperatureMask(270.0, 340.0)
 rain_covariance = Diagonal(300e-6**2, mask=rain_mask, mask_value=1e-16)
 rain_covariance = SpatialCorrelation(rain_covariance,
                                      10e3,

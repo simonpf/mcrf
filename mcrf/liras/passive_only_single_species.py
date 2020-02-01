@@ -53,7 +53,6 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 # Water content
 #
 
-ice_mask = And(TropopauseMask(), TemperatureMask(0.0, 273.15))
 ice_covariance = Diagonal(1 * np.ones(z_grid.size),
                           mask=ice_mask,
                           mask_value=1e-12)
@@ -129,7 +128,6 @@ rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 # water content
 #
 
-rain_mask = TemperatureMask(273.15, 340.0)
 rain_covariance = Diagonal(4, mask=rain_mask, mask_value=1e-16)
 rain_md_a_priori = FixedAPriori("rain_md", -5, rain_covariance)
 rain_md_a_priori = ReducedVerticalGrid(rain_md_a_priori, z_grid, "altitude")

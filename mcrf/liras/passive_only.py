@@ -12,7 +12,8 @@ Attributes:
 import os
 from mcrf.psds import D14NDmIce, D14NDmLiquid, D14NDmSnow
 from mcrf.hydrometeors import Hydrometeor
-from mcrf.liras.common import n0_a_priori, dm_a_priori, rh_a_priori
+from mcrf.liras.common import (n0_a_priori, dm_a_priori, rh_a_priori,
+                               ice_mask, rain_mask)
 from parts.retrieval.a_priori import *
 from parts.scattering.psd import Binned
 from parts.jacobian import Log10, Identity, Composition
@@ -37,7 +38,6 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 #
 
 md_z_grid = np.linspace(0, 20e3, 5)
-ice_mask = And(TropopauseMask(), TemperatureMask(0.0, 272.15))
 snow_mask = And(AltitudeMask(0.0, 18e3), TemperatureMask(0.0, 272.5))
 ice_covariance = Diagonal(1 * np.ones(md_z_grid.size))
 
@@ -154,7 +154,6 @@ rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 # water content
 #
 
-rain_mask = TemperatureMask(273, 340.0)
 rain_covariance = Diagonal(4)
 rain_md_a_priori = FixedAPriori("rain_dm", -5, rain_covariance)
 rain_md_a_priori = ReducedVerticalGrid(rain_md_a_priori, md_z_grid, "altitude")

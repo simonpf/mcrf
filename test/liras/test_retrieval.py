@@ -38,7 +38,7 @@ shape = "8-ColumnAggregate"
 # Create the data provider.
 #
 
-ip = offset + 130 * 3 + 32
+ip = offset + 690
 data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
                                   snow_psd   = snow.psd,
