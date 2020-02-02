@@ -68,7 +68,7 @@ gem_snow_binned = ScatteringSpecies("snow",
                                     scattering_meta_data=scat_meta_data)
 
 scat_data = glob.glob(os.path.join(gem_path, "GemHail_Id34_fmaxInfGHz_scat_data_new.xml"))[0]
-scat_meta_data = glob.glob(os.path.join(gem_path, "GemHail_Id34_fmaxInfGHz_scat_meta.xml"))[0]
+scat_meta_data = glob.glob(os.path.join(gem_path, "GemHail_Id34_fmaxInfGHz_scat_meta_new.xml"))[0]
 psd = MY05(hydrometeor_type="hail")
 psd_binned = Binned(x=np.logspace(-6, -1, 21),
                     size_parameter=psd.size_parameter)
