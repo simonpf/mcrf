@@ -31,8 +31,8 @@ gem_path = os.path.join(liras_path, "data", "scattering")
 
 # Ice
 
-scat_data = glob.glob(os.path.join(gem_path, "GemCloudIce_Id31_fmaxInfGHz_scat_data.xml"))[0]
-scat_meta_data = glob.glob(os.path.join(gem_path, "GemCloudIce_Id31_fmaxInfGHz_scat_meta.xml"))[0]
+scat_data = glob.glob(os.path.join(gem_path, "GemCloudIce_Id31_fmaxInfGHz_scat_data_new.xml"))[0]
+scat_meta_data = glob.glob(os.path.join(gem_path, "GemCloudIce_Id31_fmaxInfGHz_scat_meta_new.xml"))[0]
 psd = MY05(hydrometeor_type="cloud_ice")
 psd.t_min = 0.0
 psd.t_max = 999.0
@@ -49,8 +49,8 @@ gem_ice_binned = ScatteringSpecies("ice",
                                    scattering_data=scat_data,
                                    scattering_meta_data=scat_meta_data)
 
-scat_data = glob.glob(os.path.join(gem_path, "GemSnow_Id32_fmaxInfGHz_scat_data.xml"))[0]
-scat_meta_data = glob.glob(os.path.join(gem_path, "GemSnow_Id32_fmaxInfGHz_scat_meta.xml"))[0]
+scat_data = glob.glob(os.path.join(gem_path, "GemSnow_Id32_fmaxInfGHz_scat_data_new.xml"))[0]
+scat_meta_data = glob.glob(os.path.join(gem_path, "GemSnow_Id32_fmaxInfGHz_scat_meta_new.xml"))[0]
 psd = MY05(hydrometeor_type="snow")
 psd_binned = Binned(x=np.logspace(-6, -1, 21),
                     size_parameter=psd.size_parameter)
@@ -67,7 +67,7 @@ gem_snow_binned = ScatteringSpecies("snow",
                                     scattering_data=scat_data,
                                     scattering_meta_data=scat_meta_data)
 
-scat_data = glob.glob(os.path.join(gem_path, "GemHail_Id34_fmaxInfGHz_scat_data.xml"))[0]
+scat_data = glob.glob(os.path.join(gem_path, "GemHail_Id34_fmaxInfGHz_scat_data_new.xml"))[0]
 scat_meta_data = glob.glob(os.path.join(gem_path, "GemHail_Id34_fmaxInfGHz_scat_meta.xml"))[0]
 psd = MY05(hydrometeor_type="hail")
 psd_binned = Binned(x=np.logspace(-6, -1, 21),
@@ -85,8 +85,8 @@ gem_hail_binned = ScatteringSpecies("hail",
                                     scattering_data=scat_data,
                                     scattering_meta_data=scat_meta_data)
 
-scat_data = glob.glob(os.path.join(gem_path, "GemGraupel_Id33_fmaxInfGHz_scat_data.xml"))[0]
-scat_meta_data = glob.glob(os.path.join(gem_path, "GemGraupel_Id33_fmaxInfGHz_scat_meta.xml"))[0]
+scat_data = glob.glob(os.path.join(gem_path, "GemGraupel_Id33_fmaxInfGHz_scat_data_new.xml"))[0]
+scat_meta_data = glob.glob(os.path.join(gem_path, "GemGraupel_Id33_fmaxInfGHz_scat_meta_new.xml"))[0]
 psd = MY05(hydrometeor_type="graupel")
 psd_binned = Binned(x=np.logspace(-6, -1, 21),
                     size_parameter=psd.size_parameter)
@@ -105,8 +105,8 @@ gem_graupel_binned = ScatteringSpecies("graupel",
 
 # Liquid
 
-scat_data = glob.glob(os.path.join(gem_path, "LiquidSphere_Id25_fmaxInfGHz_scat_data.xml"))[0]
-scat_meta_data = glob.glob(os.path.join(gem_path, "LiquidSphere_Id25_fmaxInfGHz_scat_meta.xml"))[0]
+scat_data = glob.glob(os.path.join(gem_path, "LiquidSphere_Id25_fmaxInfGHz_scat_data_new.xml"))[0]
+scat_meta_data = glob.glob(os.path.join(gem_path, "LiquidSphere_Id25_fmaxInfGHz_scat_meta_new.xml"))[0]
 psd = MY05(hydrometeor_type="cloud_water")
 psd_binned = Binned(x=np.logspace(-6, -1, 21),
                     size_parameter=psd.size_parameter)

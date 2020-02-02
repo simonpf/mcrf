@@ -59,15 +59,10 @@ ice_n0_a_priori = FunctionalAPriori("ice_n0",
 #                                    "altitude",
 #                                    provide_retrieval_grid=False,
 #                                    transition=1e3)
-#ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori,
-#                                      z_grid_2,
-#                                      "altitude",
-#                                      provide_retrieval_grid = False)
-ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori,
-                                     2,
-                                     ice_mask,
-                                     "altitude",
-                                     provide_retrieval_grid=False)
+ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori,
+                                      z_grid_2,
+                                      "altitude",
+                                      provide_retrieval_grid = False)
 
 #
 # dm
@@ -87,10 +82,10 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm",
 #                                    ice_mask,
 #                                    "altitude",
 #                                    provide_retrieval_grid=False)
-ice_dm_a_priori = ReducedVerticalGrid(ice_dm_a_priori,
-                                      z_grid,
-                                      "altitude",
-                                      provide_retrieval_grid=False)
+#ice_dm_a_priori = ReducedVerticalGrid(ice_dm_a_priori,
+#                                      z_grid,
+#                                      "altitude",
+#                                      provide_retrieval_grid=False)
 
 #
 # Hydrometeor definition.
@@ -100,7 +95,7 @@ ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori],
                   ice_shape, ice_shape_meta)
 ice.transformations = [
     Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
-    Composition(Identity(), PiecewiseLinear(ice_dm_a_priori))
+    Identity()#Composition(Identity(), PiecewiseLinear(ice_dm_a_priori))
 ]
 ice.limits_low = [4, 1e-10]
 ice.radar_only = False
@@ -132,20 +127,15 @@ rain_n0_a_priori = FixedAPriori("rain_n0",
                                 rain_covariance,
                                 mask=rain_mask,
                                 mask_value=2)
-#rain_n0_a_priori = ReducedVerticalGrid(rain_n0_a_priori,
-#                                      z_grid_2,
-#                                      quantity = "altitude",
-#                                      provide_retrieval_grid = False)
+rain_n0_a_priori = ReducedVerticalGrid(rain_n0_a_priori,
+                                      z_grid_2,
+                                      quantity = "altitude",
+                                      provide_retrieval_grid = False)
 
 #
 # dm
 #
 
-rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori,
-                                     2,
-                                     rain_mask,
-                                     "altitude",
-                                     provide_retrieval_grid=False)
 
 rain_covariance = Diagonal(500e-6**2, mask=rain_mask, mask_value=1e-16)
 rain_covariance = SpatialCorrelation(rain_covariance, 2e3, mask=rain_mask)
@@ -154,10 +144,10 @@ rain_dm_a_priori = FixedAPriori("rain_dm",
                                 rain_covariance,
                                 mask=rain_mask,
                                 mask_value=1e-8)
-rain_dm_a_priori = ReducedVerticalGrid(rain_dm_a_priori,
-                                       z_grid,
-                                       quantity = "altitude",
-                                       provide_retrieval_grid = False)
+#rain_dm_a_priori = ReducedVerticalGrid(rain_dm_a_priori,
+#                                       z_grid,
+#                                       quantity = "altitude",
+#                                       provide_retrieval_grid = False)
 
 #
 # Hydrometeor definition
@@ -168,7 +158,7 @@ rain = Hydrometeor("rain", D14NDmLiquid(),
                    rain_shape_meta)
 rain.transformations = [
     Composition(Log10(), PiecewiseLinear(rain_n0_a_priori)),
-    Composition(Identity(), PiecewiseLinear(rain_dm_a_priori))
+    Identity()#Composition(Identity(), PiecewiseLinear(rain_dm_a_priori))
 ]
 rain.limits_low = [0, 1e-10]
 rain.retrieve_second_moment = True
