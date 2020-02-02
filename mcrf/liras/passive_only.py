@@ -16,7 +16,7 @@ from mcrf.liras.common import (n0_a_priori, dm_a_priori, rh_a_priori,
                                ice_mask, rain_mask)
 from parts.retrieval.a_priori import *
 from parts.scattering.psd import Binned
-from parts.jacobian import Log10, Identity, Composition
+from parts.jacobian import Log10, Identity, Composition, Atanh
 
 liras_path = os.environ["LIRAS_PATH"]
 scattering_data = os.path.join(liras_path, "data", "scattering")
@@ -24,6 +24,7 @@ scattering_data = os.path.join(liras_path, "data", "scattering")
 # Reduced altitude grid with resolution of 2 km used in the passive
 # only retrieval.
 z_grid = np.linspace(0, 20e3, 11)
+z_grid_2 = np.linspace(0, 20e3, 6)
 
 ################################################################################
 # Ice particles
@@ -207,8 +208,9 @@ rain.retrieve_second_moment = True
 # Liquid particles
 ################################################################################
 
-liquid_mask = TemperatureMask(230, 300.0)
-liquid_covariance = Diagonal(1**2)
+liquid_mask = TemperatureMask(240, 300.0)
+liquid_covariance = Diagonal(1, mask = liquid_mask)
+liquid_covariance = SpatialCorrelation(liquid_covariance, 2e3, mask = liquid_mask)
 cloud_water_a_priori = FixedAPriori("cloud_water",
                                     -6,
                                     liquid_covariance,
@@ -223,7 +225,7 @@ cloud_water_a_priori = ReducedVerticalGrid(cloud_water_a_priori,
 # Humidity
 ################################################################################
 
-rh_mask = AltitudeMask(-1, 20e3)
+rh_mask = AltitudeMask(-1, 19e3)
 rh_covariance = Diagonal(1.0, mask = rh_mask)
 rh_covariance = SpatialCorrelation(rh_covariance, 2e3, mask = rh_mask)
 h2o_a_priori = FunctionalAPriori("H2O",
@@ -232,10 +234,10 @@ h2o_a_priori = FunctionalAPriori("H2O",
                                  rh_covariance,
                                  mask = rh_mask,
                                  mask_value = -100)
-h2o_a_priori = ReducedVerticalGrid(h_a_priori,
+h2o_a_priori = ReducedVerticalGrid(h2o_a_priori,
                                    z_grid,
                                    quantity = "altitude",
                                    provide_retrieval_grid = False)
 h2o_a_priori.unit = "rh"
-h2o_a_priori.transformation = Composition(Atanh(lower_limit, upper_limit),
+h2o_a_priori.transformation = Composition(Atanh(0.0, 1.1),
                                          PiecewiseLinear(h2o_a_priori))

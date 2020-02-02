@@ -44,7 +44,7 @@ def dm_a_priori(t):
         A priori for :math:`D_m`
     """
     n0 = 10**n0_a_priori(t)
-    iwc = 1e-5
+    iwc = 1e-6
     dm = (4.0**4 * iwc / (np.pi * 917.0) / n0)**0.25
     return dm
 

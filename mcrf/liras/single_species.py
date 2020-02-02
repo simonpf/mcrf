@@ -87,7 +87,6 @@ rain_dm_a_priori = FixedAPriori("rain_dm",
                                 mask=rain_mask,
                                 mask_value=1e-8)
 
-z_grid = np.linspace(0, 12e3, 7)
 rain_covariance = Diagonal(4, mask=rain_mask, mask_value=1e-12)
 rain_covariance = SpatialCorrelation(rain_covariance, 2e3, mask=rain_mask)
 
