@@ -4,18 +4,21 @@ Common function used for LIRAS a priori.
 import numpy as np
 import parts
 from parts.jacobian import Atanh
-from parts.retrieval.a_priori import And, TropopauseMask, TemperatureMask
+from parts.retrieval.a_priori import (And, TropopauseMask, TemperatureMask,
+                                      FreezingLevel)
 
 """
 Mask limiting retrieval of ice to between 280 K isotherm and the tropopause.
 """
 ice_mask = And(TropopauseMask(),
-               TemperatureMask(0.0, 273.15, lower_inclusive = True))
+               FreezingLevel(lower_inclusive = True, invert = False))
+#               TemperatureMask(0.0, 273.15, lower_inclusive = True))
 
 """
 Mask limiting retrieval of rain to between surface and 264 K isotherm.
 """
-rain_mask = TemperatureMask(273.15, 340.0, upper_inclusive = True)
+rain_mask = FreezingLevel(lower_inclusive = False, invert = True)
+#TemperatureMask(273.15, 340.0, upper_inclusive = True)
 
 def n0_a_priori(t):
     """
