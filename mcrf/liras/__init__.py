@@ -30,6 +30,9 @@ from parts.jacobian import Atanh, Log10, Identity, Composition
 liras_path = os.environ["LIRAS_PATH"]
 scattering_data = os.path.join(liras_path, "data", "scattering")
 
+# Vertical grid with reduced resolution
+z_grid = np.linspace(0, 20e3, 11)
+
 ################################################################################
 # Ice particles
 ################################################################################
