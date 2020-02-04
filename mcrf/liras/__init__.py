@@ -197,11 +197,10 @@ cloud_water_a_priori = FixedAPriori("cloud_water",
                                     liquid_covariance,
                                     mask=liquid_mask,
                                     mask_value=-20)
-cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori,
-                                         11,
-                                         liquid_mask,
-                                         "altitude",
-                                         provide_retrieval_grid=False)
+cloud_water_a_priori = ReducedVerticalGrid(cloud_water_a_priori,
+                                           z_grid,
+                                           "altitude",
+                                           provide_retrieval_grid=False)
 
 ################################################################################
 # Humidity
@@ -216,11 +215,10 @@ h2o_a_priori = FunctionalAPriori("H2O",
                                 rh_covariance,
                                 mask=rh_mask,
                                 mask_value=-100)
-h2o_a_priori = MaskedRegularGrid(h2o_a_priori,
-                                21,
-                                rh_mask,
-                                quantity="altitude",
-                                provide_retrieval_grid=False)
+h2o_a_priori = ReducedVerticalGrid(h2o_a_priori,
+                                   z_grid,
+                                   quantity="altitude",
+                                   provide_retrieval_grid=False)
 h2o_a_priori.unit = "rh"
 h2o_a_priori.transformation = Composition(Atanh(0.0, 1.1),
                                          PiecewiseLinear(h2o_a_priori))

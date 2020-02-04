@@ -140,7 +140,7 @@ class CloudRetrieval:
 
             rr.settings["max_iter"] = 20
             rr.settings["stop_dx"] = 1e-6
-            rr.settings["method"] = "bfgs"
+            rr.settings["method"] = "lm"
             rr.settings["lm_ga_settings"] = np.array(
                 [1000.0, 3.0, 2.0, 10e3, 1.0, 1.0])
 
@@ -155,9 +155,9 @@ class CloudRetrieval:
 
             rr.settings["max_iter"] = 20
             rr.settings["stop_dx"] = 1e-6
-            rr.settings["method"] = "bfgs"
+            rr.settings["method"] = "lm"
             rr.settings["lm_ga_settings"] = np.array(
-                [1000.0, 3.0, 2.0, 10e3, 1.0, 1.0])
+                [10000.0, 3.0, 2.0, 10e4, 1.0, 1.0])
 
             if all([isinstance(s, PassiveSensor) for s in rr.sensors]):
                 rr.settings["lm_ga_settings"] = np.array(
