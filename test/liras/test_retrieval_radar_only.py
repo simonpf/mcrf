@@ -1,11 +1,16 @@
-from parts.utils.data_providers import NetCDFDataProvider
 import os
 
+os.environ["LIRAS_PATH"] = "/home/simonpf/src/joint_flight"
+os.environ["ARTS_DATA_PATH"] = "/home/simonpf/src/arts_xml"
+os.environ["ARTS_BUILD_PATH"] = "/home/simonpf/build/arts_fast"
+
+from parts.utils.data_providers import NetCDFDataProvider
 import mcrf.liras.setup
 import mcrf.liras
 from   mcrf.retrieval        import CloudRetrieval
 from   mcrf.sensors          import mwi, ici, lcpr
-from   mcrf.liras            import ice, liquid, snow, rain, h2o_a_priori, cloud_water_a_priori
+from   mcrf.liras            import h2o_a_priori, cloud_water_a_priori
+from   mcrf.liras.single_species import ice, rain
 from   mcrf.liras.model_data import ModelDataProvider
 
 import matplotlib.pyplot as plt
@@ -34,8 +39,7 @@ ip = offset + 300
 
 data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
-                                  snow_psd   = snow.psd,
-                                  liquid_psd = liquid.psd,
+                                  liquid_psd = rain.psd,
                                   scene = scene.upper())
 
 
@@ -52,8 +56,6 @@ sensors      = [lcpr, mwi, ici]
 
 data_provider.add(ice.a_priori[0])
 data_provider.add(ice.a_priori[1])
-data_provider.add(snow.a_priori[0])
-data_provider.add(snow.a_priori[1])
 data_provider.add(rain.a_priori[0])
 data_provider.add(rain.a_priori[1])
 data_provider.add(cloud_water_a_priori)
@@ -72,8 +74,7 @@ sensors      = [lcpr]
 # Run the retrieval.
 #
 
-retrieval = CloudRetrieval(hydrometeors, sensors, data_provider,
-                           include_cloud_water = False)
+retrieval = CloudRetrieval(hydrometeors, sensors, data_provider)
 retrieval.setup()
 retrieval.run(ip)
 

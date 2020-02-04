@@ -28,7 +28,7 @@ if not ip is None:
 #
 
 filename     = os.path.join(mcrf.liras.liras_path, "data", "forward_simulations_a_noise.nc")
-scene = "a"
+scene = filename.split("_")[-2]
 offsets = {"a" : 3000,
            "b" : 2800}
 offset = offsets[scene]
@@ -39,7 +39,7 @@ observations.add_offset("profile", -offset)
 # Create the data provider.
 #
 
-ip = offset + 300 #213 * 3 + 32
+ip = offset + 700
 data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
                                   liquid_psd = rain.psd,

@@ -176,8 +176,8 @@ Line 210; this means that the vertical resolution changes with the surface tempe
 
 \subsubsection*{Author response}
 
-Indeed, the respective choices for the retrieval grids may not have been optimal.
-They will changed to fixed-resolution grids for the revised manuscript.
+We agree with the reviewer that the chosen retrieval grids may not be optimal.
+We will change them to fixed-resolution grids for the revised manuscript.
 
 \subsection*{Reviewer comment 7}
 
@@ -219,9 +219,9 @@ monotonously with frequency, while in the most dense cloud region (around lat
 
 \subsubsection*{Author response}
 
-What is meant here is that we test different ice shapes for the single frozen
-hydrometeor species which is used in the retrieval. Tab.~4 lists the different
-shape models that are tested.
+What was meant there is that different ice shapes are tested for the single
+frozen hydrometeor species which is used in the retrieval. Tab.~4 lists the
+different shape models that were investigated.
 
 Since the section describing the selection of particle models will be rewritten,
 this sentence will be reformulated to make it clearer.
@@ -255,17 +255,18 @@ rewritten and this sentence will be removed.
 
 \subsubsection*{Author response}
 
-Yes, in terms of vertical distribution of IWC the passive only retrieval does
-not work very well. The reason for this is that the passive observations alone
-do not provide much information on the vertical distribution of ice. To correct
-for this, further regularization would be necessary which is not applied here in
-order to keep the comparison between the different retrieval methods fair. All
-of this is discussed in the discussion section of the manuscript.
+It is true that the passive only retrieval does not perform well in terms in
+retrieving the vertical structure of the cloud. The reason for this is that the
+passive observations alone do not provide much information on the vertical
+distribution of ice. To correct for this, further regularization would be
+necessary which is not applied here in order to keep the comparison to the
+other retrieval methods fair. All of this is discussed in the discussion
+section of the manuscript.
 
 \subsection*{Reviewer comment 11}
 
 “In general, the radar-only results exhibit only very weak dependency on the
-particle model, mak-ing the results for different particle shapes virtually
+particle model, making the results for different particle shapes virtually
 indistinguishable.” Again another dangerous sentence. We know (unfortunately)
 that this is not true (otherwise our ice problems would be sorted). Here my guess
 is that you have not properly explored the backscattering variability
@@ -281,31 +282,33 @@ system is not tailored for.
 
 \subsubsection*{Author response}
 
-As mentioned above we will revise the particle habits used in the retrieval, but
-we expect that particle shape will continue to have a smaller impact on our
-radar-only retrieval. On the other hand, we see significant errors that can be
-attributed to the particle size distribution (PSD). However, it is difficult in
-general to draw a clear line between particle shape and PSD. This is especially
-true if particle size is described by Dmax, and the PSD is defined accordingly.
-In this case, IWC of a given PSD will depend on the particles effective density,
-and e.g. degree of riming becomes critical. Accordingly, to what extent
-retrieval errors are due to shape or PSD, depend partly on definitions.
-\todo{Not sure if necessary to mention $D_\text{max}$, since this might only
-  confusion.}
+As mentioned above, we will revise the particle habits used in the retrieval,
+but we expect that particle shape will continue to have a smaller impact on our
+radar-only retrieval. What the results shown in scatter plot in Fig.~7 and 8
+indicate is that the uncertainty which can be attributed to the particle size
+distribution (PSD) is larger than that introduced by the assumed particle shape.
+However, it is difficult in general to draw a clear line between particle shape
+and PSD. This is especially true if particle size is described by $D\text{max}$,
+and the PSD is defined accordingly. In this case, IWC of a given PSD will depend
+on the particle's effective density, and e.g. degree of riming becomes critical.
+Accordingly, to what extent retrieval errors are due to shape or PSD, depend
+partly on definitions.
 
 The ARTS single scattering database does include several types of rimed
 particles. Two of them are the GemGraupel and GemHail models which are used in
 the simulation of the synthetic observations. For the retrieval, however, it is
-true that we do not include rimed particles in the tested particle models.
+true that we did not include rimed particles in the tested particle models but this
+will be changed for the revised version of the manuscript.
 
 Both the forward simulations and the retrieval handle attenuation consistently.
 We therefore think it is worth considering even regions where graupel is present
-since in this way it is possible to assess the effect of it not being accurately
-represented by the particle model that is used in the retrieval.
+as this allows us to assess the uncertainties caused by not having a realistic
+representation of rimed particles in the retrieval.
 
-It is correct that when inverting real observations multiple scattering needs to be
-considered, which adds complexity to the retrieval. We can avoid this extra complexity as
-we use simulated observations not including multiple scattering.
+It is certainly correct that for space-borne observations multiple scattering
+needs to be considered and this will add complexity to the retrieval. Here, we
+can avoid this extra complexity as we use simulated observations which do not
+include multiple scattering.
 
 \subsection*{Reviewer comment 12}
 
@@ -340,14 +343,15 @@ should properly prove it
 
 \subsubsection*{Author response}
 
-Our interested is neither arguing for one nor the other observation system. The
-question that we want to address is whether the combination of observations has
-extra value compared to separate observations. This combination could be achieved
-by performing joint flights with the aircraft carrying ISMAR and some other one
-carrying a radar, or by flying a cloud radar in constellation to Metop-SG or by
-adding a sub-millimeter radiometer to the platform carrying some future cloud
-radar. That is, to achieve this in practice could mean no new instrument at all,
-or either a radar or radiometer.
+Our interest in this study is neither arguing for one nor the other observation
+system. The question that we want to address is whether combined observations
+have extra value compared to separate observations. Such combined observations
+could be achieved by performing joint flights with the aircraft carrying the
+ISMAR sub-millimeter radiometer and another one carrying a radar, by flying a
+cloud radar in constellation to Metop-SG, or by adding a sub-millimeter
+radiometer to the platform carrying some future cloud radar. We consider it out
+of the scope of this study to judge the cost effectiveness of either of these
+solutions.
 
 As the referee clearly favours radars, we would like to balance this by mentioning that
 passive instruments have an additional strength in their much higher areal coverage. The
@@ -386,15 +390,15 @@ rain and so we do not agree that we are required to prove to have it.
 
 \subsubsection*{Author response}
 
-The cloud in the right of the scene is a mixed phase cloud. So considering that
-only frequencies from $89\ \unit{GHz}$ and up are included it is not too
-surprising that the passive-only configuration doesn't perform well. Again, the
-performance of the passive-only retrieval is related to the lack of a priori
-information on the vertical position of the cloud. Since liquid water at higher
-altitudes has a stronger effect on the observations, the inability of the
-passive observations to locate the liquid cloud leads to the observed
-underestimation of the water content. This is discussed in Sect. 4.2.3 of the
-manuscript.
+The cloud in the right of the scene is a mixed-phase cloud. There are several
+explanations for why the retrieval does not work well here: First of all, our
+observations setup does not make use of the channels around $23\ \unit{GHz}$,
+which are typically used for retrieving LWP. And also here the performance of
+the passive-only retrieval suffers from the lack of a priori information on the
+vertical position of the cloud. Since liquid water at higher altitudes has a
+stronger impact on the observations, the retrieval puts too little cloud water
+too high in the atmosphere because of its inability to locate it properly. This
+is discussed in Sect. 4.2.3 of the manuscript.
 
 \subsection*{Reviewer comment 16}
 
