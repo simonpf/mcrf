@@ -46,7 +46,7 @@ ice_covariance = SpatialCorrelation(ice_covariance, 2e3, mask=ice_mask)
 #
 
 ice_covariance = Diagonal(4, mask=ice_mask, mask_value=1e-12)
-ice_covariance = SpatialCorrelation(ice_covariance, 5e3, mask=ice_mask)
+ice_covariance = SpatialCorrelation(ice_covariance, 10e3, mask=ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0",
                                     "temperature",
                                     n0_a_priori,
@@ -69,7 +69,7 @@ ice_n0_a_priori = ReducedVerticalGrid(ice_n0_a_priori,
 #
 
 points_dm = 5
-ice_covariance = Diagonal(300e-6**2, mask=ice_mask, mask_value=1e-16)
+ice_covariance = Diagonal(200e-6**2, mask=ice_mask, mask_value=1e-16)
 ice_covariance = SpatialCorrelation(ice_covariance, 5e3, mask=ice_mask, mask_value=1e-24)
 ice_dm_a_priori = FunctionalAPriori("ice_dm",
                                     "temperature",
@@ -121,7 +121,7 @@ rain_md_a_priori = ReducedVerticalGrid(rain_md_a_priori, z_grid, "altitude")
 #
 
 rain_covariance = Diagonal(4, mask=rain_mask, mask_value=1e-16)
-rain_covariance = SpatialCorrelation(rain_covariance, 5e3, mask=rain_mask)
+rain_covariance = SpatialCorrelation(rain_covariance, 10e3, mask=rain_mask)
 rain_n0_a_priori = FixedAPriori("rain_n0",
                                 7,
                                 rain_covariance,

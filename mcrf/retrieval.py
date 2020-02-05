@@ -157,11 +157,11 @@ class CloudRetrieval:
             rr.settings["stop_dx"] = 1e-6
             rr.settings["method"] = "lm"
             rr.settings["lm_ga_settings"] = np.array(
-                [10000.0, 3.0, 2.0, 10e4, 1.0, 1.0])
+                [1e5, 10.0, 5.0, 1e5, 1.0, 1.0])
 
             if all([isinstance(s, PassiveSensor) for s in rr.sensors]):
                 rr.settings["lm_ga_settings"] = np.array(
-                    [1e4, 3.0, 2.0, 1e6, 1.0, 1.0])
+                    [1e5, 10.0, 5.0, 1e5, 1.0, 1.0])
             #else:
             #    rr.settings["lm_ga_settings"] = np.array(
             #        [10.0, 3.0, 2.0, 1e5, 1.0, 1.0])
