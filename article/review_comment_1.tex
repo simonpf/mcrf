@@ -54,11 +54,9 @@
 
 \setlength{\parindent}{0cm}
 
-We thank the referee for the time he/she has put on reading our manuscript and providing
-feedback.
-
-Based on the combined comments of the referees, we have decided to implement these general
-changes:
+We thank the referee for the time he/she has put on reading our manuscript and
+providing feedback. Based on the combined comments of the referees, we have
+decided to implement these general changes:
 
 \begin{itemize}
 \item We will switch to an airborne measurement set-up and
@@ -102,19 +100,22 @@ set to $2$ (c.f. Tab.~3), $N_0^*$ is free to vary over several orders of
 magnitude in addition to the variation of the a priori profile.
 
 Furthermore, the sentence in Section~4.2.4 was badly formulated and did not
-really express what we wanted to say here. The a priori assumptions are not
+really express what we wanted to express there. The a priori assumptions are not
 generally bad for the model (after all the averaged results for the first scene
-are good). Rather, they are insufficient to accurately describe the (co-)variability
-of $D_m$ and $N_0^*$.
+are good). Rather, they are insufficient to accurately describe the
+(co-)variability of $D_m$ and $N_0^*$.
 
 Nonetheless, the point raised by the reviewer certainly remains valid: In
 absolute terms, the interpretation of the retrieval results is dependent on the
 a priori assumptions. We argue here, however, that by applying equivalent a
 priori assumptions in all retrievals, we can still derive conclusions on the
 benefits of the combined retrieval approach based on a relative interpretation
-of the retrieval results. In particular, our results indicate that the combined
-retrieval has to rely less on a priori assumptions than the radar-only
-retrieval. 
+of the retrieval results. Especially because our results indicate that the
+combined retrieval has to rely less on a priori assumptions than the radar-only
+retrieval, this can be an important advantage of the combined retrieval since
+if $D_m$ and $N_0^*$ could be constrained reliably a priori we would not have
+the uncertainties in the observational record of ice hydrometeors that we have
+today.
 
 To address the issues raised by the reviewer we propose to make the following
 changes in the manuscript:
@@ -122,10 +123,11 @@ changes in the manuscript:
 \begin{itemize}
 \item To extend the discussion of the role of the a priori (around L. 491) and
   its impact on the results.
-\item To add a paragraph to the discussion of the limitations of the study (around L. 549)
-  which clearly states that the retrieval results should not be interpreted in absolute terms
-\item To rephrase the sentence in Sect. 4.2.4 (L. 545) to stress that is refers to the
-  Gaussian nature of the a priori rather then the a priori itself.
+\item To add a paragraph to the discussion of the limitations of the study
+  (around L. 549) which clearly states that the retrieval results should not be
+  interpreted in absolute terms
+\item To rephrase the sentence in Sect. 4.2.4 (L. 545) to stress that is refers
+  to the Gaussian nature of the a priori rather then the a priori itself.
 \end{itemize}
 
 
@@ -209,17 +211,17 @@ instrument noise term for many channels.
 
 It is certainly true that the simplified forward model used in the retrieval
 introduces a forward modeling error and that it will likely dominate the sensor
-noise. However, we do not agree with the reviewer that this error is easy to
+noise. However, we do not agree with the reviewer that this error was easy to
 quantify. First of all, the error will not be Gaussian and will depend on the
 cloud composition and the assumed particle shape, so that a more sophisticated
-error model would be required to describe the error accurately. Furthermore,
-fitting such a model to the test scenes would likely yield overly optimistic
-results as this would mean making use of information which would not be available
+error model would be required to describe the error accurately. Fitting such a
+model to the test scenes would likely yield overly optimistic results as this
+would mean making use of information which would not be available
 for real retrieval observations.
 
-Because of these difficulties, we decided to not pursue this in this study.
-However, since this is an important point to mention, we will add a paragraph
-in the discussion to on this issue.
+Because of these difficulties, we decided to not pursue this approach in the
+study. However, since this is an important point to mention, we will add a
+paragraph on this issue in the discussion.
 
 %be added to the discussion of the retrieval method:
 %
@@ -380,7 +382,7 @@ the information it conveyed was deemed irrelevant.
 %\end{change}
 
 
-\subsection{Reviewer comment 6}
+\subsection*{Reviewer comment 6}
 Line 198: Is Dm also only retrieved at these 10 points, or just N0* (and Dm retrieved in each radar range gate as in Grecu et al. 2016)?
 
 \subsubsection*{Author response}
@@ -405,7 +407,7 @@ configurations to the manuscript.
 %\end{center}
 %\end{figure}
 
-\subsection{Reviewer comment}
+\subsection*{Reviewer comment 7}
 
 7. Line 256: Actually, this is only one example of how the radar and radiometer
 measurements can be complementary. Even if the lines were parallel (and thus no
@@ -413,9 +415,9 @@ information distinguishing size from concentration could be obtained), the radar
 still locates the cloud and describes its vertical structure. One can imagine a
 cloud of the same ice water path and particle size at two different heights
 having different brightness temperatures due to changes in the water vapor
-absorption above the cloud – having the radar information would provide increased
-information content about the ice water pathin this case than the radiometer
-measurement alone.
+absorption above the cloud – having the radar information would provide
+increased information content about the ice water pathin this case than the
+radiometer measurement alone.
 
 \subsubsection*{Author response}
 
@@ -486,6 +488,16 @@ Figures 7 and 8:  I’m not sure why these are separate figures – it seems lik
 Figures 7 and 8 will be combined into a single figure in the revised
 manuscript.
 
+\subsection*{Reviewer comment 10}
+
+Figure 10 is missing from the manuscript.
+
+\subsubsection*{Author response}
+
+Figure 10 will be included in an Appendix to the revised manuscript with the
+rest of the analysis of the results from the second test scene.
+
+
 %The figure 7 and 8 will be combined into a single figure in the revised version
 %of the manuscript:
 %
@@ -507,7 +519,7 @@ manuscript.
 %\DIFaddendFL \end{figure}
 %\end{center}
 
-\subsection*{Reviewer comment 11.}
+\subsection*{Reviewer comment 11}
  Line 374: recommend using “represent” instead of “predict”
 
 \subsubsection*{Author response}
@@ -551,8 +563,8 @@ However, when the GemSnow particle model is used in the retrieval it can
 introduce significant errors. For this reason as well as another reviewers'
 comment regarding the choice of tested particles, the selection of particles to
 be used in the retrieval will be changed for the revised manuscript and the
-GemSnow particle will not be included. Instead, only particle models will be used
-that cover all relevant particles sizes.
+GemSnow particle will be replaced by a habit mix which uses the GemSnow
+particle for large diameters.
 
 \begin{figure}[!hbpt]
   \begin{center}
@@ -564,13 +576,13 @@ that cover all relevant particles sizes.
 
 \subsection*{Reviewer comment 14}
 
-Figure 16: The figure labels/captions aren't clear if they refer to total liquid water
-content/path or just the cloud liquid water/path.
+Figure 16: The figure labels/captions aren't clear if they refer to total liquid
+water content/path or just the cloud liquid water/path.
 
 \subsubsection{Author response}
 
-We will clarify that the contours refer to liquid cloud water content in the revised
-version of the manuscript.
+We will clarify that the contours refer to liquid cloud water content in the
+revised version of the manuscript.
 
 \subsection*{Reviewer comment 15}
 
@@ -582,16 +594,15 @@ version of the manuscript.
  (which tends to be dominant at larger sizes)?
 
 \subsubsection{Author response}
+
 Unfortunately, we cannot give a definitive answer to this question. As panel (a)
 in Fig. 15 shows, the density of the LargePlateAggregate habit is actually lower
 than that of snow for large particle sizes. Moreover, the scattering properties
-certainly also play a role here. We therefore do not want to to postulate any
-direct causality between the particle density and the performance in the
-retrieval.
+certainly also play a role here. At this point we are therefore not able to
+postulate any direct causality between the particle density and the performance
+in the retrieval.
 
 \bibliographystyle{copernicus}
 \bibliography{references}
-
-
 
 \end{document}

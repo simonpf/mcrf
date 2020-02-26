@@ -80,9 +80,9 @@ The reviewer raises a very relevant point with his comment. To address this, we
 changed our simulation setup to simulate perfectly co-located observations at
 nadir. Realistic modeling of a space-borne viewing geometry (at least in a
 variational retrieval) is currently not feasible due to the computational
-complexity. We still deem this sufficient for the scope of the study,
-i.e. studying the fundamental synergies between active and passive observations.
-In addition to this, we follow the recommendation made in the second comment and
+complexity. We still deem this sufficient for the scope of the study, i.e.
+studying the fundamental synergies between active and passive observations. In
+addition to this, we follow the recommendation made in the second comment and
 will pitch the application more towards air borne observations.
 
 %
@@ -134,7 +134,7 @@ of the combined retrievals more towards combined retrievals. We will also make t
 limitations more clear in Sect. 2.2.1 and discuss their implications more thoroughly.
 
 \subsection*{Reviewer comment 3}
-Fig2: these PSDs look very weird to me. Why do they have the plateau at small
+Fig 2: these PSDs look very weird to me. Why do they have the plateau at small
 sizes? y-axis units are obviously wrong unless you are renormalizing by some mass
 (but it is not explained).
 
@@ -148,7 +148,7 @@ correspond to the modified-gamma functions that are assumed in the
 
 \subsection*{Reviewer comment 4}
 
-Fig3: sorry I do not follow what is this (what is the y-axis?), and why this plot is meaningful.
+Fig 3: sorry I do not follow what is this (what is the y-axis?), and why this plot is meaningful.
 
 \subsubsection*{Author response}
 
@@ -190,13 +190,13 @@ particle habits (which may introduce additional uncertainties in the retrieval)
 
 \subsubsection*{Author response}
 
-It is correct that the scattering extinction increases rapidly with frequency, but the
-final scattering depression depends also on other factors. One consideration is the
-background absorption due to gases. A higher gas absorption decreases the effect of
-scattering, and this effect generally increases with frequency. It is correct that also
-the asymmetry parameter needs to be considered, which increases with frequency. A higher
-asymmetry parameter gives a lower depression for a given cloud optical depth, see Fig. 5
-of \citet{eriksson15}.
+It is correct that extinction increases rapidly with frequency, but the final
+scattering depression depends also on other factors. One consideration is the
+background absorption due to gases. A higher gas absorption decreases the effect
+of scattering, and this effect generally increases with frequency. It is correct
+that also the asymmetry parameter needs to be considered, which increases with
+frequency. A higher asymmetry parameter gives a lower depression for a given
+cloud optical depth, see Fig. 5 of \citet{eriksson15}.
 
 It can be hard to judge the scattering depression in a figure like Fig. 5, as
 the clear-sky values differ between the channels. In the version found below,
@@ -219,7 +219,7 @@ monotonously with frequency, while in the most dense cloud region (around lat
 
 \subsubsection*{Author response}
 
-What was meant there is that different ice shapes are tested for the single
+What was meant here is that different ice shapes are tested for the single
 frozen hydrometeor species which is used in the retrieval. Tab.~4 lists the
 different shape models that were investigated.
 
@@ -255,13 +255,12 @@ rewritten and this sentence will be removed.
 
 \subsubsection*{Author response}
 
-It is true that the passive only retrieval does not perform well in terms in
-retrieving the vertical structure of the cloud. The reason for this is that the
-passive observations alone do not provide much information on the vertical
-distribution of ice. To correct for this, further regularization would be
-necessary which is not applied here in order to keep the comparison to the
-other retrieval methods fair. All of this is discussed in the discussion
-section of the manuscript.
+It is true that the passive only retrieval does not perform well in terms of the
+vertical structure of IWC. The reason for this is that the passive observations
+alone do not provide much information on the vertical distribution of ice. To
+correct for this, further regularization would be necessary which is not applied
+here in order to keep the comparison to the other retrieval methods fair. All of
+this is discussed in the discussion section of the manuscript.
 
 \subsection*{Reviewer comment 11}
 
@@ -295,7 +294,7 @@ Accordingly, to what extent retrieval errors are due to shape or PSD, depend
 partly on definitions.
 
 The ARTS single scattering database does include several types of rimed
-particles. Two of them are the GemGraupel and GemHail models which are used in
+particles. Two of them are the GEM Graupel and GEM Hail models which are used in
 the simulation of the synthetic observations. For the retrieval, however, it is
 true that we did not include rimed particles in the tested particle models but this
 will be changed for the revised version of the manuscript.
@@ -306,9 +305,9 @@ as this allows us to assess the uncertainties caused by not having a realistic
 representation of rimed particles in the retrieval.
 
 It is certainly correct that for space-borne observations multiple scattering
-needs to be considered and this will add complexity to the retrieval. Here, we
-can avoid this extra complexity as we use simulated observations which do not
-include multiple scattering.
+needs to be considered and this will add complexity to the retrieval. Here,
+however, we can avoid this extra complexity as we use simulated observations
+which do not include multiple scattering.
 
 \subsection*{Reviewer comment 12}
 
@@ -317,7 +316,7 @@ Fig.10 is missing!!!
 \subsubsection*{Author response}
 
 Fig. 10 was unfortunately missing from the manuscript. The figure will be included in the appendix
-of the revised version with the analysis of the second test scene.
+of the revised version together with the analysis of the second test scene.
 
 \subsection*{Reviewer comment 13}
  “Since the calculation of the AVK involves the forward model Jacobian, this effectmust be related to the non-linearity of the forward model” well I would avoid such veryspeculative statements.
@@ -355,15 +354,15 @@ solutions.
 
 As the referee clearly favours radars, we would like to balance this by mentioning that
 passive instruments have an additional strength in their much higher areal coverage. The
-swath of ICI and MWI is about three orders of magnitude broader than the one of CloudSat
+swath of ICI and MWI is about three orders of magnitude broader than that of CloudSat
 and EarthCARE.
 
 Although a cloud radar certainly provides more information on frozen
-hydrometeors than ICI, our results clearly show that even radar observations are
-insufficient to accurately determine the microphysical properties of ice
-hydrometeors (Fig. 4, 7). The passive adds information on the microphysics of
-the clouds to the radar (note the significant increase in information content on
-$N_0^*$ in Fig. 14) which helps to reduce retrieval uncertainties (Fig. 11).
+hydrometeors than ICI, our results clearly show that also radar observations
+alone are insufficient to accurately determine the microphysical properties of
+ice hydrometeors (Fig. 4, 7). The passive adds information on the microphysics
+of the clouds to the radar (note the significant increase in information content
+on $N_0^*$ in Fig. 14) which helps to reduce retrieval uncertainties (Fig. 11).
 Although it is not clear whether these improvements carry over to space-borne
 observations, our results clearly show this as a synergy between the passive and
 active observations (esp. Fig. 4, 11, 14).
@@ -424,7 +423,8 @@ One of the main advantages that we see in the combined retrieval is that it
 actually works for a wide range of different cloud regimes. If the cloud regime
 was known a priori, good results can probably be achieved using only a radar and
 suitable a priori assumptions. In general, however, this is not the case, which
-leads to uncertainties in the radar-only retrievals.
+leads to the uncertainties that we currently have in the observational record
+for IWP and IWC.
 
 For the revised manuscript, we will rewrite the conclusion and parts of the discussion to make
 it more concise and the point mentioned above more clear.
@@ -452,7 +452,7 @@ Line 130: dBZ are the wrong units for a std of a reflectivity!
 
 \subsubsection*{Author response}
 
-We are unsure what the reviewer is referring to here, since quantifying
+We are unsure what the reviewer is referring to here since quantifying
 uncertainty in the radar observations in dBZ seems to fairly common. This is for
 example how it is handled in the DARDAR cloud \citep{delanoe10} product as well
 as in the study by \citet{jiang19}.
@@ -466,12 +466,11 @@ same letters????
 
 \subsubsection*{Author response}
 
-We used the same  letters to be consistent with the definition and used in
-\cite{delanoe14} and \cite{cazenave18}.
-
-However, since the explicit values of the $\alpha$ and $\beta$ parameters are
-probably of little interest for the average reader, we will simply refer to
-\cite{cazenave18} and not name the parameters explicitly.
+We used the same letters to be consistent with the definition and used in
+\cite{delanoe14} and \cite{cazenave18}. However, since the explicit values of
+the $\alpha$ and $\beta$ parameters are probably of little interest for the
+average reader, we will simply refer to \cite{cazenave18} and not name the
+parameters explicitly.
 
 \subsection*{Reviewer comment 5}
 Line 193: wrong units 
@@ -517,7 +516,7 @@ Line 54 page 2.  maybe it is worth mentioning all the heritage coming from radar
 
 \subsubsection*{Author response}
 
-Following the suggestion of the reviewer a paragraph that mentions previous work
+Following the suggestion of the reviewer, a paragraph that mentions previous work
 on synergistic retrievals using radar and passive radiometers at lower microwave
 frequencies will be added to the introduction.
 

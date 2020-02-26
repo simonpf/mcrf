@@ -109,9 +109,14 @@ We propose to make the following changes to the manuscript:
   the GEM microphysics scheme and that are used to simulate observations.
 \item Add a paragraph to the description of the retrieval implementation that
   explains the difficulty of representing the complex mixture of different
-  particles in the GEM model scenes with a single particle model.
-\item To combined Tab. 1 and 4. into a single table.
+  particles in the GEM model scenes with a single particle model as well as
+  the new selection of particle models and habit mixes.
+\item Correct the error in the reported parameters of the mass-size
+  relationship for the GEM Snow and GEM graupel.
 \end{itemize}
+
+However, because of these changes it will not be possible to combine Tab.~1 and
+Tab.~4, since the convey slightly different information.
 
 %The following changes will be introduced in the manuscript:
 %
@@ -202,24 +207,23 @@ on the PSD.
 
 Vertical changes in particle shape, i.e. transition from single crystals to
 aggregates, are represented indirectly through the particle size. The particle
-models used here are the standard habits from the ARTS SSDB described in
+models used here are taken from standard habits from the ARTS SSDB described in
 \cite{eriksson18}. Some of them combine pristine crystals at small particle
 sizes with aggregate shapes at larger sizes.
 
 Polarization effects in the simulations were ignored for the simple reasons that
 the model scenes do not provide information on particle orientation or aspect
 ratios and that suitable scattering data for oriented particles has only
-recently been released \citep{brath19}. Since for the revised version the
-sensors are assumed to point at nadir, it is justified to neglect polarization
-effects. Nonetheless, particle orientation can still have an effect on the
-observations. We will state clearly in the revised manuscript that polarization
-effects will have non-negligible impact on the observations of the MWI and ICI
-sensors.
+recently been released \citep{brath19}. For the revised version the sensors are
+assumed to point at nadir, which justifies neglecting polarization effects.
+Nonetheless, particle orientation can still have an effect on the observations.
+We will state clearly in the revised manuscript that polarization effects will
+have non-negligible impact on the observations of the MWI and ICI sensors.
 
-We agree that in particular the variation of the particle shape was not
-described well in the manuscript. To address this as well as to provide a
-clearer message on the outcome of our tests we propose the following changes for
-the revised manuscript:
+We agree that in choice of the particle shape was not described well in the
+manuscript. To address this as well as to provide a clearer message on the
+outcome of our tests we propose the following changes for the revised
+manuscript:
 
 \begin{itemize}
 \item State clearly in Sect.~2.2 that for MWI and ICI polarization effects can
@@ -251,9 +255,9 @@ the synergy works.
 As can be seen in Fig.~8 from \cite{eriksson19}, the information content on
 water vapor from ICI alone are at most 4 degrees of freedom for clear-sky
 scenarios. Since in the retrieval also the channels from MWI are included, the
-expected information content on water vapor should be somewhat higher. However, this is
-for clear-sky scenarios. In the presence of clouds, the information content will
-be significantly reduced.
+expected information content on water vapor should be somewhat higher. However,
+this is for clear-sky scenarios. In the presence of clouds, the information
+content will be significantly reduced.
 
 Regarding the results of the retrieved cloud liquid water content (CLWC),
 Fig.~16 shows quite clearly an improvement, both in terms of CLWC and cloud
@@ -263,19 +267,33 @@ altitudes in the first model scene but only below the $230\ \unit{K}$ isotherm.
 However, since this is the case only for the first scene, it does not seem
 relevant for the interpretation of Fig. 16.
 
-To shed more light onto the information content regarding humidity and
-CLWC we will follow the referee's suggestion and add a figure that will display
-the information content for the different retrievals.
+To shed more light onto the information content regarding humidity and CLWC we
+will follow the referee's suggestion and replace the bar diagrams in the
+manuscript with a figure (Fig.~\ref{fig:dfs} shown below) which displays the
+cumulative DFS for all profiles in the test scenes.
+
+\begin{figure}[!hbpt]
+  \centering
+  \includegraphics[width=\textwidth]{../plots/dfs}
+\caption{Degrees of freedom for signal for all retrieval configurations and both
+  test scenes obtained with the Large Plate Aggregate model. The colored areas
+  in each plot represent the contribution to the cumulative degrees of freedom
+  from each retrieval quantity. Results for the first and second test scene
+  are displayed in the first and second row, respectively. The first, second
+  and third panel in each row show the results for the passive-only, radar-only
+  and the combined retrieval.}
+\label{fig:dfs}
+\end{figure}
 
 \subsection*{Reviewer comment 4}
 
-4) The manuscript is rather lengthy making it difficult for the reader to
+The manuscript is rather lengthy making it difficult for the reader to
 extract the majorpoints. I strongly suggest a) to move part of the analysis into
-an appendix (, b) remove double statement (see minor comments, also the LWC plot)
-and c) to remove figurecaption like information (for example L92 or “filled
-contours”) from the text. The text must make sense without looking at the figure.
-Figure only support the statements made in the text. Lengthy descriptions such as
-“The plot shows..” need to be avoided.
+an appendix (, b) remove double statement (see minor comments, also the LWC
+plot) and c) to remove figurecaption like information (for example L92 or
+“filled contours”) from the text. The text must make sense without looking at
+the figure. Figure only support the statements made in the text. Lengthy
+descriptions such as “The plot shows..” need to be avoided.
 
 \subsubsection*{Author response}
 
@@ -351,7 +369,7 @@ Olson,W. S. (2006), Johnson et al. (2012) , Munchak, S. J., \& Kummerow
 
 \subsubsection*{Author response}
 
-Following the suggestion of the reviewer a paragraph that mentions previous work
+Following the suggestion of the reviewer a paragraph listing  previous work
 on synergistic retrievals using radar and passive radiometers at lower microwave
 frequencies will be added to the introduction.
 
@@ -384,11 +402,11 @@ might be especially interesting for the scatter plots.
 
 The point raised by the reviewer here is certainly correct. However, the
 decision to restrict simulations to two test scenes was motivated primarily by
-the computational costs of performing the retrievals. Furthermore, the scatter
-plots in Fig.~10, which was unfortunately missing from the manuscript but is
-shown below, shows that the emergent structures are similar for both test
-scenes. This indicates that they cover sufficient profile variability to be
-statistically representative.
+the computational costs of performing the retrievals. The scatter plot in
+Fig.~10 (shown in Fig.~\ref{fig:retrieval_sketch} below), which was
+unfortunately missing from the manuscript , shows that the emergent structures
+are consistent for both test scenes. This indicates that the scenes cover
+sufficient profile variability to be statistically representative.
 
 \begin{figure}
 \centering
@@ -407,7 +425,7 @@ needs to be diagnosed from the prognostic GEM variables, i.e. N and m..”
 \subsubsection*{Author response}
 
 Since also reviewer 1 requested changes in the corresponding paragraph, it will
-be rewritten taking into account the reviewers suggestion.
+be rewritten taking into account the reviewer's suggestion.
 
 %To address another comment by another reviewer the paragraph containing the sentence
 %will be rewritten and the sentence removed.
@@ -437,7 +455,11 @@ The  word will be replaced by derived in the revised version of the manuscript.
 
 
 \subsection*{Reviewer comment 9}
-L98: I find the term “horizontal and vertical scaling” strange – why not saying PSD shape is similar but scaling in respect to diameter and number density. At least definethe term clearly the first time that you use it or define a short for it.
+
+L98: I find the term “horizontal and vertical scaling” strange – why not saying
+PSD shape is similar but scaling in respect to diameter and number density. At
+least definethe term clearly the first time that you use it or define a short
+for it.
 
 \subsubsection*{Author response}
  
@@ -637,15 +659,13 @@ on lines 230 the different vertical resolutions for other variables is discussed
 
 \subsubsection*{Author response}
 
-As mentioned above, the desired sketch will be provided to address this and parts
-of the previous comments.
+We have revised the retrieval implementation and now use fixed retrieval grids
+with a resolution of  $2\ \unit{km}$ for the $N_0^*$ parameters. Reducing the
+resolution of the retrieval grids for the $N_0^*$ parameters was found to aid
+the convergence of the retrieval.
 
-The relatively low number of grid points was found necessary to sufficiently regularize
-the retrieval to avoid convergence problems. Except that it was found to work, there is
-no exact reason for choosing 4 points. 
-
-The freezing level does indeed vary between the two scenes. The freezing levels of both
-scenes will be added to Fig. 1.
+The freezing level does indeed vary between the two scenes. The freezing levels
+of both scenes will be added to Fig. 1.
 
 \subsection{Reviewer comment 16}
 
@@ -653,8 +673,8 @@ L281: How do I know that Large Plate is the best performing model? Which paramet
 
 \subsubsection*{Author response}
 
-This section will be revised to give more precise recommendation on the choice of the
-particle model.
+This section will be revised to make it clear which results show that
+the Large Plate Aggregate yields the best performance.
 %This sentence is removed in the revised version of the manuscript.
 
 \subsection*{Reviewer comment 17}
@@ -807,7 +827,7 @@ L560:  Rethink the bullet structure.  2.  Is not an independent result.  For eac
 \subsubsection*{Author response}
 
 The bullet points will be remove in the revised manuscript and replaced
-by text.
+by a text which presents the conclusion in a logically coherent way.
 
 %To improve the presentation of the conclusions, the bullet points will be removed
 %and the first paragraphs of the conclusions will be rewritten as follows:
@@ -839,8 +859,8 @@ Fig.  3: Is it really worth having the slightly different size distribution shap
 \subsubsection*{Author response}
 
 This is certainly true but in most clouds ice and rain can be distinguished
-fairly well a priori, which simplifies treating them as different species
-using different PSD shapes. Distinguishing between different frozen hydrometeors is
+fairly well a priori, which simplifies treating them as different species using
+different PSD shapes. Distinguishing between different frozen hydrometeors is
 difficult to do a priori and using multiple species of hydrometeors in the
 retrieval was found to cause ambiguities which the retrieval is not able to
 resolve.
@@ -981,14 +1001,23 @@ Tab. 1. Assumed particle model information for each hydrometeor class given by G
 
 \subsubsection*{Author response}
 
-Tables 1 and 4 will be combined in the revised version of the manuscript.
+In order to give a better overview of the particle models that are used
+in the retrieval Tab.~4 will be extended in the revised version of the
+manuscript.  This, however, would make merging Tab.~1 and 4 slightly confusing
+so we decided against the reviewers recommendation.
 
+\subsection*{Reviewer comment 33}
+
+Tab.3 : I would recommend to add a first column with a spelled out name
+
+\subsubsection*{Author response}
+
+We will add the column to the revised version of the manuscript.
 
 \section*{Grammar, typos and reformulations}
 
 The authors would like to thank the reviewer for the additional comments, all of
 which will be incorporated into the revised manuscript.
-
 
 \bibliographystyle{copernicus}
 \bibliography{references}

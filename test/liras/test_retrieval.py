@@ -32,13 +32,13 @@ scene = filename.split("_")[-2]
 offset = offsets[scene]
 observations = NetCDFDataProvider(filename)
 observations.add_offset("profile", -offset)
-shape = "8-ColumnAggregate"
+shape = "LargePlateAggregate"
 
 #
 # Create the data provider.
 #
 
-ip = offset + 690
+ip = offset + 655
 data_provider = ModelDataProvider(99,
                                   ice_psd    = ice.psd,
                                   snow_psd   = snow.psd,

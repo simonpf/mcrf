@@ -48,7 +48,8 @@ def get_results(scene = "a",
                                + type_suffix + ".nc")
     else:
         pattern = os.path.join(path,
-                               "retrieval_" + config + "_" + scene + "_" + "*"
+                               config,
+                               "retrieval_" + scene + "_" + "*"
                                + type_suffix + ".nc")
     files = glob.glob(pattern)
     if type_suffix == "":
@@ -78,6 +79,37 @@ def get_results(scene = "a",
             except:
                 results[habit][v] = None
     return results
+
+def extract_information_content(avk, config = "combined"):
+    from mcrf.liras.single_species import z_grid
+    n_n0 = z_grid.size
+    out = {}
+    if avk.shape[1] > 2 * 58:
+
+        i_0 = 0
+        i_1 = n_n0
+        out["ice_n0"] = np.trace(avk[:, i_0 : i_1, i_0 : i_1], axis1=1, axis2=2)
+
+        i_0 = n_n0
+        i_1 = 2 * n_n0
+        out["rain_n0"] = np.trace(avk[:, i_0 : i_1, i_0 : i_1], axis1=1, axis2=2)
+
+    i_0 = 2 * n_n0
+    i_1 = 2 * n_n0 + 58
+    out["ice_dm"] = np.trace(avk[:, i_0 : i_1, i_0 : i_1], axis1=1, axis2=2)
+    i_0 = 2 * n_n0 + 58
+    i_1 = 2 * n_n0 + 2 * 58
+    out["rain_dm"] = np.trace(avk[:, i_0 : i_1, i_0 : i_1],
+                                axis1=1, axis2=2)
+    i_0 = 2 * n_n0 + 2 * 58
+    i_1 = 3 * n_n0 + 2 * 58
+    out["h2o"] = np.trace(avk[:, i_0 : i_1, i_0 : i_1],
+                                axis1=1, axis2=2)
+    i_0 = 3 * n_n0 + 2 * 58
+    i_1 = 4 * n_n0 + 2 * 58
+    out["cw"] = np.trace(avk[:, i_0 : i_1, i_0 : i_1],
+                            axis1=1, axis2=2)
+    return out
 
 def get_reference_data(scene = "a",
                        i_start = 3000,
@@ -184,7 +216,8 @@ def plot_results(lats, z, qs, name, norm,
                  include_columns = False,
                  column_label = None,
                  titles = None,
-                 reference = None):
+                 reference = None,
+                 wp = "ice"):
 
     n_plots = len(qs)
 
@@ -259,40 +292,60 @@ def plot_results(lats, z, qs, name, norm,
         ax.set_xlim([x[0], x[-1]])
         ax.grid(False)
 
-        ax.set_zorder(10)
-        ax2 = ax.twinx()
-        ax.patch.set_visible(False)
         if not reference is None:
-            iwp = np.zeros(x.size)
+            ax.set_zorder(10)
+            ax2 = ax.twinx()
+            ax.patch.set_visible(False)
 
-            colors = ["k", "dimgrey", "grey", "lightgrey"]
-            hatch = [r"", r"", r"", r""]
-            handles = []
-            for j,s in enumerate(["swc", "iwc", "gwc", "hwc"]):
-                iwp_s = np.trapz(reference[s], x = z)
-                handles += [ax2.fill_between(x,
-                                            y1 = iwp,
-                                            y2 = iwp + iwp_s,
-                                            linewidth = 1,
-                                            edgecolor = "white",
-                                            alpha = 0.7,
-                                            facecolor = bone((j + 1) /  5),
-                                            hatch = hatch[j],
-                                            zorder = -10 - j)]
-                iwp = iwp + iwp_s
+            if wp == "ice":
+                iwp = np.zeros(x.size)
+                colors = ["k", "dimgrey", "grey", "lightgrey"]
+                hatch = [r"", r"", r"", r""]
+                handles = []
+                for j,s in enumerate(["swc", "iwc", "gwc", "hwc"]):
+                    iwp_s = np.trapz(reference[s], x = z)
+                    handles += [ax2.fill_between(x,
+                                                y1 = iwp,
+                                                y2 = iwp + iwp_s,
+                                                linewidth = 1,
+                                                edgecolor = "white",
+                                                alpha = 0.7,
+                                                facecolor = bone((j + 1) /  5),
+                                                hatch = hatch[j],
+                                                zorder = -10 - j)]
+                    iwp = iwp + iwp_s
 
-            labels = ["Snow", "Ice", "Graupel", "Hail"]
-            ax2.set_ylim([1e-2, 1e2])
-            ax2.set_yscale("log")
-            ax2.set_xlim([x[0], x[-1]])
-            ax2.set_ylabel("IWP, Reference [$kg\ m^{-2}$]", fontsize = 14, color = bone(2 / 5))
+                labels = ["Snow", "Ice", "Graupel", "Hail"]
+                ax2.set_ylim([1e-2, 1e2])
+                ax2.set_yscale("log")
+                ax2.set_xlim([x[0], x[-1]])
+                ax2.set_ylabel(r"IWP, Reference [$\unit{kg\ m^{-2}}$]", fontsize = 14, color = bone(2 / 5))
 
-            ax2.grid(False)
-            ax2.legend(handles = handles, labels = labels, loc = "center", ncol = 4,
-                       fontsize = 14, bbox_to_anchor = [0.5, 1.17])
+                ax2.grid(False)
+                ax2.legend(handles = handles, labels = labels, loc = "center", ncol = 4,
+                        fontsize = 14, bbox_to_anchor = [0.5, 1.17])
 
-            i = i + 1
+            if wp == "rain":
+                colors = ["grey"]
+                hatch = [r"", r"", r"", r""]
+                handles = []
+                rwp = np.trapz(reference["rwc"], x = z)
+                handles += [ax2.fill_between(x, y1 = rwp,
+                                                y2 = 0.0,
+                                                linewidth = 1,
+                                                alpha = 0.7,
+                                                facecolor = bone((2) /  5),
+                                                zorder = -10 - j)]
+                ax2.set_ylim([1e-2, 1e2])
+                ax2.set_yscale("log")
+                ax2.set_xlim([x[0], x[-1]])
+                labels = []
+                ax2.set_ylabel(r"RWP, Reference [$\unit{kg\ m^{-2}}$]", fontsize = 14, color = bone(2 / 5))
+                ax2.grid(False)
+                ax2.legend(handles = handles, labels = labels, loc = "center", ncol = 4,
+                        fontsize = 14, bbox_to_anchor = [0.5, 1.17])
 
+        i = i + 1
 
     for j in range(n_plots):
         ax = plt.subplot(gs[i + j])
@@ -300,11 +353,11 @@ def plot_results(lats, z, qs, name, norm,
         img = ax.pcolormesh(x, y, q.T, norm = norm, cmap = cmap)
         ax.set_ylim([0, 20])
 
-        ax.set_ylabel("Altitude [km]", fontsize = 14)
+        ax.set_ylabel(r"Altitude [$\unit{km}$]", fontsize = 14)
         if j < n_plots - 1:
             ax.set_xticks([])
         else:
-            ax.set_xlabel("Latitude [$^\circ$]", fontsize = 14)
+            ax.set_xlabel(r"Latitude [$\unit{^\circ}$]", fontsize = 14)
         if not titles is None:
             ax.set_title(prefix[j + i] + " " + titles[j], loc = "left", fontsize = 14)
 
