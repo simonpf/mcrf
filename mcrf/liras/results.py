@@ -357,7 +357,7 @@ def plot_results(lats, z, qs, name, norm,
         if j < n_plots - 1:
             ax.set_xticks([])
         else:
-            ax.set_xlabel(r"Latitude [$\unit{^\circ}$]", fontsize = 14)
+            ax.set_xlabel(r"Latitude [$\unit{^\circ \ \text{N}}$]", fontsize = 14)
         if not titles is None:
             ax.set_title(prefix[j + i] + " " + titles[j], loc = "left", fontsize = 14)
 
