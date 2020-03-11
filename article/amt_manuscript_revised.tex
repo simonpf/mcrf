@@ -109,24 +109,24 @@
 
 \begin{abstract}
 
-  Remote sensing observations at sub-millimeter wavelength provide higher
+  Remote sensing observations at sub-millimeter wavelengths provide higher
   sensitivity to small hydrometeors and low water content than observations at
-  the millimeter wavelengths that are traditionally used to observe clouds and
-  precipitation. They are therefore increasingly employed in field campaigns
-  studying cloud microphysics and will be integrated into the global
+  millimeter wavelengths, which are traditionally used to observe clouds and
+  precipitation. Hence they are employed increasingly in field campaigns
+  to study cloud microphysics and will be integrated into the global
   meteorological observing system to measure the global distribution of ice in
   the atmosphere. A milestone in this development is the launch of the Ice Cloud
   Imager (ICI) radiometer on board the second generation of European operational
   meteorological satellites (Metop-SG), which will make sub-millimeter
   observations of ice clouds available operationally. Observations at these
-  novel wavelength provide valuable information not only on their own but also
+  novel wavelengths provide valuable information not only on their own but also
   in combination with complementary observations at other wavelengths. This
   study investigates the potential benefits of combining passive sub-millimeter
   radiometer observations with a hypothetical W-band cloud radar for the
   retrieval of frozen hydrometeors. Using a simplified cloud-model, the
   information content of the combined observations is investigated and the
   capacity of the observations to constrain the microphysical properties of
-  hydrometeors is established. A synergistic retrieval algorithm for airborne
+  ice hydrometeors is established. A synergistic retrieval algorithm for airborne
   observations is proposed and applied to simulated observations from a
   cloud-resolving model. Results from the synergistic retrieval are compared to
   equivalent radar- and passive-only implementations in order to assess the
@@ -304,7 +304,7 @@ Fig.~\ref{fig:overview}, were chosen with the aim of covering a large range of
 cloud structures and compositions so as to ensure a realistic assessment of the
 retrieval. The first test scene, shown in panel (a), is located in the tropical
 Pacific and contains a mesoscale convective system in the northern half of the scene
-and its anvil that extends into the southern half. The second scene, shown in
+and its anvil which extends into the southern half. The second scene, shown in
 panel (b), is located in the North Atlantic and contains an ice cloud in the
 southern part and a low-level, mixed-phase cloud in the northern part.
 
@@ -331,11 +331,11 @@ mass-size relationship is assumed.
 Examples of particle size distributions of frozen hydrometeors are displayed in
 Fig.~\ref{fig:gem_psds}. The assumed particle size distributions across
 different ice species vary mostly in their scaling with respect to size and
-concentration, whereas the normalized shape shows less variability. Furthermore,
-an important characteristic of the model can be identified here, which will help
-to better understand the retrieval results presented later: Cloud ice in the
-model is characterized by high particle number concentrations and small particle
-sizes, whereas snow has lower number concentrations and larger particles.
+concentration, whereas the normalized shape shows less variability. An important
+characteristic of the model can be identified here, which will help to better
+understand the retrieval results presented later: Cloud ice in the model is
+characterized by high particle number concentrations and small particle sizes,
+whereas snow has lower number concentrations and larger particles.
 
 
 \begin{figure}[h!]
@@ -363,10 +363,11 @@ Tab.~\ref{tab:gem_particle_properties}.
   \centering
   \caption{Particle shapes used to represent the hydrometeor species of the
   GEM model scenes. The mass size relationship is given in terms of the parameters
-  of a fitted power law of the form $m = \alpha \cdot D_\text{max}^\beta$.}
+    of a fitted power law of the form $m = \alpha \cdot D_\text{max}^\beta$ with
+    $D_\text{max}$ the maximum diameter and $m$ in $\unit{kg\ m^{-3}}$.}
   \begin{tabular}{l|l|rr|rr}
     \multicolumn{1}{c|}{GEM hydrometeor class} & \multicolumn{1}{c|}{Associated particle shape}  & \multicolumn{2}{c|}{Size range} & \multicolumn{2}{c}{Mass size relationship} \\
-    & Name (ID) &$D_{\text{eq}, \text{ min}}\ [\unit{\mu m}$] & $D_{\text{eq}, \text{ max}}\ [\unit{\mu m}]$ &\hfill $\alpha\ [\unit{kg\ m^{-3}}]$ & \hfill $\beta\ [\ ]$ \\
+    & Name (ID) &$D_{\text{eq}, \text{ min}}\ [\unit{\mu m}$] & $D_{\text{eq}, \text{ max}}\ [\unit{\mu m}]$ &\hfill $\alpha $ & \hfill $\beta$ \\
     \hline
     Liquid cloud & LiquidSphere (25) & $1$ & $5\cdot10^{4}$ & 480 & 3 \\
     Rain         & LiquidSphere (25) & $1$ & $5\cdot10^{4}$ & 480 & 3 \\
@@ -380,7 +381,7 @@ Tab.~\ref{tab:gem_particle_properties}.
 
 \subsection{Simulated cloud observations}
 
-An airborne sensor configuration is assumed to simulate observations. The beams
+An airborne sensor configuration is simulated to test the retrieval. The beams
 of all three sensors are assumed to point at nadir and to be perfectly
 coincident pencil beams. Multiple scattering effects in the radar observations
 as well as the effects of particle orientation are neglected. Although these
@@ -391,7 +392,7 @@ surface. This further complicates the radiative transfer modeling since it
 requires treating a more complex co-location geometry of the nadir-pointing
 radar and the passive instruments. At off-nadir viewing angles, polarization
 also needs to be taken into account, the effects of which can be several Kelvin
-at typical viewing angles of imaging sensors \citep{xie15}.
+at the typical viewing angles of microwave imagers \citep{xie15}.
 
 \subsubsection{Sensor configuration}
 \label{sec:sensors}
@@ -556,7 +557,7 @@ $D_m$, which scales the PSD along the size dimension, and the normalized number
 density $N_0^*$, which scales the particle concentration, are the two retrieved
 degrees of freedom of the PSD. The other two parameters describe the shape of
 the normalized PSD. The same shape parameters as in version 3 of the
-DARDAR-CLOUD product \citep{cazenave20} are chosen for frozen hydrometeors. For
+DARDAR-CLOUD product \citep{cazenave19} are chosen for frozen hydrometeors. For
 rain, they are chosen to match the shape used in the GEM model for rain drops.
 
 
@@ -662,7 +663,7 @@ Cloud liquid water content (CLWC) & $\log_{10}(\text{CLWC}) $ & $1^{*}$ & $2^{*}
 The radar-only version of the retrieval is similar to the combined version
 except that RH and LCWC are not retrieved. Instead, perfect knowledge of the
 true RH profile is assumed while LCWC is neglected. In addition to a two-moment
-radar-only retrieval, also a one-moment version (M1), in only the $D_m$
+radar-only retrieval, also a one-moment version (M1), in which only the $D_m$
 parameter is retrieved has been tested. For completeness, retrieval results for
 IWC will be reported also for the M1 version. However, to allow for better
 comparison with the combined and passive-only retrieval, for the remaining
@@ -679,39 +680,38 @@ sufficient information to distinguish different hydrometeor species. Due to this
 ambiguity, frozen hydrometeors in the proposed retrieval algorithm are
 represented using only a single hydrometeor species. It is therefore necessary
 to find a suitable representation for frozen hydrometeors, which can capture the
-variability of the four frozen hydrometeor species in the model and ideally also
+variability of the four frozen hydrometeor species in the GEM model and ideally also
 that of real ice hydrometeors.
 
-The differences between hydrometeor species in the model scenario considered
-here are mostly due to their different concentrations, sizes and shapes (c.f.
-Fig.~\ref{fig:gem_psds}). Since two parameters of the PSD of frozen hydrometeor
-species are retrieved, the retrieval is able to represent the characteristic
-number concentrations and particle sizes of different hydrometeor species.
-Variations in particle shape which correlate with particle size can be
-represented using a habit mix, which combines crystal shapes at small sizes with
-aggregates or rimed particles at larger sizes. This provides the retrieval with
-some flexibility to represent the different shapes present in the test scenes.
+The differences between hydrometeor species in the test scenes are due to their
+different concentrations, sizes and shapes (c.f. Fig.~\ref{fig:gem_psds}). Since
+two parameters of the PSD of frozen hydrometeor species are retrieved, the
+retrieval is able to represent the characteristic number concentrations and
+particle sizes of different hydrometeor species. Variations in particle shape
+which correlate with particle size can be represented using a habit mix
+combining crystal shapes at small sizes with aggregates or rimed particles at
+larger sizes. This provides the retrieval with some flexibility to represent the
+different shapes present in the test scenes.
 
 Even with this configuration the simplified retrieval forward model will not be
 able to represent every possible configuration of mixes of the four ice
 hydrometeor species in the GEM model. It thus remains unclear which particle
 shape should be used to best represent this mixture. We therefore choose a set
-consisting of multiple particle shapes and habit mixes, which will be used in
-the retrieval to study the impact of the choice of the particle shape on the
-retrieval results. The selected particles are listed in
-Tab.~\ref{tab:particle_properties}. Three of them, GEM Cloud Ice, GEM Snow, and
-GEM Graupel, correspond to the shapes present in the GEM model scenes. The GEM
-Snow and Graupel habits were mixed with crystal shapes to ensure that they cover
-sizes down to around $10\ \unit{\mu m}$. In addition to this, two of the habit
-mixes distributed with the ARTS SSDB, the Large Plate Aggregate and Large Column
-Aggregate standard habits, are added to the selection to increase the range of
-scattering properties of the particle selection.
+consisting of multiple particle shapes and habit mixes for which we investigate
+the impact of the particle choice on the retrieval results. The selected
+particles are listed in Tab.~\ref{tab:particle_properties}. Three of them, GEM
+Cloud Ice, GEM Snow, and GEM Graupel, correspond to the shapes present in the
+GEM model scenes. The GEM Snow and Graupel habits were mixed with crystal shapes
+to ensure that they cover sizes down to around $10\ \unit{\mu m}$. In addition
+to this, two of the habit mixes distributed with the ARTS SSDB, the Large Plate
+Aggregate and Large Column Aggregate standard habits, are included in the
+selection to increase the range of scattering properties it covers.
 Fig.~\ref{fig:particle_properties} provides an overview of the bulk mass
 backscattering efficiencies and mass attenuation coefficients of the selected
 particles computed for three different values of the $N_0^*$ parameter of the
 PSD. Mass backscattering efficiency and attenuation coefficient are defined as
 the ratio of the corresponding cross-section $\sigma$ and the bulk water
-content: 
+content:
 \begin{align}
   Q &= \frac{\sigma}{\text{WC}}
 \end{align}
@@ -735,27 +735,28 @@ of magnitude.
   \centering
   \caption{Particle models used to represent ice hydrometeors used in the
     retrieval. The mass size relationship is given in terms of the parameters
-  of a fitted power law of the form $m = \alpha \cdot D_\text{max}^\beta$.}
+    of a fitted power law of the form $m = \alpha \cdot D_\text{max}^\beta$ with
+    $D_\text{max}$ the maximum diameter and $m$ in $\unit{kg\ m^{-3}}$.}
   \begin{tabular}{l|l|rr|rr}
     \multicolumn{1}{c|}{Name} & \multicolumn{1}{c|}{Shapes used} &
     \multicolumn{2}{c|}{Size range} & \multicolumn{2}{c}{Mass size relationship}
     \\
     & Name (ID) &$D_{\text{eq}, \text{ min}}\ [\unit{\mu m}$] &
     $D_{\text{eq}, \text{ max}}\ [\unit{\mu m}]$ &\hfill
-    $\alpha\ [\unit{kg\ m^{-3}}]$ & \hfill $\beta\ [\ ]$ \\
+    $\alpha$ & \hfill $\beta$ \\
     \hline \hline % GEM
     CloudIce & GEM CloudIce (11) & $10\ $ & $3000\ $ & \hfill 440 & \hfill 3 \\
     %
     %
     % GEM Snow
     %
-    \hline GEM Snow & Evans Snow Aggregate (1) & $10\ $ & $127\ $ & \hfill 440 &
+    \hline GEM Snow & 8-Column Aggregate (8) & $10\ $ & $127\ $ & \hfill 65 &
     \hfill 3 \\ & GEM Snow (32) & $107\ $ & $5000\ $ & \hfill 24 & \hfill 2.86
     \\
     %
     % Gem Graupel
     %
-    \hline GEM Graupel & 8-Column Aggregate(8) & $10\ $ & $179\ $ & \hfill 65 &
+    \hline GEM Graupel & 8-Column Aggregate (8) & $10\ $ & $179\ $ & \hfill 65 &
     \hfill 3 \\ & GEM Graupel (33) & $107\ $ & $5000\ $ & \hfill 170 & \hfill
     2.96 \\
     %
@@ -803,9 +804,9 @@ observations in a retrieval is to what extent the observations contain
 non-redundant information. The degree of non-redundancy in the combined
 observations is what we refer to here as complementary information content. We
 are thus interested in the information that cannot be provided by either of the
-instruments alone. Because of this, the higher resolution achieved by adding
-radar observations to passive ones is not considered as complementary
-information since the radar alone can provide the increased resolution.
+instruments alone. The higher resolution achieved by adding radar observations
+to passive ones is therefore not considered as complementary information since
+the radar alone can provide the increased resolution.
 
 In order to explore the complementary information content in the radar and
 radiometer observations, an idealized, homogeneous cloud layer with a thickness
@@ -835,11 +836,11 @@ with $\rho$ the density of ice.
 \centering
 \includegraphics[width = 1.0\textwidth]{../plots/contours}
 \caption{Simulated observations of a homogeneous, $5\ \unit{km}$ thick cloud
-  layer with varying water content $m$ and mass-weighted mean diameter $D_m$.
-  The panels display the maximum radar reflectivity in dBZ
-  ($\text{dBZ}_\text{max}$) overlaid onto the cloud signal ($\Delta T_B$)
-  measured by selected radiometer channels of the MWI (first row) and ICI
-  radiometers (second row).}
+  layer centered at $10\ \unit{km}$ with varying water content $m$ and
+  mass-weighted mean diameter $D_m$. The panels display the maximum radar
+  reflectivity in dBZ ($\text{dBZ}_\text{max}$) overlaid onto the cloud signal
+  ($\Delta T_B$) measured by selected radiometer channels of the MWI (first row)
+  and ICI radiometers (second row).}
 \label{fig:contours}
 \end{figure}
 
@@ -1324,8 +1325,8 @@ combined retrieval can use information from the observations to constrain the
 cloud microphysics, which avoids the systematic errors observed in the
 radar-only retrievals.
 
-The a priori assumptions used in this study are similar to those of the
-DARDAR-CLOUD product, since they represent well established and validated
+The a priori assumptions used in this study were chosen similar to those of the
+DARDAR-CLOUD product since they represent well established and validated
 assumptions for ice cloud retrievals. The role of the a priori is to complement
 the observations with additional information required to make the retrieval
 problem tractable. For the hydrometeor retrieval this means that the a priori
@@ -1337,10 +1338,8 @@ and IWP when this is not the case (Fig.~\ref{fig:boxes}). The DARDAR product
 uses co-located lidar observations to resolve the ambiguity where observations
 from both sensors are available. As our results show, this can be achieved also
 by combining a radar with passive microwave radiometers. However, while the
-overlap between lidar and radar is restricted to the upper parts of clouds,
-microwave radiometers provide sensitivity deeper inside clouds, where a lidar
-signal would be saturated.
-
+overlap between lidar and radar is restricted to relatively thin clouds,
+microwave radiometers can provide sensitivity even deeper inside clouds.
 
 \subsubsection{Impact of the assumed particle shape}
 
@@ -1363,7 +1362,7 @@ test scenes considered here, this means that accurate IWC retrievals can be
 achieved using only a single hydrometeor species with suitable scattering
 properties which are intermediate to snowflakes and heavily rimed particles.
 This is in agreement with \citet{ekelund20} who found the Large Plate Aggregate
-to to yield good agreement with observations from the GPM Microwave Imager at
+ to yield good agreement with observations from the GPM Microwave Imager at
 $183.31 \pm 7\ \unit{GHz}$.
 
 The analysis of the residuals of the retrieval fit (Fig.~\ref{fig:misfit})
@@ -1381,6 +1380,14 @@ observations well regardless of the assumed particle shape and indicates that
 the observations alone do not strongly constrain the particle shape. This 
 makes it unlikely that particle shape can be retrieved from observations,
 thus requiring it to be determined a priori.
+
+It should be noted, that none of the presented retrievals accounts for the error
+caused by the simplified forward model and the choice of the particle model.
+This has not been pursued here because of the difficulty of fitting a suitable
+model to the forward model errors which are likely non-Gaussian and
+scene-dependent. However, it is likely that accounting for these errors can
+improve retrieval performance and weaken the impact of the particle choice on
+the retrieval results.
 
 \subsubsection{Humidity and cloud water}
 
@@ -1464,12 +1471,14 @@ left for future investigation.
 
 The main conclusion from this work is that the combination of radar and
 sub-millimeter radiometer observations can, to some extent, constrain both the
-size and number concentration of frozen hydrometeors. The increased sensitivity
-of the combined retrieval to the microphysical properties of hydrometeors can
-increase the accuracy of IWC retrievals and avoid systematic errors observed in
-an equivalent radar-only retrieval. Moreover, the combined retrieval showed clear
-sensitivity to  particle number concentrations and was able reproduce their vertical
-structure in regions where the cloud composition is homogeneous.
+size and number concentration of frozen hydrometeors (Fig.~\ref{fig:contours}).
+The increased sensitivity of the combined retrieval to the microphysical
+properties of hydrometeors helps to improve the accuracy of IWC retrievals and
+avoid systematic errors observed in an equivalent radar-only retrieval
+(Fig.~\ref{fig:results_scatter_a}, \ref{fig:boxes}). Moreover, the combined
+retrieval showed clear sensitivity to particle number concentrations and was
+able reproduce their vertical structure in regions where the cloud composition
+is homogeneous (Fig.~\ref{fig:results_nd_a}, \ref{fig:results_nd_scatter_a}).
 
 The results particularly highlight the importance of sub-millimeter observations
 for combined retrievals of frozen hydrometeors. While observations at currently
@@ -1484,7 +1493,8 @@ Regarding the representation of hydrometeors in the retrieval, our results
 indicate that complex mixes of hydrometeors can be accurately represented using
 a single, suitable habit mix. In particular, our results indicate that a
 suitable habit should have scattering properties that are intermediate between
-strongly rimed and more snow-flake like particles.
+strongly rimed and more snow-flake like particles
+(Fig.~\ref{fig:particle_properties}, \ref{fig:boxes}).
 
 A direct application of the synergistic retrieval algorithm developed in this
 study are flight campaigns involving the International Sub-millimetre Airborne
