@@ -108,42 +108,40 @@
 \maketitle
 
 \begin{abstract}
-
-  Remote sensing observations at sub-millimeter wavelengths provide higher
-  sensitivity to small hydrometeors and low water content than observations at
-  millimeter wavelengths, which are traditionally used to observe clouds and
-  precipitation. Hence they are employed increasingly in field campaigns
-  to study cloud microphysics and will be integrated into the global
-  meteorological observing system to measure the global distribution of ice in
-  the atmosphere. A milestone in this development is the launch of the Ice Cloud
-  Imager (ICI) radiometer on board the second generation of European operational
-  meteorological satellites (Metop-SG), which will make sub-millimeter
-  observations of ice clouds available operationally. Observations at these
-  novel wavelengths provide valuable information not only on their own but also
-  in combination with complementary observations at other wavelengths. This
-  study investigates the potential benefits of combining passive sub-millimeter
-  radiometer observations with a hypothetical W-band cloud radar for the
-  retrieval of frozen hydrometeors. Using a simplified cloud-model, the
-  information content of the combined observations is investigated and the
-  capacity of the observations to constrain the microphysical properties of
-  ice hydrometeors is established. A synergistic retrieval algorithm for airborne
-  observations is proposed and applied to simulated observations from a
-  cloud-resolving model. Results from the synergistic retrieval are compared to
-  equivalent radar- and passive-only implementations in order to assess the
-  benefits of the synergistic sensor configurations. The impact of the assumed
-  ice particle shape on the retrieval results is assessed for all retrieval
-  implementations. Although they show greater sensitivity to the assumed
-  particle shape, the synergistic observations can better constrain the
-  microphysics of the cloud, which decreases uncertainties in retrieved ice
-  water content and improves the retrieval of particle number concentrations.
-  Our results also indicate improved sensitivity to liquid cloud water content
-  for the synergistic configuration compared to a passive-only setup. The
-  results of this study demonstrate the potential of the synergistic sensor
-  configuration to improve retrievals of frozen hydrometeors. The developed
-  synergistic retrieval algorithm can be applied with only minor modifications
-  to suitable airborne observations from sub-millimeter radiometers such as the
-  International Sub-Millimetre Airborne Radiometer.
-
+Remote sensing observations at sub-millimeter wavelengths provide higher
+sensitivity to small hydrometeors and low water content than observations at
+millimeter wavelengths, which are traditionally used to observe clouds and
+precipitation. Hence they are employed increasingly in field campaigns
+to study cloud microphysics and will be integrated into the global
+meteorological observing system to measure the global distribution of ice in
+the atmosphere. A milestone in this development is the launch of the Ice Cloud
+Imager (ICI) radiometer on board the second generation of European operational
+meteorological satellites (Metop-SG), which will make sub-millimeter
+observations of ice clouds available operationally. Observations at these
+novel wavelengths provide valuable information not only on their own but also
+in combination with complementary observations at other wavelengths. This
+study investigates the potential benefits of combining passive sub-millimeter
+radiometer observations with a hypothetical W-band cloud radar for the
+retrieval of frozen hydrometeors. Using a simplified cloud-model, the
+information content of the combined observations is investigated and the
+capacity of the observations to constrain the microphysical properties of
+ice hydrometeors is established. A synergistic retrieval algorithm for airborne
+observations is proposed and applied to simulated observations from a
+cloud-resolving model. Results from the synergistic retrieval are compared to
+equivalent radar- and passive-only implementations in order to assess the
+benefits of the synergistic sensor configurations. The impact of the assumed
+ice particle shape on the retrieval results is assessed for all retrieval
+implementations. Although they show greater sensitivity to the assumed
+particle shape, the synergistic observations can better constrain the
+microphysics of the cloud, which decreases uncertainties in retrieved ice
+water content and improves the retrieval of particle number concentrations.
+Our results also indicate improved sensitivity to liquid cloud water content
+for the synergistic configuration compared to a passive-only setup. The
+results of this study demonstrate the potential of the synergistic sensor
+configuration to improve retrievals of frozen hydrometeors. The developed
+synergistic retrieval algorithm can be applied with only minor modifications
+to suitable airborne observations from sub-millimeter radiometers such as the
+International Sub-Millimetre Airborne Radiometer.
 \end{abstract}
 
 
@@ -1097,12 +1095,12 @@ are observed between different particle models.
 \begin{figure}
 \centering
 \includegraphics[width = 0.7\textwidth]{../plots/results_nd_scatter_a}
-\caption{Scatter plots of the retrieved particle number concentrations at grid points
-  with reference IWC larger than $10^{-5}\ \unit{kg\ m^{-3}}$. Rows show
-  the results for the different particle models used in the retrieval while
-  columns display  results for  different retrieval methods. The marker
-  color encodes the homogeneity of the corresponding ice mass, which is computed
-  as the ratio of the maximum water content of any of the frozen hydrometeor
+\caption{Scatter plots of the retrieved particle number concentration (NC) at
+  grid points with reference IWC larger than $10^{-5}\ \unit{kg\ m^{-3}}$. Rows
+  show the results for the different particle models used in the retrieval while
+  columns display results for different retrieval methods. The marker color
+  encodes the homogeneity of the corresponding ice mass, which is computed as
+  the ratio of the maximum water content of any of the frozen hydrometeor
   species and total IWC.}
 \label{fig:results_nd_scatter_a}
 \end{figure}
@@ -1384,10 +1382,9 @@ thus requiring it to be determined a priori.
 It should be noted, that none of the presented retrievals accounts for the error
 caused by the simplified forward model and the choice of the particle model.
 This has not been pursued here because of the difficulty of fitting a suitable
-model to the forward model errors, which are likely non-Gaussian and
-scene-dependent. However, it is likely that accounting for these errors can
-improve retrieval performance and weaken the impact of the particle choice on
-the retrieval results.
+error model to these errors, which are likely non-Gaussian and scene-dependent.
+However, it is likely that accounting for them can improve retrieval performance
+and weaken the impact of the particle choice on the retrieval results.
 
 \subsubsection{Humidity and cloud water}
 

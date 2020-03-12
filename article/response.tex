@@ -11,6 +11,7 @@
 \usepackage{rotating}
 \usepackage[normalem]{ulem}
 \usepackage{amsmath}
+\usepackage{pdfpages}
 \usepackage{units}
 \usepackage{textcomp}
 \usepackage{amssymb}
@@ -70,18 +71,17 @@ comment the author's response and, if applicable, the corresponding changes in
 the manuscript are listed. Line numbers of changes are given with respect to the
 revised manuscript.
 
-As response to the combined comments of the referees, all computations
+In response to the combined comments of the referees, all computations
 have been repeated and most of the manuscript has been rewritten. The
 following general changes have been implemented:
 
 \begin{itemize}
 \item We have switched to an airborne measurement set-up and
-   abstract, introduction and method section have been modified accordingly
-\item The text in the result section has been shortened
-\item Redundant results for scene 2 have been placed in an appendix
-\item The selection of tested retrieval habits has been revised and changed
+   the manuscript has been modified accordingly.
+\item The text in the result section has been shortened.
+\item Redundant results for scene 2 have been placed in an appendix.
+\item The selection of tested retrieval habits has been revised and changed.
 \end{itemize}
-
 
 \chapter{Comments from referee 1}
 \input{response_1}
@@ -89,7 +89,9 @@ following general changes have been implemented:
 \input{response_2}
 \chapter{Comments from referee 3}
 \input{response_3}
+\chapter{Marked-up differences}
 
+\includepdf[pages=-]{amt_manuscript_diff}
 
 \bibliographystyle{copernicus}
 \bibliography{references}

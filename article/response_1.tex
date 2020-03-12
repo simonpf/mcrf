@@ -51,9 +51,9 @@ the observational record of ice hydrometeors that we see today.
 \item The discussion of the role of the a priori and its impact on results has
   been extended by adding the following paragraph to the manuscript:
 
-  \begin{change}[491]
+  \begin{change}[481]
 \DIFadd{The a priori assumptions used in this study were chosen similar to those of the
-DARDAR-CLOUD product, since they represent well established and validated
+DARDAR-CLOUD product since they represent well established and validated
 assumptions for ice cloud retrievals. The role of the a priori is to complement
 the observations with additional information required to make the retrieval
 problem tractable. For the hydrometeor retrieval this means that the a priori
@@ -61,12 +61,12 @@ determines how information from the observations, which alone is insufficient to
 determine both degrees of freedom of the PSD, is distributed between its $D_m$
 and $N_0^*$ parameters. For the radar-only retrieval, this works well for cloud
 systems containing both ice and snow but leads to biased retrievals of both IWC
-and IWP when this is not the case (}\DIFaddend Fig.~\ref{fig:boxes}\DIFdelbegin \DIFdel{. In general, the passive-only and the combined retrievals display }\DIFdelend \DIFaddbegin \DIFadd{). The DARDAR product
+and IWP when this is not the case (}\DIFaddend Fig.~9\DIFdelbegin \DIFdel{. In general, the passive-only and the combined retrievals display }\DIFdelend \DIFaddbegin \DIFadd{). The DARDAR product
 uses co-located lidar observations to resolve the ambiguity where observations
 from both sensors are available. As our results show, this can be achieved also
 by combining a radar with passive microwave radiometers. However, while the
 overlap between lidar and radar is restricted to relatively thin clouds,
-microwave radiometers can provide sensitivity even deeper inside clouds.
+microwave radiometers can provide sensitivity even inside thick clouds.
 }
   \end{change}
 
@@ -74,7 +74,7 @@ microwave radiometers can provide sensitivity even deeper inside clouds.
   the study which clearly states that the retrieval results should not be
   interpreted in absolute terms:
 
-  \begin{change}[549]
+  \begin{change}[529]
   \DIFadd{An important limitation of this study is its scope: The aim here was not to
   develop a production-ready combined retrieval product but rather a
   proof-of-concept to explore this observational approach. The retrieval results
@@ -126,13 +126,15 @@ paragraph on this issue in the discussion.
 \subsubsection*{Changes in manuscript}
 
 \begin{change}[513]
-\DIFaddbegin \DIFadd{It should be noted, that none of the presented
-  retrievals accounts for the error caused by the simplified forward model and
-  the choice of the particle model. This has not been pursued here because of
-  the difficulty of fitting a suitable model to the forward model errors which
-  are likely non-Gaussian and scene-dependent. However, it is likely that
-  accounting for these errors can improve retrieval performance and weaken the
-  impact of the particle choice on the retrieval results}\DIFaddend .
+\DIFaddbegin \DIFadd{It should be noted, that none of the presented retrievals accounts for the error
+caused by the simplified forward model and the choice of the }\DIFaddend particle model.
+\DIFdelbegin \DIFdel{Unfortunately, no evidence of a relation between the $\chi^2_y$ value and the retrieval performance
+was observed. It thus remains an open question whether
+and how information on the ice particle shape can be extracted from microwave
+observations of ice particles}\DIFdelend \DIFaddbegin \DIFadd{This has not been pursued here because of the difficulty of fitting a suitable
+error model to these errors, which are likely non-Gaussian and scene-dependent.
+However, it is likely that accounting for them can improve retrieval performance
+and weaken the impact of the particle choice on the retrieval results}\DIFaddend .
 \end{change}
 
 \section{Specific comments}
@@ -147,7 +149,7 @@ The proposed change has been adopted in the revised version of the manuscript.
 
 \subsubsection*{Changes in manuscript}
 
-\begin{change}[85]
+\begin{change}[95]
 The first test scene, shown in panel (a), is located in the tropical
 Pacific and contains a \DIFdelbegin \DIFdel{convective storm }\DIFdelend \DIFaddbegin \DIFadd{mesoscale convective }\DIFaddend system in the \DIFdelbegin \DIFdel{right }\DIFdelend \DIFaddbegin \DIFadd{northern }\DIFaddend half of the scene
 and its anvil which extends into the \DIFdelbegin \DIFdel{left halfof the scene}\DIFdelend \DIFaddbegin \DIFadd{southern half}\DIFaddend . The second scene, shown in
@@ -169,7 +171,7 @@ The proposed change has been adopted in the revised version of the manuscript.
 
 \subsubsection*{Changes in manuscript}
 
-\begin{change}[95]
+\begin{change}[105]
 The \DIFdelbegin \DIFdel{four panels display the prognosed particle size
 distributions for the four frozen hydrometeor types together with renderings of
 the particle shapes used in the forward simulations. As these plots show, the
@@ -178,39 +180,34 @@ different ice species vary mostly in their \DIFdelbegin \DIFdel{horizontal and v
   concentration}\DIFaddend , whereas the \DIFdelbegin \DIFdel{function }\DIFdelend \DIFaddbegin \DIFadd{normalized }\DIFaddend shape shows less variability.
 \end{change}
 
-\begin{change}[175]
-
-\DIFadd{The PSDs of frozen hydrometeors and rain }\DIFaddend are represented
-using the normalized particle size distribution formalism proposed by
-\cite{delanoe05}. The PSD of a hydrometeor species at a given \DIFdelbegin
-\DIFdel{height level is represented by a vertical and a horizontal scaling
-  parameter, the }\DIFdelend \DIFaddbegin \DIFadd{altitude is modeled using a
-  generalized gamma distribution function with four parameters. The }\DIFaddend
-mass-weighted mean diameter $D_m$\DIFaddbegin \DIFadd{, which scales the PSD
-  along the size dimension, }\DIFaddend and the normalized number density
-$N_0^*$\DIFdelbegin \DIFdel{. Alternative parametrizations using mass density
-  and $D_m$ or the mass density and $N_0^*$ have been tested but no considerable
-  effect on retrieval performance has been observed. }%DIFDELCMD <
+\begin{change}[177]
+\DIFadd{The PSDs of frozen hydrometeors and rain }\DIFaddend are represented using the normalized
+particle size distribution formalism proposed by \cite{delanoe05}. The PSD of a
+hydrometeor species at a given \DIFdelbegin \DIFdel{height level is represented by a vertical and a horizontal scaling parameter, the }\DIFdelend \DIFaddbegin \DIFadd{altitude is modeled using a generalized gamma
+distribution function with four parameters. The }\DIFaddend mass-weighted mean diameter
+$D_m$\DIFaddbegin \DIFadd{, which scales the PSD along the size dimension, }\DIFaddend and the normalized number
+density $N_0^*$\DIFdelbegin \DIFdel{. Alternative 
+parametrizations using mass density and $D_m$ or the mass density and $N_0^*$
+have been tested but no considerable effect on retrieval performance has been
+observed.
+}%DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdel{The retrieval computes vertical profiles of the two scaling parameters
-  $D_m$ and $N_0^*$ for each of the two hydrometeor species. The remaining shape
-  of each PSD is described by the shape parameters $\alpha$ and $\beta$, not to
-  be confused with the parameters of the mass-size relationship shown in
-  Tab.~1. The shape parameters are set to fixed,
-  species-specific values. This principle is illustrated in
-  Fig.~3. The plot displays the a-priori-assumed shapes
-  of the particle size distribution of frozen and liquid hydrometeors. The
-  retrieved horizontal and vertical scaling parameters }\DIFdelend ,
-\DIFdelbegin \DIFdel{$D_m$ and $N_0^*$, are used as units for the axes of the
-  plot so that }\DIFdelend \DIFaddbegin \DIFadd{which scales the particle
-  concentration, are the two retrieved degrees of freedom of the PSD. The other
-  two parameters describe }\DIFaddend 
-
+\DIFdel{The retrieval computes vertical profiles of the two scaling parameters $D_m$ and
+$N_0^*$ for each of the two hydrometeor species. The remaining shape of each PSD
+is described by the shape parameters $\alpha$ and $\beta$, not to
+be confused with the parameters of the mass-size relationship shown in
+Tab.~1. The shape parameters are set to fixed, species-specific
+values. This principle is illustrated in Fig.~3.
+The plot displays the a-priori-assumed shapes of the particle size distribution
+of frozen and liquid hydrometeors. The retrieved horizontal and vertical scaling
+parameters }\DIFdelend , \DIFdelbegin \DIFdel{$D_m$ and $N_0^*$, are used as units for the axes of the plot so
+that }\DIFdelend \DIFaddbegin \DIFadd{which scales the particle concentration, are the two retrieved
+degrees of freedom of the PSD.}
 \end{change}
 
 
-\begin{change}[252]
+\begin{change}[274]
 \DIFdel{In the figure, the cloud signal is displayed in $D_m$-mass density space and
 thus shows how the measured passive cloud signal varies with the horizontal and
 vertical scaling parameters of
@@ -222,54 +219,13 @@ the measured profile of radar reflectivity $\text{dBZ}_\text{max}$.
 Figure~9 displays }\DIFaddend the contours of \DIFdelbegin \DIFdel{the
 passive cloudsignal are the isolines of the maximum radar reflectivity returned
 from the cloud ...}\DIFdelend
-
 \end{change}
 
-\begin{change}[449]
+\begin{change}[429]
 The results \DIFdelbegin \DIFdel{show }\DIFdelend \DIFaddbegin \DIFadd{indicate }\DIFaddend that the combined
 observations can \DIFdelbegin \DIFdel{simultaneously constrain the horizontal and vertical scaling of }\DIFdelend \DIFaddbegin \DIFadd{constrain }\DIFaddend the \DIFdelbegin \DIFdel{particle size distribution}\DIFdelend \DIFaddbegin \DIFadd{size and concentration of particles in the cloud}\DIFaddend .
 \end{change}
 
-
-
-%The proposed changes will be adopted in the revised version of the manuscript
-%by introducing the following changes:
-%
-%\begin{change}[97]
-%\ldots simulations. As these plots show, the
-%assumed particle size distributions across different ice species vary mostly in
-%their \DIFdelbegin \DIFdel{horizontal and vertical scaling }\DIFdelend \DIFaddbegin \DIFadd{scaling with respect to size and concentration}\DIFaddend , whereas the function \ldots
-%\end{change}
-%
-%\begin{change}[176]
-%The PSD of a hydrometeor species at a \DIFdelbegin \DIFdel{given }\DIFdelend \DIFaddbegin \DIFadd{certain }\DIFaddend height level is
-%\DIFdelbegin \DIFdel{represented by a vertical and a horizontal scaling parameter}\DIFdelend \DIFaddbegin \DIFadd{given by a generalized gamma distribution function with four parameters. Two of
-%them}\DIFaddend , the mass-weighted mean diameter $D_m$\DIFaddbegin \DIFadd{, which scales the PSD along the size
-%dimension, }\DIFaddend and the normalized number density $N_0^*$\DIFdelbegin \DIFdel{. Alternative 
-%parametrizations using mass density and $D_m$ or the mass density and $N_0^*$
-%have been tested but no considerable effect on retrieval performance has been
-%observed.
-%}%DIFDELCMD < 
-%
-%%DIFDELCMD < %%%
-%\DIFdel{The retrieval computes vertical profiles of the two scaling parameters $D_m$ and
-%$N_0^*$ for each of the two hydrometeor species. The remaining shape of each }\DIFdelend \DIFaddbegin \DIFadd{, which scales the particle
-%  concentration, are retrieved. The \ldots}\DIFaddend
-%\end{change}
-%
-%\begin{change}[252]
-%The question that is addressed here is whether the combination of active and
-%passive observations is able to constrain both the \DIFdelbegin \DIFdel{horizontal and the
-%vertical scaling factors of the PSD }\DIFdelend \DIFaddbegin \DIFadd{size and concentration }\DIFaddend of the
-%ice particles in the cloud. 
-%\end{change}
-%
-%\begin{change}[449]
-%The results show that the combined
-%observations can simultaneously constrain the \DIFdelbegin \DIFdel{horizontal and vertical scaling of
-%the particle size distribution}\DIFdelend \DIFaddbegin \DIFadd{size and concentration of
-%particles in the cloud}\DIFaddend .
-%\end{change}
 
 
 \subsection*{Reviewer comment 3}
@@ -286,7 +242,7 @@ to the manuscript.
 
 \subsubsection*{Changes in manuscript}
 
-\begin{change}[89]
+\begin{change}[99]
 The GEM model uses \DIFaddbegin \DIFadd{a two-moment scheme with }\DIFaddend six
 types of hydrometeors to represent clouds and precipitation
 \citep{milbrandtyau05}: Two classes of liquid hydrometeors (rain and liquid
@@ -341,7 +297,7 @@ Yes, it does. A sentence will be added to the description of the forward model
 to clarify this.
 
 \subsubsection*{Changes in manuscript}
-\begin{change}[135]
+\begin{change}[146]
 Radar reflectivities are computed using ARTS' built-in single-scattering radar
 solver\DIFaddbegin \DIFadd{, which provides analytic Jacobians}\DIFaddend .
 \end{change}
@@ -420,13 +376,13 @@ still locates the cloud and describes its vertical structure. One can imagine a
 cloud of the same ice water path and particle size at two different heights
 having different brightness temperatures due to changes in the water vapor
 absorption above the cloud – having the radar information would provide
-increased information content about the ice water pathin this case than the
+increased information content about the ice water path in this case than the
 radiometer measurement alone.
 
 \subsubsection*{Author response}
 
-It is certainly correct that when a radar sensor is added to a passive
-observation system one of the advantages will be the increased resolution.
+It is certainly correct that, when a radar sensor is added to a passive
+observation system, one of the advantages will be the increased resolution.
 However, what we are interested in are the advantages that neither of the two
 instruments can provide on its own. If it was only about vertical resolution,
 then the radar alone would be the ideal observation system. In this sense, we do
@@ -437,7 +393,7 @@ between the active and passive observations to the section which discusses the
 complementary information content.
 
 \subsubsection*{Changes in manuscript}
-\begin{change}[237]
+\begin{change}[262]
 A fundamental question regarding the benefit of combining two remote sensing
 observations in a retrieval is to what extent the observations contain
 non-redundant information. The degree of non-redundancy in the combined
@@ -512,7 +468,7 @@ manuscript.
 \subsubsection*{Changes in manuscript}
 
 Figures 7 and 8 have been combined into a single figure and now look as shown in
-Fig.~\ref{fig_scatter_a}.
+Fig.~\ref{fig:results_scatter_a}.
 
 \begin{figure}
 \centering \includegraphics[width = 0.75\textwidth]{../plots/results_scatter_a}
@@ -585,7 +541,7 @@ The proposed change has been adopted in the revised version of the manuscript.
 
 \subsubsection*{Changes in manuscript}
 
-\begin{change}[374]
+\begin{change}[365]
  Since snow will have \DIFdelbegin \DIFdel{the
 }\DIFdelend \DIFaddbegin \DIFadd{a }\DIFaddend stronger impact on the
 observations, the retrieval in these regions \DIFdelbegin \DIFdel{tends to predict }\DIFdelend \DIFaddbegin \DIFadd{will likely tend to represent }\DIFaddend snow
@@ -606,7 +562,7 @@ rather than ice, which leads to the low retrieved number \DIFdelbegin \DIFdel{de
 This has been corrected in the updated version of the manuscript.
 
 \subsubsection*{Changes in manuscript}
- \begin{change}[382]
+ \begin{change}[373]
 The radar-only retrieval does not
 exhibit any retrieval skill, hardly reproducing any of the variation of the
 \DIFdelbegin \DIFdel{references }\DIFdelend \DIFaddbegin \DIFadd{reference }\DIFaddend values.
@@ -614,7 +570,7 @@ exhibit any retrieval skill, hardly reproducing any of the variation of the
 
 \subsection*{Reviewer comment 13}
 
-Line  414:  How  are  the  truncated  PSDs  (using  GemSnow)  represented  in  theforward simulations? Is total ice water content conserved? If so, how is it spread amongthe valid particle sizes – equally, or is the truncated mass allocated to the smallest size bin?
+Line  414:  How  are  the  truncated  PSDs  (using  GemSnow)  represented  in  the forward simulations? Is total ice water content conserved? If so, how is it spread amongthe valid particle sizes – equally, or is the truncated mass allocated to the smallest size bin?
 
 \subsubsection*{Author response}
 

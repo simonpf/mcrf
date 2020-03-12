@@ -17,13 +17,12 @@ in both?
 \subsubsection*{Author response}
 
 We agree with the comment that the rather arbitrary choice of tested particles
-is a weak spot of the study. To improve this, the experiments will be repeated
+was a weak spot of the study. To improve this, the experiments have been repeated
 with a more principled selection of particles. The new selection is based on the
 particle properties described in \citet{ekelund20} and covers a broader range of
 mass-size relationships and scattering parameters. In particular, the GemSnow
 model has been removed from the selection of test particles because it does not
 cover small ice particle sizes.
-
 
 \subsubsection{Changes in manuscript}
 
@@ -44,12 +43,12 @@ cover small ice particle sizes.
   }\DIFaddend 
   \end{change}
 
-\item The following has been added to the description of the retrieval
+\item The following text has been added to the description of the retrieval
   implementation which discusses the difficulty of representing the complex
   mixture of different particles in the GEM model scenes with a single particle
   model as well as the new selection of particle models and habit mixes.
 
-  \begin{change}[231]
+  \begin{change}[228]
 
 \DIFadd{A major difficulty for cloud retrievals is that the observations may not provide
 sufficient information to distinguish different hydrometeor species. Due to this
@@ -60,30 +59,36 @@ variability of the four frozen hydrometeor species in the GEM model and ideally 
 that of real ice hydrometeors.
 }
 
-\DIFadd{The differences between hydrometeor species in the test scenes are due
-  to their different concentrations, sizes and shapes (c.f. Fig.~2). Since two
-  parameters of the PSD of frozen hydrometeor species are retrieved, the
-  retrieval is able to represent the characteristic number concentrations and
-  particle sizes of different hydrometeor species. Variations in particle shape
-  which correlate with particle size can be represented using a habit mix
-  combining crystal shapes at small sizes with aggregates or rimed particles at
-  larger sizes. This provides the retrieval with some flexibility to represent
-  the different shapes present in the test scenes. }
+\DIFadd{The differences between hydrometeor species in the test scenes are due to their
+different concentrations, sizes and shapes (c.f. Fig.~2). Since
+two parameters of the PSD of frozen hydrometeor species are retrieved, the
+retrieval is able to represent the characteristic number concentrations and
+particle sizes of different hydrometeor species. Variations in particle shape
+which correlate with particle size can be represented using a habit mix
+combining crystal shapes at small sizes with aggregates or rimed particles at
+larger sizes. This provides the retrieval with some flexibility to represent the
+different shapes present in the test scenes.
+}
 
-\DIFadd{Even with this configuration the simplified retrieval forward model will not be
+\DIFadd{Even with this configuration the simplified }\DIFaddend retrieval forward model \DIFdelbegin \DIFdel{.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{The setup and retrieval quantities of the passive-only retrieval are similar to the combined retrieval, with the only difference being that frozen and liquid
+hydrometeors are retrieved at reduced resolution.For ice, }\DIFdelend \DIFaddbegin \DIFadd{will not be
 able to represent every possible configuration of mixes of the four ice
 hydrometeor species in the GEM model. It thus remains unclear which particle
 shape should be used to best represent this mixture. We therefore choose a set
-consisting of multiple particle shapes and habit mixes, which will be used in
-the retrieval to study the impact of the choice of the particle shape on the
-retrieval results. The selected particles are listed in
-Tab.~4. Three of them, GEM Cloud Ice, GEM Snow, and
-GEM Graupel, correspond to the shapes present in the GEM model scenes. The GEM
-Snow and Graupel habits were mixed with crystal shapes to ensure that they cover
-sizes down to around $10\ \unit{\mu m}$. In addition to this, two of the habit
-mixes distributed with the ARTS SSDB, the Large Plate Aggregate and Large Column
-Aggregate standard habits, are included in the selection to increase the range of
-scattering properties it covers.}\DIFaddend
+consisting of multiple particle shapes and habit mixes for which we investigate
+the impact of the particle choice on the retrieval results. The selected
+particles are listed in Tab.~4. Three of them, GEM
+Cloud Ice, GEM Snow, and GEM Graupel, correspond to the shapes present in the
+GEM model scenes. The GEM Snow and Graupel habits were mixed with crystal shapes
+to ensure that they cover sizes down to around $10\ \unit{\mu m}$. In addition
+to this, two of the habit mixes distributed with the ARTS SSDB, the Large Plate
+Aggregate and Large Column Aggregate standard habits, are included in the
+selection to increase the range of scattering properties it covers.}
+
   \end{change}
 
 \item The errors in the reported parameters of the mass-size
@@ -92,7 +97,7 @@ scattering properties it covers.}\DIFaddend
 \end{itemize}
 
 It was, however, not possible  to combined Tab.~1 and Tab.~4
-because they convey slightly different information.
+because they now convey slightly different information.
 
 %The following changes will be introduced in the manuscript:
 %
@@ -170,7 +175,7 @@ because they convey slightly different information.
 Although different parameterizations of the hydrometeor types are used to
 study their effects, vertical changes (development of sedimenting particles)
 are not considered. Similar polarization effects are not mentioned in the
-discussion on particleshape. Otherwise the paper nicely discusses the different
+discussion on particle shape. Otherwise the paper nicely discusses the different
 aspects but in the end I ammissing a clear message on the outcome of the test
 (choice of particle types). What is recommended for the future?
 
@@ -183,7 +188,7 @@ on the PSD.
 
 Vertical changes in particle shape, i.e. transition from single crystals to
 aggregates, are represented indirectly through the particle size. The particle
-models used here are taken from standard habits from the ARTS SSDB described in
+models used here are taken from the standard habits of the ARTS SSDB described in
 \cite{eriksson18}. Some of them combine pristine crystals at small particle
 sizes with aggregate shapes at larger sizes.
 
@@ -220,7 +225,7 @@ the outcome of our experiments.
 \item The discussion of the tested particle shapes has been extended to derive clearer
     recommendations for the future.
 
-    \begin{change}[415]
+    \begin{change}[492]
 \DIFdelbegin \DIFdel{Given the increased sensitivity of the passive-only and combined retrieval to
 }\DIFdelend \DIFaddbegin \DIFadd{Only the combined retrieval was able to yield accurate IWC retrievals for both
 test scenes for suitable choices of the particle model. However, if an
@@ -248,6 +253,17 @@ $183.31 \pm 7\ \unit{GHz}$}\DIFaddend .
 \DIFdelbegin \DIFdel{Nonetheless, small performance differences are observed also for the other three
 models}\DIFdelend 
 \end{change}
+
+\item The following paragraph has been added to the conclusions:
+  \begin{change}[555]
+\DIFadd{Regarding the representation of hydrometeors in the retrieval, our results
+indicate that complex mixes of hydrometeors can be accurately represented using
+a single, suitable habit mix. In particular, our results indicate that a
+suitable habit should have scattering properties that are intermediate between
+strongly rimed and more snow-flake like particles
+(Fig.~4, 9).}
+    \end{change}
+
 \end{itemize}
 
 \subsection*{Reviewer comment 3}
@@ -309,7 +325,7 @@ displaying the cumulative DFS for all profiles in the test scenes.
 The manuscript is rather lengthy making it difficult for the reader to
 extract the majorpoints. I strongly suggest a) to move part of the analysis into
 an appendix (, b) remove double statement (see minor comments, also the LWC
-plot) and c) to remove figurecaption like information (for example L92 or
+plot) and c) to remove figure caption like information (for example L92 or
 “filled contours”) from the text. The text must make sense without looking at
 the figure. Figure only support the statements made in the text. Lengthy
 descriptions such as ``The plot shows..'' need to be avoided.
@@ -375,7 +391,7 @@ The proposed improvement has been adopted in the revised version of the manuscri
 
 \subsubsection{Changes in manuscript}
 
-\begin{change}[75]
+\begin{change}[74]
   \DIFaddbegin \DIFadd{For this, a combined, variational retrieval is
     developed and applied to simulated observations of }\DIFaddend scenes from a
   \DIFdelbegin \DIFdel{high-resolution atmospheric model and used to further
@@ -513,7 +529,7 @@ for it.
 
 \subsubsection*{Author response}
  
-C.f. Comments from Referee 1 - Reviewer comment 2.
+C.f. Comments from Referee 1 - General comment 2.
 
 \subsection*{Reviewer comment 10}
 
@@ -576,7 +592,7 @@ the text given below been added to the manuscript.
 
 \subsubsection{Changes in manuscript}
 
-\begin{change}[158]
+\begin{change}[159]
 \DIFdel{To assess the }\DIFdelend \DIFaddbegin \DIFadd{The }\DIFaddend quality
 of a retrieved state $\hat{\mathbf{x}}$ and corresponding simulated \DIFdelbegin
 \DIFdel{observation }\DIFdelend \DIFaddbegin \DIFadd{observations }\DIFaddend
@@ -691,9 +707,9 @@ supercooled liquid water above the freezing layer – how is this treated?
 
 For the simulated observations, supercooled liquid is treated in just the same
 way as liquid water below the freezing level. As described in the paragraph
-around L. 211, cloud liquid water in the retrieval is treated as purely
-absorbing and simulated using a parametrized absorption model. Moreover, it is
-restricted to temperatures of $230\ \unit{K}$ and up.
+around L. 211 (old manuscript version), cloud liquid water in the retrieval is
+treated as purely absorbing and simulated using a parametrized absorption model.
+Moreover, it is restricted to temperatures of $230\ \unit{K}$ and up.
 
 \subsubsection*{Changes in manuscript}
 
@@ -900,7 +916,7 @@ The proposed change have be adopted in the revised version of the manuscript.
 
 \subsubsection*{Changes in manuscript}
 
-\begin{change}[508]
+\begin{change}[320]
 \DIFdel{Similar to the radar-only retrieval, the results of the combined retrieval are
 located close to the diagonal.
 But the clusters observed in the radar-only
@@ -968,7 +984,7 @@ L444: Here it needs to be made clearer how this goes beyond what GPM is doing.
 
 \subsubsection*{Author response}
 
-To clarify how our work goes beyond what GPM a paragraph detailing this
+To clarify how our work goes beyond what GPM does, a paragraph detailing this
 has been added to the discussion.
 
 \subsubsection*{Changes in manuscript}
@@ -977,8 +993,8 @@ has been added to the discussion.
 sub-millimeter channels, which sets it apart from the combined retrievals
 developed for the TRMM and GPM missions. Moreover, the development of a fully
 consistent variational retrieval in which all retrieval quantities are retrieved
-simultaneously using observations from all sensors development is also novel.
-This allows comparison of the synergistic retrieval to equivalent radar-only and
+simultaneously using the observations from all sensors is also novel. This
+allows comparison of the combined retrieval to equivalent radar-only and
 passive-only configurations and therefore a direct analysis of the synergies
 between the active and passive observations.
 }
@@ -1081,7 +1097,7 @@ for combined retrievals of frozen hydrometeors. While observations at currently
 available microwave frequencies provide information complementary to that from a
 radar-only for thick clouds with very large particles ($D_m > 800\ \unit{\mu m},
 \text{IWC} > 10^{-4}\ \unit{kg\ m^{-3}}$), frequencies above $200\ \unit{GHz}$
-provide additional information on cloud microphysics (Fig.~\ref{fig:contours})
+provide additional information on cloud microphysics (Fig.~5)
 at smaller particles sizes and water content ($D_m > 200\ \unit{\mu m},
 \text{IWC} > 10^{-5}\ \unit{kg\ m^{-3}}$).}
 \end{change}

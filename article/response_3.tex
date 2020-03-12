@@ -4,10 +4,10 @@
 
 The paper is presented as an application for ICI in combination with a
 Cloudsat like configuration but it is not clear to me what geometry of
-observations the authors are thinking about. They state “As mentioned above, the
+observations the authors are thinking about. They state ''As mentioned above, the
 same incidence angle as for the passive radiometers is assumed also for the
 radar. In practice, this could be achieved by remapping the radar observations to
-the lines of sights of the passive beam”. Are they thinking about a scanning
+the lines of sights of the passive beam''. Are they thinking about a scanning
 W-band radar? or at a off-nadir pointing radar? If the former is true then they
 should discuss what is a realistic technological solution (and what are the
 consequences in terms of sensitivity) and the authors should refer to state of
@@ -37,8 +37,8 @@ and the manuscript has been adapted accordingly.
 
 \subsection*{Reviewer comment 2}
 
- “the beams of all three sensors are modeled as perfectly coincident pencil
-beams”. Again this is quite an assumption. Non uniform beam filling will play a
+ ''The beams of all three sensors are modeled as perfectly coincident pencil
+beams''. Again this is quite an assumption. Non uniform beam filling will play a
 key factor. This is one of the many simplifications (no polarization, no multiple
 scattering,1D, ...) that needs to be clearly listed at the beginning of
 Sect.2.2.1 (some appear only at page 27). For this reason I would actually pitch
@@ -170,7 +170,7 @@ Line 210; this means that the vertical resolution changes with the surface tempe
 
 \subsubsection*{Author response}
 
-We agree with the reviewer that the chosen retrieval grids may not be optimal.
+We agree with the reviewer that the chosen retrieval grids may not have been optimal.
 We will change them to fixed-resolution grids for the revised manuscript.
 
 \subsubsection*{Changes in manuscript}
@@ -231,7 +231,7 @@ C.f. Comments from Referee 2 - General comment 1
 \subsection*{Reviewer comment 9}
 
 9) “extends below the sensitivity limit of the passive-only observations around
-10-5 kg m-3” : very sloppy sentence. Passive mi-crowave radiometer are sensitive
+10-5 kg m-3” : very sloppy sentence. Passive microwave radiometer are sensitive
 to integrated contents!
 
 \subsubsection*{Author response}
@@ -242,10 +242,7 @@ rewritten and this sentence will be removed.
 \subsubsection*{Changes in manuscript}
 
 \begin{change}[310]
-\DIFdel{Panel (c) shows the IWC field retrieved using the passive-only retrieval
-.
-Despite a certain resemblance in the overall structure between the retrieved and
-reference IWCfield, the results do not reproduce }\DIFdelend \DIFaddbegin \DIFadd{results in terms of IWC. While }\DIFaddend the vertical structure of the cloud \DIFdelbegin \DIFdel{very well. It should be noted, however, that the displayed mass-density
+\DIFdel{ It should be noted, however, that the displayed mass-density
 range extends below the sensitivity limit of the passive-only observations
 around $10^{-5}\ \unit{kg\ m^{-3}}$ (c.f. Fig.~4), which explains
 the smeared-out appearance of the
@@ -279,9 +276,9 @@ this is discussed in the discussion section of the manuscript.
 
 \subsection*{Reviewer comment 11}
 
-“In general, the radar-only results exhibit only very weak dependency on the
+''In general, the radar-only results exhibit only very weak dependency on the
 particle model, making the results for different particle shapes virtually
-indistinguishable.” Again another dangerous sentence. We know (unfortunately)
+indistinguishable.'' Again another dangerous sentence. We know (unfortunately)
 that this is not true (otherwise our ice problems would be sorted). Here my guess
 is that you have not properly explored the backscattering variability
 (particularly looking at the different degree of riming). It is notclear to me
@@ -335,7 +332,7 @@ of the revised version together with the analysis of the second test scene.
 
 \subsubsection*{Changes in manuscript}
 
-C.f. Comments from Referee 1 - Minor comment 10.
+C.f. Comments from Referee 1 - Specific comment 10.
 
 \subsection*{Reviewer comment 13}
  “Since the calculation of the AVK involves the forward model Jacobian, this effectmust be related to the non-linearity of the forward model” well I would avoid such veryspeculative statements.
@@ -440,8 +437,8 @@ since it was deemed to be of minor importance.
 \subsection*{Reviewer comment 17}
 
 17)Sect.4 and 5: a lot of waffling here (e.g. the three bullet conclusion, you
-need to bemuch more quantitative and linked to what you have proved; the three
-statements aresomething I could have formulated on my own without making any
+need to be much more quantitative and linked to what you have proved; the three
+statements are something I could have formulated on my own without making any
 simulation). Again the conclusions must be related to the cloud regime you are
 considering (and cannot be valid for all!)
 
@@ -505,9 +502,9 @@ same letters????
 \subsubsection*{Author response}
 
 We used the same letters to be consistent with the definition and used in
-\cite{delanoe14} and \cite{cazenave18}. However, since the explicit values of
+\cite{delanoe14} and \cite{cazenave19}. However, since the explicit values of
 the $\alpha$ and $\beta$ parameters are probably of little interest for the
-average reader, we will simply refer to \cite{cazenave18} and not name the
+average reader, we will simply refer to \cite{cazenave19} and not name the
 parameters explicitly.
 
 \subsubsection*{Changes in manuscript}
@@ -517,7 +514,7 @@ parameters explicitly.
 $N_0^*$ for each of the two hydrometeor species. The remaining shape of each PSD
 is described by the shape parameters $\alpha$ and $\beta$, not to
 be confused with the parameters of the mass-size relationship shown in
-Tab.~\ref{tab:species_parameters}. The shape parameters are set to fixed, species-specific
+Tab.~1. The shape parameters are set to fixed, species-specific
 values. This principle is illustrated in Fig.~\ref{fig:psds_retrieval}.
 The plot displays the a-priori-assumed shapes of the particle size distribution
 of frozen and liquid hydrometeors. The retrieved horizontal and vertical scaling
@@ -527,11 +524,11 @@ degrees of freedom of the PSD. The other two parameters describe }\DIFaddend the
 the \DIFdelbegin \DIFdel{PSD becomes independent of the retrieved mass density and
 number concentration. For frozen hydrometeors, the values of the shape parameters $\alpha$ and $\beta$ are chosen identical to }\DIFdelend \DIFaddbegin \DIFadd{normalized PSD. The same shape parameters as in }\DIFaddend version 3 of the
 DARDAR-CLOUD product \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
-\citep{cazenave18}}\hspace{0pt}%DIFAUXCMD
+\citep{cazenave19}}\hspace{0pt}%DIFAUXCMD
 . For
 liquid hydrometeors, the shape
 parameters are chosen so that they are equivalent to }\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
-\citep{cazenave20} }\hspace{0pt}%DIFAUXCMD
+\citep{cazenave19} }\hspace{0pt}%DIFAUXCMD
 are chosen for frozen hydrometeors. For
 rain, they are chosen to match }\DIFaddend the shape used \DIFdelbegin \DIFdel{by }\DIFdelend \DIFaddbegin \DIFadd{in }\DIFaddend the GEM model for rain drops.
 \DIFdelbegin \DIFdel{All calculations involving particles size distributions
@@ -641,7 +638,7 @@ C.f. Comments from Referee 2 - Minor comment 5
 
 
 \subsection*{Reviewer comment 9}
-Line 229: “troposphere” is too generic Line
+Line 229: “troposphere” is too generic
 
 
 \subsubsection*{Author response}
@@ -654,7 +651,7 @@ This will be corrected in the revised version of the manuscript.
 The section has been rewritten
 
 \begin{change}[246]
-\DIFaddbegin \DIFadd{Fig.~\ref{fig:particle_properties} provides an overview of the bulk mass
+\DIFaddbegin \DIFadd{Fig.~4 provides an overview of the bulk mass
 backscattering efficiencies and mass attenuation coefficients of the selected
 particles computed for three different values of the }\DIFaddend $N_0^*$ \DIFdelbegin \DIFdel{is retrieved
 at three equally spaced grid points between freezing layer and troposphere, while
@@ -719,8 +716,3 @@ This will be included in the revised version of the manuscript.
 
 This has been changed in the revised manuscript and the figure and
 caption now looks as is shown in Fig.~\ref{fig:contours}.
-
-\bibliographystyle{copernicus}
-\bibliography{references}
-
-\end{document}
