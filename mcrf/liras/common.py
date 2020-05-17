@@ -2,9 +2,9 @@
 Common function used for LIRAS a priori.
 """
 import numpy as np
-import parts
-from parts.jacobian import Atanh
-from parts.retrieval.a_priori import (And, TropopauseMask, TemperatureMask,
+import artssat
+from artssat.jacobian import Atanh
+from artssat.retrieval.a_priori import (And, TropopauseMask, TemperatureMask,
                                       FreezingLevel)
 
 """

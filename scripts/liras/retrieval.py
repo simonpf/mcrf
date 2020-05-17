@@ -7,7 +7,7 @@ import mcrf.liras
 from mcrf.retrieval import CloudRetrieval
 from mcrf.sensors import mwi, mwi_full, ici, lcpr
 from mcrf.liras.model_data import ModelDataProvider
-from parts.utils.data_providers import NetCDFDataProvider
+from artssat.utils.data_providers import NetCDFDataProvider
 
 #
 # Parse arguments

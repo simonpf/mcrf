@@ -22,9 +22,9 @@ import os
 import glob
 import numpy as np
 
-from parts.scattering import ScatteringSpecies
-from parts.scattering.psd import MY05
-from parts.scattering.psd.binned import Binned
+from artssat.scattering import ScatteringSpecies
+from artssat.scattering.psd import MY05
+from artssat.scattering.psd.binned import Binned
 
 liras_path = os.environ["LIRAS_PATH"]
 gem_path = os.path.join(liras_path, "data", "scattering")

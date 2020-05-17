@@ -1,4 +1,4 @@
-from parts.utils.data_providers import NetCDFDataProvider
+from artssat.utils.data_providers import NetCDFDataProvider
 import mcrf.joint_flight.setup
 import mcrf.liras
 import numpy as np
@@ -15,7 +15,7 @@ from examples.data_provider.atmosphere import Tropical
 from   mcrf.joint_flight     import ice, snow, rain, cloud_water_a_priori, \
     h2o_a_priori, ObservationError, temperature_a_priori
 
-from parts.retrieval.a_priori import SensorNoiseAPriori
+from artssat.retrieval.a_priori import SensorNoiseAPriori
 
 #
 # Parse arguments

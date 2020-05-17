@@ -14,9 +14,9 @@ from mcrf.psds import D14NDmIce, D14NDmLiquid, D14NDmSnow
 from mcrf.hydrometeors import Hydrometeor
 from mcrf.liras.common import (n0_a_priori, dm_a_priori, rh_a_priori,
                                ice_mask, rain_mask)
-from parts.retrieval.a_priori import *
-from parts.scattering.psd import Binned
-from parts.jacobian import Log10, Identity, Composition, Atanh
+from artssat.retrieval.a_priori import *
+from artssat.scattering.psd import Binned
+from artssat.jacobian import Log10, Identity, Composition, Atanh
 
 liras_path = os.environ["LIRAS_PATH"]
 scattering_data = os.path.join(liras_path, "data", "scattering")

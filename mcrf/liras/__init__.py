@@ -23,9 +23,9 @@ from mcrf.psds import D14NDmIce, D14NDmLiquid
 from mcrf.hydrometeors import Hydrometeor
 from mcrf.liras.common import (n0_a_priori, dm_a_priori, rh_a_priori,
                                ice_mask, rain_mask)
-from parts.retrieval.a_priori import *
-from parts.scattering.psd import Binned
-from parts.jacobian import Atanh, Log10, Identity, Composition
+from artssat.retrieval.a_priori import *
+from artssat.scattering.psd import Binned
+from artssat.jacobian import Atanh, Log10, Identity, Composition
 
 liras_path = os.environ["LIRAS_PATH"]
 scattering_data = os.path.join(liras_path, "data", "scattering")
@@ -205,6 +205,15 @@ cloud_water_a_priori = ReducedVerticalGrid(cloud_water_a_priori,
                                            "altitude",
                                            provide_retrieval_grid=False)
 
+liquid_shape = os.path.join(scattering_data, "LiquidSphere.xml")
+liquid_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
+
+liquid = Hydrometeor("liquid",
+                     D14NDmLiquid(), [],
+                     liquid_shape, liquid_shape_meta)
+# Lower limits for N_0^* and m in transformed space.
+liquid.limits_low = [2, 1e-8]
+
 ################################################################################
 # Humidity
 ################################################################################
@@ -235,8 +244,8 @@ class ObservationError(DataProviderBase):
     """
     Observation error covariance matrix provider for the LIRAS study.
 
-    This class works in the same way as the :class:`SensorNoiseAPriori` class
-    parts, which means that it takes the :code:`nedt` attributes of the given
+    This class works in the same way as the :class:`SensorNoiseAPriori`
+    , which means that it takes the :code:`nedt` attributes of the given
     sensors and concatenates these vectors into a combined diagonal matrix.
 
     In addition to that, however, this class also reads in estimated footprint
@@ -260,7 +269,7 @@ class ObservationError(DataProviderBase):
                  scene="A"):
         """
         Arguments:
-            sensors(:code:`list`): List of :code:`parts.sensor.Sensor` objects
+            sensors(:code:`list`): List of :code:`artssat.sensor.Sensor` objects
                 containing the sensors that are used in the retrieval.
 
             footprint_error(:code:`Bool`): Include footprint error for :code:`lcpr`

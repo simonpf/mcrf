@@ -32,8 +32,8 @@ import numpy as np
 import scipy as sp
 import os
 from netCDF4 import Dataset
-from parts.sensor import PassiveSensor, ActiveSensor, PassiveSensor
-from parts.sensor.utils import sensor_properties
+from artssat.sensor import PassiveSensor, ActiveSensor, PassiveSensor
+from artssat.sensor.utils import sensor_properties
 
 ################################################################################
 # Ice cloud imager (ICI).
@@ -77,11 +77,11 @@ class ICI(PassiveSensor):
     def __init__(self, name="ici", band_indices=None, stokes_dimension=1):
         """
         This creates an instance of the ICI sensor to be used within a
-        :code:`parts` simulation.
+        :code:`artssat` simulation.
 
         Arguments:
 
-            name(:code:`str`): The name of the sensor used within the parts
+            name(:code:`str`): The name of the sensor used within the artssat
                 simulation.
 
             band_indicees(:code:`list`): Indices of the frequency bands to be used.
@@ -171,11 +171,11 @@ class MWI(PassiveSensor):
     def __init__(self, name="mwi", band_indices=None, stokes_dimension=1):
         """
         This creates an instance of the MWI sensor to be used within a
-        :code:`parts` simulation.
+        :code:`artssat` simulation.
 
         Arguments:
 
-            name(:code:`str`): The name of the sensor used within the parts
+            name(:code:`str`): The name of the sensor used within the artssat
                 simulation.
 
             band_indicees(:code:`list`): Indices of the frequency bands to be used.

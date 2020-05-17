@@ -1,11 +1,11 @@
 import os
 import numpy as np
 
-os.environ["LIRAS_PATH"] = "/home/simonpf/src/joint_flight"
+os.environ["LIRAS_PATH"] = "/home/simonpf/src/crac"
 os.environ["ARTS_DATA_PATH"] = "/home/simonpf/src/arts_xml"
 os.environ["ARTS_BUILD_PATH"] = "/home/simonpf/build/arts_fast"
 
-from parts.utils.data_providers import NetCDFDataProvider
+from artssat.utils.data_providers import NetCDFDataProvider
 import mcrf.liras.setup
 import mcrf.liras
 from   mcrf.retrieval        import CloudRetrieval

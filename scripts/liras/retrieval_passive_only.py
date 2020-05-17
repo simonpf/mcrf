@@ -1,4 +1,4 @@
-from parts.utils.data_providers import NetCDFDataProvider
+from artssat.utils.data_providers import NetCDFDataProvider
 
 import mcrf.liras.setup
 import mcrf.liras
