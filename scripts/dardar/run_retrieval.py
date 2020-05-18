@@ -6,7 +6,7 @@ import mcrf.liras
 from mcrf.retrieval import CloudRetrieval
 from mcrf.sensors import mwi, mwi_full, ici, cloud_sat
 from mcrf.liras.model_data import ModelDataProvider
-from parts.utils.data_providers import NetCDFDataProvider
+from artssat.utils.data_providers import NetCDFDataProvider
 from examples.data_provider.atmosphere import Tropical
 from pyhdf.SD import SD, SDC
 import numpy as np

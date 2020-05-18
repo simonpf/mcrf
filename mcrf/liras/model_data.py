@@ -20,8 +20,8 @@ import os
 from h5py import File
 from typhon.arts.xml import load
 
-from parts.data_provider import DataProviderBase
-from parts.scattering.psd import MY05
+from artssat.data_provider import DataProviderBase
+from artssat.scattering.psd import MY05
 
 liras_path = os.environ["LIRAS_PATH"]
 

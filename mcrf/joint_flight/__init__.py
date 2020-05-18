@@ -9,8 +9,8 @@ import os
 import numpy as np
 from mcrf.psds import D14NDmIce, D14NDmSnow, D14NDmLiquid
 from mcrf.hydrometeors import Hydrometeor
-from parts.retrieval.a_priori import *
-from parts.jacobian import Atanh, Log10, Identity, Composition
+from artssat.retrieval.a_priori import *
+from artssat.jacobian import Atanh, Log10, Identity, Composition
 
 path = os.environ["JOINT_FLIGHT_PATH"]
 scattering_data = os.path.join(path, "data", "scattering_data")

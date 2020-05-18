@@ -2,7 +2,7 @@
 This module provides classes defining the particle size distribbutions used
 for the cloud retrievals.
 """
-from parts.scattering.psd.d14 import D14MN, D14N, D14
+from artssat.scattering.psd.d14 import D14MN, D14N, D14
 
 ################################################################################
 # Mass and N_0^*

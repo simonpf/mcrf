@@ -2,12 +2,12 @@
 Provide Hydrometeor class that extends the parts ScatteringSpecies class
 with some additional attributes used by the :class:CloudRetrieval class.
 """
-import parts
-from parts.jacobian import Log10
+import artssat
+from artssat.jacobian import Log10
 
-class Hydrometeor(parts.scattering.ScatteringSpecies):
+class Hydrometeor(artssat.scattering.ScatteringSpecies):
     """
-    Specialization of the parts.scattering.ScatteringSpecies class that
+    Specialization of the artssat.scattering.ScatteringSpecies class that
     adds serveral attributes that are used to customize the behavior of
     the CloudRetrieval class.
 

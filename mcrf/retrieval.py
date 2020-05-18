@@ -5,17 +5,17 @@ Provides classes for performing forward simulations and cloud retrieval
 calculations.
 """
 import numpy as np
-from parts.atmosphere import Atmosphere1D
-from parts.sensor import ActiveSensor, PassiveSensor
-from parts.atmosphere.surface import Tessem
-from parts.retrieval.a_priori import DataProviderAPriori, PiecewiseLinear
-from parts.retrieval import RetrievalRun
-from parts.atmosphere.absorption import O2, N2, H2O, CloudWater, RelativeHumidity, VMR
-from parts.atmosphere.catalogs import Aer, Perrin
-from parts.utils.data_providers import NetCDFDataProvider
-from parts.scattering.solvers import Disort, RT4
-from parts.simulation import ArtsSimulation
-from parts.jacobian import Log10, Atanh, Composition, Identity
+from artssat.atmosphere import Atmosphere1D
+from artssat.sensor import ActiveSensor, PassiveSensor
+from artssat.atmosphere.surface import Tessem
+from artssat.retrieval.a_priori import DataProviderAPriori, PiecewiseLinear
+from artssat.retrieval import RetrievalRun
+from artssat.atmosphere.absorption import O2, N2, H2O, CloudWater, RelativeHumidity, VMR
+from artssat.atmosphere.catalogs import Aer, Perrin
+from artssat.utils.data_providers import NetCDFDataProvider
+from artssat.scattering.solvers import Disort, RT4
+from artssat.simulation import ArtsSimulation
+from artssat.jacobian import Log10, Atanh, Composition, Identity
 
 ################################################################################
 # Cloud retrieval
@@ -28,22 +28,22 @@ class CloudRetrieval:
 
     Attributes:
 
-        simulation(parts.ArtsSimulation): parts ArtsSimulation object that is used
+        simulation(artssat.ArtsSimulation): artssat ArtsSimulation object that is used
             to perform retrieval caculations.
 
-        h2o(parts.atmosphere.AtmosphericQuantity): The AtmosphericQuantity instance
+        h2o(artssat.atmosphere.AtmosphericQuantity): The AtmosphericQuantity instance
             that represent water vapor in the ARTS simulation.
 
-        cw(parts.atmosphere.AtmosphericQuantity): The AtmosphericQuantity instance
+        cw(artssat.atmosphere.AtmosphericQuantity): The AtmosphericQuantity instance
             that represent cloud liquid in the ARTS simulation.
 
-        sensors(parts.sensor.Sensor): The sensors used in the retrieval.
+        sensors(artssat.sensor.Sensor): The sensors used in the retrieval.
 
         data_provider: The data provider used to perform the retrieval.
     """
     def _setup_retrieval(self):
         """
-        Setup the parts simulation used to perform the retrieval.
+        Setup the artssat simulation used to perform the retrieval.
         """
 
         for q in self.hydrometeors:
@@ -188,7 +188,7 @@ class CloudRetrieval:
 
     def setup(self, verbosity=1):
         """
-        Run parts setup of simulation instance. This function needs to be executed
+        Run artssat setup of simulation instance. This function needs to be executed
         before the retrieval can be calculated.
 
         Arguments:
