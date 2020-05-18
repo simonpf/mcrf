@@ -31,7 +31,7 @@ def n0_a_priori(t):
     Returns:
         A priori for :math:`log(N_0^*)`
     """
-    t = t - 272.15
+    t = t - 273.15
     return np.log10(np.exp(-0.076586 * t + 17.948))
 
 def dm_a_priori(t):
