@@ -1,0 +1,97 @@
+% Created 2018-06-25 Mo 13:07
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{adjustbox}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+\usepackage{units}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage[authoryear,round]{natbib}
+\title{Response to comments}
+\subtitle{Synergistic radar and radiometer retrievals of ice hydrometeors}
+\date{}
+\hypersetup{
+ pdfauthor={Simon Pfreundschuh},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 24.5.1}, 
+ pdflang={English}}
+
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{luacolor}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{{\protect\textcolor{blue}{\uwave{#1}}}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{{\protect\textcolor{red}{\sout{#1}}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+
+\mdfdefinestyle{change}{%
+  topline=false,
+  leftline=true,
+  rightline=false,
+  bottomline=false
+}
+
+\newenvironment{change}[1][]{%
+  \begin{mdframed}[frametitle={Changes starting in line #1:}, style=change]%
+}{%
+  \end{mdframed}%
+}
+
+\begin{document}
+\maketitle
+
+\setlength{\parindent}{0cm}
+
+This document contains the responses to the comments of each reviewer followed
+by the marked-up differences of the manuscript and the revised version. For each
+comment the author's response and, if applicable, the corresponding changes in
+the manuscript are listed. Line numbers of changes are given with respect to the
+revised manuscript.
+
+In response to the combined comments of the referees, all computations
+have been repeated and most of the manuscript has been rewritten. The
+following general changes have been implemented:
+
+\begin{itemize}
+\item We have switched to an airborne measurement set-up and
+   the manuscript has been modified accordingly.
+\item The text in the result section has been shortened.
+\item Redundant results for scene 2 have been placed in an appendix.
+\item The selection of tested retrieval habits has been revised and changed.
+\end{itemize}
+
+\chapter{Comments from referee 1}
+\input{response_revised_1}
+\chapter{Comments from referee 2}
+\input{response_revised_2}
+\chapter{Comments from referee 3}
+\input{response_revised_3}
+\chapter{Marked-up differences}
+
+\bibliographystyle{copernicus}
+\bibliography{references}
+
+\end{document}

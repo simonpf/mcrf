@@ -1,0 +1,151 @@
+
+\section{General comments}
+
+\subsection*{Reviewer comment 1}
+
+L 106: that cloud ice particles are small and abundant while snow particles are
+large and much rare is nature not the model. So I would recommend to change the
+sentence: " An important characteristic can be identified here.."
+
+\subsubsection{Author response}
+
+The proposed change will be adopted in the revised manuscript.
+
+\subsubsection*{Changes in manuscript}
+
+  \begin{change}[106]
+    An important characteristic \DIFdelbegin \DIFdel{of the model }\DIFdelend
+    can be identified here, which will help to better understand the retrieval
+    results presented later:
+  \end{change}
+
+\subsection*{Reviewer comment 2}
+
+ L222-223: The two sentences are a bit contradictiry: Just say M1 results will be shown for certain aspects only
+
+\subsubsection{Author response}
+
+The proposed changes will be adopted in the revised manuscript.
+
+\subsubsection*{Changes in manuscript}
+
+  \begin{change}[220]
+ In addition to a two-moment radar-only retrieval, also a one-moment version
+ (M1), in which only the $D_m$ parameter is retrieved has been tested.
+ \DIFdelbegin \DIFdel{For completeness, retrieval results for IWC will be
+   reported also for the M1 version. However, to allow for better comparison
+   with the combined and passive-only retrieval , for the remaining results only
+   the two-moment version is considered}\DIFdelend \DIFaddbegin \DIFadd{However,
+   results of this version will be shown only for the comparison of IWC
+   retrieval errors}\DIFaddend .
+  \end{change}
+
+\subsection*{Reviewer comment 3}
+
+ L247 WC is used as abbreviation before being defined
+
+\subsubsection{Author response}
+
+We will correct this in the revised manuscript.
+
+\subsubsection*{Changes in manuscript}
+
+  \begin{change}[247]
+ Mass backscattering efficiency and attenuation coefficient are defined as the
+ ratio of the corresponding cross-section $\sigma$ and the bulk water content
+ \DIFaddbegin \DIFadd{(\text{WC})}\DIFaddend :
+\begin{align}
+  Q &= \frac{\sigma}{\text{WC}}
+\end{align}
+\end{change}
+
+\subsection*{Reviewer comment 4}
+
+ Figure 5 caption: say that this is an ice cloud
+
+\subsubsection{Author response}
+
+The caption of Fig.~5 will be changed in the revised manuscript as shown below.
+
+\subsubsection*{Changes in manuscript}
+ 
+
+\begin{change}[284]
+Simulated observations of a homogeneous, $5\ \unit{km}$ thick \DIFaddbeginFL \DIFaddFL{ice }\DIFaddendFL cloud
+  \DIFdelbeginFL \DIFdelFL{layer }\DIFdelendFL centered at $10\ \unit{km}$ with varying water content $m$ and
+  mass-weighted mean diameter $D_m$. The panels display the maximum radar
+  reflectivity in dBZ ($\text{dBZ}_\text{max}$) overlaid onto the cloud signal
+  ($\Delta T_B$) measured by selected radiometer channels of the MWI (first row)
+  and ICI radiometers (second row).
+  \end{change}
+
+\subsection*{Reviewer comment 5}
+
+I really like Fig. 12 It shows the clear contribution in DOF from the different
+parameters. Just as a quick idea which does not neccessaryl need to be
+implemented but might strengthen the discussion on LCWC: Could you look at the
+ratio of the the combined DOF and the sum of the the single retrievals. This
+could help to explain that the ice information is in both radar and passiv and
+therefore in the combined retrieval the nicrowave information content for ice is
+not needed (ice contribution is determined) and therefore the information
+content is transfered to LCWC is transfer. This argumention in 4.2.3 is
+currenttly not too strong.
+
+\subsubsection{Author response}
+
+As suggested by the referee, we have produced a plot of the ratio of the DFS of
+the combined retrieval and the sum of DFS of the single-instrument retrievals.
+Since this plot indeed strengthens our arguments on the combined information
+content on LCWC, we have extended the discussion in Sect. 4.2.3 as shown below.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{../plots/dfs_ratios}
+  \caption{Ratios of the DFS of the combined retrieval ($\text{DFS}_\text{co}$) and
+    the sum of the DFS or the single-instrument retrievals ($\text{DFS}_\text{ro} + \text{DFS}_\text{po}$)
+    for the two test scenes.}
+  \label{fig:dfs_ratios}
+\end{figure}
+j
+\subsubsection*{Changes in manuscript}
+
+\begin{change}[523]
+ \DIFaddbegin \DIFadd{This effect is more clearly visible when the fraction of total
+DFS of the combined retrieval and the sum of the DFS of the single-instrument retrieval is considered, as shown in Fig.~\ref{fig:dfs_ratios}. This ratio,
+which gives an estimate of the synergistic information content in the active
+and passive observation, shows a distinct increase in the second test scene
+at around $42^\circ\ N$, where the scene contains a mixed-phase cloud.
+}
+ \end{change}
+
+
+\subsection*{Reviewer comment 6}
+
+ L548: "..was able TO reproduce.. 
+
+
+\subsubsection*{Author response}
+The missing word will be added to the revised manuscript.
+
+\subsubsection*{Changes in manuscript}
+
+\begin{change}[548]
+Moreover, the combined retrieval showed clear sensitivity to particle number
+concentrations and was able \DIFaddbegin \DIFadd{to }\DIFaddend reproduce their
+vertical structure in regions where the cloud composition ...
+\end{change}
+
+\subsection*{Reviewer comment 6}
+
+ Table 3 caption - give symbol lq for correlation length
+
+\subsubsection*{Author response}
+
+The caption of Table~3 will be corrected in the revised manuscript, as shown
+below.
+
+\subsubsection*{Changes in manuscript}
+
+\begin{change}[218]
+A priori uncertainties \DIFaddbeginFL \DIFaddFL{$sigma_q$ }\DIFaddendFL and correlation lengths \DIFaddbeginFL \DIFaddFL{$l_q$ }\DIFaddendFL used in the retrieval.
+\end{change}
