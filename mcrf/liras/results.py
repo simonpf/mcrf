@@ -357,7 +357,7 @@ def plot_results(lats, z, qs, name, norm,
         if j < n_plots - 1:
             ax.set_xticks([])
         else:
-            ax.set_xlabel(r"Latitude [$\unit{^\circ \ \text{N}}$]", fontsize = 14)
+            ax.set_xlabel(r"Latitude [$\unit{^\circ \text{N}}$]", fontsize = 14)
         if not titles is None:
             ax.set_title(prefix[j + i] + " " + titles[j], loc = "left", fontsize = 14)
 
@@ -433,7 +433,7 @@ def plot_results_2(lats, z, qs, name, norm, costs = None, cmap = magma, titles =
             ax.set_xticks([])
         if not titles is None:
             ax.set_title(titles[j], loc = "left")
-            ax.set_xlabel("Latitude [$^\circ$]")
+            ax.set_xlabel("Latitude [$^\circ \text{N}$]")
 
     #
     # Colorbar

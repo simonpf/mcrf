@@ -33,9 +33,9 @@ scattering_data = os.path.join(liras_path, "data", "scattering")
 # Vertical grid with reduced resolution
 z_grid = np.linspace(0, 20e3, 11)
 
-################################################################################
+###############################################################################
 # Ice particles
-################################################################################
+###############################################################################
 
 ice_shape = os.path.join(scattering_data, "8-ColumnAggregate.xml")
 ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
@@ -84,9 +84,9 @@ ice.transformations = [
 # Lower limits for N_0^* and m in transformed space.
 ice.limits_low = [2, 1e-8]
 
-################################################################################
+###############################################################################
 # Snow particles
-################################################################################
+###############################################################################
 
 snow_shape = os.path.join(scattering_data, "EvansSnowAggregate.xml")
 snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
@@ -134,9 +134,9 @@ snow.transformations = [
 # Lower limits for N_0^* and m in transformed space.
 snow.limits_low = [4, 1e-8]
 
-################################################################################
+###############################################################################
 # Rain particles
-################################################################################
+###############################################################################
 
 rain_shape = os.path.join(scattering_data, "LiquidSphere.xml")
 rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
@@ -188,9 +188,9 @@ rain.transformations = [
 rain.limits_low = [2, 1e-8]
 rain.radar_only = True
 
-################################################################################
+###############################################################################
 # Liquid particles
-################################################################################
+###############################################################################
 
 liquid_mask = TemperatureMask(240.0, 300.0)
 liquid_covariance = Diagonal(2**2)
@@ -214,9 +214,9 @@ liquid = Hydrometeor("liquid",
 # Lower limits for N_0^* and m in transformed space.
 liquid.limits_low = [2, 1e-8]
 
-################################################################################
+###############################################################################
 # Humidity
-################################################################################
+###############################################################################
 
 rh_mask = AltitudeMask(-1, 20e3)
 rh_covariance = Diagonal(0.5, mask=rh_mask)
@@ -233,11 +233,11 @@ h2o_a_priori = ReducedVerticalGrid(h2o_a_priori,
                                    provide_retrieval_grid=False)
 h2o_a_priori.unit = "rh"
 h2o_a_priori.transformation = Composition(Atanh(0.0, 1.1),
-                                         PiecewiseLinear(h2o_a_priori))
+                                          PiecewiseLinear(h2o_a_priori))
 
-################################################################################
+###############################################################################
 # Observation error
-################################################################################
+###############################################################################
 
 
 class ObservationError(DataProviderBase):
@@ -269,14 +269,14 @@ class ObservationError(DataProviderBase):
                  scene="A"):
         """
         Arguments:
-            sensors(:code:`list`): List of :code:`artssat.sensor.Sensor` objects
-                containing the sensors that are used in the retrieval.
+            sensors(:code:`list`): List of :code:`artssat.sensor.Sensor`
+                objects containing the sensors that are used in the retrieval.
 
-            footprint_error(:code:`Bool`): Include footprint error for :code:`lcpr`
-                sensor.
+            footprint_error(:code:`Bool`): Include footprint error for
+                :code:`lcpr` sensor.
 
-            forward_model_error(:code:`Bool`): Include estimated model error for
-                all sensors.
+            forward_model_error(:code:`Bool`): Include estimated model error
+                for all sensors.
 
         """
         self.sensors = sensors
