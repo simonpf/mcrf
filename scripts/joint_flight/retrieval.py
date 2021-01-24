@@ -35,12 +35,12 @@ parser.add_argument('i_end',
                     nargs=1,
                     help="End of range of profiles to retrieve.")
 parser.add_argument('shape', metavar='shape', type=str, nargs=1)
-parser.add_argument('config', metavar='config', type=str, nargs=1)
+#parser.add_argument('config', metavar='config', type=str, nargs=1)
 args = parser.parse_args()
 i_start = args.i_start[0]
 i_end = args.i_end[0]
 shape = args.shape[0]
-config = args.config[0]
+#config = args.config[0]
 
 #
 # Load observations.
