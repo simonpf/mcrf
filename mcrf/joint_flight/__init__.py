@@ -6,6 +6,8 @@ The joint flight module contains the a priori settings for the joint flight
 retrieval.
 """
 import os
+from pathlib import Path
+
 import numpy as np
 from mcrf.psds import D14NDmIce, D14NDmSnow, D14NDmLiquid
 from mcrf.hydrometeors import Hydrometeor
@@ -14,7 +16,11 @@ from artssat.jacobian import Atanh, Log10, Identity, Composition
 from mcrf.liras.common import (n0_a_priori, dm_a_priori, rh_a_priori,
                                ice_mask, rain_mask)
 
-path = os.environ["JOINT_FLIGHT_PATH"]
+
+path = os.environ.get("JOINT_FLIGHT_PATH")
+if path is None:
+    path = Path(__file__).parent.parent
+
 scattering_data = os.path.join(path, "data", "scattering_data")
 
 # Vertical grid with reduced resolution
