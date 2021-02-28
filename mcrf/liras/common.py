@@ -5,19 +5,20 @@ import numpy as np
 import artssat
 from artssat.jacobian import Atanh
 from artssat.retrieval.a_priori import (And, TropopauseMask, TemperatureMask,
-                                      FreezingLevel)
+                                        FreezingLevel, Dilate)
 
 """
 Mask limiting retrieval of ice to between 280 K isotherm and the tropopause.
 """
-ice_mask = And(TropopauseMask(),
-               FreezingLevel(lower_inclusive = True, invert = False))
+ice_mask = Dilate(And(TropopauseMask(),
+                      FreezingLevel(lower_inclusive=True, invert=False)),
+                  1)
 #               TemperatureMask(0.0, 273.15, lower_inclusive = True))
 
 """
 Mask limiting retrieval of rain to between surface and 264 K isotherm.
 """
-rain_mask = FreezingLevel(lower_inclusive = False, invert = True)
+rain_mask = Dilate(FreezingLevel(lower_inclusive = False, invert = True), 1)
 #TemperatureMask(273.15, 340.0, upper_inclusive = True)
 
 def n0_a_priori(t):

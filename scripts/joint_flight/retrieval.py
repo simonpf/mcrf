@@ -3,9 +3,6 @@ import mcrf.joint_flight.setup
 import mcrf.liras
 
 import numpy as np
-import mpi4py
-mpi4py.rc.initialize = True
-mpi4py.rc.finalize = True
 from mpi4py import MPI
 
 import mcrf.liras
