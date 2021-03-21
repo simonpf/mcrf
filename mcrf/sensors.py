@@ -315,19 +315,37 @@ class HampPassive(PassiveSensor):
 
 class Ismar(PassiveSensor):
 
-    center_frequencies = np.array([118.75, 243.2, 325.15, 664.0]) * 1e9
+    center_frequencies = np.array([118.75, 243.2, 325.15, 424.7,
+                                   448.0, 664.0, 874.4]) * 1e9
     offsets = [
         np.array([1.1, 1.5, 2.1, 3.0, 5.0]) * 1e9,
         np.array([2.5]) * 1e9,
         np.array([1.5, 3.5, 9.5]) * 1e9,
-        np.array([4.2]) * 1e9
+        np.array([1.0, 1.5, 4.0]) * 1e9,
+        np.array([1.4, 3.0, 7.2]) * 1e9,
+        np.array([4.2]) * 1e9,
+        np.array([6.0]) * 1e9
     ]
 
     _nedt = np.array(10 * [2.0])
 
-    def __init__(self, stokes_dimension=1):
-        channels, sensor_response = sensor_properties(Ismar.center_frequencies,
-                                                      Ismar.offsets,
+    def __init__(self,
+                 channels=range(17),
+                 stokes_dimension=1):
+        center_frequencies = []
+        offsets = []
+        index = 0
+        for f_c, offs in zip(Ismar.center_frequencies,
+                             Ismar.offsets):
+            for o in offs:
+                if index in channels:
+                    if f_c not in center_frequencies:
+                        offsets += [[]]
+                        center_frequencies += [f_c]
+                    offsets[-1] += [o]
+                index += 1
+        channels, sensor_response = sensor_properties(center_frequencies,
+                                                      offsets,
                                                       order="positive")
         super().__init__(name="ismar",
                          f_grid=channels,
@@ -347,6 +365,61 @@ class Ismar(PassiveSensor):
     def nedt(self):
         return 1.0 * np.ones(self.sensor_response_f.size)
 
+###############################################################################
+# MARSS
+###############################################################################
+
+
+class Marss(PassiveSensor):
+
+    center_frequencies = np.array([89, 157, 183]) * 1e9
+    offsets = [
+        np.array([0.0]) * 1e9,
+        np.array([0.0]) * 1e9,
+        np.array([1.0, 3.0, 7.0]) * 1e9,
+    ]
+
+    _nedt = np.array(10 * [2.0])
+
+    def __init__(self,
+                 channels=range(17),
+                 stokes_dimension=1):
+
+        center_frequencies = []
+        offsets = []
+        index = 0
+        for f_c, offs in zip(Marss.center_frequencies,
+                             Marss.offsets):
+            for o in offs:
+                if index in channels:
+                    if f_c not in center_frequencies:
+                        offsets += [[]]
+                        center_frequencies += [f_c]
+                    offsets[-1] += [o]
+                index += 1
+
+        channels, sensor_response = sensor_properties(center_frequencies,
+                                                      offsets,
+                                                      order="positive")
+        super().__init__(name="marss",
+                         f_grid=channels,
+                         stokes_dimension=stokes_dimension)
+        self.sensor_line_of_sight = np.array([180.0])
+        self.sensor_position = np.array([9300.0])
+        self.iy_unit = "RJBT"
+
+        m = sensor_response.shape[0]
+        self.sensor_response_f = self.f_grid[:m]
+        self.sensor_response_pol = self.f_grid[:m]
+        self.sensor_response_dlos = self.f_grid[:m, np.newaxis]
+        self.sensor_response = sensor_response
+        self.sensor_f_grid = self.f_grid[:m]
+
+    @property
+    def nedt(self):
+        return 1.0 * np.ones(self.sensor_response_f.size)
+
+
 
 ################################################################################
 # Liras cloud profiling radar (LCPR).
@@ -359,16 +432,19 @@ class LCPR(ActiveSensor):
     def __init__(self,
                  name="lcpr",
                  range_bins=np.arange(0.0, 20e3, 500.0),
+                 y_min=-30.0,
                  stokes_dimension=1):
         super().__init__(name,
                          f_grid=np.array([94e9]),
                          stokes_dimension=stokes_dimension,
                          range_bins=range_bins)
-        self.nedt = 0.5 * np.ones(range_bins.size - 1)
+        if range_bins is not None:
+            self.nedt = 0.5 * np.ones(range_bins.size - 1)
         self.instrument_pol = [1]
         self.instrument_pol_array = [[1]]
         self.extinction_scaling = 1.0
         self.y_min = -30.0
+
 
 ################################################################################
 # HAMP
@@ -469,10 +545,13 @@ lcpr.sensor_position = np.array([[600e3]])
 # CloudSat
 #
 
-cloud_sat = LCPR(stokes_dimension=1)
+cloud_sat = LCPR(stokes_dimension=1,
+                 range_bins=None,
+                 y_min=-26)
 cloud_sat.name = "cloud_sat"
 cloud_sat.sensor_line_of_sight = np.array([[180.0]])
 cloud_sat.sensor_position = np.array([[600e3]])
+cloud_sat.extinction_scaling = 0.5
 
 #
 # HAMP RADAR

@@ -7,9 +7,10 @@ from mpi4py import MPI
 
 import mcrf.liras
 from mcrf.retrieval import CloudRetrieval
-from mcrf.sensors import hamp_radar, hamp_passive, ismar
-from mcrf.joint_flight import ice, snow, rain, cloud_water_a_priori, \
-    h2o_a_priori, ObservationError, temperature_a_priori
+from mcrf.sensors import hamp_radar, hamp_passive
+from mcrf.joint_flight import (ice, snow, rain, cloud_water_a_priori,
+                               h2o_a_priori, ObservationError,
+                               temperature_a_priori, ismar)
 
 from artssat.retrieval.a_priori import SensorNoiseAPriori
 from mcrf.joint_flight import psd_shapes_high, psd_shapes_low

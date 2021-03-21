@@ -1,9 +1,9 @@
 """
-mcrf.joint_flight
-==================
+mcrf.faam_cs
+============
 
-The joint flight module contains the a priori settings for the joint flight
-retrieval.
+This module defines the a priori assumptions and sensor settings
+for the FAMM ClouSat underpasses c159 and c161.
 """
 import os
 from pathlib import Path
@@ -15,7 +15,7 @@ from artssat.retrieval.a_priori import *
 from artssat.jacobian import Atanh, Log10, Identity, Composition
 from mcrf.liras.common import (n0_a_priori, dm_a_priori, rh_a_priori,
                                ice_mask, rain_mask)
-from mcrf.sensors import Ismar
+from mcrf.sensors import Ismar, Marss
 
 
 path = os.environ.get("JOINT_FLIGHT_PATH")
@@ -25,13 +25,14 @@ if path is None:
 scattering_data = os.path.join(path, "data", "scattering_data")
 
 # Vertical grid with reduced resolution
-z_grid = np.linspace(0, 12e3, 25)
+z_grid = np.linspace(0, 10e3, 20)
 
 ################################################################################
 # Sensor instances
 ################################################################################
 
-ismar = Ismar([0, 1, 2, 3, 4, 5, 6, 7, 8, 15])
+ismar = Ismar([0, 1, 2, 3, 4, 5, 7, 12, 13, 14, 15, 15, 16])
+marss = Marss()
 
 ################################################################################
 # Ice particles
@@ -46,7 +47,7 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 #
 
 ice_covariance = Diagonal(500e-6**2, mask=ice_mask, mask_value=1e-12)
-ice_covariance = SpatialCorrelation(ice_covariance, 5e3, mask=ice_mask)
+ice_covariance = SpatialCorrelation(ice_covariance, 1e3, mask=ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm",
                                     "temperature",
                                     dm_a_priori,
@@ -59,18 +60,13 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm",
 #
 
 ice_covariance = Diagonal(0.25, mask=ice_mask, mask_value=1e-12)
-ice_covariance = SpatialCorrelation(ice_covariance, 10e3, mask=ice_mask)
+ice_covariance = SpatialCorrelation(ice_covariance, 2e3, mask=ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0",
                                     "temperature",
                                     n0_a_priori,
                                     ice_covariance,
                                     mask=ice_mask,
                                     mask_value=4)
-ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori,
-                                    20,
-                                    ice_mask,
-                                    "altitude",
-                                    provide_retrieval_grid=False)
 
 #
 # Hydrometeor definition
@@ -79,7 +75,7 @@ ice_n0_a_priori = MaskedRegularGrid(ice_n0_a_priori,
 ice = Hydrometeor("ice", D14NDmIce(), [ice_n0_a_priori, ice_dm_a_priori],
                   ice_shape, ice_shape_meta)
 ice.transformations = [
-    Composition(Log10(), PiecewiseLinear(ice_n0_a_priori)),
+    Log10(),
     Identity()
 ]
 # Lower limits for N_0^* and m in transformed space.
@@ -91,14 +87,14 @@ ice.limits_low = [2, 1e-8]
 
 snow_shape = os.path.join(scattering_data, "EvansSnowAggregate.xml")
 snow_shape_meta = os.path.join(scattering_data, "EvansSnowAggregate.meta.xml")
-snow_mask = And(AltitudeMask(0.0, 19e3), TemperatureMask(0.0, 276.0))
+snow_mask = And(AltitudeMask(0.0, 9e3), TemperatureMask(0.0, 276.0))
 
 #
 # D_m
 #
 
 snow_covariance = Diagonal(500e-6**2, mask=snow_mask, mask_value=1e-12)
-snow_covariance = SpatialCorrelation(snow_covariance, 5e3, mask=ice_mask)
+snow_covariance = SpatialCorrelation(snow_covariance, 1e3, mask=ice_mask)
 snow_dm_a_priori = FixedAPriori("snow_dm",
                                 1e-3,
                                 snow_covariance,
@@ -110,7 +106,7 @@ snow_dm_a_priori = FixedAPriori("snow_dm",
 #
 
 snow_covariance = Diagonal(0.25, mask=snow_mask, mask_value=1e-12)
-snow_covariance = SpatialCorrelation(snow_covariance, 10e3, mask=snow_mask)
+snow_covariance = SpatialCorrelation(snow_covariance, 2e3, mask=snow_mask)
 snow_n0_a_priori = FixedAPriori("snow_n0",
                                 7,
                                 snow_covariance,
@@ -129,7 +125,7 @@ snow_n0_a_priori = MaskedRegularGrid(snow_n0_a_priori,
 snow = Hydrometeor("snow", D14NDmIce(), [snow_n0_a_priori, snow_dm_a_priori],
                    snow_shape, snow_shape_meta)
 snow.transformations = [
-    Composition(Log10(), PiecewiseLinear(snow_n0_a_priori)),
+    Log10(),
     Identity()
 ]
 # Lower limits for N_0^* and m in transformed space.
@@ -152,11 +148,6 @@ rain_dm_a_priori = FixedAPriori("rain_dm",
                                 rain_covariance,
                                 mask=rain_mask,
                                 mask_value=1e-8)
-rain_dm_a_priori = MaskedRegularGrid(rain_dm_a_priori,
-                                     10,
-                                     rain_mask,
-                                     "altitude",
-                                     provide_retrieval_grid=False)
 
 #
 # N_0^*
@@ -168,11 +159,6 @@ rain_n0_a_priori = FixedAPriori("rain_n0",
                                 rain_covariance,
                                 mask=rain_mask,
                                 mask_value=2)
-rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori,
-                                     4,
-                                     rain_mask,
-                                     "altitude",
-                                     provide_retrieval_grid=False)
 
 #
 # Hydrometeor definition
@@ -182,8 +168,8 @@ rain = Hydrometeor("rain", D14NDmLiquid(),
                    [rain_n0_a_priori, rain_dm_a_priori], rain_shape,
                    rain_shape_meta)
 rain.transformations = [
-    Composition(Log10(), PiecewiseLinear(rain_n0_a_priori)),
-    Composition(Identity(), PiecewiseLinear(rain_dm_a_priori))
+    Log10(),
+    Identity()
 ]
 rain.limits_low = [2, 1e-8]
 
@@ -193,7 +179,7 @@ rain.limits_low = [2, 1e-8]
 
 liquid_mask = TemperatureMask(240.0, 300.0)
 liquid_covariance = Diagonal(2**2)
-liquid_covariance = SpatialCorrelation(liquid_covariance, 2e3)
+liquid_covariance = SpatialCorrelation(liquid_covariance, 1e3)
 cloud_water_a_priori = FixedAPriori("cloud_water",
                                     np.log10(1e-6),
                                     liquid_covariance,
@@ -219,20 +205,19 @@ liquid.limits_low = [2, 1e-8]
 
 rh_mask = AltitudeMask(-1, 12e3)
 rh_covariance = Diagonal(0.5, mask=rh_mask)
-rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
+rh_covariance = SpatialCorrelation(rh_covariance, 1e3)
 h2o_a_priori = FunctionalAPriori("H2O",
                                 "temperature",
                                 rh_a_priori,
                                 rh_covariance,
                                 mask=rh_mask,
                                 mask_value=-100)
-h2o_a_priori = ReducedVerticalGrid(h2o_a_priori,
-                                   z_grid,
-                                   quantity="altitude",
-                                   provide_retrieval_grid=False)
+#h2o_a_priori = ReducedVerticalGrid(h2o_a_priori,
+#                                   z_grid,
+#                                   quantity="altitude",
+#                                   provide_retrieval_grid=False)
 h2o_a_priori.unit = "rh"
-h2o_a_priori.transformation = Composition(Atanh(0.0, 1.1),
-                                          PiecewiseLinear(h2o_a_priori))
+h2o_a_priori.transformation = Atanh(0.0, 1.1)
 
 ################################################################################
 # Temperature
@@ -285,7 +270,7 @@ class ObservationError(DataProviderBase):
             nedt_dp = self._get_nedt(s, i_p)
             c = self.noise_scaling[s.name]
             if isinstance(s, ActiveSensor):
-                diag += [(c * s.nedt)**2 + (nedt_dp**2)]
+                diag += [nedt_dp**2]
 
         for s in self.sensors:
             nedt_dp = self._get_nedt(s, i_p)
@@ -297,39 +282,3 @@ class ObservationError(DataProviderBase):
         covmat = sp.sparse.diags(diag, format="coo")
 
         return covmat
-
-
-psd_shapes_high = {
-    'GemCloudIce': np.array([-0.12104242, -0.37290501]),
-    'IceSphere': np.array([-0.12104242, -0.37290501]),
-    'PlateType1': np.array([-0.07482611, -0.22687893]),
-    'ColumnType1': np.array([-0.03957543, -0.1191577]),
-    '6-BulletRosette': np.array([-0.07780157, -0.23603571]),
-    'GemGraupel': np.array([0., 0.]),
-    'GemHail': np.array([0., 0.]),
-    'IconHail': np.array([-0.11569386, -0.35577652]),
-    'LargePlateAggregate': np.array([-0.09142382, -0.27909084]),
-    'LargeColumnAggregate': np.array([-0.09593044, -0.29314433]),
-    '8-ColumnAggregate': np.array([-0.12104243, -0.37290503]),
-    'IconSnow': np.array([-0.13791779, -0.42784954]),
-    'SectorSnowflake': np.array([-0.03023455, -0.09090244]),
-    'dardar-spheroid': np.array([0.04841678, 0.145376670]),
-    'LargeBlockAggregate': np.array([-0.09252217, -0.28254723])
-}
-psd_shapes_low = {
-    'GemCloudIce': np.array([0.09057627, 0.288721]),
-    'IceSphere': np.array([0.09057627, 0.288721]),
-    'PlateType1': np.array([0.10635748, 0.33487314]),
-    'ColumnType1': np.array([0.10669262, 0.33583251]),
-    '6-BulletRosette': np.array([-0.0301881, 0.41605698]),
-    'GemGraupel': np.array([0., 0.]),
-    'GemHail': np.array([0., 0.]),
-    'IconHail': np.array([-0.01943259, 0.50897917]),
-    'LargePlateAggregate': np.array([-0.03695045, 0.43390347]),
-    'LargeColumnAggregate': np.array([-0.03629038, 0.43722814]),
-    '8-ColumnAggregate': np.array([-0.02789504, 0.47673042]),
-    'IconSnow': np.array([-0.02876806, 0.47403553]),
-    'SectorSnowflake': np.array([0.07255487, 0.21828742]),
-    'dardar-spheroid': np.array([0.10179584, 0.41745750]),
-    'LargeBlockAggregate': np.array([0.10467324, 0.3300683])
-}

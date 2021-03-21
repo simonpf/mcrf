@@ -180,8 +180,10 @@ class CloudRetrieval:
         if all([isinstance(s, ActiveSensor) for s in self.sensors]):
             self.simulation.retrieval.callbacks = [("Radar only", radar_only)]
         elif any([isinstance(s, ActiveSensor) for s in self.sensors]):
-            self.simulation.retrieval.callbacks = [("All quantities",
-                                                    all_quantities)]
+            self.simulation.retrieval.callbacks = [
+                #("Radar only", radar_only),
+                ("All quantities", all_quantities)
+            ]
         else:
             self.simulation.retrieval.callbacks = [("All quantities",
                                                     all_quantities)]
