@@ -217,7 +217,7 @@ h2o_a_priori = FunctionalAPriori("H2O",
 #                                   quantity="altitude",
 #                                   provide_retrieval_grid=False)
 h2o_a_priori.unit = "rh"
-h2o_a_priori.transformation = Atanh(0.0, 1.1)
+h2o_a_priori.transformation = Atanh(0.0, 1.3)
 
 ################################################################################
 # Temperature
