@@ -206,12 +206,21 @@ liquid.limits_low = [2, 1e-8]
 rh_mask = AltitudeMask(-1, 12e3)
 rh_covariance = Diagonal(0.5, mask=rh_mask)
 rh_covariance = SpatialCorrelation(rh_covariance, 1e3)
+#h2o_a_priori = FunctionalAPriori("H2O",
+#                                "temperature",
+#                                rh_a_priori,
+#                                rh_covariance,
+#                                mask=rh_mask,
+#                                mask_value=-100)
 h2o_a_priori = FunctionalAPriori("H2O",
                                 "temperature",
                                 rh_a_priori,
                                 rh_covariance,
                                 mask=rh_mask,
                                 mask_value=-100)
+h2o_a_priori = DataProviderAPriori("H2O",
+                                   rh_covariance,
+                                   Atanh(0.0, 1.3))
 #h2o_a_priori = ReducedVerticalGrid(h2o_a_priori,
 #                                   z_grid,
 #                                   quantity="altitude",
@@ -223,7 +232,7 @@ h2o_a_priori.transformation = Atanh(0.0, 1.3)
 # Temperature
 ################################################################################
 
-temperature_covariance = Diagonal(1**2)
+temperature_covariance = Diagonal(2**2)
 temperature_covariance = SpatialCorrelation(temperature_covariance, 0.5e3)
 temperature_a_priori = DataProviderAPriori("temperature",
                                            temperature_covariance)

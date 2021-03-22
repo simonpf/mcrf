@@ -46,7 +46,7 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 #
 
 ice_covariance = Diagonal(500e-6**2, mask=ice_mask, mask_value=1e-12)
-ice_covariance = SpatialCorrelation(ice_covariance, 5e3, mask=ice_mask)
+ice_covariance = SpatialCorrelation(ice_covariance, 1e3, mask=ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm",
                                     "temperature",
                                     dm_a_priori,
@@ -59,7 +59,7 @@ ice_dm_a_priori = FunctionalAPriori("ice_dm",
 #
 
 ice_covariance = Diagonal(0.25, mask=ice_mask, mask_value=1e-12)
-ice_covariance = SpatialCorrelation(ice_covariance, 10e3, mask=ice_mask)
+ice_covariance = SpatialCorrelation(ice_covariance, 2e3, mask=ice_mask)
 ice_n0_a_priori = FunctionalAPriori("ice_n0",
                                     "temperature",
                                     n0_a_priori,
@@ -98,7 +98,7 @@ snow_mask = And(AltitudeMask(0.0, 19e3), TemperatureMask(0.0, 276.0))
 #
 
 snow_covariance = Diagonal(500e-6**2, mask=snow_mask, mask_value=1e-12)
-snow_covariance = SpatialCorrelation(snow_covariance, 5e3, mask=ice_mask)
+snow_covariance = SpatialCorrelation(snow_covariance, 1e3, mask=ice_mask)
 snow_dm_a_priori = FixedAPriori("snow_dm",
                                 1e-3,
                                 snow_covariance,
@@ -110,7 +110,7 @@ snow_dm_a_priori = FixedAPriori("snow_dm",
 #
 
 snow_covariance = Diagonal(0.25, mask=snow_mask, mask_value=1e-12)
-snow_covariance = SpatialCorrelation(snow_covariance, 10e3, mask=snow_mask)
+snow_covariance = SpatialCorrelation(snow_covariance, 2e3, mask=snow_mask)
 snow_n0_a_priori = FixedAPriori("snow_n0",
                                 7,
                                 snow_covariance,
@@ -147,32 +147,24 @@ rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 #
 
 rain_covariance = Diagonal(500e-6**2, mask=rain_mask, mask_value=1e-12)
+rain_covariance = SpatialCorrelation(rain_covariance, 1e3, mask=ice_mask)
 rain_dm_a_priori = FixedAPriori("rain_dm",
                                 500e-6,
                                 rain_covariance,
                                 mask=rain_mask,
                                 mask_value=1e-8)
-rain_dm_a_priori = MaskedRegularGrid(rain_dm_a_priori,
-                                     10,
-                                     rain_mask,
-                                     "altitude",
-                                     provide_retrieval_grid=False)
 
 #
 # N_0^*
 #
 
 rain_covariance = Diagonal(1, mask=rain_mask, mask_value=1e-12)
+rain_covariance = SpatialCorrelation(rain_covariance, 2e3, mask=ice_mask)
 rain_n0_a_priori = FixedAPriori("rain_n0",
                                 7,
                                 rain_covariance,
                                 mask=rain_mask,
                                 mask_value=2)
-rain_n0_a_priori = MaskedRegularGrid(rain_n0_a_priori,
-                                     4,
-                                     rain_mask,
-                                     "altitude",
-                                     provide_retrieval_grid=False)
 
 #
 # Hydrometeor definition
@@ -182,8 +174,8 @@ rain = Hydrometeor("rain", D14NDmLiquid(),
                    [rain_n0_a_priori, rain_dm_a_priori], rain_shape,
                    rain_shape_meta)
 rain.transformations = [
-    Composition(Log10(), PiecewiseLinear(rain_n0_a_priori)),
-    Composition(Identity(), PiecewiseLinear(rain_dm_a_priori))
+    Log10(),
+    Identity()
 ]
 rain.limits_low = [2, 1e-8]
 

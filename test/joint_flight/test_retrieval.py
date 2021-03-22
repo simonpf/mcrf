@@ -24,9 +24,9 @@ from mcrf.psds import D14NDmIce
 # Parse arguments
 #
 
-i_start = 800
-i_end = 801
-shape = "8-ColumnAggregate"
+i_start = 5
+i_end = 6
+shape = "LargePlateAggregate"
 
 
 #
@@ -39,8 +39,8 @@ data_provider = NetCDFDataProvider(filename)
 #
 # Define hydrometeors and sensors.
 #
-liras_path = mcrf.liras.liras_path
-ice_shape = os.path.join(liras_path, "data", "scattering", shape)
+path = mcrf.joint_flight.path
+ice_shape = os.path.join(path, "data", "scattering_data", shape)
 ice.scattering_data = ice_shape
 #if config == "low":
 #    alpha, log_beta = psd_shapes_low[shape]
@@ -76,5 +76,5 @@ output_dir = os.path.dirname(filename)
 name = os.path.basename(filename)
 filename = name.replace("input", "output_" + shape)
 
-#retrieval.simulation.run_ranges(range(i_start, min(i_end, 1441)))
-#ws = retrieval.simulation.workspace
+retrieval.simulation.run_ranges(range(i_start, min(i_end, 1441)))
+ws = retrieval.simulation.workspace
