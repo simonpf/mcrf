@@ -1,5 +1,4 @@
 import os
-os.environ["JOINT_FLIGHT_PATH"] = "/home/simonpf/src/joint_flight"
 from artssat.utils.data_providers import NetCDFDataProvider
 import mcrf.joint_flight.setup
 import mcrf.liras
@@ -39,8 +38,7 @@ data_provider = NetCDFDataProvider(filename)
 #
 # Define hydrometeors and sensors.
 #
-path = mcrf.joint_flight.path
-ice_shape = os.path.join(path, "data", "scattering_data", shape)
+ice_shape = os.path.join(mcrf.joint_flight.path, "data", "scattering_data", shape)
 ice.scattering_data = ice_shape
 #if config == "low":
 #    alpha, log_beta = psd_shapes_low[shape]

@@ -3,13 +3,13 @@
 #SBATCH -n 256
 #SBATCH -c 2
 #SBATCH -J clouds
-#SBATCH -t 0-10:00:00
+#SBATCH -t 0-20:00:00
 #SBATCH --mail-type END
-#SBATCH --mail-user simon.pfreundschuh@chalmers.se
 
-export JOINT_FLIGHT_PATH=${HOME}/src/joint_flight
 export OMP_NUM_THREADS=1
 cd ${HOME}/src/crac
+s="SHAPE"
 
 source ops/setup_vera.sh
-mpiexec -n 256 -output-filename combined python scripts/liras/retrieval.py 0 1441 LargePlateAggregate.xml
+mpiexec -n 256 -output-filename combined python scripts/joint_flight/retrieval.py 0 1441 ${s}
+

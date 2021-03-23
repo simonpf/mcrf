@@ -1,11 +1,9 @@
 from artssat.utils.data_providers import NetCDFDataProvider
 import mcrf.joint_flight.setup
-import mcrf.liras
 
 import numpy as np
 from mpi4py import MPI
 
-import mcrf.liras
 from mcrf.retrieval import CloudRetrieval
 from mcrf.sensors import hamp_radar, hamp_passive
 from mcrf.joint_flight import (ice, snow, rain, cloud_water_a_priori,
@@ -50,8 +48,8 @@ data_provider = NetCDFDataProvider(filename)
 #
 # Define hydrometeors and sensors.
 #
-liras_path = mcrf.liras.liras_path
-ice_shape = os.path.join(liras_path, "data", "scattering", shape)
+path = mcrf.joint_flight.path
+ice_shape = os.path.join(path, "data", "scattering_data", shape)
 ice.scattering_data = ice_shape
 #if config == "low":
 #    alpha, log_beta = psd_shapes_low[shape]
@@ -85,7 +83,7 @@ retrieval.setup(verbosity=0)
 
 output_dir = os.path.dirname(filename)
 name = os.path.basename(filename)
-filename = name.replace("input", "output_{}_".format(config) + shape)
+filename = name.replace("input", "output_" + shape)
 output_file = os.path.join(output_dir, filename)
 
 retrieval.simulation.initialize_output_file(

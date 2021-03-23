@@ -1,9 +1,7 @@
 import argparse
 import os
 
-import mpi4py
-mpi4py.rc.initialize = True
-mpi4py.rc.finalize = True
+from mpi4py import MPI
 
 from artssat.utils.data_providers import NetCDFDataProvider
 import mcrf.joint_flight.setup
@@ -30,25 +28,27 @@ parser.add_argument('i_end',
                     nargs=1,
                     help="End of range of profiles to retrieve.")
 parser.add_argument('shape', metavar='shape', type=str, nargs=1)
+parser.add_argument('flight', metavar='flight_number', type=str, nargs=1)
 #parser.add_argument('config', metavar='config', type=str, nargs=1)
 args = parser.parse_args()
 i_start = args.i_start[0]
 i_end = args.i_end[0]
 shape = args.shape[0]
+flight = args.flight[0]
 
 #
 # Load observations.
 #
 
-filename = os.path.join(mcrf.joint_flight.path, "data", "input_c159.nc")
+filename = os.path.join(mcrf.joint_flight.path, "data", f"input_c{flight}.nc")
 data_provider = NetCDFDataProvider(filename)
 
 #
 # Define hydrometeors and sensors.
 #
 
-liras_path = mcrf.liras.liras_path
-ice_shape = os.path.join(liras_path, "data", "scattering", shape)
+path = mcrf.joint_flight.path
+ice_shape = os.path.join(path, "data", "scattering_data", shape + ".xml")
 ice.scattering_data = ice_shape
 
 hydrometeors = [ice, rain]
@@ -77,8 +77,11 @@ retrieval.setup(verbosity=0)
 
 output_dir = os.path.dirname(filename)
 name = os.path.basename(filename)
-filename = name.replace("input", "output_" + shape)
+output_file = name.replace("input", "output_" + shape)
+output_file = os.path.join(output_dir, output_file)
 
 n_rays = data_provider.file_handle.dimensions["rays"].size
-retrieval.simulation.run_ranges(range(i_start, min(i_end, n_rays)))
-ws = retrieval.simulation.workspace
+retrieval.simulation.initialize_output_file(
+    output_file, [("profile", n_rays, 0)],
+    full_retrieval_output=False)
+retrieval.simulation.run_ranges(range(0, n_rays))
