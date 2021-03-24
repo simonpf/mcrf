@@ -52,8 +52,8 @@ ice_shape = os.path.join(path, "data", "scattering_data", shape + ".xml")
 ice.scattering_data = ice_shape
 
 hydrometeors = [ice, rain]
-sensors = [cloud_sat, marss, ismar]
-#sensors = [cloud_sat]#, marss, ismar]
+#sensors = [cloud_sat, marss, ismar]
+sensors = [cloud_sat]#, marss, ismar]
 
 #
 # Add a priori providers.
@@ -81,6 +81,7 @@ output_file = name.replace("input", "output_" + shape)
 output_file = os.path.join(output_dir, output_file)
 
 n_rays = data_provider.file_handle.dimensions["rays"].size
+n_rays = 8
 retrieval.simulation.initialize_output_file(
     output_file, [("profile", n_rays, 0)],
     full_retrieval_output=False)
