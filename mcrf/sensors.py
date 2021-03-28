@@ -443,7 +443,7 @@ class LCPR(ActiveSensor):
         self.instrument_pol = [1]
         self.instrument_pol_array = [[1]]
         self.extinction_scaling = 1.0
-        self.y_min = -30.0
+        self.y_min = y_min
 
 
 ################################################################################
