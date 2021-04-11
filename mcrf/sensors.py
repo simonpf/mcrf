@@ -39,6 +39,11 @@ from artssat.sensor.utils import sensor_properties
 # Ice cloud imager (ICI).
 ################################################################################
 
+def get_channel_names(center_frequencies, sidebands):
+        names = [f"{(c / 1e9):5.2f} +/- {(s / 1e9):3.1f} GHz"
+                 for (c, sbs) in zip(center_frequencies, sidebands)
+                 for s in sbs]
+        return names
 
 class ICI(PassiveSensor):
     """
@@ -317,7 +322,7 @@ class Ismar(PassiveSensor):
 
     center_frequencies = np.array([118.75, 243.2, 325.15, 424.7,
                                    448.0, 664.0, 874.4]) * 1e9
-    offsets = [
+    sidebands = [
         np.array([1.1, 1.5, 2.1, 3.0, 5.0]) * 1e9,
         np.array([2.5]) * 1e9,
         np.array([1.5, 3.5, 9.5]) * 1e9,
@@ -336,7 +341,7 @@ class Ismar(PassiveSensor):
         offsets = []
         index = 0
         for f_c, offs in zip(Ismar.center_frequencies,
-                             Ismar.offsets):
+                             Ismar.sidebands):
             for o in offs:
                 if index in channels:
                     if f_c not in center_frequencies:
@@ -347,6 +352,7 @@ class Ismar(PassiveSensor):
         channels, sensor_response = sensor_properties(center_frequencies,
                                                       offsets,
                                                       order="positive")
+        self.channel_names = get_channel_names(center_frequencies, offsets)
         super().__init__(name="ismar",
                          f_grid=channels,
                          stokes_dimension=stokes_dimension)
@@ -373,7 +379,7 @@ class Ismar(PassiveSensor):
 class Marss(PassiveSensor):
 
     center_frequencies = np.array([89, 157, 183]) * 1e9
-    offsets = [
+    sidebands = [
         np.array([0.0]) * 1e9,
         np.array([0.0]) * 1e9,
         np.array([1.0, 3.0, 7.0]) * 1e9,
@@ -389,7 +395,7 @@ class Marss(PassiveSensor):
         offsets = []
         index = 0
         for f_c, offs in zip(Marss.center_frequencies,
-                             Marss.offsets):
+                             Marss.sidebands):
             for o in offs:
                 if index in channels:
                     if f_c not in center_frequencies:
@@ -401,6 +407,7 @@ class Marss(PassiveSensor):
         channels, sensor_response = sensor_properties(center_frequencies,
                                                       offsets,
                                                       order="positive")
+        self.channel_names = get_channel_names(center_frequencies, offsets)
         super().__init__(name="marss",
                          f_grid=channels,
                          stokes_dimension=stokes_dimension)

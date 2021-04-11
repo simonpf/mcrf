@@ -74,8 +74,14 @@ class CloudRetrieval:
             h2o_a = h2o_a[0]
             self.simulation.retrieval.add(h2o)
             atanh = Atanh(0.0, 1.1)
-            h2o.transformation = h2o_a.transformation
+            if h2o_a.transformation is not None:
+                h2o.transformation = h2o_a.transformation
             h2o.retrieval.unit = RelativeHumidity()
+
+            if hasattr(h2o_a, "limit_low"):
+                h2o.retrieval.limit_low = h2o_a.limit_low
+            if hasattr(h2o_a, "limit_high"):
+                h2o.retrieval.limit_high = h2o_a.limit_high
             self.h2o = h2o
         else:
             self.h2o = None
