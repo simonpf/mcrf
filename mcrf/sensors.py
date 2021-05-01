@@ -388,7 +388,7 @@ class Marss(PassiveSensor):
     _nedt = np.array(10 * [2.0])
 
     def __init__(self,
-                 channels=range(17),
+                 channels=range(5),
                  stokes_dimension=1):
 
         center_frequencies = []
@@ -445,12 +445,18 @@ class LCPR(ActiveSensor):
                          f_grid=np.array([94e9]),
                          stokes_dimension=stokes_dimension,
                          range_bins=range_bins)
-        if range_bins is not None:
-            self.nedt = 0.5 * np.ones(range_bins.size - 1)
         self.instrument_pol = [1]
         self.instrument_pol_array = [[1]]
         self.extinction_scaling = 1.0
         self.y_min = y_min
+        self.sensor_pos = 5e5
+
+    @property
+    def nedt(self):
+        return np.ones(self.range_bins.size - 1)
+
+
+
 
 
 ################################################################################
@@ -460,17 +466,12 @@ class LCPR(ActiveSensor):
 
 class HampRadar(ActiveSensor):
     def __init__(self, stokes_dimension=1):
-        range_bins = np.linspace(0.0, 12e3, 61)
-        range_bins += 0.5 * (range_bins[1] - range_bins[0])
-        range_bins = range_bins[:-1]
-
         super().__init__(name="hamp_radar",
                          f_grid=[35.564e9],
-                         range_bins=range_bins,
                          stokes_dimension=stokes_dimension)
 
         self.sensor_line_of_sight = np.array([180.0])
-        self.sensor_position = np.array([12500.0])
+        self.sensor_position = np.array([15000.0])
         self.instrument_pol = [1]
         self.instrument_pol_array = [[1]]
         self.extinction_scaling = 1.0
@@ -478,7 +479,7 @@ class HampRadar(ActiveSensor):
 
     @property
     def nedt(self):
-        return 1.0 * np.ones(self.range_bins.size - 1)
+        return np.ones(self.range_bins.size - 1)
 
 
 ################################################################################
