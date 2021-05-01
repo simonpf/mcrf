@@ -15,7 +15,7 @@ from artssat.retrieval.a_priori import *
 from artssat.jacobian import Atanh, Log10, Identity, Composition
 from mcrf.liras.common import (n0_a_priori, dm_a_priori, rh_a_priori,
                                ice_mask, rain_mask)
-from mcrf.sensors import Ismar
+from mcrf.sensors import Ismar, Marss
 
 
 path = os.environ.get("JOINT_FLIGHT_PATH")
@@ -31,6 +31,7 @@ z_grid = np.linspace(0, 12e3, 25)
 # Sensor instances
 ################################################################################
 
+marss = Marss()
 ismar = Ismar([0, 1, 2, 3, 4, 5, 6, 7, 8, 15])
 
 ################################################################################
@@ -45,7 +46,7 @@ ice_shape_meta = os.path.join(scattering_data, "8-ColumnAggregate.meta.xml")
 # D_m
 #
 
-ice_covariance = Diagonal(500e-6**2, mask=ice_mask, mask_value=1e-12)
+ice_covariance = Diagonal(800e-6**2, mask=ice_mask, mask_value=1e-12)
 ice_covariance = SpatialCorrelation(ice_covariance, 1e3, mask=ice_mask)
 ice_dm_a_priori = FunctionalAPriori("ice_dm",
                                     "temperature",
@@ -146,7 +147,7 @@ rain_shape_meta = os.path.join(scattering_data, "LiquidSphere.meta.xml")
 # D_m
 #
 
-rain_covariance = Diagonal(500e-6**2, mask=rain_mask, mask_value=1e-12)
+rain_covariance = Diagonal(800e-6**2, mask=rain_mask, mask_value=1e-12)
 rain_covariance = SpatialCorrelation(rain_covariance, 1e3, mask=ice_mask)
 rain_dm_a_priori = FixedAPriori("rain_dm",
                                 500e-6,
