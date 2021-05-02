@@ -153,11 +153,6 @@ rain_dm_a_priori = FixedAPriori("rain_dm",
                                 rain_covariance,
                                 mask=rain_mask,
                                 mask_value=1e-8)
-rain_dm_a_priori = MaskedRegularGrid(rain_dm_a_priori,
-                                     8,
-                                     rain_mask,
-                                     "altitude",
-                                     provide_retrieval_grid=False)
 
 #
 # N_0^*
@@ -184,7 +179,7 @@ rain = Hydrometeor("rain", D14NDmLiquid(),
                    rain_shape_meta)
 rain.transformations = [
     Composition(Log10(), PiecewiseLinear(rain_n0_a_priori)),
-    Composition(Identity(), PiecewiseLinear(rain_dm_a_priori))
+    Identity()
 ]
 rain.limits_low = [2, 1e-8]
 
@@ -213,22 +208,17 @@ cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori,
 rh_mask = AltitudeMask(-1, 12e3)
 rh_covariance = Diagonal(1.0)
 rh_covariance = SpatialCorrelation(rh_covariance, 1e3)
-h2o_a_priori = DataProviderAPriori("H2O",
-                                   rh_covariance)
-#h2o_a_priori = FixedAPriori("H2O",
-#                            0.5,
-#                            rh_covariance)
+h2o_a_priori = DataProviderAPriori("H2O", rh_covariance)
 #h2o_a_priori = ReducedVerticalGrid(h2o_a_priori,
 #                                   z_grid,
 #                                   quantity="altitude",
 #                                   provide_retrieval_grid=False)
-h2o_a_priori.unit = "rh"
 #h2o_a_priori.transformation = Composition(Atanh(0.0, 1.2),
 #                                          PiecewiseLinear(h2o_a_priori))
-#h2o_a_priori.transformation = Atanh(0.0, 1.2)
-h2o_a_priori.transformation = None
-h2o_a_priori.limit_low = 0.0
-h2o_a_priori.limit_high = 1.2
+h2o_a_priori.unit = "rh"
+h2o_a_priori.transformation = Atanh(0.0, 1.1)
+h2o_a_priori.limit_low = -10
+h2o_a_priori.limit_high = 10
 
 
 ################################################################################
