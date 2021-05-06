@@ -99,7 +99,7 @@ class CloudRetrieval:
             self.cw = None
 
         t_a = [p for p in self.data_provider.subproviders \
-                 if getattr(p, "name", "") == "temperature"]
+               if getattr(p, "name", "") == "temperature"]
         if len(t_a) > 0:
             t = self.simulation.atmosphere.temperature
             self.temperature = t
@@ -145,7 +145,7 @@ class CloudRetrieval:
         def radar_only(rr):
 
             rr.settings["max_iter"] = 30
-            rr.settings["stop_dx"] = 1e-6
+            rr.settings["stop_dx"] = 1e-4
             rr.settings["method"] = "lm"
             rr.settings["lm_ga_settings"] = np.array(
                 [1000.0, 3.0, 2.0, 10e3, 1.0, 1.0])
@@ -160,7 +160,7 @@ class CloudRetrieval:
         def all_quantities(rr):
 
             rr.settings["max_iter"] = 30
-            rr.settings["stop_dx"] = 1e-6
+            rr.settings["stop_dx"] = 1e-2
             rr.settings["method"] = "lm"
             rr.settings["lm_ga_settings"] = np.array(
                 [20.0, 5.0, 2.0, 1e5, 0.1, 1.0])
