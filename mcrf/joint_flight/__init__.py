@@ -184,14 +184,13 @@ rain.limits_low = [2, 1e-8]
 # Liquid particles
 ###############################################################################
 
-liquid_mask = TemperatureMask(240.0, 300.0)
-liquid_covariance = Diagonal(2**2)
+liquid_mask = TemperatureMask(250.0, 300.0)
+liquid_covariance = Diagonal(0.5)
 liquid_covariance = SpatialCorrelation(liquid_covariance, 2e3)
-cloud_water_a_priori = FixedAPriori("cloud_water",
-                                    np.log10(1e-6),
-                                    liquid_covariance,
-                                    mask=liquid_mask,
-                                    mask_value=-20)
+cloud_water_a_priori = DataProviderAPriori("cloud_water",
+                                           liquid_covariance,
+                                           mask=liquid_mask,
+                                           mask_value=-20)
 cloud_water_a_priori = ReducedVerticalGrid(cloud_water_a_priori,
                                            z_grid,
                                            "altitude",
@@ -214,11 +213,11 @@ rh_mask = AltitudeMask(-1, 12e3)
 rh_covariance = Diagonal(0.5, mask=rh_mask)
 rh_covariance = SpatialCorrelation(rh_covariance, 2e3)
 h2o_a_priori = FunctionalAPriori("H2O",
-                                "temperature",
-                                rh_a_priori,
-                                rh_covariance,
-                                mask=rh_mask,
-                                mask_value=-100)
+                                 "temperature",
+                                 rh_a_priori,
+                                 rh_covariance,
+                                 mask=rh_mask,
+                                 mask_value=-100)
 h2o_a_priori = ReducedVerticalGrid(h2o_a_priori,
                                    z_grid,
                                    quantity="altitude",
