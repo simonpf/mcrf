@@ -190,6 +190,7 @@ liquid_covariance = SpatialCorrelation(liquid_covariance, 2e3)
 cloud_water_a_priori = DataProviderAPriori("cloud_water",
                                            liquid_covariance,
                                            mask=liquid_mask,
+                                           transformation=Log10(),
                                            mask_value=-20)
 cloud_water_a_priori = ReducedVerticalGrid(cloud_water_a_priori,
                                            z_grid,

@@ -189,12 +189,11 @@ rain.limits_low = [2, 1e-8]
 
 liquid_mask = TemperatureMask(240.0, 300.0)
 liquid_covariance = Diagonal(1**2, mask=liquid_mask)
-liquid_covariance = SpatialCorrelation(liquid_covariance, 2e3)
-cloud_water_a_priori = FixedAPriori("cloud_water",
-                                    np.log10(1e-6),
-                                    liquid_covariance,
-                                    mask=liquid_mask,
-                                    mask_value=-20)
+cloud_water_a_priori = DataProviderAPriori("cloud_water",
+                                           liquid_covariance,
+                                           transformation=Log10(),
+                                           mask=liquid_mask,
+                                           mask_value=-20)
 cloud_water_a_priori = MaskedRegularGrid(cloud_water_a_priori,
                                          8,
                                          liquid_mask,
