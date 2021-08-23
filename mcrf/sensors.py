@@ -356,8 +356,8 @@ class Ismar(PassiveSensor):
         super().__init__(name="ismar",
                          f_grid=channels,
                          stokes_dimension=stokes_dimension)
-        self.sensor_line_of_sight = np.array([180.0])
-        self.sensor_position = np.array([9300.0])
+        #self.sensor_line_of_sight = np.array([180.0])
+        #self.sensor_position = np.array([9300.0])
         self.iy_unit = "RJBT"
 
         m = sensor_response.shape[0]
@@ -411,8 +411,8 @@ class Marss(PassiveSensor):
         super().__init__(name="marss",
                          f_grid=channels,
                          stokes_dimension=stokes_dimension)
-        self.sensor_line_of_sight = np.array([180.0])
-        self.sensor_position = np.array([9300.0])
+        #self.sensor_line_of_sight = np.array([180.0])
+        #self.sensor_position = np.array([9300.0])
         self.iy_unit = "RJBT"
 
         m = sensor_response.shape[0]
