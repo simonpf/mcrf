@@ -5,7 +5,7 @@ Provides classes for performing forward simulations and cloud retrieval
 calculations.
 """
 import numpy as np
-from artssat.atmosphere import Atmosphere1D
+from artssat.atmosphere import Atmosphere1D, Atmosphere2D
 from artssat.sensor import ActiveSensor, PassiveSensor
 from artssat.atmosphere.surface import Tessem
 from artssat.retrieval.a_priori import DataProviderAPriori, PiecewiseLinear
@@ -259,7 +259,7 @@ class CloudSimulation:
             absorbers.insert(2, CloudWater(model="ELL07", from_catalog=False))
         scatterers = hydrometeors
         surface = Tessem()
-        atmosphere = Atmosphere1D(absorbers, scatterers, surface)
+        atmosphere = Atmosphere2D(absorbers, scatterers, surface)
         self.simulation = ArtsSimulation(atmosphere,
                                          sensors=sensors,
                                          scattering_solver=Disort(nstreams=16))

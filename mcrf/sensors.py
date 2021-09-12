@@ -356,8 +356,6 @@ class Ismar(PassiveSensor):
         super().__init__(name="ismar",
                          f_grid=channels,
                          stokes_dimension=stokes_dimension)
-        #self.sensor_line_of_sight = np.array([180.0])
-        #self.sensor_position = np.array([9300.0])
         self.iy_unit = "RJBT"
 
         m = sensor_response.shape[0]
@@ -560,12 +558,14 @@ cloud_sat.name = "cloud_sat"
 cloud_sat.sensor_line_of_sight = np.array([[180.0]])
 cloud_sat.sensor_position = np.array([[600e3]])
 cloud_sat.extinction_scaling = 0.5
+cloud_sat.k2 = 0.75
 
 #
 # HAMP RADAR
 #
 
 hamp_radar = HampRadar()
+hamp_radar.k2 = 0.93
 
 hamp_space = HampRadar()
 hamp_space.name = "hamp_space"
