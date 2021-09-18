@@ -378,9 +378,9 @@ class Marss(PassiveSensor):
 
     center_frequencies = np.array([89, 157, 183]) * 1e9
     sidebands = [
-        np.array([0.0]) * 1e9,
-        np.array([0.0]) * 1e9,
-        np.array([1.0, 3.0, 7.0]) * 1e9,
+        np.array([1.075]) * 1e9,
+        np.array([2.6]) * 1e9,
+        np.array([0.975, 3.0, 7.0]) * 1e9,
     ]
 
     _nedt = np.array(10 * [2.0])
