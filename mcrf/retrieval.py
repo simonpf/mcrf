@@ -127,12 +127,11 @@ class CloudRetrieval:
             absorbers.insert(2, CloudWater(model="ELL07", from_catalog=False))
         scatterers = hydrometeors
         surface = Tessem()
-        atmosphere = Atmosphere1D(absorbers, scatterers, surface)
-        catalog = Aer("h2o_lines.tar.gz")
+        catalog = Aer("h2o_lines.xml.gz")
+        atmosphere = Atmosphere1D(absorbers, scatterers, surface, catalog=catalog)
         self.simulation = ArtsSimulation(atmosphere,
                                          sensors=sensors,
-                                         scattering_solver=Disort(nstreams=16),
-                                         catalog=catalog)
+                                         scattering_solver=Disort(nstreams=16))
         self.sensors = sensors
 
         self.data_provider = data_provider
