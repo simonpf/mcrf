@@ -40,7 +40,7 @@ flight = args.flight[0]
 # Load observations.
 #
 
-filename = os.path.join(mcrf.joint_flight.path, "data", f"input_c{flight}.nc")
+filename = os.path.join(mcrf.joint_flight.path, "data", f"input_{flight}.nc")
 data_provider = NetCDFDataProvider(filename)
 
 #

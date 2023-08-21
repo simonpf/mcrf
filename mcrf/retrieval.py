@@ -4,6 +4,7 @@ mcrf.retrieval
 Provides classes for performing forward simulations and cloud retrieval
 calculations.
 """
+from pathlib import Path
 import numpy as np
 from artssat.atmosphere import Atmosphere1D, Atmosphere2D
 from artssat.sensor import ActiveSensor, PassiveSensor
@@ -47,27 +48,18 @@ class CloudRetrieval:
         """
 
         for q in self.hydrometeors:
+            for ind, mom in enumerate(q.moments):
+                if hasattr(q, "limits_high"):
+                    limit_high = q.limits_high[ind]
+                else:
+                    limit_high = np.inf
 
-            limit_low_1, limit_low_2 = q.limits_low
-            if hasattr(q, "limits_high"):
-                limit_high_1, limit_high_2 = q.limits_high
-            else:
-                limit_high_1, limit_high_2 = np.inf, np.inf
-
-            md = q.moments[0]
-            self.simulation.retrieval.add(md)
-            md.transformation = q.transformations[0]
-            md.retrieval.limit_low = q.limits_low[0]
-            md.retrieval.limit_high = limit_high_1
-
-            n0 = q.moments[1]
-            self.simulation.retrieval.add(n0)
-            n0.transformation = q.transformations[1]
-            n0.retrieval.limit_low = q.limits_low[1]
-            n0.retrieval.limit_high = limit_high_2
+                self.simulation.retrieval.add(mom)
+                mom.transformation = q.transformations[ind]
+                mom.retrieval.limit_low = q.limits_low[ind]
+                mom.retrieval.limit_high = limit_high
 
         h2o = self.simulation.atmosphere.absorbers[-1]
-
         h2o_a = [p for p in self.data_provider.subproviders \
                  if getattr(p, "name", "") == "H2O"]
         if len(h2o_a) > 0:
@@ -86,9 +78,10 @@ class CloudRetrieval:
         else:
             self.h2o = None
 
-        if self.include_cloud_water:
-            cw_a = [p for p in self.data_provider.subproviders \
-                    if getattr(p, "name", "") == "cloud_water"][0]
+        cw_a = [p for p in self.data_provider.subproviders \
+                if getattr(p, "name", "") == "cloud_water"]
+        if len(cw_a) > 0 and self.include_cloud_water:
+            cw_a = cw_a[0]
             cw = self.simulation.atmosphere.absorbers[-2]
             self.simulation.retrieval.add(cw)
             pl = PiecewiseLinear(cw_a)
@@ -107,11 +100,18 @@ class CloudRetrieval:
         else:
             self.temperature = None
 
-    def __init__(self, hydrometeors, sensors, data_provider):
+    def __init__(
+            self,
+            hydrometeors,
+            sensors,
+            data_provider,
+            data_path=None,
+            include_cloud_water=False
+    ):
 
         cw_a = [p for p in data_provider.subproviders \
                 if getattr(p, "name", "") == "cloud_water"]
-        self.include_cloud_water = len(cw_a) > 0
+        self.include_cloud_water = (len(cw_a) > 0) or include_cloud_water
 
         self.hydrometeors = hydrometeors
         absorbers = [
@@ -127,7 +127,12 @@ class CloudRetrieval:
             absorbers.insert(2, CloudWater(model="ELL07", from_catalog=False))
         scatterers = hydrometeors
         surface = Tessem()
-        catalog = Aer("h2o_lines.xml.gz")
+
+        if data_path is None:
+            catalog = Aer("h2o_lines.xml.gz")
+        else:
+            catalog = Aer(Path(data_path) / "h2o_lines.xml.gz")
+
         atmosphere = Atmosphere1D(absorbers, scatterers, surface, catalog=catalog)
         self.simulation = ArtsSimulation(atmosphere,
                                          sensors=sensors,

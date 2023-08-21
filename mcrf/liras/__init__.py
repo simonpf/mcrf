@@ -27,7 +27,7 @@ from artssat.retrieval.a_priori import *
 from artssat.scattering.psd import Binned
 from artssat.jacobian import Atanh, Log10, Identity, Composition
 
-liras_path = os.environ["LIRAS_PATH"]
+liras_path = os.environ.get("LIRAS_PATH", ".")
 scattering_data = os.path.join(liras_path, "data", "scattering")
 
 # Vertical grid with reduced resolution

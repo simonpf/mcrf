@@ -271,12 +271,16 @@ class ObservationError(DataProviderBase):
             nedt_dp = self._get_nedt(s, i_p)
             c = self.noise_scaling[s.name]
             if isinstance(s, ActiveSensor):
+                if not isinstance(nedt_dp, (np.ndarray, list)):
+                    nedt_dp = [nedt_dp] * s.y_vector_length
                 diag += [nedt_dp**2]
 
         for s in self.sensors:
             nedt_dp = self._get_nedt(s, i_p)
             c = self.noise_scaling[s.name]
             if isinstance(s, PassiveSensor):
+                if not isinstance(nedt_dp, (np.ndarray, list)):
+                    nedt_dp = [nedt_dp] * s.y_vector_length
                 diag += [(c * s.nedt)**2 + (nedt_dp**2)]
 
         diag = np.concatenate(diag).ravel()

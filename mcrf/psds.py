@@ -100,7 +100,7 @@ class D14DmLiquid(D14):
     """
     Specialized class implementing a normalized modified gamma distribution
     parametrized using mass density and mass weighted mean diameter (D_m).
-    The shape is shape has been obtained by fit to ICON model scenes.
+    The shape shape has been obtained by fit to ICON model scenes.
     """
     def __init__(self):
         super().__init__(0.0, 1.0, 1000.0)
